@@ -1,0 +1,384 @@
+<instance format="XCSP3" type="CSP">
+  <variables>
+    <array id="grid" note="variables of problem" size="[8][8]"> 1..64 </array>
+    <array id="lineCard" size="[8][2]"> 1..8 </array>
+    <array id="lineTemp" size="[8][8]"> 0 1 </array>
+    <array id="collCard" size="[8][2]"> 1..8 </array>
+    <array id="collTemp" size="[8][8]"> 0 1 </array>
+  </variables>
+  <constraints>
+    <intension> eq(lineTemp[0][0],mod(grid[0][0],2)) </intension>
+    <intension> eq(lineTemp[0][1],mod(grid[0][1],2)) </intension>
+    <intension> eq(lineTemp[0][2],mod(grid[0][2],2)) </intension>
+    <intension> eq(lineTemp[0][3],mod(grid[0][3],2)) </intension>
+    <intension> eq(lineTemp[0][4],mod(grid[0][4],2)) </intension>
+    <intension> eq(lineTemp[0][5],mod(grid[0][5],2)) </intension>
+    <intension> eq(lineTemp[0][6],mod(grid[0][6],2)) </intension>
+    <intension> eq(lineTemp[0][7],mod(grid[0][7],2)) </intension>
+    <cardinality>
+      <list> lineTemp[0][] </list>
+      <values> 0 1 </values>
+      <occurs> lineCard[0][0] lineCard[0][1] </occurs>
+    </cardinality>
+    <intension> eq(mod(lineCard[0][0],2),0) </intension>
+    <intension> eq(mod(lineCard[0][1],2),0) </intension>
+    <intension> eq(lineTemp[1][0],mod(grid[1][0],2)) </intension>
+    <intension> eq(lineTemp[1][1],mod(grid[1][1],2)) </intension>
+    <intension> eq(lineTemp[1][2],mod(grid[1][2],2)) </intension>
+    <intension> eq(lineTemp[1][3],mod(grid[1][3],2)) </intension>
+    <intension> eq(lineTemp[1][4],mod(grid[1][4],2)) </intension>
+    <intension> eq(lineTemp[1][5],mod(grid[1][5],2)) </intension>
+    <intension> eq(lineTemp[1][6],mod(grid[1][6],2)) </intension>
+    <intension> eq(lineTemp[1][7],mod(grid[1][7],2)) </intension>
+    <cardinality>
+      <list> lineTemp[1][] </list>
+      <values> 0 1 </values>
+      <occurs> lineCard[1][0] lineCard[1][1] </occurs>
+    </cardinality>
+    <intension> eq(mod(lineCard[1][0],2),0) </intension>
+    <intension> eq(mod(lineCard[1][1],2),0) </intension>
+    <intension> eq(lineTemp[2][0],mod(grid[2][0],2)) </intension>
+    <intension> eq(lineTemp[2][1],mod(grid[2][1],2)) </intension>
+    <intension> eq(lineTemp[2][2],mod(grid[2][2],2)) </intension>
+    <intension> eq(lineTemp[2][3],mod(grid[2][3],2)) </intension>
+    <intension> eq(lineTemp[2][4],mod(grid[2][4],2)) </intension>
+    <intension> eq(lineTemp[2][5],mod(grid[2][5],2)) </intension>
+    <intension> eq(lineTemp[2][6],mod(grid[2][6],2)) </intension>
+    <intension> eq(lineTemp[2][7],mod(grid[2][7],2)) </intension>
+    <cardinality>
+      <list> lineTemp[2][] </list>
+      <values> 0 1 </values>
+      <occurs> lineCard[2][0] lineCard[2][1] </occurs>
+    </cardinality>
+    <intension> eq(mod(lineCard[2][0],2),0) </intension>
+    <intension> eq(mod(lineCard[2][1],2),0) </intension>
+    <intension> eq(lineTemp[3][0],mod(grid[3][0],2)) </intension>
+    <intension> eq(lineTemp[3][1],mod(grid[3][1],2)) </intension>
+    <intension> eq(lineTemp[3][2],mod(grid[3][2],2)) </intension>
+    <intension> eq(lineTemp[3][3],mod(grid[3][3],2)) </intension>
+    <intension> eq(lineTemp[3][4],mod(grid[3][4],2)) </intension>
+    <intension> eq(lineTemp[3][5],mod(grid[3][5],2)) </intension>
+    <intension> eq(lineTemp[3][6],mod(grid[3][6],2)) </intension>
+    <intension> eq(lineTemp[3][7],mod(grid[3][7],2)) </intension>
+    <cardinality>
+      <list> lineTemp[3][] </list>
+      <values> 0 1 </values>
+      <occurs> lineCard[3][0] lineCard[3][1] </occurs>
+    </cardinality>
+    <intension> eq(mod(lineCard[3][0],2),0) </intension>
+    <intension> eq(mod(lineCard[3][1],2),0) </intension>
+    <intension> eq(lineTemp[4][0],mod(grid[4][0],2)) </intension>
+    <intension> eq(lineTemp[4][1],mod(grid[4][1],2)) </intension>
+    <intension> eq(lineTemp[4][2],mod(grid[4][2],2)) </intension>
+    <intension> eq(lineTemp[4][3],mod(grid[4][3],2)) </intension>
+    <intension> eq(lineTemp[4][4],mod(grid[4][4],2)) </intension>
+    <intension> eq(lineTemp[4][5],mod(grid[4][5],2)) </intension>
+    <intension> eq(lineTemp[4][6],mod(grid[4][6],2)) </intension>
+    <intension> eq(lineTemp[4][7],mod(grid[4][7],2)) </intension>
+    <cardinality>
+      <list> lineTemp[4][] </list>
+      <values> 0 1 </values>
+      <occurs> lineCard[4][0] lineCard[4][1] </occurs>
+    </cardinality>
+    <intension> eq(mod(lineCard[4][0],2),0) </intension>
+    <intension> eq(mod(lineCard[4][1],2),0) </intension>
+    <intension> eq(lineTemp[5][0],mod(grid[5][0],2)) </intension>
+    <intension> eq(lineTemp[5][1],mod(grid[5][1],2)) </intension>
+    <intension> eq(lineTemp[5][2],mod(grid[5][2],2)) </intension>
+    <intension> eq(lineTemp[5][3],mod(grid[5][3],2)) </intension>
+    <intension> eq(lineTemp[5][4],mod(grid[5][4],2)) </intension>
+    <intension> eq(lineTemp[5][5],mod(grid[5][5],2)) </intension>
+    <intension> eq(lineTemp[5][6],mod(grid[5][6],2)) </intension>
+    <intension> eq(lineTemp[5][7],mod(grid[5][7],2)) </intension>
+    <cardinality>
+      <list> lineTemp[5][] </list>
+      <values> 0 1 </values>
+      <occurs> lineCard[5][0] lineCard[5][1] </occurs>
+    </cardinality>
+    <intension> eq(mod(lineCard[5][0],2),0) </intension>
+    <intension> eq(mod(lineCard[5][1],2),0) </intension>
+    <intension> eq(lineTemp[6][0],mod(grid[6][0],2)) </intension>
+    <intension> eq(lineTemp[6][1],mod(grid[6][1],2)) </intension>
+    <intension> eq(lineTemp[6][2],mod(grid[6][2],2)) </intension>
+    <intension> eq(lineTemp[6][3],mod(grid[6][3],2)) </intension>
+    <intension> eq(lineTemp[6][4],mod(grid[6][4],2)) </intension>
+    <intension> eq(lineTemp[6][5],mod(grid[6][5],2)) </intension>
+    <intension> eq(lineTemp[6][6],mod(grid[6][6],2)) </intension>
+    <intension> eq(lineTemp[6][7],mod(grid[6][7],2)) </intension>
+    <cardinality>
+      <list> lineTemp[6][] </list>
+      <values> 0 1 </values>
+      <occurs> lineCard[6][0] lineCard[6][1] </occurs>
+    </cardinality>
+    <intension> eq(mod(lineCard[6][0],2),0) </intension>
+    <intension> eq(mod(lineCard[6][1],2),0) </intension>
+    <intension> eq(lineTemp[7][0],mod(grid[7][0],2)) </intension>
+    <intension> eq(lineTemp[7][1],mod(grid[7][1],2)) </intension>
+    <intension> eq(lineTemp[7][2],mod(grid[7][2],2)) </intension>
+    <intension> eq(lineTemp[7][3],mod(grid[7][3],2)) </intension>
+    <intension> eq(lineTemp[7][4],mod(grid[7][4],2)) </intension>
+    <intension> eq(lineTemp[7][5],mod(grid[7][5],2)) </intension>
+    <intension> eq(lineTemp[7][6],mod(grid[7][6],2)) </intension>
+    <intension> eq(lineTemp[7][7],mod(grid[7][7],2)) </intension>
+    <cardinality>
+      <list> lineTemp[7][] </list>
+      <values> 0 1 </values>
+      <occurs> lineCard[7][0] lineCard[7][1] </occurs>
+    </cardinality>
+    <intension> eq(mod(lineCard[7][0],2),0) </intension>
+    <intension> eq(mod(lineCard[7][1],2),0) </intension>
+    <intension> eq(collTemp[0][0],mod(grid[0][0],2)) </intension>
+    <intension> eq(collTemp[1][0],mod(grid[1][0],2)) </intension>
+    <intension> eq(collTemp[2][0],mod(grid[2][0],2)) </intension>
+    <intension> eq(collTemp[3][0],mod(grid[3][0],2)) </intension>
+    <intension> eq(collTemp[4][0],mod(grid[4][0],2)) </intension>
+    <intension> eq(collTemp[5][0],mod(grid[5][0],2)) </intension>
+    <intension> eq(collTemp[6][0],mod(grid[6][0],2)) </intension>
+    <intension> eq(collTemp[7][0],mod(grid[7][0],2)) </intension>
+    <cardinality>
+      <list> collTemp[][0] </list>
+      <values> 0 1 </values>
+      <occurs> collCard[0][0] collCard[0][1] </occurs>
+    </cardinality>
+    <intension> eq(mod(collCard[0][0],2),0) </intension>
+    <intension> eq(mod(collCard[7][1],2),0) </intension>
+    <intension> eq(collTemp[0][1],mod(grid[0][1],2)) </intension>
+    <intension> eq(collTemp[1][1],mod(grid[1][1],2)) </intension>
+    <intension> eq(collTemp[2][1],mod(grid[2][1],2)) </intension>
+    <intension> eq(collTemp[3][1],mod(grid[3][1],2)) </intension>
+    <intension> eq(collTemp[4][1],mod(grid[4][1],2)) </intension>
+    <intension> eq(collTemp[5][1],mod(grid[5][1],2)) </intension>
+    <intension> eq(collTemp[6][1],mod(grid[6][1],2)) </intension>
+    <intension> eq(collTemp[7][1],mod(grid[7][1],2)) </intension>
+    <cardinality>
+      <list> collTemp[][1] </list>
+      <values> 0 1 </values>
+      <occurs> collCard[1][0] collCard[1][1] </occurs>
+    </cardinality>
+    <intension> eq(mod(collCard[1][0],2),0) </intension>
+    <intension> eq(mod(collCard[7][1],2),0) </intension>
+    <intension> eq(collTemp[0][2],mod(grid[0][2],2)) </intension>
+    <intension> eq(collTemp[1][2],mod(grid[1][2],2)) </intension>
+    <intension> eq(collTemp[2][2],mod(grid[2][2],2)) </intension>
+    <intension> eq(collTemp[3][2],mod(grid[3][2],2)) </intension>
+    <intension> eq(collTemp[4][2],mod(grid[4][2],2)) </intension>
+    <intension> eq(collTemp[5][2],mod(grid[5][2],2)) </intension>
+    <intension> eq(collTemp[6][2],mod(grid[6][2],2)) </intension>
+    <intension> eq(collTemp[7][2],mod(grid[7][2],2)) </intension>
+    <cardinality>
+      <list> collTemp[][2] </list>
+      <values> 0 1 </values>
+      <occurs> collCard[2][0] collCard[2][1] </occurs>
+    </cardinality>
+    <intension> eq(mod(collCard[2][0],2),0) </intension>
+    <intension> eq(mod(collCard[7][1],2),0) </intension>
+    <intension> eq(collTemp[0][3],mod(grid[0][3],2)) </intension>
+    <intension> eq(collTemp[1][3],mod(grid[1][3],2)) </intension>
+    <intension> eq(collTemp[2][3],mod(grid[2][3],2)) </intension>
+    <intension> eq(collTemp[3][3],mod(grid[3][3],2)) </intension>
+    <intension> eq(collTemp[4][3],mod(grid[4][3],2)) </intension>
+    <intension> eq(collTemp[5][3],mod(grid[5][3],2)) </intension>
+    <intension> eq(collTemp[6][3],mod(grid[6][3],2)) </intension>
+    <intension> eq(collTemp[7][3],mod(grid[7][3],2)) </intension>
+    <cardinality>
+      <list> collTemp[][3] </list>
+      <values> 0 1 </values>
+      <occurs> collCard[3][0] collCard[3][1] </occurs>
+    </cardinality>
+    <intension> eq(mod(collCard[3][0],2),0) </intension>
+    <intension> eq(mod(collCard[7][1],2),0) </intension>
+    <intension> eq(collTemp[0][4],mod(grid[0][4],2)) </intension>
+    <intension> eq(collTemp[1][4],mod(grid[1][4],2)) </intension>
+    <intension> eq(collTemp[2][4],mod(grid[2][4],2)) </intension>
+    <intension> eq(collTemp[3][4],mod(grid[3][4],2)) </intension>
+    <intension> eq(collTemp[4][4],mod(grid[4][4],2)) </intension>
+    <intension> eq(collTemp[5][4],mod(grid[5][4],2)) </intension>
+    <intension> eq(collTemp[6][4],mod(grid[6][4],2)) </intension>
+    <intension> eq(collTemp[7][4],mod(grid[7][4],2)) </intension>
+    <cardinality>
+      <list> collTemp[][4] </list>
+      <values> 0 1 </values>
+      <occurs> collCard[4][0] collCard[4][1] </occurs>
+    </cardinality>
+    <intension> eq(mod(collCard[4][0],2),0) </intension>
+    <intension> eq(mod(collCard[7][1],2),0) </intension>
+    <intension> eq(collTemp[0][5],mod(grid[0][5],2)) </intension>
+    <intension> eq(collTemp[1][5],mod(grid[1][5],2)) </intension>
+    <intension> eq(collTemp[2][5],mod(grid[2][5],2)) </intension>
+    <intension> eq(collTemp[3][5],mod(grid[3][5],2)) </intension>
+    <intension> eq(collTemp[4][5],mod(grid[4][5],2)) </intension>
+    <intension> eq(collTemp[5][5],mod(grid[5][5],2)) </intension>
+    <intension> eq(collTemp[6][5],mod(grid[6][5],2)) </intension>
+    <intension> eq(collTemp[7][5],mod(grid[7][5],2)) </intension>
+    <cardinality>
+      <list> collTemp[][5] </list>
+      <values> 0 1 </values>
+      <occurs> collCard[5][0] collCard[5][1] </occurs>
+    </cardinality>
+    <intension> eq(mod(collCard[5][0],2),0) </intension>
+    <intension> eq(mod(collCard[7][1],2),0) </intension>
+    <intension> eq(collTemp[0][6],mod(grid[0][6],2)) </intension>
+    <intension> eq(collTemp[1][6],mod(grid[1][6],2)) </intension>
+    <intension> eq(collTemp[2][6],mod(grid[2][6],2)) </intension>
+    <intension> eq(collTemp[3][6],mod(grid[3][6],2)) </intension>
+    <intension> eq(collTemp[4][6],mod(grid[4][6],2)) </intension>
+    <intension> eq(collTemp[5][6],mod(grid[5][6],2)) </intension>
+    <intension> eq(collTemp[6][6],mod(grid[6][6],2)) </intension>
+    <intension> eq(collTemp[7][6],mod(grid[7][6],2)) </intension>
+    <cardinality>
+      <list> collTemp[][6] </list>
+      <values> 0 1 </values>
+      <occurs> collCard[6][0] collCard[6][1] </occurs>
+    </cardinality>
+    <intension> eq(mod(collCard[6][0],2),0) </intension>
+    <intension> eq(mod(collCard[7][1],2),0) </intension>
+    <intension> eq(collTemp[0][7],mod(grid[0][7],2)) </intension>
+    <intension> eq(collTemp[1][7],mod(grid[1][7],2)) </intension>
+    <intension> eq(collTemp[2][7],mod(grid[2][7],2)) </intension>
+    <intension> eq(collTemp[3][7],mod(grid[3][7],2)) </intension>
+    <intension> eq(collTemp[4][7],mod(grid[4][7],2)) </intension>
+    <intension> eq(collTemp[5][7],mod(grid[5][7],2)) </intension>
+    <intension> eq(collTemp[6][7],mod(grid[6][7],2)) </intension>
+    <intension> eq(collTemp[7][7],mod(grid[7][7],2)) </intension>
+    <cardinality>
+      <list> collTemp[][7] </list>
+      <values> 0 1 </values>
+      <occurs> collCard[7][0] collCard[7][1] </occurs>
+    </cardinality>
+    <intension> eq(mod(collCard[7][0],2),0) </intension>
+    <intension> eq(mod(collCard[7][1],2),0) </intension>
+    <lex>
+      <list> grid[0][] </list>
+      <list> grid[7][] </list>
+      <operator> ge </operator>
+    </lex>
+    <lex>
+      <list> grid[1][] </list>
+      <list> grid[6][] </list>
+      <operator> ge </operator>
+    </lex>
+    <lex>
+      <list> grid[2][] </list>
+      <list> grid[5][] </list>
+      <operator> ge </operator>
+    </lex>
+    <lex>
+      <list> grid[3][] </list>
+      <list> grid[4][] </list>
+      <operator> ge </operator>
+    </lex>
+    <lex>
+      <list> grid[0][] </list>
+      <list> grid[][7] </list>
+      <operator> ge </operator>
+    </lex>
+    <lex>
+      <list> grid[1][] </list>
+      <list> grid[][6] </list>
+      <operator> ge </operator>
+    </lex>
+    <lex>
+      <list> grid[2][] </list>
+      <list> grid[][5] </list>
+      <operator> ge </operator>
+    </lex>
+    <lex>
+      <list> grid[3][] </list>
+      <list> grid[][4] </list>
+      <operator> ge </operator>
+    </lex>
+    <lex>
+      <list> grid[0][] </list>
+      <list> grid[][7] </list>
+      <operator> ge </operator>
+    </lex>
+    <lex>
+      <list> grid[1][] </list>
+      <list> grid[][6] </list>
+      <operator> ge </operator>
+    </lex>
+    <lex>
+      <list> grid[2][] </list>
+      <list> grid[][5] </list>
+      <operator> ge </operator>
+    </lex>
+    <lex>
+      <list> grid[3][] </list>
+      <list> grid[][4] </list>
+      <operator> ge </operator>
+    </lex>
+    <sum>
+      <list> grid[0][] </list>
+      <condition> (eq,260) </condition>
+    </sum>
+    <sum>
+      <list> grid[1][] </list>
+      <condition> (eq,260) </condition>
+    </sum>
+    <sum>
+      <list> grid[2][] </list>
+      <condition> (eq,260) </condition>
+    </sum>
+    <sum>
+      <list> grid[3][] </list>
+      <condition> (eq,260) </condition>
+    </sum>
+    <sum>
+      <list> grid[4][] </list>
+      <condition> (eq,260) </condition>
+    </sum>
+    <sum>
+      <list> grid[5][] </list>
+      <condition> (eq,260) </condition>
+    </sum>
+    <sum>
+      <list> grid[6][] </list>
+      <condition> (eq,260) </condition>
+    </sum>
+    <sum>
+      <list> grid[7][] </list>
+      <condition> (eq,260) </condition>
+    </sum>
+    <sum>
+      <list> grid[][0] </list>
+      <condition> (eq,260) </condition>
+    </sum>
+    <sum>
+      <list> grid[][1] </list>
+      <condition> (eq,260) </condition>
+    </sum>
+    <sum>
+      <list> grid[][2] </list>
+      <condition> (eq,260) </condition>
+    </sum>
+    <sum>
+      <list> grid[][3] </list>
+      <condition> (eq,260) </condition>
+    </sum>
+    <sum>
+      <list> grid[][4] </list>
+      <condition> (eq,260) </condition>
+    </sum>
+    <sum>
+      <list> grid[][5] </list>
+      <condition> (eq,260) </condition>
+    </sum>
+    <sum>
+      <list> grid[][6] </list>
+      <condition> (eq,260) </condition>
+    </sum>
+    <sum>
+      <list> grid[][7] </list>
+      <condition> (eq,260) </condition>
+    </sum>
+    <sum>
+      <list> grid[0][0] grid[1][1] grid[2][2] grid[3][3] grid[4][4] grid[5][5] grid[6][6] grid[7][7] </list>
+      <condition> (eq,260) </condition>
+    </sum>
+    <sum>
+      <list> grid[7][0] grid[6][1] grid[5][2] grid[4][3] grid[3][4] grid[2][5] grid[1][6] grid[0][7] </list>
+      <condition> (eq,260) </condition>
+    </sum>
+    <allDifferent> grid[][] </allDifferent>
+  </constraints>
+</instance>

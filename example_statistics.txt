@@ -1,0 +1,19 @@
+= : ======================= : = 
+name : /home/etud/minizincPython/example.xml 
+nr_courses : 2 
+nr_part : 4 
+nr_classe : 5 
+nr_sessions : 48 
+mean_sessions_per_classe : 9.6 
+nr_group : 2 
+nr_student : 2 
+mean_classes_per_groups : 4 
+nr_slot : 172800 
+nr_room : 3 
+nr_room_used : 3 
+nr_teacher : 4 
+nr_teacher_used : 2 
+nr_rules : 3 
+nr_flatten_constraint : 7 
+different_occurence_constraint : sameRooms 3, sameTeachers 2, sequenced 2 
+nr_different_constraint : 3 
