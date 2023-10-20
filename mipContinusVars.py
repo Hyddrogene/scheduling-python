@@ -113,13 +113,13 @@ class mipContinusVars:
     def service_teacher(self):
         for p in range(0,self.usp.nr_parts):
             for t in self.usp.part_teachers[p]:
-                #print("parts : ",self.usp.part_name[p]," nr teachers ",len(self.usp.part_teachers[p])," service ", sum(self.usp.part_teacher_sessions_count[p])," ssess * class ",(len(self.usp.part_classes[p]) * self.usp.part_nr_sessions[p]) )
+                print("parts : ",self.usp.part_name[p]," nr teachers ",len(self.usp.part_teachers[p])," service ", sum(self.usp.part_teacher_sessions_count[p])," ssess * class ",(len(self.usp.part_classes[p]) * self.usp.part_nr_sessions[p]) )
                 tmp = []
                 p_t = self.usp.getPositionTeacher(self.usp.part_sessions[p][0]-1, t)
                 for s in self.usp.part_sessions[p]:
                     tmp.append(self.x_teacher[s-1][p_t])
                 #print(self.usp.part_teacher_sessions_count[p][t-1])
-                self.model += xsum(tmp) >= 1#self.usp.part_teacher_sessions_count[p][t-1]
+                self.model += xsum(tmp) == self.usp.part_teacher_sessions_count[p][t-1]
                 #self.model += xsum([self.x_teacher[s-1][self.usp.getPositionTeacher(s-1, t)] for s in self.usp.part_sessions[p]]) == self.usp.part_teacher_sessions_count[p][t-1]
 
     def disjunctive_groupe(self):
@@ -127,26 +127,79 @@ class mipContinusVars:
         #val = int(nr_sessions**2 - (nr_sessions**2+nr_sessions)/2)
         #print(val)
         #exit(0)
-
+        l = 0
+        y = []
         for g in range(0,self.usp.nr_groups):
             for i in range(0,len(self.usp.group_sessions[g])):
                 for j in range(i,len(self.usp.group_sessions[g])):
-                    y = self.model.add_var(var_type=BINARY)
-                    self.model += self.x_slot[self.usp.group_sessions[g][i]-1] <= self.x_slot[self.usp.group_sessions[g][j]-1]-1 + 3000*y
-                    self.model += self.x_slot[self.usp.group_sessions[g][i]-1] >= self.x_slot[self.usp.group_sessions[g][j]-1]+1 -3000*(1-y) 
+                    if i!= j :
+                        y.append(self.model.add_var(var_type=BINARY))
+                        self.model += self.x_slot[self.usp.group_sessions[g][i]-1] <= self.x_slot[self.usp.group_sessions[g][j]-1]-1 + 3000*y[l]
+                        self.model += self.x_slot[self.usp.group_sessions[g][i]-1] >= self.x_slot[self.usp.group_sessions[g][j]-1]+1 -3000*(1-y[l]) 
+                        l+=1
+
+    def disjunctive_teacher(self):
+        nr_sessions = self.usp.nr_sessions
+        l = 0
+        M = 3000
+        y1 = []
+        y2 = []
+        self.y1y2 = []
+        for t in range(1,self.usp.nr_teachers+1):
+            if len(self.usp.teacher_parts[t-1])>0 :
+                for i in range(0,len(self.usp.teacher_sessions[t-1])):
+                    s1 = self.usp.teacher_sessions[t-1][i]-1
+                    t1 = self.usp.getPositionTeacher(s1, t)
+                    for j in range(i,len(self.usp.teacher_sessions[t-1])):
+                        s2 = self.usp.teacher_sessions[t-1][j]-1
+                        t2 = self.usp.getPositionTeacher(s2, t)
+                        if s1!= s2 :
+                            self.y1y2.append(self.model.add_var(var_type=BINARY))
+                            y1.append(self.model.add_var(var_type=BINARY))
+                            y2.append(self.model.add_var(var_type=BINARY))
+                            #self.model += y1[l] == self.x_teacher[i][t]
+                            #self.model += y2[l] == self.x_teacher[j][t]
+                            #self.model += y1[l] == 0
+                            #self.model += y2[l] == 0
+
+                            self.model += self.y1y2[l] <= self.x_teacher[s1][t1]
+                            self.model += self.y1y2[l] <= self.x_teacher[s2][t2]
+                            self.model += self.y1y2[l] >= self.x_teacher[s1][t1]+self.x_teacher[j][t2]-1
+                            self.model += self.y1y2[l] >= y1[l]
+                            self.model += self.y1y2[l] >= y2[l]
+
+                            self.model += self.y1y2[l] <= (y1[l] + y2[l]) <= 1
+
+                            #self.model += self.y1y2[l] <= y1[l]
+                            self.model += self.x_slot[s2] >= self.x_slot[s1]+(1+M)*y1[l]-M
+                            self.model += self.x_slot[s1] >= self.x_slot[s2]+(1+M)*y2[l]-M
+                            #self.model += xsum(y1[l] *  self.x_teacher[i][k] for k in range(0,2))
+                            
+
+                            #z.append(self.model.add_var(var_type=BINARY))
+                            #self.model += -M*(1-y1[l])<= self.x_slot[i] <= 1+M*(1-y1[l])
+                            #self.model += -M*(1-y1[l])<= self.x_slot[j] <= 1+M*(1-y1[l])
+                            #self.model += -M*(1-y2[l])<= self.x_slot[i] <= 1+M*(1-y2[l])
+                            #self.model += -M*(1-y2[l])<= self.x_slot[j] <= 1+M*(1-y2[l])
+                            #self.model += -M*(1-y1[i])<= y1[i] <= 1+M*(1-y1[i])
+                            #self.model += y[l] == 2-self.x_teacher[i][t]-self.x_teacher[j][t]
+                            #self.model += (self.x_slot[self.usp.teacher_sessions[t][i]-1]-self.x_slot[self.usp.teacher_sessions[t][j]-1]) <= -1 + 3000*y[l]
+                            #self.model += self.x_slot[self.usp.teacher_sessions[t][i]-1] >= self.x_slot[self.usp.teacher_sessions[t][j]-1]+1 -3000*(1-y[l]) 
+                            l+=1
 
     def constraintBasis(self):
         #self.cardinal_rooms()
-        #self.cardinal_teachers()
-        #self.service_teacher()
-        self.disjunctive_groupe()
+        self.cardinal_teachers()
+        self.service_teacher()
+        #self.disjunctive_groupe()
+        self.disjunctive_teacher()
         return
         for cons in self.usp.constraints:
             if cons.constraint == "sequenced" :
-                #self.sequenced(cons)
+                self.sequenced(cons)
                 pass
             elif cons.constraint == "periodic":
-                #self.periodic(cons)
+                self.periodic(cons)
                 pass
             elif cons.constraint == "sameSlot" or cons.constraint == "sameSlots":
                 self.same_slot(cons)
@@ -194,10 +247,22 @@ class mipContinusVars:
             print('solution:')
             for v in self.x_slot:
                 if abs(v.x) > 1e-6: # only printing non-zeros
-                    print('{} : {}'.format(v.name, v.x))
+                    print('{} : {}'.format(v.name, v.x),end=" ")
+            print(sorted([self.x_slot[i].x for i in range(0,len(self.x_slot))]))
+            for i in range(0,len(self.x_teacher)):
+                t = [self.x_teacher[i][j].x for j in range(0,len(self.x_teacher[i]))]
+                y = t.index(1.0)
+                print("t = ", self.usp.part_teachers[self.usp.session_part[i]-1][y],end=" ")
+                print(t)
+            print([self.y1y2[i].x for i in range(0,len(self.y1y2))])
         
     def println(self):
         print([int(self.x_slot[i].x) for i in range(0,len(self.x_slot))])
+        for i in range(0,len(self.x_teacher)):
+            y = self.x_teacher.index(1)
+            print(self.usp.part_teachers[self.usp.session_part[i]][y],end=" ")
+            print()
+
         #print([[self.x_teacher[i][j].x for j in range(0,len(self.x_teacher[i]))] for i in range(0,len(self.x_teacher))])
         #rint([self.usp.room_name[int(self.x_room[i][[self.x_room[i][k].x for k in range(0,len(self.x_room[i]))].index(max([self.x_room[i][k].x for k in range(0,len(self.x_room[i]))]))].x)-1] for i in range(0,len(self.x_slot))])
 
@@ -208,4 +273,4 @@ filename = "/home/etud/minizincPython/example_extension_v2.json"
 usp = instanceUSP(filename)
 mip = mipContinusVars(usp,"solution.xml")
 mip.solver()
-mip.println()
+#mip.println()
