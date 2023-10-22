@@ -25,9 +25,10 @@ class mipContinusVars:
             p = self.usp.session_part[i]-1
             nr_week1 = max(self.usp.part_weeks[p])
             nr_abstract_slots = (nr_week1 * nr_days * nr_dailySlot)+1
-            #print(nr_abstract_slots)
+            print(nr_abstract_slots)
+            nr_abstract_slots = 2000
             self.x_slot.append(self.model.add_var(var_type=INTEGER,lb=1,ub=nr_abstract_slots))
-
+        #exit(0)
         print("Vars x_slot = ",nr_sessions)
         i = 0
         self.x_room = []
@@ -64,7 +65,14 @@ class mipContinusVars:
                 if session1 != session2 :
                     self.model += (self.x_slot[session1-1] +self.usp.part_abstract_grid[p][2]) <= self.x_slot[session2-1]
 
-    def periodic(self,constraint): 
+    def implicite_sequenced(self):
+        for p in range(0,self.usp.nr_parts):
+            for c in self.usp.part_classes[p]:
+                for s1 in range(1,len(self.usp.class_sessions[c-1])):
+                    self.model += self.x_slot[self.usp.class_sessions[c-1][s1]-1] >= (self.x_slot[self.usp.class_sessions[c-1][s1-1]-1]+self.usp.part_abstract_grid[p][1])
+                    self.usp.session_session_sequenced[s1-1][s1] = 1
+
+    def periodic(self,constraint):
         nr_days = self.usp.nr_days_per_week
         nr_dailySlot = self.usp.grid[2]
         d_week = nr_days * nr_dailySlot
@@ -128,14 +136,24 @@ class mipContinusVars:
         #print(val)
         #exit(0)
         l = 0
-        y = []
+        M = 3000
+        y1 = []
+        y2 = []
         for g in range(0,self.usp.nr_groups):
             for i in range(0,len(self.usp.group_sessions[g])):
+                s1 = self.usp.group_sessions[g][i]-1
                 for j in range(i,len(self.usp.group_sessions[g])):
-                    if i!= j :
-                        y.append(self.model.add_var(var_type=BINARY))
-                        self.model += self.x_slot[self.usp.group_sessions[g][i]-1] <= self.x_slot[self.usp.group_sessions[g][j]-1]-1 + 3000*y[l]
-                        self.model += self.x_slot[self.usp.group_sessions[g][i]-1] >= self.x_slot[self.usp.group_sessions[g][j]-1]+1 -3000*(1-y[l]) 
+                    s2 = self.usp.group_sessions[g][j]-1
+                    if s1 != s2 :
+                        y1.append(self.model.add_var(var_type=BINARY))
+                        y2.append(self.model.add_var(var_type=BINARY))
+
+                        self.usp.session_session_sequenced[s1][s2] = y1[l]
+                        self.usp.session_session_sequenced[s2][s1] = y2[l]
+
+                        self.model += (y1[l] + y2[l]) == 1
+                        self.model += self.x_slot[s1] >= self.x_slot[s2] +(1+M)*y1[l] -M
+                        self.model += self.x_slot[s2] >= self.x_slot[s1] +(1+M)*y2[l] -M
                         l+=1
 
     def disjunctive_teacher(self):
@@ -154,25 +172,49 @@ class mipContinusVars:
                         s2 = self.usp.teacher_sessions[t-1][j]-1
                         t2 = self.usp.getPositionTeacher(s2, t)
                         if s1!= s2 :
-                            self.y1y2.append(self.model.add_var(var_type=BINARY))
-                            y1.append(self.model.add_var(var_type=BINARY))
-                            y2.append(self.model.add_var(var_type=BINARY))
-                            #self.model += y1[l] == self.x_teacher[i][t]
-                            #self.model += y2[l] == self.x_teacher[j][t]
-                            #self.model += y1[l] == 0
-                            #self.model += y2[l] == 0
+                            if self.usp.session_session_sequenced[s1][s2] != 0 :
 
-                            self.model += self.y1y2[l] <= self.x_teacher[s1][t1]
-                            self.model += self.y1y2[l] <= self.x_teacher[s2][t2]
-                            self.model += self.y1y2[l] >= self.x_teacher[s1][t1]+self.x_teacher[j][t2]-1
-                            self.model += self.y1y2[l] >= y1[l]
-                            self.model += self.y1y2[l] >= y2[l]
+                                self.y1y2.append(self.model.add_var(var_type=BINARY))
+                                #y1.append(self.model.add_var(var_type=BINARY))
+                                y1.append(self.session_session_sequenced[s1][s2])
+                                y2.append(self.session_session_sequenced[s2][s1])
 
-                            self.model += self.y1y2[l] <= (y1[l] + y2[l]) <= 1
+                                #self.model += self.y1y2[l] <= self.x_teacher[s1][t1]
+                                #self.model += self.y1y2[l] <= self.x_teacher[s2][t2]
+                                #self.model += self.y1y2[l] >= self.x_teacher[s1][t1]+self.x_teacher[j][t2]-1
+                                #self.model += self.y1y2[l] >= y1[l]
+                                #self.model += self.y1y2[l] >= y2[l]
 
-                            #self.model += self.y1y2[l] <= y1[l]
-                            self.model += self.x_slot[s2] >= self.x_slot[s1]+(1+M)*y1[l]-M
-                            self.model += self.x_slot[s1] >= self.x_slot[s2]+(1+M)*y2[l]-M
+                                #self.model += self.y1y2[l] <= (y1[l] + y2[l])# <= 1
+                                #self.model += (y1[l] + y2[l]) <= 1
+
+                                #self.model += self.y1y2[l] <= y1[l]
+                                #self.model += self.x_slot[s1] >= self.x_slot[s2]+((1+M)*y1[l])-M
+                                #self.model += self.x_slot[s2] >= self.x_slot[s1]+((1+M)*y2[l])-M
+                            else :
+                                self.y1y2.append(self.model.add_var(var_type=BINARY))
+                                y1.append(self.model.add_var(var_type=BINARY))
+                                y2.append(self.model.add_var(var_type=BINARY))
+
+
+                                self.usp.session_session_sequenced[s1][s2] = y1[l]
+                                self.usp.session_session_sequenced[s2][s1] = y2[l]
+
+                                self.model += self.y1y2[l] <= self.x_teacher[s1][t1]
+                                self.model += self.y1y2[l] <= self.x_teacher[s2][t2]
+                                self.model += self.y1y2[l] >= (self.x_teacher[s1][t1]+self.x_teacher[s2][t2]-1)
+                                self.model += self.y1y2[l] >= y1[l]
+                                self.model += self.y1y2[l] >= y2[l]
+
+                                self.model += self.y1y2[l] == (y1[l] + y2[l])
+                                #self.model += (y1[l] + y2[l]) <= 1
+                                p1 = self.usp.session_part[s1]-1
+                                p2 = self.usp.session_part[s2]-1
+
+                                self.model += self.x_slot[s1] >= self.x_slot[s2]+(( self.usp.part_abstract_grid[p2][1] +M)*y1[l])-M
+                                self.model += self.x_slot[s2] >= self.x_slot[s1]+(( self.usp.part_abstract_grid[p1][1] +M)*y2[l])-M
+
+
                             #self.model += xsum(y1[l] *  self.x_teacher[i][k] for k in range(0,2))
                             
 
@@ -188,11 +230,12 @@ class mipContinusVars:
                             l+=1
 
     def constraintBasis(self):
-        #self.cardinal_rooms()
+        self.cardinal_rooms()
         self.cardinal_teachers()
         self.service_teacher()
         #self.disjunctive_groupe()
         self.disjunctive_teacher()
+        self.implicite_sequenced()
         return
         for cons in self.usp.constraints:
             if cons.constraint == "sequenced" :
@@ -245,16 +288,23 @@ class mipContinusVars:
             print('no feasible solution found, lower bound is: {}'.format(self.model.objective_bound))
         if status == OptimizationStatus.OPTIMAL or status == OptimizationStatus.FEASIBLE:
             print('solution:')
-            for v in self.x_slot:
-                if abs(v.x) > 1e-6: # only printing non-zeros
-                    print('{} : {}'.format(v.name, v.x),end=" ")
+            #for v in self.x_slot:
+                #if abs(v.x) > 1e-6: # only printing non-zeros
+                    #print('{} : {}'.format(v.name, v.x),end=" ")
+            #print(sorted([self.x_slot[i].x for i in range(0,len(self.x_slot))]))
             print(sorted([self.x_slot[i].x for i in range(0,len(self.x_slot))]))
             for i in range(0,len(self.x_teacher)):
                 t = [self.x_teacher[i][j].x for j in range(0,len(self.x_teacher[i]))]
+                r = [self.x_room[i][j].x for j in range(0,len(self.x_room[i]))]
                 y = t.index(1.0)
-                print("t = ", self.usp.part_teachers[self.usp.session_part[i]-1][y],end=" ")
-                print(t)
-            print([self.y1y2[i].x for i in range(0,len(self.y1y2))])
+                z = r.index(1.0)
+                t_1 = self.usp.part_teachers[self.usp.session_part[i]-1][y]
+                r_1 = self.usp.part_rooms[self.usp.session_part[i]-1][z]
+                
+                print("session ",i," rank ",self.usp.session_rank[i]," slot ",self.x_slot[i].x," room ",r_1," teacher ",t_1," group ",self.usp.session_group[i])
+                #print("t = ", self.usp.part_teachers[self.usp.session_part[i]-1][y],end=" ")
+                #print(t)
+            #print([self.y1y2[i].x for i in range(0,len(self.y1y2))])
         
     def println(self):
         print([int(self.x_slot[i].x) for i in range(0,len(self.x_slot))])

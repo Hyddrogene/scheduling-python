@@ -119,7 +119,7 @@ class instanceUSP :
         #print(self.grids)
         #print(self.course_parts)
         #print(self.class_groups)
-        #print(self.group_sessions[0])
+        #print(self.group_sessions)
 
     def __createTab(self):
         self.__createClassPart()
@@ -135,6 +135,26 @@ class instanceUSP :
         self.__createRoomParts()
         self.__createStudentGroup()
         self.__createSessionPart()
+        self.__createSessionGroup()
+        self._createSessionSessionSequenced()
+
+    def _createSessionSessionSequenced(self):
+        self.session_session_sequenced = []
+        for i in range(0,self.nr_sessions):
+            tmp = [0 for j in range(0,self.nr_sessions)]
+            self.session_session_sequenced.append(tmp)
+
+
+
+    def __createSessionGroup(self):
+        self.session_group = []
+        for i in range(0,self.nr_sessions):
+            tmp = []
+            for j in range(0,self.nr_groups):
+                if (i+1) in self.group_sessions[j]:
+                    tmp.append(j+1)
+            self.session_group.append(tmp)
+        #print(self.session_group)
 
     def __createSessionPart(self):
         self.session_part = []
