@@ -13,7 +13,7 @@ nr_room : 3
 nr_room_used : 3 
 nr_teacher : 4 
 nr_teacher_used : 2 
-nr_rules : 3 
-nr_flatten_constraint : 7 
-different_occurence_constraint : sameRooms 3, sameTeachers 2, sequenced 2 
-nr_different_constraint : 3 
+nr_rules : 9 
+nr_flatten_constraint : 23 
+different_occurence_constraint : sameRooms 3, sameTeachers 2, sequenced 7, periodic 2, disjunctiveGroup 2, disjunctiveTeacher 4, disjunctiveRoom 3 
+nr_different_constraint : 7 

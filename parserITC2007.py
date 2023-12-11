@@ -86,8 +86,8 @@ class itc2007 :
     def __str__(self):
         return self.name+" nr_courses "+str(self.nr_courses)+" nr_days "+str(self.nr_days)+" min_daily_lectures "+str(self.min_daily_lectures)+" max_daily_lectures "+str(self.max_daily_lectures)
 
-itc = itc2007("/home/etud/Téléchargements/comp05.ectt")
-print(itc)
+#itc = itc2007("/home/etud/Bureau/ITC-2007/ITC-2007-CBCTT/comp05.ectt")
+#print(itc)
 #print(itc.curriculas)
 #print(itc.courses)
 #print(itc.rooms)

@@ -37,41 +37,33 @@ class_part(C,P) :- part_class(P,C).
 
 session_part(S,P) :- session(S),session_class(S,C),class_part(C,P).
 session_slot(S,SL) :- session(S),session_part(S,P),part_slot(P,SL).
-session_teacher(S,T) :- session(S),session_part(S,P),part_teacher(P,T).
-session_room(S,R) :- session(S),session_part(S,P),part_room(P,R).
 %Assign time to S
 
 
 
-%%%%{assigned(S,SL):slots(SL)} = 1 :- session(S).
-%%%%{assigned(S,SL):session_part(S,P),part_slot(P,SL)} = 1 :- session(S).
+%{assigned(S,SL):slots(SL)} = 1 :- session(S).
 
-1{assigned(S,SL):slots(SL)}1 :- session(S).
+{assigned(S,SL):session_part(S,P),part_slot(P,SL)} = 1 :- session(S).
 
-:-not{assigned(S,SL):session(S)}1,session_part(S,P),part_slots(P,SL),slots(SL).
 
-%%%%%%%%%
+
+
 %:- assigned(S1,SL1),assigned(S2,SL2),SL1 != SL2,S1=S2.
 %:- assigned(S,SL),session_part(S,P),not part_slot(P,SL).
 %assigned(S,SL) :- session(S),session_part(S,P),part_slot(P,SL).
 %:- assigned(S,SL),session_part(S,P),not part_slot(P,SL).
 %:- not{assigned(S,SL):session(S)}1,session_part(S,P),part_slots(P,SL),slots(SL).
 %:- assigned(S,SL2),assigned(S,SL1),SL1 != SL2.
-%%%%%%%%%
+
 %
 %
 %Assign T to session
 %1{assigned(S,SL,T):t(T)}1 :- assigned(S,SL),session(S),session_part(S,P),part_teacher(P,T).
-%1{assigned(S,SL,T):t(T)}1 :- assigned(S,SL),session_part(S,P),part_teacher(P,T).
-1{assigned(S,SL,T):session_teacher(S,T)}1 :- assigned(S,SL).
-
 
 %
 %
 %Assign R to session
 %1{assigned(S,SL,T,R):r(R)}1 :- assigned(S,SL,T),session(S),session_part(S,P),part_room(P,R).
-%1{assigned(S,SL,T,R):r(R)}1 :- assigned(S,SL,T),session_part(S,P),part_room(P,R).
-1{assigned(S,SL,T,R):session_room(S,R)}1 :- assigned(S,SL,T).
 
 %
 %
@@ -80,12 +72,12 @@ session_room(S,R) :- session(S),session_part(S,P),part_room(P,R).
 
 %ensure disjunctive teacher
 %:- not {assigned(S,SL) : session(S) } 1, session_part(S,P),part_slot(P,SL).
-:- not {assigned(S,SL,T) : session(S) } 1, session_part(S,P),part_slot(P,SL),part_teacher(P,T).
-:- not {assigned(S,SL,T,R) : session(S) } 1,session_part(S,P),part_slot(P,SL),part_teacher(P,T),part_room(P,R). 
+%:- not {assigned(S,SL,T) : session(S) } 1, session_part(S,P),part_slot(P,SL),part_teacher(P,T).
+%:- not {assigned(S,SL,T,R) : session(S) } 1,session_part(S,P),part_slot(P,SL),part_teacher(P,T),part_room(P,R). 
 %ponct(S1,S2,SL1,SL2)
 
 %%%%% periodic
-:- periodic(S1,S2,N),assigned(S1,SL1),assigned(S2,SL2),SL2 != SL1+N.
+%:- periodic(S1,S2,N),assigned(S1,SL1),assigned(S2,SL2),SL2 != SL1+N.
 %%%%% sequenced
 %:- sequenced(S1,S2),assigned(S1,SL1),session_part(S1,P),part(P,_,N,_,_,_,_),assigned(S2,SL2),SL1+N> SL2.
 
@@ -99,7 +91,7 @@ session_room(S,R) :- session(S),session_part(S,P),part_room(P,R).
 
 %%%%% same_week
 
-%:-same_slot(S1,S2),assigned(S1,SL1),assigned(S2,SL2),SL1 / != SL2.
+:-same_slot(S1,S2),assigned(S1,SL1),assigned(S2,SL2),SL1 / != SL2.
 
 %%%%% same_weekDay
 
@@ -133,13 +125,11 @@ session_room(S,R) :- session(S),session_part(S,P),part_room(P,R).
 
 %%%%% Implicite sequenced session
 
-%assigned(1,480).
+assigned(1,480).
 
 
 %:- periodic(S1,S2,_), not ponct(S1,S2,_,_).
 %#show assigned/2.
-%#show assigned/3.
-#show assigned/4.
-%#show session_slot/2.
+#show session_slot/2.
 %#show ponct/4.
 %#show class_sessions/2.

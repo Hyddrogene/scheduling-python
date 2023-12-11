@@ -119,6 +119,50 @@
                 <selector generator="(class, {1})" filters="course[id='cours-1'],part[label='TP']"/>
                 <constraint name="sequenced" type="hard"/>
                 </rule>
+                <rule>
+                    <selector generator="(class, *)" filters="course[id='cours-1'],part[label='CM']"/>
+                    <constraint name="periodic" type="hard">
+                    <parameters>
+                        <parameter name="value">1</parameter>
+                        <parameter name="unit">week</parameter>
+                    </parameters>
+                </constraint>
+            </rule>
+            <rule>
+                <selector generator="(class, *)" filters="course[id='cours-2'],part[label='CM']"/>
+                <constraint name="periodic" type="hard">
+                <parameters>
+                    <parameter name="value">1</parameter>
+                    <parameter name="unit">week</parameter>
+                </parameters>
+            </constraint>
+        </rule>
+        <rule>
+            <selector generator="(student, *)" filters="" />
+            <constraint name="disjunctiveGroup" type="hard">
+            </constraint>
+        </rule>
+        
+        <!-- conditionnel-->
+        <rule>
+            <selector generator="(lecturer, *)" filters="" />
+            <constraint name="disjunctiveTeacher" type="hard">
+            </constraint>
+        </rule>
+        
+        <!-- conditionnel-->
+        <rule>
+            <selector generator="(room, *)" filters="" />
+            <constraint name="disjunctiveRoom" type="hard">
+            </constraint>
+        </rule>
+        
+        <!-- impliciteSequenced-->
+        <rule>
+            <selector generator="(class, *)" filters="" />
+            <constraint name="sequenced" type="hard">
+            </constraint>
+        </rule>
         </rules>
     <solution>
         <groups>
