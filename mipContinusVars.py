@@ -1,7 +1,6 @@
 from parserUSP import instanceUSP
-import gurobipy as gp
-from gurobipy import GRB
-from mip import Model, xsum, maximize, BINARY, INTEGER, OptimizationStatus
+
+from mip import Model, xsum, maximize, BINARY, INTEGER, OptimizationStatus,GRB,CBC
 
 
 
@@ -9,7 +8,7 @@ class mipContinusVars:
     def __init__(self, instanceUTP, solutionFile):
         self.usp  = instanceUTP
         self.solutionFile = solutionFile
-        self.model        = Model("Scheduling")
+        self.model        = Model("Scheduling",solver_name=GRB)
         #self.initVariables()
         self.initVars()
         self.constraintBasis()
@@ -61,11 +60,20 @@ class mipContinusVars:
             self.model += xsum(self.x_room[s]) == 1
 
     def sequenced(self,constraint):
-        for session1 in constraint.sessions[0]:
-            p = self.usp.session_part[session1]-1
-            for session2 in constraint.sessions[1] :
-                if session1 != session2 :
-                    self.model += (self.x_slot[session1-1] +self.usp.part_abstract_grid[p][2]) <= self.x_slot[session2-1]
+        if len(constraint.sessions) == 2 :
+            for session1 in constraint.sessions[0]:
+                p = self.usp.session_part[session1]-1
+                for session2 in constraint.sessions[1] :
+                    if session1 != session2 :
+                        self.model += (self.x_slot[session1-1] +self.usp.part_abstract_grid[p][2]) <= self.x_slot[session2-1]
+        else :
+            for s1 in range(1,len(constraint.sessions[0])):
+                session1 = constraint.sessions[0][s1]
+                p = self.usp.session_part[session1-1]-1
+                
+                for session2 in constraint.sessions[0] :
+                    if session1 < session2 :
+                        self.model += (self.x_slot[session1-1] +self.usp.part_abstract_grid[p][2]) <= self.x_slot[session2-1]
 
     def implicite_sequenced(self):
         for p in range(0,self.usp.nr_parts):
@@ -83,8 +91,10 @@ class mipContinusVars:
         nr_days = self.usp.nr_days_per_week
         nr_dailySlot = self.usp.grid[2]
         d_week = nr_days * nr_dailySlot
+        print(d_week)
         for i in range(1,len(constraint.sessions[0])):
-            self.model += self.x_slot[constraint.sessions[0][i]-1] + (i*d_week) == self.x_slot[constraint.sessions[0][0]-1]
+            print("(i*d_week)=",(i*d_week))
+            self.model += self.x_slot[constraint.sessions[0][i]-1] - (i*d_week) == self.x_slot[constraint.sessions[0][0]-1]
     def same_slot(sel,constraint):
         for session1 in constraint.sessions[0]:
             for session2 in constraint.sessions[0]:
@@ -217,7 +227,7 @@ class mipContinusVars:
                                 #y1.append(self.model.add_var(var_type=BINARY))
                                 y1.append(self.usp.session_session_sequenced[s1][s2])
                                 y2.append(self.usp.session_session_sequenced[s2][s1])
-
+                            l+1
                             #self.model += xsum(y1[l] *  self.x_teacher[i][k] for k in range(0,2))
                             #z.append(self.model.add_var(var_type=BINARY))
                             #self.model += -M*(1-y1[l])<= self.x_slot[i] <= 1+M*(1-y1[l])
@@ -228,7 +238,6 @@ class mipContinusVars:
                             #self.model += y[l] == 2-self.x_teacher[i][t]-self.x_teacher[j][t]
                             #self.model += (self.x_slot[self.usp.teacher_sessions[t][i]-1]-self.x_slot[self.usp.teacher_sessions[t][j]-1]) <= -1 + 3000*y[l]
                             #self.model += self.x_slot[self.usp.teacher_sessions[t][i]-1] >= self.x_slot[self.usp.teacher_sessions[t][j]-1]+1 -3000*(1-y[l]) 
-                            l+=1
 
     def disjunctive_rooms(self):
         nr_sessions = self.usp.nr_sessions
@@ -291,7 +300,7 @@ class mipContinusVars:
         self.service_teacher()
         self.implicite_sequenced()
         self.disjunctive_groupe()
-        self.disjunctive_teacher()
+        self.disjunctive_teacher() 
         self.disjunctive_rooms()
         for cons in self.usp.constraints:
             if cons.constraint == "sequenced" :
@@ -376,6 +385,7 @@ class mipContinusVars:
 
 filename = "/home/etud/timetabling/src/ExperimentGenerator/tmp/experiment_18-09-23/instanceUSP_generated_180923153321_realistic_extension_v2.json"
 filename = "/home/etud/minizincPython/example_extension_v2.json"
+filename = "/home/etud/timetabling/tools/tools_php/tmp/experiment_07-12-23/instanceUSP_generated_071223111836_realistic_example1.json"
 usp = instanceUSP(filename)
 mip = mipContinusVars(usp,"solution.xml")
 mip.solver()

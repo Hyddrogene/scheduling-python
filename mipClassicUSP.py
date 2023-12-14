@@ -7,7 +7,7 @@ class mipClassicVars:
     def __init__(self, instanceUTP, solutionFile):
         self.usp  = instanceUTP
         self.solutionFile = solutionFile
-        self.model        = Model("Scheduling")
+        self.model        = Model("Scheduling",solver_name=GRB)
         #self.initVariables()
         self.initVars()
         self.constraintBasis()
