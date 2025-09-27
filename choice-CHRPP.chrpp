@@ -1,0 +1,54 @@
+#include <iostream>
+#include <chrpp.hh>
+#include <options.hpp>
+
+
+
+template <typename T>
+inline void print(T& pb)
+{
+	auto it = pb.get_queen_store().begin();
+	while (!it.at_end())
+	{
+		std::cout << std::get<2>(*it) << " ";
+		++it;
+	}
+}
+
+
+<CHR name="NQueens" parameters="int nb_queens">
+		<chr_constraint> queen(+int,+int), next_queen(+int), solve()
+
+		solve() <=> next_queen(0);;
+
+		row  @ queen(_,R), queen(_,R)     <=> failure();;
+		diag @ queen(C1,R1), queen(C2,R2) <=> abs(C1-C2) == abs(R1-R2) | failure();;
+
+		label_queen1 @ next_queen(C) <=> *C == nb_queens | print(*this), success();;
+		label_queen2 @ next_queen(C) <=> exists(r, 0, nb_queens - 1, (queen(C,r), next_queen(C+1)) ) ;;
+</CHR>
+
+
+int main(int argc, const char *argv[])
+{
+	TRACE( chr::Log::register_flags(chr::Log::ALL); )
+	Options options = parse_options(argc, argv, {
+			{ "", "", true, "Number of queens"}
+	});
+
+	Options_values values;
+	if (has_option("", options, values))
+	{
+		int nb_queens = values[0].i();
+		auto space = NQueens::create(nb_queens);
+		std::cout << "CHR N-Queens(" << nb_queens << "): ";
+		CHR_RUN( space->solve() );
+		if (chr::failed())
+				std::cout << "Failed" << std::endl;
+		chr::Statistics::print(std::cout);
+	} else {
+		std::cout << "Missing parameter" << std::endl << std::endl;
+		std::cout << options.m_help_message;
+	}
+    return 0;
+}

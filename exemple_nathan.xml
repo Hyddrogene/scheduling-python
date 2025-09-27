@@ -1,0 +1,42 @@
+<instance format="XCSP3" type="CSP">
+  <variables>
+    <var id="Leslie"> 1..5 </var>
+    <var id="Holly"> 1..5 </var>
+    <var id="Andrea"> 1..5 </var>
+    <var id="Julie"> 1..5 </var>
+    <var id="Victoria"> 1..5 </var>
+    <var id="Wilson"> 1..5 </var>
+    <var id="Miller"> 1..5 </var>
+    <var id="Davis"> 1..5 </var>
+    <var id="Brown"> 1..5 </var>
+    <var id="Lopes"> 1..5 </var>
+    <var id="Red"> 1..5 </var>
+    <var id="Blue"> 1..5 </var>
+    <var id="White"> 1..5 </var>
+    <var id="Yellow"> 1..5 </var>
+    <var id="Green"> 1..5 </var>
+    <var id="Argentine"> 1..5 </var>
+    <var id="Italian"> 1..5 </var>
+    <var id="Chilean"> 1..5 </var>
+    <var id="Australian"> 1..5 </var>
+    <var id="Bordeaux"> 1..5 </var>
+    <var id="Farfalle"> 1..5 </var>
+    <var id="Lasagne"> 1..5 </var>
+    <var id="Penne"> 1..5 </var>
+    <var id="Spaghetti"> 1..5 </var>
+    <var id="Ravioli"> 1..5 </var>
+    <var id="y30"> 1..5 </var>
+    <var id="y35"> 1..5 </var>
+    <var id="y40"> 1..5 </var>
+    <var id="y45"> 1..5 </var>
+    <var id="y50"> 1..5 </var>
+  </variables>
+  <constraints>
+    <allDifferent> Leslie Holly Andrea Julie Victoria </allDifferent>
+    <allDifferent> Wilson Miller Davis Brown Lopes </allDifferent>
+    <allDifferent> Red Blue White Yellow Green </allDifferent>
+    <allDifferent> Argentine Italian Chilean Australian Bordeaux </allDifferent>
+    <allDifferent> Farfalle Lasagne Penne Spaghetti Ravioli </allDifferent>
+    <allDifferent> y30 y35 y40 y45 y50 </allDifferent>
+  </constraints>
+</instance>

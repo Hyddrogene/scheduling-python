@@ -190,7 +190,7 @@ class mipContinusVars:
                         s2 = self.usp.teacher_sessions[t-1][j]-1
                         t2 = self.usp.getPositionTeacher(s2, t)
                         if s1!= s2 :
-                            if self.usp.session_session_sequenced[s1][s2] == 0 :
+                            if  self.usp.session_session_sequenced[s1][s2] == 0 and self.usp.session_session_sequenced[s2][s1] == 0 :
                                 #print("==0 s1 = ",s1,"s2 = ",s2)
 
                                 self.y1y2.append(self.model.add_var(var_type=BINARY))
@@ -227,7 +227,7 @@ class mipContinusVars:
                                 #y1.append(self.model.add_var(var_type=BINARY))
                                 y1.append(self.usp.session_session_sequenced[s1][s2])
                                 y2.append(self.usp.session_session_sequenced[s2][s1])
-                            l+1
+                            l+=1
                             #self.model += xsum(y1[l] *  self.x_teacher[i][k] for k in range(0,2))
                             #z.append(self.model.add_var(var_type=BINARY))
                             #self.model += -M*(1-y1[l])<= self.x_slot[i] <= 1+M*(1-y1[l])

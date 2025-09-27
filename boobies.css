@@ -1,0 +1,32 @@
+.circle-container {
+  position: relative;
+}
+
+.circle {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: black;
+  position: absolute;
+}
+
+.circle.left {
+  top: 50%;
+  left: calc(50% - var(--distance) - 25px); /* Modifier la distance ici */
+}
+
+.circle.right {
+  top: 50%;
+  left: calc(50% + var(--distance) - 25px); /* Modifier la distance ici */
+}
+
+.middle-circle {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: black;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

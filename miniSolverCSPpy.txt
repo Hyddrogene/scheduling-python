@@ -1,0 +1,64 @@
+Pour améliorer le mini-solver CSP que vous avez défini en Python en y ajoutant de la propagation de contraintes, nous devons introduire des mécanismes qui réduisent les domaines des variables en fonction des contraintes avant d'entrer dans la phase de backtracking. La propagation des contraintes aide à réduire l'espace de recherche et peut grandement améliorer l'efficacité de l'algorithme, en particulier pour des problèmes plus complexes ou des domaines plus grands.
+
+### Ajouter la Propagation des Contraintes
+
+Un des mécanismes de propagation des contraintes les plus courants est l'algorithme de propagation d'arc-consistance AC-3, mais pour simplifier, nous pouvons implémenter une vérification plus basique qui est souvent appelée "forward checking". Le forward checking élimine les valeurs du domaine qui sont incompatibles avec l'assignation courante.
+
+Voici comment nous pouvons modifier votre code pour inclure la propagation de contraintes :
+
+1. **Mise à jour de la classe `Variable` pour supporter la suppression des valeurs de domaine** :
+
+```python
+class Variable:
+    def __init__(self, name, domain):
+        self.name = name
+        self.domain = list(domain)  # Assurez-vous que le domaine est une liste modifiable.
+
+    def reduce_domain(self, value):
+        if value in self.domain:
+            self.domain.remove(value)
+        return self.domain
+```
+
+2. **Intégration du Forward Checking dans la fonction de backtracking** :
+
+```python
+def forward_check(variable, value, constraints, domains):
+    for constraint in constraints:
+        if variable in constraint.variables:
+            other_vars = [v for v in constraint.variables if v != variable]
+            for other_var in other_vars:
+                for other_value in other_var.domain[:]:  # Copie pour itérer
+                    if not constraint.is_satisfied({variable.name: value, other_var.name: other_value}):
+                        other_var.reduce_domain(other_value)
+    return domains
+
+def backtrack(assignment, variables, constraints):
+    if len(assignment) == len(variables):
+        return assignment
+
+    unassigned = [v for v in variables if v.name not in assignment]
+    first = unassigned[0]
+
+    for value in first.domain[:]:  # Copie pour itérer car le domaine peut changer
+        local_assignment = assignment.copy()
+        local_assignment[first.name] = value
+        local_domains = forward_check(first, value, constraints, variables)  # Propagation après cette assignation
+
+        if all(len(var.domain) > 0 for var in variables):  # Vérifie que tous les domaines restent valides
+            if all(constraint.is_satisfied(local_assignment) for constraint in constraints):
+                result = backtrack(local_assignment, local_domains, constraints)
+                if result is not None:
+                    return result
+
+    return None
+```
+
+### Explication
+
+- **Mise à jour du domaine** : Chaque fois qu'une valeur est assignée à une variable, la fonction `forward_check` examine toutes les contraintes affectant cette variable pour voir si d'autres valeurs dans les domaines des autres variables doivent être éliminées pour maintenir la cohérence.
+- **Vérification de la validité du domaine** : Avant de continuer le backtracking, on vérifie si les domaines de toutes les variables contiennent toujours au moins une valeur viable. Si un domaine est vide, cela signifie qu'une impasse a été atteinte, et l'algorithme remonte.
+
+### Conclusion
+
+L'intégration de la propagation de contraintes comme le forward checking dans votre solver CSP peut améliorer significativement sa performance en réduisant l'espace de recherche avant que les branches inutiles soient explorées. Cela rend l'algorithme plus efficace et capable de traiter des problèmes plus grands avec des contraintes plus complexes.

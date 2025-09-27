@@ -1,0 +1,53 @@
+Pour ajouter de la propagation de contraintes dans votre programme Lisp CSP, nous allons utiliser une technique simple appelée *forward checking*. Cette technique consiste à réduire le domaine des variables non assignées chaque fois qu'une variable est assignée, en éliminant les valeurs qui ne satisferaient pas les contraintes compte tenu de l'assignation courante.
+
+### Ajout de la Propagation de Contraintes
+
+Pour implémenter le forward checking, nous devons modifier légèrement la structure `cspvariable` pour pouvoir manipuler dynamiquement les domaines des variables et mettre en place une fonction pour gérer la réduction du domaine.
+
+#### Modification de la Structure des Variables
+
+Premièrement, nous allons ajouter une fonction pour réduire le domaine des variables basée sur une valeur assignée et les contraintes actuelles :
+
+```lisp
+;; Ajout d'une fonction pour réduire le domaine
+(defun reduce-domain (variable constraints assignment)
+  (let ((new-domain (remove-if-not 
+                      (lambda (value) 
+                        (let ((new-assignment (cons (cons (cspvariable-name variable) value) assignment)))
+                          (every (lambda (constraint)
+                                   (if (member (cspvariable-name variable) (constraint-vars constraint))
+                                       (check-constraint constraint new-assignment)
+                                       t))
+                                 constraints)))
+                      (cspvariable-domain variable))))
+    (setf (cspvariable-domain variable) new-domain)))
+```
+
+#### Intégration du Forward Checking dans le Backtracking
+
+Ensuite, nous devons intégrer cette réduction de domaine juste après chaque assignation de valeur à une variable dans la fonction de backtracking :
+
+```lisp
+(defun csp-backtracking (assignment variables constraints)
+  (if (null variables)
+      (return-from csp-backtracking assignment)
+      (let* ((var (first variables))
+             (remaining-vars (rest variables)))
+        (dolist (value (copy-list (cspvariable-domain var))) ;; Utilisation de copy-list pour éviter la modification pendant l'itération
+          (let ((new-assignment (cons (cons (cspvariable-name var) value) assignment)))
+            (when (every #'(lambda (c) (check-constraint c new-assignment)) constraints)
+              (reduce-domain var constraints new-assignment) ;; Réduction du domaine avant de passer à la suite
+              (let ((result (csp-backtracking new-assignment remaining-vars constraints)))
+                (when result
+                  (return-from csp-backtracking result)))))))))
+```
+
+Dans cet extrait, `reduce-domain` est appelée chaque fois qu'une valeur est assignée à une variable pour mettre à jour le domaine de toutes les variables restantes en fonction de cette nouvelle assignation et des contraintes du problème.
+
+#### Exécution et Test du CSP
+
+Enfin, testez votre programme modifié pour voir comment il gère un problème CSP avec propagation de contraintes. Le programme devrait maintenant être plus efficace, réduisant les domaines des variables à mesure que les contraintes sont appliquées, ce qui peut potentiellement diminuer le nombre de backtracks nécessaires pour trouver une solution ou déterminer qu'aucune solution n'est possible.
+
+### Conclusion
+
+L'ajout de propagation de contraintes, telle que le forward checking, à un solver CSP en Lisp augmente l'efficacité de la résolution en pré-éliminant les choix de valeurs qui conduiraient à des violations de contraintes, réduisant ainsi l'espace de recherche. Cette approche est particulièrement utile pour des CSP avec un grand nombre de variables et de contraintes.

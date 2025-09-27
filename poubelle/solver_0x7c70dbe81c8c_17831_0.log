@@ -1,0 +1,7 @@
+c Choco e747e1e
+v <instantiation id='sol1' type='solution' ><list>Leslie Holly Andrea Julie Victoria Wilson Miller Davis Brown Lopes Red Blue White Yellow Green Argentine Italian Chilean Australian Bordeaux Farfalle Lasagne Penne Spaghetti Ravioli y30 y35 y40 y45 y50 </list><values>2 4 3 1 5 4 2 1 5 3 1 3 2 5 4 1 5 4 3 2 5 4 1 3 2 3 1 5 2 4 </values></instantiation>
+
+s SATISFIABLE
+v <instantiation id='sol1' type='solution' ><list>Leslie Holly Andrea Julie Victoria Wilson Miller Davis Brown Lopes Red Blue White Yellow Green Argentine Italian Chilean Australian Bordeaux Farfalle Lasagne Penne Spaghetti Ravioli y30 y35 y40 y45 y50 </list><values>2 4 3 1 5 4 2 1 5 3 1 3 2 5 4 1 5 4 3 2 5 4 1 3 2 3 1 5 2 4 </values></instantiation>
+d FOUND SOLUTIONS 1
+

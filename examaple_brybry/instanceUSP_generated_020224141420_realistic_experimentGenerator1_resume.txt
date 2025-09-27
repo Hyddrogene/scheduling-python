@@ -1,0 +1,14 @@
+nrStudents = 40, nrGroupes = 2
+nrWeeks = 12, nrDays = 5, nrSlots = 1440
+nrParts = 10, nrCourses = 4
+nrSessions = 178, nrClasses =17
+ruleHard = 18, ruleSoft = 0, nrRules = 18
+nrRooms = 5, ratio_room_class = 0.29411764705882354, ratio_room_sessions = 0.028089887640449437
+nrStudentsPerClass = 2.3529411764705883, moyenne_capacity_room = 59.6, Student/capacity = 0.1342281879194631
+nrClassesPerStudent = 10.0, timeClasseMeanCalc = 60.0, ratio_room_sessions = 0.028089887640449437
+gdcClass = 0.6691176470588235, gdcAllNodes = 0.11822660098522167, sumClassesStudentsTimes = 150.66666666666666
+gdcClassRoom = 0.051470588235294115, gdcClassTeachers = 0.15441176470588236, gdcClassGroups = 0.6397058823529411
+MaxMeanRoomTimes = 36.8, roomCountUses = 1.0
+CountNoUseRoom = 0, courseGroupsCountSum = 5.0,  sumGrpstudents = 100.0
+MeanEcartTypeServiceTeacher = 0.4, minServEcartType = 0.0, maxServEcartType = 2.0
+formations : L1-f0 Effectif : 40 

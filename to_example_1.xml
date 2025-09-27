@@ -1,0 +1,140 @@
+<?xml version="1.0"?>
+<timetabling xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="usp_timetabling_v1_2.xsd" name="ua_timtetabling_autogeneration" nrWeeks="24" nrDaysPerWeek="5" nrSlotsPerDay="1440">
+
+<rooms>
+<room id="room1" capacity="20" label="room,Salle-info"/>
+<room id="room2" capacity="21" label="room,Salle-info"/>
+<room id="room3" capacity="29" label="room,Salle-info"/>
+</rooms>
+
+<teachers>
+<teacher id="teacher1" label="teacher,D10"/>
+<teacher id="teacher2" label="teacher,D2"/>
+<teacher id="teacher3" label="teacher,D4"/>
+<teacher id="teacher4" label="teacher,D11"/>
+</teachers>
+
+<courses>
+    <course id="cours-1" label="cours">
+        <part id="cours-1-pCM" nrSessions="10" label="CM">
+        <classes maxHeadCount="200">
+        <class id="cours-1-pCM-c1" label="CM"/>
+        </classes>
+        <allowedSlots sessionLength="180">
+          <dailySlots>480,570,660,750,840,930,1020,1110</dailySlots>
+          <days>1,2,3,4,5</days>
+          <weeks>1,2,3,4,5,6</weeks>
+        </allowedSlots>
+        <allowedRooms sessionRooms="single">
+          <room refId="room1"/>
+          <room refId="room2"/>
+        </allowedRooms>
+        <allowedTeachers sessionTeachers="1">
+        <teacher refId="teacher1" nrSessions="5"/>
+        <teacher refId="teacher2" nrSessions="5"/>
+        </allowedTeachers>
+            </part>
+        <part id="cours-1-pTP" nrSessions="10" label="TP">
+        <classes maxHeadCount="20">
+        <class id="cours-1-pTP-c1" parent="cours-1-pCM-c1" label="TP,1"/>
+        <class id="cours-1-pTP-c2" parent="cours-1-pCM-c1" label="TP,2"/>
+        </classes>
+        <allowedSlots sessionLength="180">
+          <dailySlots>480,570,660,750,840,930,1020,1110</dailySlots>
+          <days>1,2,3,4,5</days>
+          <weeks>1,2,3,4,5,6</weeks>
+        </allowedSlots>
+        <allowedRooms sessionRooms="single">
+          <room refId="room1"/>
+          <room refId="room2"/>
+        </allowedRooms>
+        <allowedTeachers sessionTeachers="1">
+        <teacher refId="teacher1" nrSessions="10"/>
+        <teacher refId="teacher2" nrSessions="10"/>
+        </allowedTeachers>
+            </part>
+        </course>
+        <course id="cours-2" label="D10,M1">
+        <part id="cours-2-pCM" nrSessions="6" label="CM">
+        <classes maxHeadCount="200">
+        <class id="cours-2-pCM-c1" label="CM"/>
+        </classes>
+        <allowedSlots sessionLength="240">
+          <dailySlots>480,750</dailySlots>
+          <days>1,2,3,4,5</days>
+          <weeks>1,2,3,4,5,6</weeks>
+        </allowedSlots>
+        <allowedRooms sessionRooms="single">
+          <room refId="room2"/>
+          <room refId="room3"/>
+        </allowedRooms>
+        <allowedTeachers sessionTeachers="1">
+        <teacher refId="teacher1" nrSessions="3"/>
+        <teacher refId="teacher2" nrSessions="3"/>
+        </allowedTeachers>
+            </part>
+        <part id="cours-2-pTD" nrSessions="12" label="TD">
+        <classes maxHeadCount="40">
+        <class id="cours-2-pTD-c1" parent="cours-2-pCM-c1" label="TD,1"/>
+        </classes>
+        <allowedSlots sessionLength="240">
+          <dailySlots>480,750</dailySlots>
+          <days>1,2,3,4,5</days>
+          <weeks>1,2,3,4,5,6</weeks>
+        </allowedSlots>
+        <allowedRooms sessionRooms="single">
+          <room refId="room1"/>
+        </allowedRooms>
+        <allowedTeachers sessionTeachers="1">
+        <teacher refId="teacher1" nrSessions="12"/>
+        </allowedTeachers>
+            </part>
+        </course>
+    </courses>
+        <students>
+        <student id="S1" label="Student564">
+            <courses>
+            <course refId="cours-1"/>
+            <course refId="cours-2"/>
+            </courses>
+            </student>
+            <student id="S2" label="Student565">
+            <courses>
+                <course refId="cours-1"/>
+                <course refId="cours-2"/>
+            </courses>
+            </student>
+        </students>
+        <rules>
+            <rule>
+                <selector generator="(class, *)" filters="course[id='cours-1']"/>
+                <constraint name="sameSlot" type="hard"/>
+            </rule>
+        </rules>
+    <solution>
+        <groups>
+            <group id="G1">
+                <students>
+                    <student refId="S1"/>
+                </students>    
+                <classes>
+                    <class refId="cours-1-pCM-c1"/>
+                    <class refId="cours-1-pTP-c1"/>
+                    <class refId="cours-2-pCM-c1"/>
+                    <class refId="cours-2-pTD-c1"/>
+                </classes>
+            </group>  
+            <group id="G2">
+                <students>
+                    <student refId="S2"/>
+                </students>    
+                <classes>
+                    <class refId="cours-1-pCM-c1"/>
+                    <class refId="cours-1-pTP-c2"/>
+                    <class refId="cours-2-pCM-c1"/>
+                    <class refId="cours-2-pTD-c1"/>
+                </classes>
+            </group>  
+        </groups>
+        </solution>
+    </timetabling> 

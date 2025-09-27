@@ -1,0 +1,58 @@
+<html>
+
+
+<style>
+
+.item {
+background-color: green;
+}
+
+.item:nth-child(2) {
+  background-color: blue;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+}
+
+.grid-item {
+  grid-column: span 2; /* This item spans two columns */
+}
+
+.item || .item:nth-child(2) {
+  background-color: yellow;
+}
+
+
+</style>
+<body>
+<div class="grid-container">
+  <div class="item">1</div>
+  <div class="item">2</div>
+  <div class="item">3</div>
+  <div class="item">4</div>
+  <div class="item">5</div>
+  <div class="item">6</div>
+</div>
+
+<table class="grid-container">
+  <tr>
+    <td class="item">A1</td>
+    <td class="item">B1</td>
+    <td class="item">C1</td>
+  </tr>
+  <tr>
+    <td class="item">A2</td>
+    <td class="item">B2</td>
+    <td class="item">C2</td>
+  </tr>
+  <tr>
+    <td class="item">A3</td>
+    <td class="item">B3</td>
+    <td class="item">C3</td>
+  </tr>
+</table>
+
+</body>
+</html>

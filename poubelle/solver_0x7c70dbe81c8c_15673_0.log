@@ -1,0 +1,55 @@
+
+[93mACE (AbsCon Essence)[0m v2.1 
+
+  [94minstance[0m
+    name:exemple_nathan
+
+  Loading variables...
+
+  Loading constraints...
+
+  [94mdomains[0m
+    types:1  values:25  sizes:[5:5]
+  [94mvariables[0m
+    count:5  arrays:0  degrees:[1:5]
+  [94mconstraints[0m
+    count:1  specific:1  arities:[5:1]
+    distribution:[AllDifferentComplete:1]
+    wck:0.10  cpu:0.496  mem:8M925
+
+  Building solver... 
+
+  [94msolver[0m
+    guaranteedAC:true
+    wck:0.11  cpu:0.512  mem:10M643
+
+  [94mpreprocessing[0m
+    values:25  unsat:false
+    wck:0.0  cpu:0.512  mem:10M643
+
+    run:0  dpts:-1..4  effs:4  wck:0.00  sols:1
+
+  [94mglobal[0m
+    effs:4
+    stop:REACHED_GOAL  sols:1  sol1Cpu:0.513
+    wck:0.12  cpu:0.515  mem:11M22
+
+
+  Solution 1 in JSON format:
+   {
+    Leslie: 1,
+    Holly: 2,
+    Andrea: 3,
+    Julie: 4,
+    Victoria: 5
+   }
+
+[92ms SATISFIABLE[0m
+[92m
+v[0m <instantiation id='sol1' type='solution'> <list> Leslie Holly Andrea Julie Victoria </list> <values> 1 2 3 4 5 </values> </instantiation>
+[92m
+d WRONG DECISIONS[0m 0
+[92md FOUND SOLUTIONS[0m 1
+[91md INCOMPLETE EXPLORATION[0m
+
+c real time : 0.518

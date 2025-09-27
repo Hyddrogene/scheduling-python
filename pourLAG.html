@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Planificateur de Cours</title>
+    <link rel="stylesheet" href="pourLAG.css">
+</head>
+<body>
+    <div class="container">
+        <div class="form-panel">
+            <h2>Planification de cours</h2>
+            <form id="courseForm">
+                <label for="courseCount">Nombre de cours:</label>
+                <input type="number" id="courseCount" name="courseCount" required>
+
+                <label for="modalities">Modalités pédagogiques:</label>
+                <input type="text" id="modalities" name="modalities" required>
+
+                <label for="teacherCount">Nombre d'enseignants:</label>
+                <input type="number" id="teacherCount" name="teacherCount" required>
+
+                <label for="roomCount">Nombre de salles:</label>
+                <input type="number" id="roomCount" name="roomCount" required>
+
+                <button type="button" onclick="generateXML()">Générer XML</button>
+            </form>
+        </div>
+        <div class="xml-panel">
+            <h2>XML Généré</h2>
+            <pre id="xmlOutput"></pre>
+        </div>
+
+        <div class="course-visualization">
+            <h2>Visualisation des Cours</h2>
+            <div id="courseBoxes" class="box-container"></div>
+        </div>
+        
+    </div>
+
+    
+
+    <script>
+       /* function generateXML() {
+            var courseCount = document.getElementById('courseCount').value;
+            var modalities = document.getElementById('modalities').value;
+            var teacherCount = document.getElementById('teacherCount').value;
+            var roomCount = document.getElementById('roomCount').value;
+        
+            var xml = `<courses>
+                <count>${courseCount}</count>
+                <modalities>${modalities}</modalities>
+                <teachers>${teacherCount}</teachers>
+                <rooms>${roomCount}</rooms>
+            </courses>`;
+        
+            document.getElementById('xmlOutput').textContent = xml;
+            displayCourseBoxes(courseCount, modalities);
+        }
+        
+        function displayCourseBoxes(count, modalities) {
+            const container = document.getElementById('courseBoxes');
+            container.innerHTML = ''; // Clear previous boxes
+        
+            for (let i = 1; i <= count; i++) {
+                const box = document.createElement('div');
+                box.className = 'course-box';
+                box.innerHTML = `<div class='course-title'>Cours ${i}</div>
+                                 <div class='course-info'>Modalités: ${modalities}</div>
+                                 <div class='course-info' id='teacher-${i}'>Enseignant: Non assigné</div>`;
+                box.onclick = function() { assignTeacherToCourse(i); };
+                container.appendChild(box);
+            }
+        }*/
+        /*
+        function assignTeacherToCourse(courseId) {
+            const teacherCount = document.getElementById('teacherCount').value;
+            const teacherId = prompt(`Assign an teacher to Course ${courseId} (Enter ID 1 to ${teacherCount}):`);
+            const teacherInfo = document.getElementById(`teacher-${courseId}`);
+            teacherInfo.textContent = `Enseignant: ID ${teacherId}`;
+        }
+*/
+/*
+        function createModalitiesDropdown(modalities, courseId) {
+    let dropdownHtml = `<select onchange="updateModalities(this, ${courseId})">`;
+    modalities.forEach(mod => {
+        dropdownHtml += `<option value="${mod.trim()}">${mod.trim()}</option>`;
+    });
+    dropdownHtml += `</select>`;
+    return `<div class='course-info'>Modalités: ${dropdownHtml}</div>`;
+}
+
+function updateModalities(select, courseId) {
+    console.log(`Modalité pour le cours ${courseId} mise à jour: ${select.value}`);
+}
+
+function assignTeacherToCourse(courseId) {
+    const teacherCount = document.getElementById('teacherCount').value;
+    const teacherId = prompt(`Assign an teacher to Course ${courseId} (Enter ID 1 to ${teacherCount}):`);
+    const teacherInfo = document.getElementById(`teacher-${courseId}`);
+    teacherInfo.textContent = `Enseignant: ID ${teacherId}`;
+}*/
+        </script>
+        
+
+        <script>/*
+            document.addEventListener('DOMContentLoaded', function() {
+                var draggedItem = null; // Stocke l'élément en cours de déplacement
+            
+                // Ajoute des écouteurs d'événements pour le drag and drop sur tous les éléments de cours
+                function addDragAndDropHandlers(elem) {
+                    elem.addEventListener('dragstart', function(e) {
+                        draggedItem = this; // Sauvegarde l'élément en train d'être déplacé
+                        e.dataTransfer.effectAllowed = 'move';
+                    }, false);
+            
+                    elem.addEventListener('dragover', function(e) {
+                        e.preventDefault(); // Nécessaire pour permettre le drop
+                    }, false);
+            
+                    elem.addEventListener('drop', function(e) {
+                        e.preventDefault(); // Empêche l'action par défaut
+                        if (this !== draggedItem) {
+                            var allBoxes = document.querySelectorAll('.course-box');
+                            var thisPos = Array.from(allBoxes).indexOf(this);
+                            var draggedPos = Array.from(allBoxes).indexOf(draggedItem);
+                            if (thisPos < draggedPos) {
+                                this.parentNode.insertBefore(draggedItem, this);
+                            } else {
+                                this.parentNode.insertBefore(draggedItem, this.nextSibling);
+                            }
+                        }
+                    }, false);
+                }
+            
+                // Récupère tous les éléments de boîte de cours et applique les gestionnaires
+                var boxes = document.querySelectorAll('.course-box');
+                boxes.forEach(addDragAndDropHandlers);
+            });
+            
+            function displayCourseBoxes(count, modalities) {
+                const container = document.getElementById('courseBoxes');
+                container.innerHTML = ''; // Clear previous boxes
+            
+                for (let i = 1; i <= count; i++) {
+                    const box = document.createElement('div');
+                    box.className = 'course-box';
+                    box.setAttribute('draggable', 'true');
+                    box.innerHTML = `<div class='course-title'>Cours ${i}</div>
+                                     ${createModalitiesDropdown(modalities, i)}
+                                     <div class='course-info' id='teacher-${i}'>Enseignant: Non assigné</div>`;
+                    container.appendChild(box);
+                }
+            
+                var boxes = document.querySelectorAll('.course-box');
+                boxes.forEach(addDragAndDropHandlers);
+            }*/
+            </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Génération initiale des boîtes de cours lors du chargement de la page
+        // Cela peut être appelé ici si les valeurs initiales sont connues ou stockées localement
+        // generateXML(); // Uncomment if initial values are known and should be loaded on start
+    
+        // Ajoute des écouteurs d'événements pour le drag and drop sur tous les éléments de cours
+        var boxes = document.querySelectorAll('.course-box');
+        boxes.forEach(addDragAndDropHandlers);
+    });
+    
+    function generateXML() {
+        var courseCount = document.getElementById('courseCount').value;
+        var modalities = document.getElementById('modalities').value.split(','); // Assumant que les modalités sont séparées par des virgules
+        var teacherCount = document.getElementById('teacherCount').value;
+        var roomCount = document.getElementById('roomCount').value;
+    
+        var xml = `<courses>
+            <count>${courseCount}</count>
+            <modalities>${modalities.join(', ')}</modalities>
+            <teachers>${teacherCount}</teachers>
+            <rooms>${roomCount}</rooms>
+        </courses>`;
+    
+        document.getElementById('xmlOutput').textContent = xml;
+        displayCourseBoxes(courseCount, modalities);
+    }
+    
+    function displayCourseBoxes(count, modalities) {
+        const container = document.getElementById('courseBoxes');
+        container.innerHTML = ''; // Clear previous boxes
+    
+        for (let i = 1; i <= count; i++) {
+            const box = document.createElement('div');
+            box.className = 'course-box';
+            box.setAttribute('draggable', 'true');
+            box.innerHTML = `<div class='course-title'>Cours ${i}</div>
+                             ${createModalitiesDropdown(modalities, i)}
+                             <div class='course-info' id='teacher-${i}'>Enseignant: Non assigné</div>`;
+            container.appendChild(box);
+        }
+    
+        var boxes = document.querySelectorAll('.course-box');
+        boxes.forEach(addDragAndDropHandlers);
+    }
+    
+    function createModalitiesDropdown(modalities, courseId) {
+        let dropdownHtml = `<select onchange="updateModalities(this, ${courseId})">`;
+        modalities.forEach(mod => {
+            dropdownHtml += `<option value="${mod.trim()}">${mod.trim()}</option>`;
+        });
+        dropdownHtml += `</select>`;
+        return `<div class='course-info'>Modalités: ${dropdownHtml}</div>`;
+    }
+    
+    function updateModalities(select, courseId) {
+        console.log(`Modalité pour le cours ${courseId} mise à jour: ${select.value}`);
+    }
+    
+    function assignTeacherToCourse(courseId) {
+        const teacherCount = document.getElementById('teacherCount').value;
+        const teacherId = prompt(`Assign an teacher to Course ${courseId} (Enter ID 1 to ${teacherCount}):`);
+        const teacherInfo = document.getElementById(`teacher-${courseId}`);
+        teacherInfo.textContent = `Enseignant: ID ${teacherId}`;
+    }
+    
+    function addDragAndDropHandlers(elem) {
+        elem.addEventListener('dragstart', function(e) {
+            e.dataTransfer.setData('text/plain', null); // Nécessaire pour Firefox
+            draggedItem = this; // Sauvegarde l'élément en train d'être déplacé
+            e.dataTransfer.effectAllowed = 'move';
+        }, false);
+    
+        elem.addEventListener('dragover', function(e) {
+            e.preventDefault(); // Nécessaire pour permettre le drop
+        }, false);
+    
+        elem.addEventListener('drop', function(e) {
+            e.preventDefault(); // Empêche l'action par défaut
+            if (this !== draggedItem) {
+                var allBoxes = document.querySelectorAll('.course-box');
+                var thisPos = Array.from(allBoxes).indexOf(this);
+                var draggedPos = Array.from(allBoxes).indexOf(draggedItem);
+                if (thisPos < draggedPos) {
+                    this.parentNode.insertBefore(draggedItem, this);
+                } else {
+                    this.parentNode.insertBefore(draggedItem, this.nextSibling);
+                }
+            }
+        }, false);
+    }
+    </script>
+    
+            
+    
+        
+</body>
+</html>

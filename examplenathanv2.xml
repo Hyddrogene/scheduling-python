@@ -1,0 +1,244 @@
+<instance format="XCSP3" type="CSP">
+  <variables>
+    <array id="Andrew" note="Andrew [processors , HD , monitor , prices]" size="[4]"> 0..4 </array>
+    <array id="PCA" size="[4]"> 0..4 </array>
+    <array id="PCB" size="[4]"> 0..4 </array>
+    <array id="PCC" size="[4]"> 0..4 </array>
+    <array id="PCD" size="[4]"> 0..4 </array>
+    <array id="processorsSecondaires" note="Variables auxiliaires" size="[5]"> 0 1 2 3 4 </array>
+    <array id="hardDisksSecondaires" size="[5]"> 0 1 2 3 4 </array>
+    <array id="monitorsSecondaires" size="[5]"> 0 1 2 3 4 </array>
+    <array id="pricesSecondaires" size="[5]"> 0 1 2 3 4 </array>
+    <array id="PROCESSORS" note="Use-full variables to map PROCESSORS, order : 0= Andrew, 1=PCA, 2=PCB, 3=PCC, 4=PCD" size="[5]"> 0..4 </array>
+    <array id="HARDDISKS" note="Use-full variables to map PROCESSORS, order : 0= Andrew, 1=PCA, 2=PCB, 3=PCC, 4=PCD" size="[5]"> 0..4 </array>
+    <array id="MONITORS" note="Use-full variables to map MONITORS, order : 0= Andrew, 1=PCA, 2=PCB, 3=PCC, 4=PCD" size="[5]"> 0..4 </array>
+    <array id="PRICES" note="Use-full variables to map PRICE, order : 0= Andrew, 1=PCA, 2=PCB, 3=PCC, 4=PCD" size="[5]"> 0..4 </array>
+    <array id="processorsVarDomain" note="Constraint Element cant read in native python list" size="[5]"> 20 23 25 27 31 </array>
+    <array id="hardDisksVarDomain" size="[5]"> 250 320 500 750 1024 </array>
+    <array id="monitorsVarDomain" size="[5]"> 130 150 156 215 270 </array>
+    <array id="pricesVarDomain" size="[5]"> 699 999 1149 1349 1649 </array>
+    <var id="XN" note="Auxiliary Variable to encode constraint 1 (&lt;=&gt; existential variable)"> 0..4 </var>
+    <var id="C1P" note="var of distance between 21.5 monitor and XN (0.4)"> 4 </var>
+    <array id="aux_gb" note="aux_gb[i] is the ith auxiliary variable having been automatically introduced" size="[11]">
+      <domain for="aux_gb[0..1] aux_gb[4] aux_gb[7] aux_gb[9..10]"> 0..4 </domain>
+      <domain for="aux_gb[2] aux_gb[3]"> 20..31 </domain>
+      <domain for="aux_gb[5]"> 699..1649 </domain>
+      <domain for="aux_gb[6]"> 999..1949 </domain>
+      <domain for="aux_gb[8]"> 130..270 </domain>
+    </array>
+    <array id="C2" note="The five computers are:" size="[4]"> 0..4 </array>
+    <var id="C2P" note="the one which has the 2.0-MHz processor,"> 20 </var>
+    <var id="C2HD" note="the computer that has a 250 GB HD,"> 250 </var>
+    <var id="C2Pr" note="the one which has a price of 1,149 Euros"> 1149 </var>
+    <var id="C2M" note="and the computer (which doesn't have the 15' screen) that has the HD bigger than the one chosen by Andrew but smaller than that the one which has the 2.7 MHz processor."> 15 </var>
+    <var id="C2P2"> 27 </var>
+  </variables>
+  <constraints>
+    <allDifferent> Andrew[0] PCA[0] PCB[0] PCC[0] PCD[0] </allDifferent>
+    <allDifferent> Andrew[1] PCA[1] PCB[1] PCC[1] PCD[1] </allDifferent>
+    <allDifferent> Andrew[2] PCA[2] PCB[2] PCC[2] PCD[2] </allDifferent>
+    <allDifferent> Andrew[3] PCA[3] PCB[3] PCC[3] PCD[3] </allDifferent>
+    <allDifferent> processorsSecondaires[] </allDifferent>
+    <intension> imp(eq(Andrew[0],1),eq(processorsSecondaires[1],0)) </intension>
+    <intension> imp(eq(PCA[0],1),eq(processorsSecondaires[1],1)) </intension>
+    <intension> imp(eq(PCB[0],1),eq(processorsSecondaires[1],2)) </intension>
+    <intension> imp(eq(PCC[0],1),eq(processorsSecondaires[1],3)) </intension>
+    <intension> imp(eq(PCD[0],1),eq(processorsSecondaires[1],4)) </intension>
+    <intension> imp(eq(Andrew[0],2),eq(processorsSecondaires[2],0)) </intension>
+    <intension> imp(eq(PCA[0],2),eq(processorsSecondaires[2],1)) </intension>
+    <intension> imp(eq(PCB[0],2),eq(processorsSecondaires[2],2)) </intension>
+    <intension> imp(eq(PCC[0],2),eq(processorsSecondaires[2],3)) </intension>
+    <intension> imp(eq(PCD[0],2),eq(processorsSecondaires[2],4)) </intension>
+    <intension> imp(eq(Andrew[0],3),eq(processorsSecondaires[3],0)) </intension>
+    <intension> imp(eq(PCA[0],3),eq(processorsSecondaires[3],1)) </intension>
+    <intension> imp(eq(PCB[0],3),eq(processorsSecondaires[3],2)) </intension>
+    <intension> imp(eq(PCC[0],3),eq(processorsSecondaires[3],3)) </intension>
+    <intension> imp(eq(PCD[0],3),eq(processorsSecondaires[3],4)) </intension>
+    <intension> imp(eq(Andrew[0],4),eq(processorsSecondaires[4],0)) </intension>
+    <intension> imp(eq(PCA[0],4),eq(processorsSecondaires[4],1)) </intension>
+    <intension> imp(eq(PCB[0],4),eq(processorsSecondaires[4],2)) </intension>
+    <intension> imp(eq(PCC[0],4),eq(processorsSecondaires[4],3)) </intension>
+    <intension> imp(eq(PCD[0],4),eq(processorsSecondaires[4],4)) </intension>
+    <allDifferent> hardDisksSecondaires[] </allDifferent>
+    <intension> imp(eq(Andrew[1],1),eq(hardDisksSecondaires[1],1)) </intension>
+    <intension> imp(eq(PCA[1],1),eq(hardDisksSecondaires[1],2)) </intension>
+    <intension> imp(eq(PCB[1],1),eq(hardDisksSecondaires[1],3)) </intension>
+    <intension> imp(eq(PCC[1],1),eq(hardDisksSecondaires[1],4)) </intension>
+    <intension> imp(eq(PCD[1],1),eq(hardDisksSecondaires[1],5)) </intension>
+    <intension> imp(eq(Andrew[1],2),eq(hardDisksSecondaires[2],1)) </intension>
+    <intension> imp(eq(PCA[1],2),eq(hardDisksSecondaires[2],2)) </intension>
+    <intension> imp(eq(PCB[1],2),eq(hardDisksSecondaires[2],3)) </intension>
+    <intension> imp(eq(PCC[1],2),eq(hardDisksSecondaires[2],4)) </intension>
+    <intension> imp(eq(PCD[1],2),eq(hardDisksSecondaires[2],5)) </intension>
+    <intension> imp(eq(Andrew[1],3),eq(hardDisksSecondaires[3],1)) </intension>
+    <intension> imp(eq(PCA[1],3),eq(hardDisksSecondaires[3],2)) </intension>
+    <intension> imp(eq(PCB[1],3),eq(hardDisksSecondaires[3],3)) </intension>
+    <intension> imp(eq(PCC[1],3),eq(hardDisksSecondaires[3],4)) </intension>
+    <intension> imp(eq(PCD[1],3),eq(hardDisksSecondaires[3],5)) </intension>
+    <intension> imp(eq(Andrew[1],4),eq(hardDisksSecondaires[4],1)) </intension>
+    <intension> imp(eq(PCA[1],4),eq(hardDisksSecondaires[4],2)) </intension>
+    <intension> imp(eq(PCB[1],4),eq(hardDisksSecondaires[4],3)) </intension>
+    <intension> imp(eq(PCC[1],4),eq(hardDisksSecondaires[4],4)) </intension>
+    <intension> imp(eq(PCD[1],4),eq(hardDisksSecondaires[4],5)) </intension>
+    <allDifferent> monitorsSecondaires[] </allDifferent>
+    <intension> imp(eq(Andrew[2],1),eq(monitorsSecondaires[1],0)) </intension>
+    <intension> imp(eq(PCA[2],1),eq(monitorsSecondaires[1],1)) </intension>
+    <intension> imp(eq(PCB[2],1),eq(monitorsSecondaires[1],2)) </intension>
+    <intension> imp(eq(PCC[2],1),eq(monitorsSecondaires[1],3)) </intension>
+    <intension> imp(eq(PCD[2],1),eq(monitorsSecondaires[1],4)) </intension>
+    <intension> imp(eq(Andrew[2],2),eq(monitorsSecondaires[2],0)) </intension>
+    <intension> imp(eq(PCA[2],2),eq(monitorsSecondaires[2],1)) </intension>
+    <intension> imp(eq(PCB[2],2),eq(monitorsSecondaires[2],2)) </intension>
+    <intension> imp(eq(PCC[2],2),eq(monitorsSecondaires[2],3)) </intension>
+    <intension> imp(eq(PCD[2],2),eq(monitorsSecondaires[2],4)) </intension>
+    <intension> imp(eq(Andrew[2],3),eq(monitorsSecondaires[3],0)) </intension>
+    <intension> imp(eq(PCA[2],3),eq(monitorsSecondaires[3],1)) </intension>
+    <intension> imp(eq(PCB[2],3),eq(monitorsSecondaires[3],2)) </intension>
+    <intension> imp(eq(PCC[2],3),eq(monitorsSecondaires[3],3)) </intension>
+    <intension> imp(eq(PCD[2],3),eq(monitorsSecondaires[3],4)) </intension>
+    <intension> imp(eq(Andrew[2],4),eq(monitorsSecondaires[4],0)) </intension>
+    <intension> imp(eq(PCA[2],4),eq(monitorsSecondaires[4],1)) </intension>
+    <intension> imp(eq(PCB[2],4),eq(monitorsSecondaires[4],2)) </intension>
+    <intension> imp(eq(PCC[2],4),eq(monitorsSecondaires[4],3)) </intension>
+    <intension> imp(eq(PCD[2],4),eq(monitorsSecondaires[4],4)) </intension>
+    <allDifferent> pricesSecondaires[] </allDifferent>
+    <intension> imp(eq(Andrew[3],1),eq(pricesSecondaires[1],0)) </intension>
+    <intension> imp(eq(PCA[3],1),eq(pricesSecondaires[1],1)) </intension>
+    <intension> imp(eq(PCB[3],1),eq(pricesSecondaires[1],2)) </intension>
+    <intension> imp(eq(PCC[3],1),eq(pricesSecondaires[1],3)) </intension>
+    <intension> imp(eq(PCD[3],1),eq(pricesSecondaires[1],4)) </intension>
+    <intension> imp(eq(Andrew[3],2),eq(pricesSecondaires[2],0)) </intension>
+    <intension> imp(eq(PCA[3],2),eq(pricesSecondaires[2],1)) </intension>
+    <intension> imp(eq(PCB[3],2),eq(pricesSecondaires[2],2)) </intension>
+    <intension> imp(eq(PCC[3],2),eq(pricesSecondaires[2],3)) </intension>
+    <intension> imp(eq(PCD[3],2),eq(pricesSecondaires[2],4)) </intension>
+    <intension> imp(eq(Andrew[3],3),eq(pricesSecondaires[3],0)) </intension>
+    <intension> imp(eq(PCA[3],3),eq(pricesSecondaires[3],1)) </intension>
+    <intension> imp(eq(PCB[3],3),eq(pricesSecondaires[3],2)) </intension>
+    <intension> imp(eq(PCC[3],3),eq(pricesSecondaires[3],3)) </intension>
+    <intension> imp(eq(PCD[3],3),eq(pricesSecondaires[3],4)) </intension>
+    <intension> imp(eq(Andrew[3],4),eq(pricesSecondaires[4],0)) </intension>
+    <intension> imp(eq(PCA[3],4),eq(pricesSecondaires[4],1)) </intension>
+    <intension> imp(eq(PCB[3],4),eq(pricesSecondaires[4],2)) </intension>
+    <intension> imp(eq(PCC[3],4),eq(pricesSecondaires[4],3)) </intension>
+    <intension> imp(eq(PCD[3],4),eq(pricesSecondaires[4],4)) </intension>
+    <intension> eq(Andrew[0],PROCESSORS[0]) </intension>
+    <intension> eq(PCA[0],PROCESSORS[1]) </intension>
+    <intension> eq(PCB[0],PROCESSORS[2]) </intension>
+    <intension> eq(PCC[0],PROCESSORS[3]) </intension>
+    <intension> eq(PCD[0],PROCESSORS[4]) </intension>
+    <intension> eq(Andrew[1],HARDDISKS[0]) </intension>
+    <intension> eq(PCA[1],HARDDISKS[1]) </intension>
+    <intension> eq(PCB[1],HARDDISKS[2]) </intension>
+    <intension> eq(PCC[1],HARDDISKS[3]) </intension>
+    <intension> eq(PCD[1],HARDDISKS[4]) </intension>
+    <intension> eq(Andrew[2],MONITORS[0]) </intension>
+    <intension> eq(PCA[2],MONITORS[1]) </intension>
+    <intension> eq(PCB[2],MONITORS[2]) </intension>
+    <intension> eq(PCC[2],MONITORS[3]) </intension>
+    <intension> eq(PCD[2],MONITORS[4]) </intension>
+    <intension> eq(Andrew[3],PRICES[0]) </intension>
+    <intension> eq(PCA[3],PRICES[1]) </intension>
+    <intension> eq(PCB[3],PRICES[2]) </intension>
+    <intension> eq(PCC[3],PRICES[3]) </intension>
+    <intension> eq(PCD[3],PRICES[4]) </intension>
+    <intension> eq(processorsVarDomain[0],20) </intension>
+    <intension> eq(hardDisksVarDomain[0],250) </intension>
+    <intension> eq(monitorsVarDomain[0],130) </intension>
+    <intension> eq(pricesVarDomain[0],699) </intension>
+    <intension> eq(processorsVarDomain[1],23) </intension>
+    <intension> eq(hardDisksVarDomain[1],320) </intension>
+    <intension> eq(monitorsVarDomain[1],150) </intension>
+    <intension> eq(pricesVarDomain[1],999) </intension>
+    <intension> eq(processorsVarDomain[2],25) </intension>
+    <intension> eq(hardDisksVarDomain[2],500) </intension>
+    <intension> eq(monitorsVarDomain[2],156) </intension>
+    <intension> eq(pricesVarDomain[2],1149) </intension>
+    <intension> eq(processorsVarDomain[3],27) </intension>
+    <intension> eq(hardDisksVarDomain[3],750) </intension>
+    <intension> eq(monitorsVarDomain[3],215) </intension>
+    <intension> eq(pricesVarDomain[3],1349) </intension>
+    <intension> eq(processorsVarDomain[4],31) </intension>
+    <intension> eq(hardDisksVarDomain[4],1024) </intension>
+    <intension> eq(monitorsVarDomain[4],270) </intension>
+    <intension> eq(pricesVarDomain[4],1649) </intension>
+    <element>
+      <list> processorsSecondaires[] </list>
+      <index> aux_gb[0] </index>
+      <value> XN </value>
+    </element>
+    <element>
+      <list> PROCESSORS[] </list>
+      <index> XN </index>
+      <value> aux_gb[0] </value>
+    </element>
+    <intension> ne(XN,monitorsSecondaires[3]) </intension>
+    <intension> eq(sub(aux_gb[2],aux_gb[3]),C1P) </intension>
+    <element>
+      <list> PROCESSORS[] </list>
+      <index> monitorsSecondaires[3] </index>
+      <value> aux_gb[1] </value>
+    </element>
+    <group>
+      <element>
+        <list> processorsVarDomain[] </list>
+        <index> %0 </index>
+        <value> %1 </value>
+      </element>
+      <args> aux_gb[0] aux_gb[2] </args>
+      <args> aux_gb[1] aux_gb[3] </args>
+    </group>
+    <intension> ne(XN,0) </intension>
+    <element>
+      <list> pricesVarDomain[] </list>
+      <index> Andrew[3] </index>
+      <value> aux_gb[6] </value>
+    </element>
+    <element>
+      <list> PRICES[] </list>
+      <index> XN </index>
+      <value> aux_gb[4] </value>
+    </element>
+    <element>
+      <list> pricesVarDomain[] </list>
+      <index> aux_gb[4] </index>
+      <value> aux_gb[5] </value>
+    </element>
+    <intension> eq(add(300,aux_gb[5]),aux_gb[6]) </intension>
+    <element>
+      <list> monitorsVarDomain[] </list>
+      <index> aux_gb[7] </index>
+      <condition> (ne,aux_gb[8]) </condition>
+    </element>
+    <element>
+      <list> MONITORS[] </list>
+      <index> C2[0] </index>
+      <value> aux_gb[7] </value>
+    </element>
+    <element>
+      <list> monitorsVarDomain[] </list>
+      <index> Andrew[2] </index>
+      <value> aux_gb[8] </value>
+    </element>
+    <element>
+      <list> processorsVarDomain[] </list>
+      <index> aux_gb[9] </index>
+      <value> C2P </value>
+    </element>
+    <element>
+      <list> PROCESSORS[] </list>
+      <index> C2[1] </index>
+      <value> aux_gb[9] </value>
+    </element>
+    <element>
+      <list> hardDisksVarDomain[] </list>
+      <index> aux_gb[10] </index>
+      <value> C2HD </value>
+    </element>
+    <element>
+      <list> HARDDISKS[] </list>
+      <index> C2[1] </index>
+      <value> aux_gb[10] </value>
+    </element>
+  </constraints>
+</instance>

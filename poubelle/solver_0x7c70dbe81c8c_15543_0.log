@@ -1,0 +1,42 @@
+
+[93mACE (AbsCon Essence)[0m v2.1 
+
+  [94minstance[0m
+    name:exemple_nathan
+
+  Loading variables...
+
+  Loading constraints...
+
+  [94mdomains[0m
+    types:1  values:150  sizes:[5:30]
+  [94mvariables[0m
+    count:30  arrays:0  degrees:[1:3,2:12,3:11,4:4]
+  [94mconstraints[0m
+    count:31  specific:31  arities:[1:4,2:21,5:6]
+    distribution:[AllDifferentComplete:6,Dist2EQ:3,Extension1:4,Sub2EQ:7,Sub2LE:11]
+    wck:0.13  cpu:0.56  mem:10M695
+
+  Building solver... 
+
+  [94msolver[0m
+    guaranteedAC:true
+    wck:0.14  cpu:0.573  mem:12M630
+
+  [94mpreprocessing[0m
+    effs:1  values:145  unsat:true
+    wck:0.0  cpu:0.574  mem:12M630
+
+
+  [94mglobal[0m
+    effs:1
+    stop:FULL_EXPLORATION
+    wck:0.14  cpu:0.574  mem:12M630
+
+[92ms UNSATISFIABLE[0m
+[92m
+d WRONG DECISIONS[0m 0
+[92md FOUND SOLUTIONS[0m 0
+[92md COMPLETE EXPLORATION[0m
+
+c real time : 0.575

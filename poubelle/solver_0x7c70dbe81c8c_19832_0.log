@@ -1,0 +1,7 @@
+c Choco e747e1e
+v <instantiation id='sol1' type='solution' ><list>Andrew[0] PCA[0] PCB[0] PCC[0] PCD[0] processorsSecondaires[0] processorsSecondaires[1] processorsSecondaires[2] processorsSecondaires[3] processorsSecondaires[4] </list><values>0 4 2 3 1 5 2 3 4 1 </values></instantiation>
+
+s SATISFIABLE
+v <instantiation id='sol1' type='solution' ><list>Andrew[0] PCA[0] PCB[0] PCC[0] PCD[0] processorsSecondaires[0] processorsSecondaires[1] processorsSecondaires[2] processorsSecondaires[3] processorsSecondaires[4] </list><values>0 4 2 3 1 5 2 3 4 1 </values></instantiation>
+d FOUND SOLUTIONS 1
+

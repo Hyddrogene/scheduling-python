@@ -1,0 +1,117 @@
+client
+front-end
+serveur
+back end
+full stack
+
+
+DNS
+
+
+plusieurs paquets
+protocole tcp ip
+
+<html> langue
+
+<head> encodage
+
+<p> intrus autre citation
+q citation courte, cite citatio d'un docuement, blockquote citation longue
+
+
+
+<a href="#p1"></a> zr <div id="p1"></div^>
+
+
+<dt>->block definition
+<ol>->nombre
+<ul>-> [--]
+
+
+<table>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td colspan="2" rowspan="2" ></td>
+    </tr>
+    <tr>
+        <td></td>
+    </tr>
+</table>
+
+
+<form method="post" >
+
+
+<input type="checkbox">
+
+
+
+submit envoie name & value
+
+
+
+meilleur pratique -> include , <style> , <h1 style="">
+
+a = content
+b = padding
+c =border
+d = margin
+
+
+ul>li:first-child
+ul li:first-child
+
+w3schools.com/cssref/css_selectors.php
+.class1.class2 element avec les 2 classes
+span.class1 element span avec class 1
+span,h1 all element span and h1
+span ~ h1 mm parent et voisin direcct (get p)
+span + h1 voisin direcct (get span)
+span > h1 prend les h1 enfant
+span h1 prend tout les éléments h1 dans un div (descendant direct ou non)
+col || td séléctionne les noeuds appratenant à une colone
+id # * all .class [attrr=valeur] ==valeur [attrr$=valeur] finit valeur [attrr*=valeur] contient valeur [attrr|=valeur] uivis dun tiret [attrr~=valeur] valeur avec des blancs(au moins une) [attrr^=valeur] ccommence par lvaleur
+
+
+
+
+div.red + p
+
+
+un paragraphe sur 4 -> p:nth-child([4n+1])
+tout les paragraphes sauf les 4 premiers -> p:nth-child([n+4])
+rang  pair paragraphe -> p:nth-child([even,2n,2n+0])
+
+p::first-line -> première linge paragrph
+
+float decroche un élément
+
+display -> inline une ligne
+display ->inline block (s'agence plutot bien en ligne et en hauteur en fonctiond e du navitagateur
+
+
+grid-template-rows: 25vh 50 vh 10vh
+grid-template-column:10% 15% 25%50%
+
+
+
+alors il s'agit du mileu entre red et jaune
+
+
+colum-reverse
+colum-reverse-wrap
+
+
+row wrap-reverse
+
+
+tellow
+red
+aqua
+black
+brown

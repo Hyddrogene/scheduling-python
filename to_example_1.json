@@ -1,0 +1,151 @@
+{
+"PADDING":
+{
+"padding_value" : [0,-1],
+"padding_name_value" : ["paddingUnknowValue","paddingImpossibleValue"],
+"padding_set" : [{"set" :[0]},{"set" :[-1]}],
+"padding_name_set" : ["paddingUnknowset","paddingImpossibleset"]
+},
+"DATA":
+{
+"nr_weeks" : 24,
+"nr_days_per_week" : 5,
+"nr_slots_per_day" : 1440,
+"interval" : [1, 1440],
+"abstract_grid" : 1,
+"grid" : [480, 90, 7],
+"grids" : [[480, 90, 8], [480, 270, 2]],
+"nr_courses" : 2,
+"nr_parts" : 4,
+"course_parts" : [{"set" :[1, 2]}, {"set" :[3, 4]}],
+"nr_classes" : 5,
+"part_classes" : [{"set" :[1]}, {"set" :[2, 3]}, {"set" :[4]}, {"set" :[5]}],
+"nr_sessions" : 48,
+"max_part_sessions" : 12,
+"part_nr_sessions" :[10, 10, 6, 12],
+"nr_equipments" : 0,
+"nr_rooms" : 3,
+"nr_teachers" : 4,
+"nr_students" : 2,
+"nr_part_rooms" : 2,
+"part_rooms" : [{"set" :[1, 2]}, {"set" :[1, 2]}, {"set" :[2, 3]}, {"set" :[1]}],
+"nr_part_teachers" : 2,
+"part_teachers" : [{"set" :[1, 2]}, {"set" :[1, 2]}, {"set" :[1, 2]}, {"set" :[1]}],
+"part_dailyslots" : [{"set" :[480, 570, 660, 750, 840, 930, 1020, 1110]}, {"set" :[480, 570, 660, 750, 840, 930, 1020, 1110]}, {"set" :[480, 750]}, {"set" :[480, 750]}],
+"part_days" : [{"set" :[1, 2, 3, 4, 5]}, {"set" :[1, 2, 3, 4, 5]}, {"set" :[1, 2, 3, 4, 5]}, {"set" :[1, 2, 3, 4, 5]}],
+"part_weeks" : [{"set" :[1, 2, 3, 4, 5, 6]}, {"set" :[1, 2, 3, 4, 5, 6]}, {"set" :[1, 2, 3, 4, 5, 6]}, {"set" :[1, 2, 3, 4, 5, 6]}],
+"part_bool_grid" : [1, 1, 1, 1],
+"part_abstract_grid" :[[1, 1, 8], [1, 1, 8], [1, 3, 2], [1, 3, 2]],
+"part_session_length" : [180, 180, 240, 240],
+"max_equipment_count" : 0,
+"max_class_maxheadcount" : 0,
+"max_teacher_session" : 1,
+"max_teacher_sessions" : 12,
+"equipment_count" : [],
+"max_room_capacity" : 29,
+"room_capacity" : [20, 21, 29],
+"part_room_use" :["single", "single", "single", "single"],
+"nr_part_room_mandatory" : 0,
+"part_room_mandatory" : [],
+"part_teacher_sessions_count" :[[5, 5, 0, 0], [10, 10, 0, 0], [3, 3, 0, 0], [12, 0, 0, 0]],
+"part_session_teacher_count" : [1, 1, 1, 1],
+"class_maxheadcount" : [200, 20, 200, 40],
+"class_parent" : [0, 1, 1, 0, 4],
+"student_courses" : [{"set" :[1, 2]}, {"set" :[1, 2]}],
+"equipment_name" : [],
+"room_name" : ["room1", "room2", "room3"],
+"teacher_name" : ["teacher1", "teacher2", "teacher3", "teacher4"],
+"student_name" : ["S1", "S2"],
+"course_name" : ["cours-1", "cours-2"],
+"part_name" : ["cours-1-pCM", "cours-1-pTP", "cours-2-pCM", "cours-2-pTD"],
+"class_name" : ["cours-1-pCM-c1", "cours-1-pTP-c1", "cours-1-pTP-c2", "cours-2-pCM-c1", "cours-2-pTD-c1"],
+"nr_labels" : 16,
+"label_name" : ["room", "Salle-info", "teacher", "D10", "D2", "D4", "D11", "CM", "TP", "1", "2", "cours-1", "TD", "cours-2", "Student564", "Student565"],
+"room_label" : [{"set" :[1, 2]}, {"set" :[1, 2]}, {"set" :[1, 2]}],
+"teacher_label" : [{"set" :[3, 4]}, {"set" :[3, 5]}, {"set" :[3, 6]}, {"set" :[3, 7]}],
+"student_label" : [{"set" :[15]}, {"set" :[16]}],
+"course_label" : [{"set" :[12]}, {"set" :[14]}],
+"part_label" : [{"set" :[8]}, {"set" :[9]}, {"set" :[8]}, {"set" :[13]}]
+},
+"RULES":
+{
+"nr_rules" : 1,
+"nr_scopes" : 1,
+"rule_scopes" : [{"set" :[1]}],
+"scope_type" : ["class"],
+"mask_length" : 0,
+"scope_mask" : [{"set" : []}],
+"nr_filters" : 1,
+"scope_filters" : [{"set" :[1]}],
+"filter_type" : ["course[id='cours-1']"],
+"filter_elements" : [{"set" :[1, 2, 3]}],
+"rule_constraint" : ["sameSlot"],
+"constraint_hardness" : ["hard"],
+"nr_parameters" : 0,
+"constraint_parameters" : [{"set" : [] }],
+"parameter_name" : [],
+"parameter_type" : [],
+"max_paramater_value" : 0,
+"max_parameter_size" : 0,
+"parameter_value" : []
+},
+"SOLUTION":
+{
+"GROUPS":
+{
+"nr_groups" : 2,
+"max_group_headcount" : 1,
+"group_headcount" : [1, 1],
+"group_name" : ["G1", "G2"],
+"group_students" : [{"set" :[1]}, {"set" :[2]}],
+"group_classes" : [{"set" :[1, 2, 4, 5]}, {"set" :[1, 3, 4, 5]}],
+"group_sessions" : [{"set" : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48]},{"set" : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48]}]
+},
+"CLASS":
+{
+"class_teachers" : [],
+"class_rooms" : [],
+"class_groups" : [[{"set" : [1] },{"set" : [1, 2]}],[{"set" : [2] },{"set" : [1]}],[{"set" : [3] },{"set" : [2]}],[{"set" : [4] },{"set" : [1, 2]}],[{"set" : [5] },{"set" : [1, 2]}]]
+},
+"SESSIONS":
+{
+"session_rank" : [] ,
+"session_class" : [] ,
+"session_dailyslot" : [],
+"session_day" : [],
+"session_week" : [],
+"session_rooms" : [],
+"session_teachers" : []
+}
+
+},
+"CONSTRAINTS" :
+ [
+{"rule" : 10,
+	"constraint" : "sameSlot",
+	"hardness" : "hard",
+	"arity" : 1,
+	"type" : ["class"],
+	"elements" : [1],
+	"sessions" : [{"set" :[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}],
+	"parameters" : []
+},
+{"rule" : 11,
+	"constraint" : "sameSlot",
+	"hardness" : "hard",
+	"arity" : 1,
+	"type" : ["class"],
+	"elements" : [2],
+	"sessions" : [{"set" :[11, 12, 13, 14, 15, 16, 17, 18, 19, 20]}],
+	"parameters" : []
+},
+{"rule" : 12,
+	"constraint" : "sameSlot",
+	"hardness" : "hard",
+	"arity" : 1,
+	"type" : ["class"],
+	"elements" : [3],
+	"sessions" : [{"set" :[21, 22, 23, 24, 25, 26, 27, 28, 29, 30]}],
+	"parameters" : []
+}]
+}

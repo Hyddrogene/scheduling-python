@@ -190,4 +190,11 @@
             </group>  
         </groups>
         </solution>
+
+        min max -> tu prends le pls petit du maximum des critères et ça pousse les critères -> pousse les plus grands àêtre plus petit
+        <objective method="lexico, min max, weighted sum"  solve="satisfy, minimize, maximize">
+            <criterion label="periodic-L3,sequenced " agregation="weighted average, weighted min,"/>//plusieurs par élmeent 
+            <criterion label="periodic"  agregation="weighted-sum" />
+        </objective>
+        //normalize true -> 
     </timetabling>
