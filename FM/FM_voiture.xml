@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<FeatureModel name="feature model for UTP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="featureModel-schema.xsd">
+
+<Features>
+    <Feature name="Voiture" mandatory="true">
+        <subFeature>
+            <Feature name="portes" optional="true">
+                <subFeature>
+                    <subFeature type="XOR">
+                        <Feature name="5 portes" />
+                        <Feature name="3 portes" />
+                    </subFeature>
+                </subFeature>
+            </Feature>
+            <Feature name="feux" mandatory="true">
+                <subFeature>
+                    <subFeature type="XOR">
+                        <Feature name="led" />
+                        <Feature name="ampoule" />
+                    </subFeature>
+                </subFeature>
+            </Feature>
+            <Feature name="esthétique" mandatory="true">
+                <subFeature>
+                    <Feature name="jantes chromées" />
+                    <Feature name="peinture" mandatory="true">
+                        <subFeature>
+                            <subFeature type="XOR">
+                            <Feature name="métallisée" />
+                            <Feature name="mat" />
+                            </subFeature>
+                        </subFeature>
+                    </Feature>
+                    <Feature name="vitres teintées" />
+                    <Feature name="toit ouvrant" optional="true" />
+                </subFeature>
+            </Feature>
+            <Feature name="intérieur" mandatory="true">
+                <subFeature>
+                    <Feature name="sellerie" optional="true">
+                        <subFeature>
+                            <subFeature type="XOR">
+                                <Feature name="cuir" />
+                                <Feature name="tissu" />
+                            </subFeature>
+                        </subFeature>
+                    </Feature>
+                    <Feature name="boîte de vitesse" mandatory="true">
+                        <subFeature>
+                            <subFeature type="XOR">
+                                <Feature name="manuelle" />
+                                <Feature name="automatique" />
+                            </subFeature>
+                        </subFeature>
+                    </Feature>
+                </subFeature>
+            </Feature>
+        </subFeature>
+    </Feature>
+</Features>
+
+    
+
+
+
+
+</FeatureModel>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<FeatureModel name="feature model for UTP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="featureModel-schema.xsd">
+<Features>
+    <Feature name="Coloration de Graphe" mandatory="true">
+        <subFeature>
+            <Feature name="Problème">
+                <subFeature>
+                    <subFeature type="XOR">
+                        <Feature name="Coloration Noeud" />
+                        <Feature name="Coloration Arête" />
+                    </subFeature>
+                    <Feature name="Nombre de Couleurs" >
+                        <subFeature>
+                            <subFeature type="XOR">
+                                <Feature name="2 Couleurs" />
+                                <Feature name="3 Couleurs" />
+                                <Feature name="4 Couleurs" />
+                                <Feature name="k Couleurs" />
+                            </subFeature>
+                        </subFeature>
+                    </Feature>
+                </subFeature>
+            </Feature>
+            
+            <subFeature type="XOR">
+                <Feature name="Critère d'optimisation" optional="true">
+                    <subFeature>
+                        <subFeature type="XOR">
+                            <Feature name="Nombre de Couleurs Utilisées" />
+                            <Feature name="Nombre de Conflits Minimisé" />
+                        </subFeature>
+                    </subFeature>
+                </Feature>
+                <Feature name="Satisfaction" />
+            </subFeature>
+
+            <Feature name="Topologie du Graphe" optional="true">
+                <subFeature>
+                    <subFeature type="XOR">
+                        <Feature name="Structure" >
+                            <subFeature>
+                                <subFeature type="OR">
+                                    <Feature name="Cycle" />
+                                    <Feature name="Arbre" />
+                                    <Feature name="Clique" />
+                                    <Feature name="Graphe Plan" />
+                                </subFeature>
+                            </subFeature>
+                        </Feature>
+                        <Feature name="Propriétés">
+                            <subFeature>
+                                <subFeature type="OR">
+                                    <Feature name="Pas de Cycle Impair" />
+                                    <Feature name="Degre Maximal" >
+                                        <subFeature>
+                                            <subFeature type="XOR">
+                                                <Feature name="Degre Maximal = 2" />
+                                                <Feature name="Degre Maximal = 3" />
+                                                <Feature name="Degre Maximal > 3" />
+                                            </subFeature>
+                                        </subFeature>
+                                    </Feature>
+                                    <Feature name="Distance Chromatique" />
+                                </subFeature>
+                            </subFeature>
+                        </Feature>
+                    </subFeature>
+                </subFeature>
+            </Feature>
+
+            <Feature name="Contraintes supplémentaires" optional="true">
+                <subFeature>
+                    <subFeature type="OR">
+                        <Feature name="Coloration Équitable" />
+                        <Feature name="Précoloration Fixée" />
+                    </subFeature>
+                </subFeature>
+            </Feature>
+        </subFeature>
+    </Feature>
+</Features>
+</FeatureModel>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<FeatureModel name="feature model for UTP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="featureModel-schema.xsd">
+<Features>
+    <Feature name="Algorithmes de résolution" optional="true">
+        <subFeature>
+            <subFeature type="XOR">
+                <Feature name="Méthodes exactes">
+                    <subFeature>
+                        <subFeature type="OR">
+                            <Feature name="Programmation linéaire" />
+                            <Feature name="Programmation par contraintes" />
+                            <Feature name="Branch and Bound" />
+                            <Feature name="SAT" />
+                            <Feature name="ASP" />
+                            <Feature name="CASP" />¨
+                        </subFeature>
+                    </subFeature>
+                </Feature>
+                <Feature name="Méthodes approchées">
+                    <subFeature>
+                        <subFeature type="XOR">
+                            <Feature name="Méthodes basées sur la population">
+                                <subFeature>
+                                    <subFeature type="OR">
+                                        <Feature name="Algorithmes génétiques (GA)" />
+                                        <Feature name="Optimisation par essaim de particules (PSO)" />
+                                        <Feature name="Colonie de fourmis (ACO)" />
+                                        <Feature name="Algorithmes évolutionnaires" />
+                                        <Feature name="Algorithme de Greedy Randomized Adaptive Search (GRASP)" />
+                                    </subFeature>
+                                </subFeature>
+                            </Feature>
+                            <Feature name="Méthodes de recherche locale">
+                                <subFeature>
+                                    <subFeature type="OR">
+                                        <Feature name="Recuit simulé (SA)" />
+                                        <Feature name="Recherche tabou (TS)" />
+                                        <Feature name="Hill Climbing" />
+                                        <Feature name="Iterated Local Search (ILS)" />
+                                    </subFeature>
+                                </subFeature>
+                            </Feature>
+                        </subFeature>
+                    </subFeature>
+                </Feature>
+                <Feature name="Hybridations">
+                    <subFeature>
+                        <subFeature type="OR">
+                            <Feature name="GA + SA" />
+                            <Feature name="PSO + TS" />
+                            <Feature name="ACO + GRASP" />
+                            <Feature name="GA + Local Search" />
+                            <Feature name="Multi-method" />
+                        </subFeature>
+                    </subFeature>
+                </Feature>
+            </subFeature>
+        </subFeature>
+    </Feature>
+</Features>
+</FeatureModel>

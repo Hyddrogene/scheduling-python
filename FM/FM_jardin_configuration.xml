@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<FeatureModel name="feature model for UTP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="featureModel-schema.xsd">
+
+<Features>
+    <Feature name="Jardin" mandatory="true" activate ="true">
+        <subFeature>
+            <Feature name="banc_de_repos" optional="true" activate="true">
+                <subFeature>
+                    <subFeature type="XOR">
+                        <Feature name="bois" activate="true"/>
+                        <Feature name="métal" />
+                        <Feature name="pierre" />
+                    </subFeature>
+                </subFeature>
+            </Feature>
+            <Feature name="type_de_sol" optional="true">
+                <subFeature>
+                    <subFeature type="XOR">
+                        <Feature name="terre" />
+                        <Feature name="gazon" />
+                        <Feature name="gravier" />
+                    </subFeature>
+                </subFeature>
+            </Feature>
+            <Feature name="arbres" optional="true" activate="true">
+                <subFeature>
+                    <subFeature type="OR">
+                        <Feature name="fruitiers" activate="true">
+                            <subFeature>
+                                <Feature name="pommiers" optional="true" activate="true" />
+                                <Feature name="cerisiers" optional="true" />
+                                <Feature name="pruniers" optional="true" activate="true"/>
+                            </subFeature>
+                        </Feature>
+                        <Feature name="ornementaux" activate="true">
+                            <subFeature>
+                                <Feature name="érables" optional="true" />
+                                <Feature name="pins" optional="true" activate="true"/>
+                            </subFeature>
+                        </Feature>
+                    </subFeature>
+                </subFeature>
+            </Feature>
+            <Feature name="fleurs" optional="true" activate="true">
+                <subFeature>
+                    <subFeature type="OR">
+                        <Feature name="roses" activate="true"/>
+                        <Feature name="tulipes" activate="true"/>
+                        <Feature name="marguerites" activate="true"/>
+                    </subFeature>
+                </subFeature>
+            </Feature>
+        </subFeature>
+    </Feature>
+</Features>
+
+
+    
+
+
+
+
+</FeatureModel>

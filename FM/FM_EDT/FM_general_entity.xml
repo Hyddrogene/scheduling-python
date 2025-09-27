@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<FeatureModel name="feature model for UTP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="featureModel-schema.xsd">
+
+    
+
+
+   <Features>         
+    <Feature name="Timetabling problem" > 
+    <subFeature>
+    <Feature name="courses" mandatory="true">
+    </Feature>
+    <Feature name="timing" mandatory="true">
+        <!-- Timing features for scheduling -->
+    </Feature>
+    <Feature name="hosting" mandatory="False">
+        <!-- Hosting features  -->
+    </Feature>
+        <Feature name="teaching" mandatory="False">
+    </Feature>
+    <Feature name="attending" mandatory="true">
+    </Feature>
+   
+        
+    </subFeature>
+    </Feature> 
+</Features> 
+
+
+<Parameters>
+    <Parameter feature="full-period" type="number">
+        <value key="nrPeriods">20</value>
+    </Parameter>
+    <Parameter feature="service" type="boolean">
+        <value key="random">false</value>
+    </Parameter>
+    <Parameter feature="service" type="number">
+        <value key="serviceMax">192</value>
+    </Parameter>
+    <Parameter feature="feature model for UTP" type="number">
+        <value key="nrFormations">15</value>
+    </Parameter>
+    <Parameter feature="feature model for UTP" type="probabilityForm">
+        <value key="CM"/>
+        <value key="TD"/>
+        <value key="TP"/>
+        <value key="CMTD"/> 
+        <configurations>
+            <configuration>
+                <configurations>no-room_no-teacher</configurations>
+                <configurations>no-room_single-teacher</configurations>
+                <configurations>no-room_multi-teacher</configurations>
+                <configurations>single-room_no-teacher</configurations>
+                <configurations>single-room_single-teacher</configurations>
+                <configurations>single-room_multi-teacher</configurations>
+                <configurations>multi-room_no-teacher</configurations>
+                <configurations>multi-room_single-teacher</configurations>
+                <configurations>multi-room_multi-teacher</configurations>
+            </configuration>
+        </configurations>
+    </Parameter>
+
+</Parameters>
+</FeatureModel>
+ 

@@ -1,0 +1,22 @@
+// Feature Model
+digraph {
+	hosting [label=hosting color=black penwidth=1 shape=ellipse]
+	OR0 [label="" color=black fillcolor=black height=0.3 shape=ellipse style=filled width=0.3]
+	hosting -> OR0 [arrowhead=none]
+	"no-room" [label="no-room" color=black penwidth=1 shape=ellipse]
+	OR0 -> "no-room" [arrowhead=none style=dashed]
+	"single-room" [label="single-room" color=black penwidth=1 shape=ellipse]
+	OR0 -> "single-room" [arrowhead=none style=dashed]
+	"multi-room" [label="multi-room" color=black penwidth=1 shape=ellipse]
+	OR0 -> "multi-room" [arrowhead=none style=dashed]
+	"room-capacity" [label="room-capacity" color=black penwidth=1 shape=ellipse]
+	hosting -> "room-capacity"
+	XOR1 [label="" color=black fillcolor=white height=0.3 shape=diamond style=filled width=0.3]
+	hosting -> XOR1 [arrowhead=none]
+	"all-exclusive" [label="all-exclusive" color=black penwidth=1 shape=ellipse]
+	XOR1 -> "all-exclusive" [arrowhead=none style=dashed]
+	"none-exclusive" [label="none-exclusive" color=black penwidth=1 shape=ellipse]
+	XOR1 -> "none-exclusive" [arrowhead=none style=dashed]
+	"some-exclusive" [label="some-exclusive" color=black penwidth=1 shape=ellipse]
+	XOR1 -> "some-exclusive" [arrowhead=none style=dashed]
+}

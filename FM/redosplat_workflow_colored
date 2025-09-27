@@ -1,0 +1,25 @@
+// REDOSPLAT Workflow
+digraph {
+	A [label="Déclaration du problème en 
+ syntaxe REDOSPLAT" color=lightblue fixedsize=true fontsize=16 height=1.3 shape=box style=filled width=3]
+	C [label="Analyse comme une Grammaire
+ via COCO/R en C++" color=lightyellow fixedsize=true fontsize=16 height=1.3 shape=box style=filled width=3]
+	D [label="Structure Intermédiaire" color=green fixedsize=true fontsize=16 height=1.3 shape=box style=filled width=3]
+	E1 [label="Vérification de Solution" color=lightpink fixedsize=true fontsize=16 height=1.3 shape=box style=filled width=3]
+	E2 [label="Résolution 
+ ------------
+ ILP 
+ COP 
+ ...
+" color=lightpink fixedsize=true fontsize=16 height=1.3 shape=box style=filled width=3]
+	E3 [label="Conversion 
+ ------------
+ XHSTT 
+ ITC 2007 
+ ..." color=lightpink fixedsize=true fontsize=16 height=1.3 shape=box style=filled width=3]
+	A -> C
+	C -> D
+	D -> E1
+	D -> E2
+	D -> E3
+}

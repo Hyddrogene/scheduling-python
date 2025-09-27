@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<FeatureModel name="feature model for UTP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="featureModel-schema.xsd">
+<Features>
+    <Feature name="Ordonnancement" mandatory="true">
+        <subFeature>
+            <Feature name="Problème" mandatory="true">
+                <subFeature>
+                    <subFeature type="XOR">
+                        <Feature name="Flow Shop" />
+                        <Feature name="Job Shop" />
+                        <Feature name="Open Shop" />
+                    </subFeature>
+                </subFeature>
+            </Feature>
+            <Feature name="Critère d'optimisation" optional="true">
+                <subFeature>
+                    <subFeature type="OR">
+                        <Feature name="Makespan" />
+                        <Feature name="Tardiness" />
+                        <Feature name="Earliness" />
+                        <Feature name="Flow Time" />
+                    </subFeature>
+                </subFeature>
+            </Feature>
+            <Feature name="Contraintes supplémentaires" optional="true">
+                <subFeature>
+                    <subFeature type="OR">
+                        <Feature name="Dates de livraison" />
+                        <Feature name="Priorités" />
+                        <Feature name="Séquences imposées" />
+                    </subFeature>
+                </subFeature>
+            </Feature>
+            <Feature name="Algorithmes de résolution" optional="true">
+                <subFeature>
+                    <subFeature type="XOR">
+                        <Feature name="Exact" />
+                        <Feature name="Heuristique" />
+                        <Feature name="Métaheuristique">
+                            <subFeature>
+                                <subFeature type="OR">
+                                    <Feature name="Algorithmes génétiques" />
+                                    <Feature name="Recuit simulé" />
+                                    <Feature name="Recherche tabou" />
+                                    <Feature name="Optimisation par essaim de particules" />
+                                </subFeature>
+                            </subFeature>
+                        </Feature>
+                    </subFeature>
+                </subFeature>
+            </Feature>
+            <Feature name="Types de ressources" optional="true">
+                <subFeature>
+                    <subFeature type="OR">
+                        <Feature name="Machines" />
+                        <Feature name="Ouvriers" />
+                        <Feature name="Outils" />
+                    </subFeature>
+                </subFeature>
+            </Feature>
+            <Feature name="Stratégies de planification" optional="true">
+                <subFeature>
+                    <subFeature type="XOR">
+                        <Feature name="Planification à court terme" />
+                        <Feature name="Planification à long terme" />
+                        <Feature name="Planification en temps réel" />
+                        <Feature name="Planification incrémentale" />
+                    </subFeature>
+                </subFeature>
+            </Feature>
+            <Feature name="Environnement" optional="true">
+                <subFeature>
+                    <subFeature type="OR">
+                        <Feature name="Stochastique" />
+                        <Feature name="Dynamique" />
+                        <Feature name="Statique" />
+                    </subFeature>
+                </subFeature>
+            </Feature>
+        </subFeature>
+    </Feature>
+</Features>
+
+</FeatureModel>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<FeatureModel name="feature model for UTP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="featureModel-schema.xsd">
+
+<Features>
+    <Feature name="Move" mandatory="true">
+        <subFeature>
+            <Feature name="windowLayout" optional="true">
+                <subFeature>
+                    <subFeature type="XOR">
+                        <Feature name="overlappedLayout" />
+                        <Feature name="tiledLayout">
+                            <subFeature>
+                                <subFeature type="XOR">
+                                    <Feature name="tiledColumns" />
+                                    <Feature name="tiledArbitrary" />
+                                </subFeature>
+                            </subFeature>
+                        </Feature>
+                    </subFeature>
+                </subFeature>
+            </Feature>
+            <Feature name="moveIcon" optional="true" />
+            <Feature name="abortMoveOp" optional="true" />
+            <Feature name="moveInput" optional="true" >
+                <subFeature>
+                    <subFeature type="OR">
+                        <Feature name="border" />
+                        <Feature name="interior" />
+                    </subFeature>
+                </subFeature>
+            </Feature>
+            <Feature name="partiallyOffScreen" optional="true"/>
+
+            
+            <Feature name="moveResizeFeedback" optional="true">
+                <subFeature>
+                    <subFeature type="XOR">
+                        <Feature name="zapEffect" optional="true" />
+                        <Feature name="windowConfiguration" />
+                        <Feature name="interactiveFeedback">
+                            <subFeature>
+                                <subFeature type="XOR">
+                                    <Feature name="ghostFeedback" />
+                                    <Feature name="opaqueFeedback" />
+                                </subFeature>
+                            </subFeature>
+                        </Feature>
+                    </subFeature>
+                </subFeature>
+            </Feature>
+            <Feature name="constrainedMove" optional="true" />
+            <Feature name="moveErasure" optional="true">
+                <subFeature>
+                    <subFeature type="XOR">
+                        <Feature name="eraseBefore" />
+                        <Feature name="eraseAfter" />
+                    </subFeature>
+                </subFeature>
+            </Feature>
+            <Feature name="exposeAfterMove" optional="true" />
+        </subFeature>
+    </Feature>
+</Features>
+
+
+    
+
+
+
+
+</FeatureModel>

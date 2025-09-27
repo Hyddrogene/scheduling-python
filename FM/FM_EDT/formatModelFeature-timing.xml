@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<FeatureModel name="feature model for UTP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="featureModel-schema.xsd">
+
+    
+
+
+   <Features>         
+
+    <Feature name="timing" >
+        <!-- Timing features for scheduling -->
+        <subFeature>
+            <Feature name="full-period" optional="true"></Feature>
+            <Feature name="single-week" optional="true"/>
+            
+            <Feature name="full-week" optional="true"/>
+        </subFeature>
+    </Feature>
+        
+</Features> 
+
+
+</FeatureModel>

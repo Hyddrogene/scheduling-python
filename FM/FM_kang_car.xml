@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<FeatureModel name="feature model for UTP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="featureModel-schema.xsd">
+
+<Features>
+    <Feature name="Car" mandatory="true">
+        <subFeature>
+            <Feature name="Transmission" mandatory="true">
+                <subFeature>
+                    <subFeature type="XOR">
+                        <Feature name="Manual" />
+                        <Feature name="Automatic" />
+                    </subFeature>
+                </subFeature>
+            </Feature>
+            <Feature name="Horsepower" optional="true" />
+            <Feature name="Air conditioning" optional="true" />
+        </subFeature>
+    </Feature>
+</Features>
+<Rules>
+    <Rule>
+        <Condition>Air conditioning</Condition>
+        <Action>requires Horsepower > 100</Action>
+    </Rule>
+</Rules>
+<Rationale>
+    <Feature name="Manual">
+        <Reason>more fuel efficient</Reason>
+    </Feature>
+</Rationale>
+
+
+</FeatureModel>

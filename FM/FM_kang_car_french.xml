@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<FeatureModel name="feature model for UTP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="featureModel-schema.xsd">
+
+<Features>
+    <Feature name="Voiture" mandatory="true">
+        <subFeature>
+            <Feature name="Transmission" mandatory="true">
+                <subFeature>
+                    <subFeature type="XOR">
+                        <Feature name="Manuelle" />
+                        <Feature name="Automatique" />
+                    </subFeature>
+                </subFeature>
+            </Feature>
+            <Feature name="Puissance" optional="true" />
+            <Feature name="Climatisation" optional="true" />
+        </subFeature>
+    </Feature>
+</Features>
+
+</FeatureModel>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<FeatureModel name="feature model for UTP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="featureModel-schema.xsd">
+    <!--Jardin méditerranéen : Plantes résistantes à la sécheresse, telles que lavandes, oliviers et cyprès. Utilisation de pierres et de terrasses. Atmosphère ensoleillée et conviviale.-->
+<Features>
+    <Feature name="Jardin" mandatory="true" activate="true">
+        <subFeature>
+            <Feature name="Mobilier" optional="true" activate="true">
+                <subFeature>
+                    <subFeature type="OR">
+                        <Feature name="Banc" activate="true" />
+                        <Feature name="Pont" />
+                        <Feature name="Terrasse" activate="true"/>
+                        <Feature name="Fontaine" />
+                    </subFeature>
+                </subFeature>
+            </Feature>
+            <Feature name="Type_de_sol" optional="true" activate="true">
+                <subFeature>
+                    <subFeature type="OR">
+                        <Feature name="Terre" activate="true"/>
+                        <Feature name="Gazon" />
+                        <Feature name="Gravier" activate="true" />
+                        <Feature name="Sable" activate="true"/>
+                    </subFeature>
+                </subFeature>
+            </Feature>
+            <Feature name="Plantes" optional="true" activate="true">
+                <subFeature>
+                    <subFeature type="OR">
+                        <Feature name="Arbres" activate="true">
+                            <subFeature>
+                                <subFeature type="OR">
+                                    <Feature name="Fruitiers">
+                                        <subFeature>
+                                            <Feature name="Pommiers"/>
+                                            <Feature name="Cerisiers" />
+                                            <Feature name="Pruniers" />
+                                        </subFeature>
+                                    </Feature>
+                                    <Feature name="Ornementaux" activate="true" >
+                                        <subFeature>
+                                            <Feature name="Feuillus" optional="true" activate="true" />
+                                            <Feature name="Pins" optional="true" activate="true" />
+                                            <Feature name="Buis" optional="true"  />
+                                        </subFeature>
+                                    </Feature>
+                                </subFeature>
+                            </subFeature>
+                        </Feature>
+                        <Feature name="Fleurs" activate="true" >
+                            <subFeature>
+                                <subFeature type="OR">
+                                    <Feature name="Roses" />
+                                    <Feature name="Tulipes" />
+                                    <Feature name="Marguerites" />
+                                    <Feature name="Lavandes" activate="true" />
+                                </subFeature>
+                            </subFeature>
+                        </Feature>
+                    </subFeature>
+                </subFeature>
+            </Feature>
+            <Feature name="Éléments_d'eau" optional="true">
+                <subFeature>
+                    <subFeature type="XOR">
+                        <Feature name="Bassin" />
+                        <Feature name="Étang" />
+                        <Feature name="Cascade" />
+                    </subFeature>
+                </subFeature>
+            </Feature>
+        </subFeature>
+    </Feature>
+</Features>
+
+
+</FeatureModel>

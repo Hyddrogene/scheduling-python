@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<FeatureModel name="feature model for UTP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="featureModel-schema.xsd">
+
+    
+
+
+   <Features>         
+
+
+    <Feature name="attending" mandatory="true">
+        <!-- Features related to session attendance -->
+    <subFeature >
+        <Feature name="session-overlap " optional="true"/>
+        <Feature name="sectioning" optional="true"/>
+    </subFeature >
+    </Feature>
+
+</Features> 
+
+</FeatureModel>

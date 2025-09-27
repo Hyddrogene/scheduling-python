@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<FeatureModel name="feature model for UTP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="featureModel-schema.xsd">
+
+    
+
+
+   <Features>         
+
+    <Feature name="hosting" mandatory="False">
+        <!-- Hosting features  -->
+    <subFeature>
+        <subFeature type="OR">
+            <Feature name="no-room" />
+            <Feature name="single-room" />
+            <Feature name="multi-room" />
+        </subFeature>
+        <Feature name="room-capacity" optional="true"/>
+        <subFeature type="XOR">
+            <Feature name="all-exclusive"/>
+            <Feature name="none-exclusive" />
+            <Feature name="some-exclusive"/>
+        </subFeature>
+    </subFeature>
+    </Feature>
+
+
+</Features> 
+
+</FeatureModel>
+ 

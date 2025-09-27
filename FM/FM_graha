@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<FeatureModel name="feature model for UTP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="featureModel-schema.xsd">
+<Features>
+    <Feature name="Ordonnancement" mandatory="true">
+        <subFeature>
+            <Feature name="Problème">
+                <subFeature>
+                    <subFeature type="XOR">
+                        <Feature name="Flow Shop" />
+                        <Feature name="Job Shop" />
+                        <Feature name="Open Shop" />
+                        <Feature name="Mixed Shop" />
+                        <!--<Feature name="Hybrid Flow Shop" />-->
+                        <!--<Feature name="Flexible Job Shop" />-->
+                    </subFeature>
+                    <Feature name="machine" >
+                        <subFeature>
+                            <Feature name="#machine" />
+                            <Feature name="charge machine" >
+                                <subFeature>
+                                    <subFeature type="XOR">
+                                        <Feature name="charge machine = 1" />
+                                        <Feature name="charge machine = p" />
+                                    </subFeature>
+                                </subFeature>
+                            </Feature>
+                        </subFeature>
+                    </Feature>
+                </subFeature>
+            </Feature>
+            
+            <subFeature type="XOR">
+                <Feature name="Critère d'optimisation" optional="true">
+                <subFeature>
+                    <subFeature type="OR">
+                        <Feature name="Makespan" />
+                        <Feature name="Retard" />
+                        <Feature name="Avance" />
+                        <Feature name="Temps de traitement max" />
+                        <Feature name="Nombre de tâches en retard" />
+                        <Feature name="Retard pondéré" />
+                        <Feature name="Temps total de complétion" />
+                    </subFeature>
+                </subFeature>
+            </Feature>
+            <Feature name="Satisfaction"/>
+            </subFeature>
+
+            <Feature name="Contraintes supplémentaires" optional="true">
+                <subFeature>
+                   <!-- <subFeature type="OR">
+                        <Feature name="Dates de livraison" />
+                        <Feature name="Priorités" />
+                        <Feature name="Séquences imposées" />
+                        <Feature name="Périodes de maintenance" />
+                        <Feature name="Capacité des ressources" />
+                        <Feature name="Disponibilité des ressources" />
+                        <Feature name="Temps de mise en place" />
+                        <Feature name="Intervalles de temps" />
+                    </subFeature>-->
+                    <subFeature type="OR">
+                        <Feature name="Temps de traitement">
+                            <subFeature>
+                                <subFeature type="OR">
+                                    <Feature name="pi">
+                                        <subFeature>
+                                            <subFeature type="XOR">
+                                                <Feature name="pi = p" />
+                                                <Feature name="pi = 1" />
+                                            </subFeature>
+                                        </subFeature>
+                                    </Feature>
+                                    <Feature name="rj" />
+                                    <Feature name="online" />
+                                    <Feature name="dj" />
+                                    <Feature name="pmtn" />
+                                    <Feature name="sizej" />
+                                </subFeature>
+                            </subFeature>
+                        </Feature>
+                        <Feature name="Précédence">
+                            <subFeature>
+                                <subFeature type="OR">
+                                    <Feature name="prec" />
+                                    <Feature name="chains" />
+                                    <Feature name="tree" />
+                                    <Feature name="intree" />
+                                    <Feature name="outtree" />
+                                </subFeature>
+                            </subFeature>
+                        </Feature> 
+                        
+                        <Feature name="Décalage">
+                            <subFeature>
+                                <subFeature type="OR">
+                                    <Feature name="ℓ" />
+                                    <Feature name="ℓij" />
+                                </subFeature>
+                            </subFeature>
+                        </Feature> 
+                                    
+                        <Feature name="Temps de transport">
+                          <subFeature>
+                                <subFeature type="OR">
+                                    <Feature name="tjk" />
+                                    <Feature name="tjkl" />
+                                    <Feature name="tk" />
+                                    <Feature name="tkl" />
+                                    <Feature name="tj" />
+                                </subFeature>
+                            </subFeature>
+                        </Feature> 
+                        <Feature name="Autres">
+                            <subFeature>
+                                <subFeature type="OR">
+                                    <Feature name="rcrc" />
+                                    <Feature name="no-wait" />
+                                    <Feature name="no-idle" />
+                                    <Feature name="fixj" />
+                                    <Feature name="Mj" />
+                                </subFeature>
+                            </subFeature>
+                        </Feature> 
+                        
+                    </subFeature>
+                </subFeature>
+            </Feature>
+            <Feature name="Types de ressources" optional="true">
+                <subFeature>
+                    <subFeature type="OR">
+                        <Feature name="Renouvelable" />
+                        <Feature name="Consommable" />
+                        <Feature name="Double-contrainte" />
+                    </subFeature>
+                    <Feature name='Nature'>
+                        <subFeature>
+                            <subFeature type="XOR">
+                                <Feature name="Continue"/>
+                                <Feature name="Continue et discrète"/>
+                                <Feature name="Discrète"/>
+                            </subFeature>
+                        </subFeature>
+                    </Feature>
+                </subFeature>
+            </Feature>
+
+            <!--<Feature name="Environnement" optional="true">
+                <subFeature>
+                    <subFeature type="XOR">
+                        <Feature name="Stochastique" />
+                        <Feature name="Dynamique" />
+                        <Feature name="Statique" />
+                    </subFeature>
+                </subFeature>
+            </Feature>-->
+        </subFeature>
+    </Feature>
+</Features>
+</FeatureModel>

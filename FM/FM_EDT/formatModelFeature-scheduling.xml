@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<FeatureModel name="feature model for UTP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="featureModel-schema.xsd">
+
+    
+
+
+   <Features>         
+    <Feature name="scheduling" mandatory="true">
+        <subFeature>
+            <Feature name="no-overlap" optional="true"/>
+            <Feature name="same-duration" optional="true"/>
+            <Feature name="modular" optional="true"/>
+        </subFeature>
+    </Feature>
+</Features> 
+
+</FeatureModel>
+ 

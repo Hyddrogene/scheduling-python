@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<FeatureModel name="feature model for UTP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="featureModel-schema.xsd">
+<Features>
+    <Feature name="Logiciel" mandatory="true">
+        <subFeature>
+            <Feature name="lecture_de_fichiers" mandatory="true">
+                <subFeature>
+                    <subFeature type="OR">
+                        <Feature name="csv" />
+                        <Feature name="excel" />
+                        <Feature name="json" />
+                    </subFeature>
+                </subFeature>
+            </Feature>
+            <Feature name="exportation_de_données" optional="true">
+                <subFeature>
+                    <subFeature type="OR">
+                        <Feature name="pdf" />
+                        <Feature name="word" />
+                        <Feature name="html" />
+                    </subFeature>
+                </subFeature>
+            </Feature>
+            <Feature name="interface_utilisateur" optional="true">
+                <subFeature>
+                    <subFeature type="XOR">
+                        <Feature name="graphique" />
+                        <Feature name="ligne_de_commande" />
+                    </subFeature>
+                </subFeature>
+            </Feature>
+            <Feature name="fonctionnalités_avancées" optional="true">
+                <subFeature>
+                    <subFeature type="OR">
+                        <Feature name="analyse_de_données" />
+                        <Feature name="visualisation_de_données" />
+                        <Feature name="rapport_automatique" />
+                    </subFeature>
+                </subFeature>
+            </Feature>
+        </subFeature>
+    </Feature>
+</Features>
+    
+
+
+
+
+</FeatureModel>

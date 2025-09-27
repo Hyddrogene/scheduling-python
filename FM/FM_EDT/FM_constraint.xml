@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<FeatureModel name="feature model for UTP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="featureModel-schema.xsd">
+
+    
+
+
+   <Features>         
+    <Feature name="Timetabling problem" > 
+    <subFeature>
+    <Feature name="courses" mandatory="true">
+    </Feature>
+    <Feature name="timing" mandatory="true">
+        <!-- Timing features for scheduling -->
+    </Feature>
+    <Feature name="hosting" mandatory="False">
+        <!-- Hosting features  -->
+    </Feature>
+        <Feature name="teaching" mandatory="False">
+    </Feature>
+    <Feature name="attending" optional="true">
+    </Feature>
+
+    <Feature name="crosscutting" optional="true">
+        <!-- Features related to across various aspects of the UTP -->
+    <subFeature >
+        <Feature name="calendar" optional="true"/>
+        <Feature name="regularity" optional="true"/>
+        <Feature name="orchestration" optional="true"/>
+        <Feature name="workload" optional="true"/>
+        <Feature name="logistics" optional="true"/>
+        <Feature name="resourcing" optional="true"/>
+    </subFeature >
+   </Feature>
+
+   
+        
+    </subFeature>
+    </Feature> 
+</Features> 
+
+
+
+</FeatureModel>
+

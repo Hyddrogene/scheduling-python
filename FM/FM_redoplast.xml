@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<FeatureModel name="feature model for UTP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="featureModel-schema.xsd">
+<Features>
+    <Feature name="Timetabling Language" mandatory="true">
+        <subFeature>
+            <Feature name="Resources" mandatory="true">
+                <subFeature>
+                    <Feature name="Classes" mandatory="true">
+                        <subFeature>
+                            <Feature name="Ordinary" />
+                            <Feature name="Composite" />
+                        </subFeature>
+                    </Feature>
+                    <Feature name="Courses" />
+                    <Feature name="Locations">
+                        <subFeature>
+                            <Feature name="Rooms">
+                                <subFeature>
+                                    <Feature name="Single" />
+                                    <Feature name="Set" />
+                                </subFeature>
+                            </Feature>
+                            <Feature name="Sites" />
+                        </subFeature>
+                    </Feature>
+                    <Feature name="Teachers" />
+                    <Feature name="Time">
+                        <subFeature>
+                            <Feature name="Days" />
+                            <Feature name="Timeslots" />
+                            <Feature name="Shifts" />
+                        </subFeature>
+                    </Feature>
+                </subFeature>
+            </Feature>
+            <Feature name="Sentences" />
+            <Feature name="Algorithms">
+                <subFeature>
+                    <Feature name="Checking Timetables" />
+                    <Feature name="Solving Timetables">
+                        <subFeature>
+                            <Feature name="ILP" />
+                            <Feature name="Hill Climbing" />
+                            <Feature name="Other Algorithms" />
+                        </subFeature>
+                    </Feature>
+                </subFeature>
+            </Feature>
+            <Feature name="Constraints" mandatory="true">
+                <subFeature>
+                    <Feature name="Hard Constraints">
+                        <subFeature>
+                            <Feature name="Problem Requirement">
+                                <subFeature>
+                                    <Feature name="Event Amount" />
+                                    <Feature name="Lunch Break" />
+                                </subFeature>
+                            </Feature>
+                            <Feature name="No Clashes">
+                                <subFeature>
+                                    <Feature name="Once per Time Slot" />
+                                    <Feature name="Overlapping Timeslots" />
+                                    <Feature name="Specific Pairs of Teachers/Classes" />
+                                </subFeature>
+                            </Feature>
+                            <Feature name="Workload">
+                                <subFeature>
+                                    <Feature name="Limit Daily Events to">
+                                        <subFeature>
+                                            <Feature name="Teachers" />
+                                            <Feature name="Classes" />
+                                        </subFeature>
+                                    </Feature>
+                                </subFeature>
+                            </Feature>
+                            <Feature name="Resource Utilization">
+                                <subFeature>
+                                    <Feature name="Capacity" />
+                                    <Feature name="Use All Rooms" />
+                                    <Feature name="Dedicated to Rooms">
+                                        <subFeature>
+                                            <Feature name="Course" />
+                                            <Feature name="Event" />
+                                            <Feature name="Teachers" />
+                                            <Feature name="Classes" />
+                                        </subFeature>
+                                    </Feature>
+                                </subFeature>
+                            </Feature>
+                            <Feature name="Period Distribution">
+                                <subFeature>
+                                    <Feature name="No Idle Periods">
+                                        <subFeature>
+                                            <Feature name="Classes" />
+                                            <Feature name="Teachers" />
+                                        </subFeature>
+                                    </Feature>
+                                    <Feature name="Lessons Spread">
+                                        <subFeature>
+                                            <Feature name="Classes" />
+                                            <Feature name="Teachers" />
+                                        </subFeature>
+                                    </Feature>
+                                    <Feature name="Group Events per Site" />
+                                    <Feature name="Multiple Sites" />
+                                </subFeature>
+                            </Feature>
+                            <Feature name="Lesson">
+                                <subFeature>
+                                    <Feature name="Fixed Schedule" />
+                                    <Feature name="Lesson Sequences">
+                                        <subFeature>
+                                            <Feature name="Doubles/Triples" />
+                                        </subFeature>
+                                    </Feature>
+                                    <Feature name="No Clashes Exceptions" />
+                                    <Feature name="Splitting Classes" />
+                                    <Feature name="Merging Classes" />
+                                    <Feature name="Simultaneous Lessons" />
+                                </subFeature>
+                            </Feature>
+                        </subFeature>
+                    </Feature>
+                    <Feature name="Soft Constraints">
+                        <subFeature>
+                            <Feature name="Resource Utilization">
+                                <subFeature>
+                                    <Feature name="Time to Travel" />
+                                    <Feature name="Room Cost" />
+                                </subFeature>
+                            </Feature>
+                            <Feature name="Period Distribution">
+                                <subFeature>
+                                    <Feature name="Minimize Idle Periods" />
+                                </subFeature>
+                            </Feature>
+                            <Feature name="Preference">
+                                <subFeature>
+                                    <Feature name="Timeslots" />
+                                </subFeature>
+                            </Feature>
+                        </subFeature>
+                    </Feature>
+                </subFeature>
+            </Feature>
+            <Feature name="Translating to Other Formats" optional="true" />
+        </subFeature>
+    </Feature>
+</Features>
+</FeatureModel>

@@ -1,0 +1,32 @@
+// Feature Model
+digraph {
+	Cours [label=Cours color=black penwidth=1 shape=ellipse]
+	Horaires [label=Horaires color=red penwidth=4 shape=ellipse]
+	Cours -> Horaires
+	Salles [label=Salles color=black penwidth=1 shape=ellipse]
+	Cours -> Salles
+	Enseignant [label=Enseignant color=black penwidth=1 shape=ellipse]
+	Cours -> Enseignant
+	"Modalité" [label="Modalité" color=red penwidth=4 shape=ellipse]
+	Cours -> "Modalité"
+	XOR0 [label="" color=black fillcolor=white height=0.3 shape=diamond style=filled width=0.3]
+	"Modalité" -> XOR0 [arrowhead=none]
+	CM [label=CM color=black penwidth=1 shape=ellipse]
+	XOR0 -> CM [arrowhead=none style=dashed]
+	TD [label=TD color=black penwidth=1 shape=ellipse]
+	XOR0 -> TD [arrowhead=none style=dashed]
+	TP [label=TP color=black penwidth=1 shape=ellipse]
+	XOR0 -> TP [arrowhead=none style=dashed]
+	"Matériel" [label="Matériel" color=black penwidth=1 shape=ellipse]
+	Cours -> "Matériel"
+	OR1 [label="" color=black fillcolor=black height=0.3 shape=ellipse style=filled width=0.3]
+	"Matériel" -> OR1 [arrowhead=none]
+	Tableau [label=Tableau color=black penwidth=1 shape=ellipse]
+	OR1 -> Tableau [arrowhead=none style=dashed]
+	"Vidéoprojecteur" [label="Vidéoprojecteur" color=black penwidth=1 shape=ellipse]
+	OR1 -> "Vidéoprojecteur" [arrowhead=none style=dashed]
+	"Tableau interactif" [label="Tableau interactif" color=black penwidth=1 shape=ellipse]
+	OR1 -> "Tableau interactif" [arrowhead=none style=dashed]
+	Micro [label=Micro color=black penwidth=1 shape=ellipse]
+	OR1 -> Micro [arrowhead=none style=dashed]
+}

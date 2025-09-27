@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<FeatureModel name="feature model for UTP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="featureModel-schema.xsd">
+
+    
+
+
+   <Features>         
+
+        <Feature name="teaching" mandatory="False">
+        <!-- Teaching features -->
+        <subFeature>
+        <subFeature type="OR">
+            <Feature name="no-teacher" />
+            <Feature name="single-teacher" />
+            <Feature name="multi-teacher"/>
+        </subFeature>
+        <Feature name="session-overlap" optional="true"/>
+        <Feature name="service" optional="true"/>
+        </subFeature>
+    </Feature>
+
+
+
+</Features> 
+
+</FeatureModel>

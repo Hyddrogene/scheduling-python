@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<FeatureModel name="feature model for UTP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="featureModel-schema.xsd">
+<Features>
+    
+    
+    <Feature name="Timetabling Language" mandatory="true">
+        <subFeature>
+            <Feature name="Resources" mandatory="true">
+                <subFeature>
+                    <Feature name="   Classes   " mandatory="true">
+                        <subFeature>
+                            <Feature name="Ordinary" mandatory="true" />
+                            <Feature name="Composite" />
+                            <Feature name="SubGroup" mandatory="true" />
+
+                        </subFeature>
+                    </Feature>
+                    <Feature name="Courses " mandatory="true" >
+                        <subFeature>
+                            <Feature name="Category" />
+                        </subFeature>
+                    </Feature>
+                    <Feature name="Locations" mandatory="true" >
+                        <subFeature>
+                            <Feature name="  Rooms   " mandatory="true">
+                                <subFeature  >
+                                    <subFeature type="OR" >
+                                    <Feature name="Single" />
+                                    <Feature name="Set" />
+                                    </subFeature>
+                                </subFeature>
+                            </Feature>
+                            <Feature name="Sites" />
+                        </subFeature>
+                    </Feature>
+                    <Feature name="  Teachers    " mandatory="true" />
+                    <Feature name="Time" mandatory="true">
+                        <subFeature>
+                            <Feature name="Days" mandatory="true" />
+                            <Feature name="Timeslots " mandatory="true" />
+                            <Feature name="Shifts" />
+                        </subFeature>
+                    </Feature>
+                </subFeature>
+            </Feature>
+            <Feature name="Sentences" mandatory="true" />
+            <Feature name="Algorithms" mandatory="true" >
+                <subFeature>
+                    <subFeature type="OR" >
+                    <Feature name="Checking Timetables" />
+                    <Feature name="Solving Timetables">
+                        <subFeature>
+                            <subFeature type="OR" >
+                            <Feature name="ILP" />
+                            <Feature name="Hill Climbing" />
+                            <Feature name="Other Algorithms" />
+                            </subFeature>
+                        </subFeature>
+                    </Feature>
+                    <Feature name="Translating to Other Formats" optional="true" />
+                    </subFeature>
+                </subFeature>
+            </Feature>
+    
+    
+    <Feature name="Constraints" mandatory="true">
+        <subFeature>
+            <Feature name="Hard Constraints">
+                <subFeature>
+                    <Feature name="Problem Requirement" mandatory="true">
+                        <subFeature>
+                            <Feature name="Event Amount" mandatory="true" >
+                                <subFeature>
+                                    <Feature name="Teacher / Class" mandatory="true" />
+                                    <Feature name="Class / Course" mandatory="true" />
+                                </subFeature>
+                            </Feature>
+                            <Feature name="Lunch Break" mandatory="False" />
+                        </subFeature>
+                    </Feature>
+                    <Feature name="No Clashes" mandatory="true" >
+                        <subFeature>
+                            <Feature name="Once per Time Slot" mandatory="true" >
+                                <subFeature>
+                                    <Feature name="  Classes   " mandatory="true" />
+                                    <Feature name="  Rooms  " mandatory="true" />
+                                    <Feature name="  Teachers   " mandatory="true" />
+                                </subFeature>
+                            </Feature>
+                            <Feature name="Overlapping Timeslots" mandatory="False" />
+
+                        </subFeature>
+                    </Feature>
+                    <Feature name="Workload" mandatory="true" >
+                        <subFeature>
+                            <Feature name="Limit Daily Events To" mandatory="true">
+                                <subFeature>
+                                    <Feature name="Teachers " mandatory="true" />
+                                    <Feature name="Classes " mandatory="true" >
+                                        <subFeature>
+                                            <Feature name="Totally" mandatory="true" />
+                                            <Feature name="Per Course" mandatory="False" />
+                                            <Feature name="Per Course Category" mandatory="False" />
+                                        </subFeature>
+                                    </Feature>
+                                </subFeature>
+                            </Feature>
+
+                        </subFeature>
+                    </Feature>
+                    <Feature name="Resource Utilization">
+                        <subFeature>
+                            
+                            <Feature name="Do Not Schedule at Same Time Specific Pair Of">
+                                <subFeature>
+                                    <Feature name="Classes   " mandatory="False" />
+                                    <Feature name="Rooms   " mandatory="true" />
+                                    <Feature name="Teachers   " mandatory="true" />
+                                </subFeature>
+                            </Feature>
+                            
+                            
+                            <Feature name="Rooms">
+                                <subFeature>
+                                    <Feature name="Capacity" mandatory="False" />
+                                    <Feature name="Dedicated to" mandatory="true" >
+                                        <subFeature>
+                                            <Feature name="Course" mandatory="true" />
+                                            <Feature name="Event" mandatory="true" />
+                                            <Feature name=" Classes  " mandatory="true" />
+                                            <Feature name=" Teachers" mandatory="true" />
+                                            <Feature name=" Rooms" mandatory="true" />
+
+                                        </subFeature>
+                                    </Feature>
+                                    <Feature name="Use All" mandatory="False" />
+                                </subFeature>
+                            </Feature>
+                            
+                            <Feature name="Multiple Sites" mandatory="False" >
+                                <subFeature>
+                                    <Feature name="Time to Travel" mandatory="False" />
+                                    <Feature name="Group Events Per Site" mandatory="False" />
+                                </subFeature>
+                            </Feature>
+                            
+                            
+                            <Feature name="Unavailable Periods" mandatory="true">
+                                <subFeature>
+                                    <Feature name="  Rooms" mandatory="true" />
+                                    <Feature name="  Classes" mandatory="true" />
+                                    <Feature name="  Teachers" mandatory="true" />
+                                </subFeature>
+                            </Feature>
+                            
+                        </subFeature>
+                    </Feature>
+                    
+                    
+                    
+                    <Feature name="Period Distribution">
+                        <subFeature>
+                            <Feature name="No Idle Periods" mandatory="False">
+                                <subFeature>
+                                    <Feature name="  Classes  " mandatory="False" />
+                                    <Feature name="  Teachers  " mandatory="False" />
+                                </subFeature>
+                            </Feature>
+                            <Feature name="Lessons Spread" mandatory="true">
+                                <subFeature>
+                                    <Feature name=" Classes  " mandatory="true"/>
+                                    <Feature name=" Teachers  " mandatory="true" />
+                                </subFeature>
+                            </Feature>
+                        </subFeature>
+                    </Feature>
+                    <Feature name="Lesson" mandatory="true">
+                        <subFeature>
+                            <Feature name="Fixed Schedule" mandatory="true" />
+                            <Feature name="Lesson Sequences" mandatory="False" />
+                            <Feature name="Doubles / Triples" mandatory="true" />
+                            <Feature name="No Clashes Exceptions" mandatory="False">
+                                <subFeature>
+                                    <Feature name="Splitting Classes" mandatory="False"/>
+                                    <Feature name="Merging Classes" mandatory="False" />
+                                    <Feature name="Simultaneous Lessons" mandatory="False" />
+                                </subFeature>
+                            </Feature>
+                        </subFeature>
+                    </Feature>
+                </subFeature>
+            </Feature>
+            <Feature name="Soft Constraints" mandatory="true">
+                <subFeature>
+                    <Feature name="Resource Utilization " mandatory="False">
+                        <subFeature>
+                            <Feature name="Time to Travel" mandatory="False"/>
+                            <Feature name="Room Cost" mandatory="False"/>
+                        </subFeature>
+                    </Feature>
+                    <Feature name="Period Distribution" mandatory="False">
+                        <subFeature>
+                            <Feature name="Minimize Idle Periods" mandatory="False" >
+                                <subFeature>
+                                    <Feature name="Classes" mandatory="False" />
+                                    <Feature name="Teachers" mandatory="False" />
+                                </subFeature>
+                            </Feature>
+                        </subFeature>
+                    </Feature>
+                    <Feature name="Preference" mandatory="true">
+                        <subFeature>
+                            <Feature name="Timeslots" mandatory="true">
+                                <subFeature>
+                                    <Feature name=" Classes  " mandatory="true" />
+                                    <Feature name=" Teachers  " mandatory="true" />
+                                </subFeature>
+                            </Feature>
+                        </subFeature>
+                    </Feature>
+                </subFeature>
+            </Feature>
+        </subFeature>
+    </Feature>
+            
+        </subFeature>
+    </Feature>
+</Features>
+</FeatureModel>

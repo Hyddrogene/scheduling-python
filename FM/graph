@@ -1,0 +1,86 @@
+digraph {
+	nodesep=0 pad=0.5 ranksep=0.5
+	Teacher1 [color=black fillcolor="#FF6347" penwidth=2 shape=oval style=filled]
+	Teacher2 [color=black fillcolor="#4682B4" penwidth=2 shape=oval style=filled]
+	AlgoLec [color=red fillcolor="#FF4500" penwidth=4 shape=box style=filled]
+	AlgoLab [color=black fillcolor="#006400" penwidth=2 shape=box style=filled]
+	Algorithmic [color=black fillcolor="#8B4513" penwidth=2 shape=box style=filled]
+	AlgoLec1 [color=black fillcolor="#FFA07A" penwidth=2 shape=box style=filled]
+	"AlgoLec1-1" [color=black fillcolor="#FFD700" penwidth=2 shape=box style=filled]
+	"AlgoLec1-2" [color=black fillcolor="#FFD700" penwidth=2 shape=box style=filled]
+	"AlgoLec1-3" [color=black fillcolor="#FFD700" penwidth=2 shape=box style=filled]
+	"AlgoLec1-4" [color=black fillcolor="#FFD700" penwidth=2 shape=box style=filled]
+	AlgoLab1 [color=black fillcolor="#32CD32" penwidth=2 shape=box style=filled]
+	AlgoLab2 [color=black fillcolor="#32CD32" penwidth=2 shape=box style=filled]
+	AlgoLab3 [color=black fillcolor="#32CD32" penwidth=2 shape=box style=filled]
+	"AlgoLab1-1" [color=black fillcolor="#7FFF00" penwidth=2 shape=box style=filled]
+	"AlgoLab1-2" [color=black fillcolor="#7FFF00" penwidth=2 shape=box style=filled]
+	"AlgoLab2-1" [color=black fillcolor="#7FFF00" penwidth=2 shape=box style=filled]
+	"AlgoLab2-2" [color=black fillcolor="#7FFF00" penwidth=2 shape=box style=filled]
+	"AlgoLab3-1" [color=black fillcolor="#7FFF00" penwidth=2 shape=box style=filled]
+	"AlgoLab3-2" [color=black fillcolor="#7FFF00" penwidth=2 shape=box style=filled]
+	"Room 1 Lab" [color=black fillcolor="#2E8B57" penwidth=2 shape=oval style=filled]
+	"Room 2 Lab" [color=black fillcolor="#DA70D6" penwidth=2 shape=oval style=filled]
+	"Room 3 Lec" [color=red fillcolor="#8B0000" penwidth=4 shape=oval style=filled]
+	Teacher1 -> AlgoLec
+	Teacher1 -> AlgoLab
+	Teacher2 -> AlgoLab
+	Algorithmic -> AlgoLec
+	Algorithmic -> AlgoLab
+	AlgoLec -> AlgoLec1
+	AlgoLec1 -> "AlgoLec1-1"
+	AlgoLec1 -> "AlgoLec1-2"
+	AlgoLec1 -> "AlgoLec1-3"
+	AlgoLec1 -> "AlgoLec1-4"
+	AlgoLab -> AlgoLab1
+	AlgoLab -> AlgoLab2
+	AlgoLab -> AlgoLab3
+	AlgoLab1 -> "AlgoLab1-1"
+	AlgoLab1 -> "AlgoLab1-2"
+	AlgoLab2 -> "AlgoLab2-1"
+	AlgoLab2 -> "AlgoLab2-2"
+	AlgoLab3 -> "AlgoLab3-1"
+	AlgoLab3 -> "AlgoLab3-2"
+	"Room 1 Lab" -> AlgoLab
+	"Room 2 Lab" -> AlgoLab
+	"Room 3 Lec" -> AlgoLec
+	Invisible [style=invis]
+	Invisible2 [style=invis]
+	Invisible3 [style=invis]
+	Invisible4 [style=invis]
+	Invisible5 [style=invis]
+	Invisible6 [height=0.5 shape=point style=invis width=0.5]
+	Teacher1 -> Algorithmic [style=invis]
+	Teacher2 -> Algorithmic [style=invis]
+	"Room 1 Lab" -> Algorithmic [style=invis]
+	"Room 2 Lab" -> Algorithmic [style=invis]
+	"Room 3 Lec" -> Algorithmic [style=invis]
+	Invisible -> Algorithmic [style=invis]
+	Algorithmic -> Invisible2 [style=invis]
+	Algorithmic -> Invisible4 [style=invis]
+	Algorithmic -> Invisible5 [style=invis]
+	Invisible6 -> "AlgoLab1-2" [style=invis]
+	Invisible6 -> "AlgoLab2-1" [style=invis]
+	Algorithmic -> Invisible3 [style=invis]
+	{
+		rank=same
+		Invisible6
+		"AlgoLab1-2"
+		"AlgoLab2-1"
+	}
+	{
+		rank=same
+		Teacher1
+		Teacher2
+	}
+	{
+		rank=same ranksep=2
+		AlgoLec
+		AlgoLab
+	}
+	{
+		rank=same ranksep=3
+		"Room 1 Lab"
+		"Room 2 Lab"
+	}
+}

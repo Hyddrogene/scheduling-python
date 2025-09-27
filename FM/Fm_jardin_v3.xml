@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<FeatureModel name="feature model for UTP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="featureModel-schema.xsd">
+
+<Features>
+    <Feature name="Jardin" mandatory="true">
+        <subFeature>
+            <Feature name="Mobilier" optional="true">
+                <subFeature>
+                    <subFeature type="OR">
+                        <Feature name="Banc" />
+                        <Feature name="Pont" />
+                        <Feature name="Terrasse" />
+                        <Feature name="Fontaine" />
+                    </subFeature>
+                </subFeature>
+            </Feature>
+            <Feature name="Type_de_sol" optional="true">
+                <subFeature>
+                    <subFeature type="OR">
+                        <Feature name="Terre" />
+                        <Feature name="Gazon" />
+                        <Feature name="Gravier" />
+                        <Feature name="Sable" />
+                    </subFeature>
+                </subFeature>
+            </Feature>
+            <Feature name="Plantes" optional="true">
+                <subFeature>
+                    <subFeature type="OR">
+                        <Feature name="Arbres">
+                            <subFeature>
+                                <subFeature type="OR">
+                                    <Feature name="Fruitiers">
+                                        <subFeature>
+                                            <Feature name="Pommiers" optional="true" />
+                                            <Feature name="Cerisiers" optional="true" />
+                                            <Feature name="Pruniers" optional="true" />
+                                        </subFeature>
+                                    </Feature>
+                                    <Feature name="Ornementaux">
+                                        <subFeature>
+                                            <Feature name="Érables" optional="true" />
+                                            <Feature name="Pins" optional="true" />
+                                            <Feature name="Buis" optional="true" />
+                                        </subFeature>
+                                    </Feature>
+                                </subFeature>
+                            </subFeature>
+                        </Feature>
+                        <Feature name="Fleurs">
+                            <subFeature>
+                                <subFeature type="OR">
+                                    <Feature name="Roses" />
+                                    <Feature name="Tulipes" />
+                                    <Feature name="Marguerites" />
+                                    <Feature name="Lavandes" />
+                                </subFeature>
+                            </subFeature>
+                        </Feature>
+                    </subFeature>
+                </subFeature>
+            </Feature>
+            <Feature name="Éléments_d'eau" optional="true">
+                <subFeature>
+                    <subFeature type="XOR">
+                        <Feature name="Bassin" />
+                        <Feature name="Étang" />
+                        <Feature name="Cascade" />
+                    </subFeature>
+                </subFeature>
+            </Feature>
+        </subFeature>
+    </Feature>
+</Features>
+
+
+</FeatureModel>

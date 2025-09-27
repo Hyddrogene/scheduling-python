@@ -1,0 +1,17 @@
+// REDOSPLAT Workflow
+digraph {
+	A [label="Déclaration du problème en syntaxe REDOSPLAT"]
+	B [label="Analyse comme un Feature Model"]
+	C [label="Analyse comme une Grammaire via COCO/R en C++"]
+	D [label="Structure Intermédiaire"]
+	E1 [label="Vérification de la Solution"]
+	E2 [label="Résolution avec ILP en 2 phases"]
+	E3 [label="Transformation en autre schéma (XHSTT, ITC 2007, etc.)"]
+	A -> B
+	A -> C
+	B -> D
+	C -> D
+	D -> E1
+	D -> E2
+	D -> E3
+}
