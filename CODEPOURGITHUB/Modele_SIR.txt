@@ -1,0 +1,56 @@
+Un modèle épidémiologique est un modèle mathématique qui permet de simuler la propagation d'une maladie dans une population. Il existe plusieurs types de modèles épidémiologiques, mais l'un des plus couramment utilisés est le modèle SIR, qui permet de modéliser la propagation d'une maladie infectieuse à travers une population.
+
+Voici un exemple de modèle SIR en Python :
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Paramètres du modèle
+beta = 0.2    # Taux de transmission
+gamma = 0.1   # Taux de guérison
+sigma = 0.05  # Taux d'incubation
+
+# Conditions initiales
+N = 1000     # Population totale
+I0 = 1       # Nombre initial de cas infectieux
+E0 = 0       # Nombre initial de cas exposés
+R0 = 0       # Nombre initial de personnes guéries
+S0 = N - I0 - E0 - R0  # Nombre initial de personnes susceptibles
+
+# Fonctions pour le modèle
+def deriv(y, t, N, beta, gamma, sigma):
+    S, E, I, R = y
+    dSdt = -beta * S * I / N
+    dEdt = beta * S * I / N - sigma * E
+    dIdt = sigma * E - gamma * I
+    dRdt = gamma * I
+    return dSdt, dEdt, dIdt, dRdt
+
+# Intervalle de temps (en jours)
+t = np.linspace(0, 100, 100)
+
+# Résolution du système d'équations différentielles
+y0 = S0, E0, I0, R0
+ret = odeint(deriv, y0, t, args=(N, beta, gamma, sigma))
+S, E, I, R = ret.T
+
+# Tracé des courbes
+fig = plt.figure(facecolor='w')
+ax = fig.add_subplot(111, axisbelow=True)
+ax.plot(t, S/N, 'b', alpha=0.5, lw=2, label='Susceptibles')
+ax.plot(t, E/N, 'y', alpha=0.5, lw=2, label='Exposés')
+ax.plot(t, I/N, 'r', alpha=0.5, lw=2, label='Infectieux')
+ax.plot(t, R/N, 'g', alpha=0.5, lw=2, label='Guéris')
+ax.set_xlabel('Temps (jours)')
+ax.set_ylabel('Proportion de la population')
+ax.set_ylim(0,1.2)
+ax.yaxis.set_tick_params(length=0)
+ax.xaxis.set_tick_params(length=0)
+ax.grid(b=True, which='major', c='w', lw=2, ls='-')
+legend = ax.legend()
+legend.get_frame().set_alpha(0.5)
+plt.show()
+
+
+Ce code implémente un modèle SEIR (Susceptibles-Exposés-Infectieux-Guéris), qui est similaire au modèle SIR mais prend en compte une période d'incubation pendant laquelle les personnes infectées ne sont pas encore contagieuses. Le modèle est résolu à l'aide de la fonction odeint du module scipy.integrate. Les résultats sont ensuite tracés à l'aide de la bibliothèque matplotlib.

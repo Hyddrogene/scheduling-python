@@ -1,0 +1,34 @@
+L'algorithme de Runge-Kutta est une méthode numérique pour résoudre les équations différentielles ordinaires. Voici un exemple de code Python implémentant la méthode de Runge-Kutta d'ordre 4 pour résoudre une équation différentielle du premier ordre : 
+
+
+import numpy as np
+
+def f(t, y):
+    # Equation différentielle à résoudre
+    return y - t**2 + 1
+
+# Définition des paramètres
+a = 0   # Temps initial
+b = 2   # Temps final
+N = 10  # Nombre d'itérations
+h = (b-a)/N  # Pas de temps
+t = a
+w = 0.5   # Valeur initiale de y
+
+# Boucle d'itération
+for i in range(N):
+    k1 = h*f(t, w)
+    k2 = h*f(t + h/2, w + k1/2)
+    k3 = h*f(t + h/2, w + k2/2)
+    k4 = h*f(t + h, w + k3)
+    w = w + (k1 + 2*k2 + 2*k3 + k4)/6
+    t = a + i*h
+    
+    # Affichage de la solution
+    print("t = {:.2f} ; y = {:.4f}".format(t, w))
+
+    
+    
+Dans cet exemple, l'équation différentielle à résoudre est y' = y - t^2 + 1. La fonction f(t, y) retourne la valeur de y' pour une paire (t, y) donnée. Les paramètres a, b et N définissent l'intervalle de temps de résolution, le pas de temps h est calculé en conséquence. La boucle d'itération calcule les valeurs successives de w en utilisant les coefficients k1, k2, k3 et k4 calculés à chaque étape. La solution est affichée pour chaque itération.
+
+Bien sûr, l'exemple donné est simple et la méthode de Runge-Kutta peut être utilisée pour résoudre des équations différentielles plus complexes avec plusieurs variables.

@@ -1,0 +1,67 @@
+Oui, voici un exemple de l'algorithme de recherche arborescente de Monte-Carlo (MCTS) en Python : 
+
+import random
+import math
+
+class Node:
+    def __init__(self, state, parent=None):
+        self.state = state
+        self.parent = parent
+        self.children = []
+        self.visits = 0
+        self.score = 0
+
+    def select_child(self, c):
+        ucb_scores = [(child.score / child.visits) + c * math.sqrt(2 * math.log(self.visits) / child.visits) for child in self.children]
+        return self.children[ucb_scores.index(max(ucb_scores))]
+
+    def expand(self, action_list):
+        for action in action_list:
+            child_state = self.state.perform_action(action)
+            self.children.append(Node(child_state, self))
+
+    def backpropagate(self, score):
+        self.visits += 1
+        self.score += score
+        if self.parent:
+            self.parent.backpropagate(score)
+
+class MCTS:
+    def __init__(self, root, c):
+        self.root = Node(root)
+        self.c = c
+
+    def search(self, num_iterations):
+        for i in range(num_iterations):
+            node = self.root
+            state = self.root.state.clone()
+
+            # Select
+            while node.children:
+                node = node.select_child(self.c)
+                state.perform_action(node.action)
+
+            # Expand
+            actions = state.get_actions()
+            if actions:
+                action = random.choice(actions)
+                state.perform_action(action)
+                node.expand(actions)
+                node = node.children[-1]
+
+            # Simulate
+            while state.get_actions():
+                action = random.choice(state.get_actions())
+                state.perform_action(action)
+
+            # Backpropagate
+            score = state.get_score()
+            node.backpropagate(score)
+
+        best_child = self.root.children[self.root.children.index(max(self.root.children, key=lambda x: x.visits))]
+        return best_child.action
+
+        
+Cet exemple implémente la recherche MCTS pour un jeu où l'on doit choisir une action à chaque étape. La classe Node représente un nœud de l'arbre de recherche, qui contient un état du jeu, un parent, des enfants, et des statistiques de visite et de score. La classe MCTS représente l'algorithme de recherche en tant que tel, avec une méthode search qui effectue num_iterations itérations de la recherche et renvoie l'action recommandée.
+
+Notez que cet exemple est assez général et peut être adapté pour de nombreux types de problèmes en ajustant la manière dont les états sont représentés et les actions sont générées.

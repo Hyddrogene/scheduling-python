@@ -1,0 +1,57 @@
+La méthode de recherche tabou est un algorithme de recherche heuristique utilisé pour résoudre des problèmes d'optimisation. Voici un exemple simple d'implémentation de la recherche tabou en Python :
+
+Supposons que nous devions minimiser une fonction simple, par exemple la fonction f(x) = x^2. Nous pouvons utiliser l'algorithme de recherche tabou pour trouver la valeur minimale de x qui minimise la fonction f(x).
+
+
+
+import random
+
+# Définition de la fonction f(x) = x^2
+def f(x):
+    return x**2
+
+# Définition des limites de recherche
+x_min = -10
+x_max = 10
+
+# Définition des paramètres de l'algorithme de recherche tabou
+taboo_list = []
+taboo_size = 10
+iterations = 100
+current_x = random.uniform(x_min, x_max)
+
+# Définition de la fonction de voisinage
+def get_neighbors(x):
+    neighbors = []
+    for i in range(-5, 6):
+        if x + i >= x_min and x + i <= x_max and x + i not in taboo_list:
+            neighbors.append(x + i)
+    return neighbors
+
+# Boucle principale de l'algorithme de recherche tabou
+for i in range(iterations):
+    # Détermination des voisins
+    neighbors = get_neighbors(current_x)
+
+    # Sélection du meilleur voisin
+    best_neighbor = min(neighbors, key=f)
+
+    # Mise à jour de la liste tabou
+    taboo_list.append(current_x)
+    if len(taboo_list) > taboo_size:
+        taboo_list.pop(0)
+
+    # Mise à jour de la position actuelle
+    current_x = best_neighbor
+
+# Affichage du résultat
+print("La valeur minimale de x pour la fonction f(x) est : ", current_x)
+print("La valeur minimale de f(x) pour cette valeur de x est : ", f(current_x))
+
+
+
+Dans cet exemple, nous avons défini une fonction de coût simple f(x) = x^2 et avons défini les limites de recherche pour x (x_min et x_max). Nous avons également défini les paramètres de l'algorithme de recherche tabou, notamment la taille de la liste tabou (taboo_size), le nombre d'itérations (iterations) et la position de départ (current_x).
+
+Nous avons ensuite défini une fonction de voisinage (get_neighbors) qui renvoie une liste de voisins pour une position donnée x. Nous avons utilisé cette fonction pour déterminer les voisins de la position actuelle, puis avons sélectionné le meilleur voisin en utilisant la fonction de coût f(x). Nous avons mis à jour la liste tabou en ajoutant la position actuelle et en supprimant la plus ancienne position si la liste dépasse la taille maximale.
+
+Nous avons répété cette boucle principale pour un nombre donné d'itérations, en mettant à jour la position actuelle à chaque itération. Enfin, nous avons affiché la valeur minimale de x pour la fonction f(x) ainsi que la valeur minimale de f(x) pour cette valeur de x.

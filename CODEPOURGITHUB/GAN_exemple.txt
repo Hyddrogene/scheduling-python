@@ -1,0 +1,77 @@
+import tensorflow as tf
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Fonction de génération de bruit pour l'entrée du générateur
+def generate_noise(n_samples, noise_dim):
+    return np.random.normal(0, 1, size=(n_samples, noise_dim))
+
+# Fonction de génération du générateur
+def generate_generator_model():
+    model = tf.keras.Sequential()
+    model.add(tf.keras.layers.Dense(256, input_dim=100))
+    model.add(tf.keras.layers.LeakyReLU(alpha=0.2))
+    model.add(tf.keras.layers.Dense(512))
+    model.add(tf.keras.layers.LeakyReLU(alpha=0.2))
+    model.add(tf.keras.layers.Dense(1024))
+    model.add(tf.keras.layers.LeakyReLU(alpha=0.2))
+    model.add(tf.keras.layers.Dense(784, activation='tanh'))
+    return model
+
+# Fonction de génération du discriminateur
+def generate_discriminator_model():
+    model = tf.keras.Sequential()
+    model.add(tf.keras.layers.Dense(1024, input_dim=784))
+    model.add(tf.keras.layers.LeakyReLU(alpha=0.2))
+    model.add(tf.keras.layers.Dropout(0.3))
+    model.add(tf.keras.layers.Dense(512))
+    model.add(tf.keras.layers.LeakyReLU(alpha=0.2))
+    model.add(tf.keras.layers.Dropout(0.3))
+    model.add(tf.keras.layers.Dense(256))
+    model.add(tf.keras.layers.LeakyReLU(alpha=0.2))
+    model.add(tf.keras.layers.Dropout(0.3))
+    model.add(tf.keras.layers.Dense(1, activation='sigmoid'))
+    return model
+
+# Définition des paramètres
+noise_dim = 100
+generator = generate_generator_model()
+discriminator = generate_discriminator_model()
+gan = tf.keras.Sequential([generator, discriminator])
+discriminator.compile(loss='binary_crossentropy', optimizer=tf.keras.optimizers.Adam(lr=0.0002, beta_1=0.5))
+gan.compile(loss='binary_crossentropy', optimizer=tf.keras.optimizers.Adam(lr=0.0002, beta_1=0.5))
+
+# Boucle d'entraînement
+batch_size = 128
+epochs = 10000
+for epoch in range(epochs):
+    # Génération de bruit et de données synthétiques
+    noise = generate_noise(batch_size, noise_dim)
+    generated_data = generator.predict(noise)
+
+    # Sélection de données réelles
+    real_data = np.random.choice(X_train, batch_size)
+
+    # Entraînement du discriminateur
+    X = np.concatenate([generated_data, real_data])
+    y = np.zeros(2*batch_size)
+    y[:batch_size] = 1
+    y[batch_size:] = 0
+    discriminator.trainable = True
+    discriminator.train_on_batch(X, y)
+
+    # Entraînement du générateur
+    noise = generate_noise(batch_size, noise_dim)
+    y2 = np.ones(batch_size)
+    discriminator.trainable = False
+    gan.train_on_batch(noise, y2)
+
+    # Affichage des résultats
+    if epoch % 100 == 0:
+        print("Epoch:", epoch)
+        plt.imshow(generated_data[0].reshape(28, 28), cmap='gray')
+        plt.show()
+
+Les réseaux de neurones antagonistes (ou GAN pour Generative Adversarial Networks) sont des réseaux de neurones utilisés pour la génération de données. Voici un exemple de code Python qui montre comment créer un modèle GAN simple à l'aide de TensorFlow :
+
+

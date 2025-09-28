@@ -1,0 +1,41 @@
+Un exemple de modèle épidémiologique différent de SIR et de SEIR est le modèle SIS (Susceptible-Infected-Susceptible) qui est utilisé pour étudier la propagation de maladies qui n'offrent pas d'immunité à long terme après avoir été guéri.
+
+Dans le modèle SIS, les individus peuvent être soit S (susceptible) soit I (infecté) et peuvent passer d'un état à l'autre au fil du temps. Les individus infectés guérissent puis retournent à l'état susceptible. La transmission de la maladie est décrite par un taux de transmission et un taux de guérison.
+
+Voici un exemple de code Python pour implémenter le modèle SIS :
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Paramètres du modèle
+beta = 0.3  # Taux de transmission
+gamma = 0.2  # Taux de guérison
+
+# Conditions initiales
+s0 = 0.9
+i0 = 0.1
+
+# Temps de simulation
+t = np.linspace(0, 100, 1000)
+
+# Fonction décrivant l'évolution du système
+def sis_model(y, t, beta, gamma):
+    s, i = y
+    dsdt = -beta * s * i + gamma * i
+    didt = beta * s * i - gamma * i
+    return [dsdt, didt]
+
+# Résolution du modèle
+sol = odeint(sis_model, [s0, i0], t, args=(beta, gamma))
+
+# Affichage des résultats
+plt.plot(t, sol[:, 0], label='Susceptible')
+plt.plot(t, sol[:, 1], label='Infected')
+plt.legend()
+plt.xlabel('Time')
+plt.ylabel('Population')
+plt.title('SIS model')
+plt.show()
+
+
+Ce code utilise le module odeint de la bibliothèque scipy pour résoudre les équations différentielles du modèle. Les résultats sont ensuite affichés à l'aide de la bibliothèque matplotlib.
