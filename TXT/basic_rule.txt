@@ -1,0 +1,454 @@
+        <rule> <!-- Sessions once a week, on the same weekly slot -->
+            <sessions groupBy="class"> 
+                <filter type="part" attributeName="id" in="English-Les"/>
+            </sessions>
+            <constraint name="weekly" type="hard">
+            </constraint>
+        </rule>
+        
+        <rule> <!-- Lecture sessions should be once a week on the same weekly slot, except for the second session -->
+            <sessions groupBy="class" sessionsMask="1,3-8"> 
+                <filter type="part" attributeName="id" in="Databases-part2-Lec"/>
+            </sessions>
+            <constraint name="weekly" type="hard">
+            </constraint>
+        </rule>
+
+        <rule> <!-- Tutorial sessions and Practice sessions should be respectively once a week on the same weekly slot -->
+            <sessions groupBy="class">
+                <filter type="part" attributeName="id" in="Databases-part2-Pra,Databases-part2-Tut"/>
+            </sessions>
+            <constraint name="weekly" type="hard">
+            </constraint>
+        </rule>
+        
+                <rule> <!-- Lecture sessions should be once a week on the same weekly slot, except for the second and third session -->
+            <sessions groupBy="class" sessionsMask="1,4-12">
+                <filter type="part" attributeName="id" in="Web-Development-Lec"/>
+            </sessions>
+            <constraint name="weekly" type="hard">
+            </constraint> 
+        </rule>
+
+        <rule> <!-- Practice sessions and Project sessions should be respectively once a week on the same weekly slot -->
+            <sessions groupBy="class">
+                <filter type="part" attributeName="id" in="Web-Development-Pra,Web-Development-Pro"/>
+            </sessions>
+             <constraint name="weekly" type="hard">
+            </constraint> 
+        </rule>
+
+
+
+        		
+		<rule> <!-- Lecture and Practice sessions should be once a week and on the same weekly slot. Meaning that Practices start after Lectures. -->
+	        <sessions groupBy="course">
+	        	<filter type="course" attributeName="id" in="Virtual-rendering"/>
+	            <filter type="part" attributeName="label" in="LECTURE,PRACTICE"/>
+	        </sessions>
+	        <constraint name="weekly" type="hard">
+	        </constraint>
+		</rule>
+		
+		
+		<rule> <!-- Lesson sessions and Practice sessions should be respectively once a week and on the same weekly slot. -->
+	        <sessions groupBy="class">
+	        	<filter type="course" attributeName="id" in="Python-data-analysis"/>
+	            <filter type="part" attributeName="label" in="LESSON,PRACTICE"/>
+	        </sessions>
+	        <constraint name="weekly" type="hard">
+	        </constraint>
+		</rule>
+		
+				<rule> <!-- Practice sessions should be once a week and on the same weekly slot. -->
+	        <sessions groupBy="class">
+	        	<filter type="course" attributeName="id" in="IA-algorithms-101"/>
+	            <filter type="part" attributeName="label" in="PRACTICE"/>
+	        </sessions>
+	        <constraint name="weekly" type="hard">
+	        </constraint>
+		</rule>
+		
+				<rule> <!-- Practice sessions should be once a week on the same weekly slot. -->
+	        <sessions groupBy="class">
+	        	<filter type="course" attributeName="id" in="Qt"/>
+	            <filter type="part" attributeName="label" in="PRACTICE"/>
+	        </sessions>
+	        <constraint name="weekly" type="hard">
+	        </constraint>
+		</rule>
+			    <rule> <!-- Lecture sessions are once a week on the same weekly slot, except for the second session. -->
+            <sessions groupBy="class" sessionsMask="1,3-7"> 
+                <filter type="part" attributeName="id" in="Functional-programming-Lec"/>
+            </sessions>
+            <constraint name="weekly" type="hard">
+            </constraint>
+        </rule>
+        
+        <rule> <!-- Tutorial sessions and Practice sessions are respectively once a week on the same weekly slot, except for the second session. -->
+            <sessions groupBy="class"> 
+                <filter type="part" attributeName="id" in="Functional-programming-Tut,Functional-programming-Pra"/>
+            </sessions>
+            <constraint name="weekly" type="hard">
+            </constraint>
+        </rule>
+        
+                <rule> <!-- Lecture sessions are once a week on the same weekly slot, except for the second an third sessions. -->
+            <sessions groupBy="class" sessionsMask="1,4-6"> 
+                <filter type="part" attributeName="id" in="Logic-programming-Lec"/>
+            </sessions>
+            <constraint name="weekly" type="hard">
+            </constraint>
+        </rule>
+        
+        <rule> <!-- Tutorial sessions and Practice sessions are respectively once a week on the same weekly slot, except for the second session. -->
+            <sessions groupBy="class"> 
+                <filter type="part" attributeName="id" in="Logic-programming-Tut,Logic-programming-Pra"/>
+            </sessions>
+            <constraint name="weekly" type="hard">
+            </constraint>
+        </rule>
+		
+        <rule> <!-- Lessons should be over before the evaluation -->
+            <sessions groupBy="class" sessionsMask="8">
+                <filter type="part" attributeName="id" in="English-Les"/>
+            </sessions>
+            <sessions groupBy="class" sessionsMask="1">
+                <filter type="part" attributeName="id" in="English-Eval"/>
+            </sessions>
+            <constraint name="sequenced" type="hard">
+            </constraint>
+        </rule>
+        
+                <rule> <!-- Tutorials should start after the second session of Lecture -->
+            <sessions groupBy="session" sessionsMask="2"> 
+                <filter type="part" attributeName="id" in="Databases-part2-Lec"/>
+            </sessions>
+            <sessions groupBy="session" sessionsMask="1"> 
+                <filter type="part" attributeName="id" in="Databases-part2-Tut"/>
+            </sessions>
+            <constraint name="sequenced" type="hard">
+            </constraint>
+        </rule>
+        
+                <rule> <!-- Practices should start after the second session of Tutorial -->
+            <sessions groupBy="session" sessionsMask="2"> 
+                <filter type="part" attributeName="id" in="Databases-part2-Tut"/>
+            </sessions>
+            <sessions groupBy="session" sessionsMask="1"> 
+                <filter type="part" attributeName="id" in="Databases-part2-Pra"/>
+            </sessions>
+            <constraint name="sequenced" type="hard">
+            </constraint>
+        </rule>
+
+        <rule> <!-- Lectures should be over before the practice evaluation -->
+            <sessions groupBy="session" sessionsMask="8"> 
+                <filter type="part" attributeName="id" in="Databases-part2-Lec"/>
+            </sessions>
+            <sessions groupBy="session" sessionsMask="1"> 
+                <filter type="part" attributeName="id" in="Databases-part2-PraEval"/>
+            </sessions>
+            <constraint name="sequenced" type="hard">
+            </constraint>
+        </rule>
+        
+                <rule> <!-- Tutorials should be over before the practice evaluation -->
+            <sessions groupBy="session" sessionsMask="9"> 
+                <filter type="part" attributeName="id" in="Databases-part2-Tut"/>
+            </sessions>
+            <sessions groupBy="session" sessionsMask="1"> 
+                <filter type="part" attributeName="id" in="Databases-part2-PraEval"/>
+            </sessions>
+            <constraint name="sequenced" type="hard">
+            </constraint>
+        </rule>
+
+        <rule>  <!-- Practices should be over before the practice evaluation -->
+            <sessions groupBy="session" sessionsMask="7"> 
+                <filter type="part" attributeName="id" in="Databases-part2-Pra"/>
+            </sessions>
+            <sessions groupBy="session" sessionsMask="1"> 
+                <filter type="part" attributeName="id" in="Databases-part2-PraEval"/>
+            </sessions>
+            <constraint name="sequenced" type="hard">
+            </constraint>
+        </rule>
+        
+                <rule> <!-- Project sessions should start after the seventh session of Lecture -->
+            <sessions groupBy="session" sessionsMask="7">
+                <filter type="part" attributeName="id" in="Web-Development-Lec"/>
+             </sessions>
+            <sessions groupBy="session" sessionsMask="1">
+                <filter type="part" attributeName="id" in="Web-Development-Pro"/>
+             </sessions>
+            <constraint name="sequenced" type="hard">
+            </constraint>
+        </rule>
+        
+        <rule> <!-- Practice sessions should start after the third session of Lecture -->
+            <sessions groupBy="session" sessionsMask="3">
+                <filter type="part" attributeName="id" in="Web-Development-Lec"/>
+             </sessions>
+            <sessions groupBy="session" sessionsMask="1">
+                <filter type="part" attributeName="id" in="Web-Development-Pra"/>
+             </sessions>
+            <constraint name="sequenced" type="hard">
+            </constraint>
+        </rule>
+        
+                <rule> <!-- Evaluation should be between the fifth and sixth session of Practice -->
+            <sessions groupBy="class" sessionsMask="5">
+                <filter type="part" attributeName="id" in="Web-Development-Pra"/>
+             </sessions>
+            <sessions groupBy="class" sessionsMask="1">
+                <filter type="part" attributeName="id" in="Web-Development-PraEval"/>
+             </sessions>
+            <sessions groupBy="class" sessionsMask="6">
+                <filter type="part" attributeName="id" in="Web-Development-Pra"/>
+             </sessions>
+            <constraint name="sequenced" type="hard">
+            </constraint>
+        </rule>
+
+        <rule> <!-- Practice sessions should start after the first session of Lecture -->
+            <sessions groupBy="session" sessionsMask="1">
+                <filter type="part" attributeName="id" in="Web-Development-Lec"/>
+            </sessions>
+            <sessions groupBy="session" sessionsMask="1">
+                <filter type="part" attributeName="id" in="Web-Development-Pra"/>
+            </sessions>
+            <constraint name="sequenced" type="hard">
+            </constraint> 
+        </rule>
+        
+                <rule> <!-- Practice sessions should start after the last session of Lesson -->
+            <sessions groupBy="session" sessionsMask="5">
+                <filter type="part" attributeName="id" in="Python-data-analysis-Les"/>
+            </sessions>
+            <sessions groupBy="session" sessionsMask="1"> 
+                <filter type="part" attributeName="id" in="Python-data-analysis-Pra"/>
+            </sessions>
+            <constraint name="sequenced" type="hard">
+            </constraint>
+        </rule>
+		
+		
+		
+        <rule> <!-- Practice sessions should start after the last session of Lecture -->
+            <sessions groupBy="session" sessionsMask="2">
+                <filter type="part" attributeName="id" in="IA-algorithms-101-Lec"/>
+            </sessions>
+            <sessions groupBy="session" sessionsMask="1"> 
+                <filter type="part" attributeName="id" in="IA-algorithms-101-Pra"/>
+            </sessions>
+            <constraint name="sequenced" type="hard">
+            </constraint>
+        </rule>
+        
+                <rule> <!-- Practice sessions should start after the last session of Lecture -->
+            <sessions groupBy="session" sessionsMask="4">
+                <filter type="part" attributeName="id" in="Qt-Lec"/>
+            </sessions>
+            <sessions groupBy="session" sessionsMask="1"> 
+                <filter type="part" attributeName="id" in="Qt-Pra"/>
+            </sessions>
+            <constraint name="sequenced" type="hard">
+            </constraint>
+        </rule>
+        
+    	
+    	        
+        <rule> <!-- Tutorials should start after the sixth session of Lecture -->
+            <sessions groupBy="session" sessionsMask="6">
+                <filter type="part" attributeName="id" in="Logic-programming-Lec"/>
+            </sessions>
+            <sessions groupBy="session" sessionsMask="1"> 
+                <filter type="part" attributeName="id" in="Logic-programming-Tut"/>
+            </sessions>
+            <constraint name="sequenced" type="hard">
+            </constraint>
+        </rule>
+        
+        <rule> <!-- Practices should start after the first Tutorial -->
+            <sessions groupBy="session" sessionsMask="1">
+                <filter type="part" attributeName="id" in="Logic-programming-Tut"/>
+            </sessions>
+            <sessions groupBy="session" sessionsMask="1"> 
+                <filter type="part" attributeName="id" in="Logic-programming-Pra"/>
+            </sessions>
+            <constraint name="sequenced" type="hard">
+            </constraint>
+        </rule>
+		
+		
+
+
+        <rule> <!-- All Lessons should start the same week -->
+            <sessions groupBy="part" sessionsMask="1">
+                <filter type="part" attributeName="id" in="English-Les"/>
+            </sessions>
+            <constraint name="sameWeek" type="hard">
+            </constraint>
+        </rule>
+        
+        <rule> <!-- A Lesson class should have the same teacher for all its sessions -->
+            <sessions groupBy="class">
+                <filter type="course" attributeName="id" in="English"/>
+             </sessions>
+            <constraint name="sameTeachers" type="hard">
+            </constraint>
+        </rule>
+
+        <rule> <!-- A Lesson class should be in the same rooms for all tis sessions -->
+            <sessions groupBy="class">
+                <filter type="part" attributeName="id" in="English-Les"/>
+             </sessions>
+            <constraint name="sameRooms" type="hard">
+            </constraint>
+        </rule>
+    
+
+
+       <rule> <!-- All classes of Tutorial should start the same week -->
+            <sessions groupBy="part" sessionsMask="1"> 
+                <filter type="part" attributeName="id" in="Databases-part2-Tut"/>
+            </sessions>
+            <constraint name="sameWeek" type="hard">
+            </constraint>
+        </rule>
+
+        <rule> <!-- All classes of Practice should start the same week -->
+            <sessions groupBy="part" sessionsMask="1">
+                <filter type="part" attributeName="id" in="Databases-part2-Pra"/>
+            </sessions>
+            <constraint name="sameWeek" type="hard">
+            </constraint>
+        </rule>
+
+
+
+
+
+
+
+        <rule> <!-- A class should always have the same teacher -->
+            <sessions groupBy="class">
+                <filter type="course" attributeName="id" in="Databases-part2"/>
+             </sessions>
+            <constraint name="sameTeachers" type="hard">
+            </constraint>
+        </rule>
+
+        <rule> <!-- A class should always have the same rooms -->
+            <sessions groupBy="class">
+                <filter type="course" attributeName="id" in="Databases-part2"/>
+             </sessions>
+            <constraint name="sameRooms" type="hard">
+            </constraint>
+        </rule>
+
+        <rule> <!-- Evaluations should take place at the same time -->
+            <sessions groupBy="part">
+                <filter type="course" attributeName="id" in="Databases-part2"/>
+                <filter type="part" attributeName="label" in="EVAL"/>
+             </sessions>
+            <constraint name="sameSlots" type="hard">
+            </constraint>
+        </rule>
+    
+
+
+
+        <rule> <!-- Practice sessions should start the same week -->
+            <sessions groupBy="part" sessionsMask="1">
+                <filter type="part" attributeName="id" in="Web-Development-Pra"/>
+             </sessions>
+            <constraint name="sameWeek" type="hard">
+            </constraint>
+        </rule>
+ 
+
+
+       <rule> <!-- Lectures and Practices classes should be respectively in the same rooms (example with all WebDev parts except Projects and Eval -->
+            <sessions groupBy="class">
+                <filter type="course" attributeName="id" in="Web-Development"/>
+                <filter type="part" attributeName="label" notIn="EVAL"/>
+                <filter type="part" attributeName="label" notIn="PROJECT"/>
+             </sessions>
+            <constraint name="sameRooms" type="hard">
+            </constraint>
+        </rule>
+
+        <rule> <!-- A class should always have the same teacher -->
+            <sessions groupBy="class">
+                <filter type="course" attributeName="id" in="Web-Development"/>
+             </sessions>
+            <constraint name="sameTeachers" type="hard">
+            </constraint>
+        </rule>
+
+        <rule> <!-- Evaluations should take place at the same time -->
+            <sessions groupBy="part">
+                <filter type="course" attributeName="id" in="Web-Development"/>
+                <filter type="part" attributeName="label" in="EVAL"/>
+             </sessions>
+            <constraint name="sameSlots" type="hard">
+            </constraint>
+        </rule>
+
+ 
+    
+    	
+    	<rule> <!-- A class should have the same teachers -->
+    		<sessions groupBy="class">
+    			<filter type="course" attributeName="label" in="OPT"/>
+    		</sessions>
+    		<constraint name="sameTeachers" type="hard">
+    		</constraint>
+    	</rule>
+    	
+    	<rule> <!-- A class should have the same rooms -->
+    		<sessions groupBy="class">
+    			<filter type="course" attributeName="label" in="OPT"/>
+    		</sessions>
+    		<constraint name="sameRooms" type="hard">
+    		</constraint>
+    	</rule>
+
+
+		
+
+		
+
+
+    	<rule> <!-- A class should have the same teachers -->
+    		<sessions groupBy="class">
+    			<filter type="course" attributeName="id" in="Functional-programming,Logic-programming"/>
+    		</sessions>
+    		<constraint name="sameTeachers" type="hard">
+    		</constraint>
+    	</rule>
+    	
+    	<rule> <!-- A class should have the same rooms -->
+    		<sessions groupBy="class">
+    			<filter type="course" attributeName="id" in="Functional-programming,Logic-programming"/>
+    		</sessions>
+    		<constraint name="sameRooms" type="hard">
+    		</constraint>
+    	</rule>
+        
+        <rule> <!-- All the classes of Tutorial and Practice should start the same week -->
+        	<sessions groupBy="part" sessionsMask="1">
+        		<filter type="part" attributeName="label" in="TUTORIAL,PRACTICE"/>
+        	</sessions>
+        	<constraint name="sameWeek" type="hard">
+        	</constraint>
+        </rule>
+    
+	    
+
+
+    
+	    
+

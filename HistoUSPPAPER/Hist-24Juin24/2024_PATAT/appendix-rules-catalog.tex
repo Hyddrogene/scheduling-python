@@ -1,0 +1,54 @@
+\section{Rules Syntax and Constraint Predicate Catalog}
+\label{appendix:constraintcatalog}
+
+
+Table~\ref{tab:rule-language}
+provides the syntax of the rules language: e-maps, constraints, queries and rules.
+\input{appendix-rules-table}
+
+Table~\ref{tab:predicate_catalog}
+lists and describes the predicates of the catalog.
+
+\input{appendix-catalog-table}
+
+Table~\ref{tab:constraintformel} provides the semantics of each predicate
+once the scope is restricted to a tuple of sets of sessions
+(obtained after joining a solution and a constraint built with the predicate).
+Given
+a $n$-ary predicate $c$ accepting $m$ parameters ($m\geq 0$)
+and given a $n$-uple %made of sets of sessions
+$(S'_1,\ldots,S'_n)\in{S}^n$,
+%=\ENTITY\times{2^{\SESSION}}$$ 
+we provide the semantics for $c(S'_1,\ldots,S'_n,p_1,\ldots,p_m)$
+which denotes the evaluation of the predicate on the tuple.
+% \begin{equation*}
+% $c(S'_1,\ldots,S'_n,p_1,\ldots,p_m)$
+% \end{equation*}
+
+
+% $c((e_1,S_1),\ldots,(e_n,S_n),p_1,\ldots,p_m)$ %\label{rule:constraint}
+% % \end{align}
+% % \end{equation*}
+% where 
+% $c$ is a predicate of arity $n$,
+% $(e_1,S_1),\ldots,(e_n,S_n)$ are e-maps ($(e_i,S_i)\in{\EMAP}$ for $i=1\ldots n$) 
+% and 
+% $p_1,\ldots,p_m$ are values for the parameters of $c$ ($m\geq0$).
+ %lists the predicates of the language and indicates which are variadic or parametric.  
+% The first predicates \SAMEDAILYSLOT, , same slot enforce common restrictions on the start times of the targeted sessions (e.g.,
+% sessions starting the same day). Additionally, any start time interval may
+% be forbidden by passing its start and end points as parameters to predicate
+% forbidden period. Predicates at most daily and at most weekly upper-bound the number of sessions scheduled daily or weekly within the given
+% time interval. sequenced is a n-ary predicate (n >= 2) which constrains the
+% latest session of the i-th e-map to end before the earliest session of i + 1-th e-map (i = 1..n - 1). Predicate weekly ensures sessions are scheduled
+% weekly without presuming any particular sequencing. Predicate no overlap
+% ensures sessions do not overlap in time and is typically used to model disjunctive resources. Predicate travel factors in any travel time incurred between
+% consecutive sessions hosted in distant rooms. The travel time matrix is a parameter of the predicate. same rooms, same students and same lecturers
+% require that sessions be assigned to the same set of rooms, students or lecturers. Predicate adjacent rooms require that sessions be hosted in adjacent
+% rooms based on an adjacency graph passed as a parameter. Lastly, predicate
+% lecturer distribution distributes the volumes of sessions represented by
+% the different e-map arguments among different lecturers. Lecturers and session volumes are parameters of the predicate.
+
+
+%\newpage
+\input{appendix-catalog-formal}

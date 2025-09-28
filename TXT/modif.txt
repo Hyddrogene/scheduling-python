@@ -1,0 +1,22 @@
+CONTEXTE: Présentation du rendue final du projet de concrétisation disciplinaire M1-M2
+
+IMPORTANT : regle optionnal -> ajouter ; API -> lien BDD et application fonctionnel ; Interface claire
+
+[BDD]
+trigger utilisateur et leur droit -> déléguer à la DDN
+trigger lien regle et phrase -> avant inscriptions dans la BDD star-wars
+[/BDD]
+[XML DATA]
+struct maquette -> suit le xml
+Modalité pédagogique -> suit le xml
+[/XML DATA]
+[MODIFICATION]
+liste documentation -> faire une grosse documentation
+ajouter la gestion des variables -> utiles pour multi contraintes
+ajouter des options pour les contraintes de préférences
+Contraintes dur à écrire -> essayer de garder une version claire
+ajouter d'autres types de contraintes : 1° contraintes non temporel 2° contraintes entre ressources différentes 3° contraintes + globales
+changer erognomie découpages horaires bouton
+[/MODIFICATION]
+
+%Lundi 6 décembre 2021 13h30

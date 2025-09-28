@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tableau Kanban</title>
+    <style>
+        .kanban-board {
+            display: flex;
+           
+            justify-content: space-between;
+        }
+        .column {
+            flex: 1;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin: 10px;
+            background-color: #f9f9f9;
+        }
+        .idea, .task {
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+             font-family: Times New Roman;
+            background-color: #fff;
+        }
+        
+        .idea >textarea, .task >textarea{
+         font-family: Lucida Console,Times New Roman;
+        }
+        .green { background-color: lightgreen; }
+        .blue { background-color: lightblue; }
+        .gray { background-color: lightgray; }
+        .red { background-color: lightcoral; }
+    </style>
+</head>
+<body>
+
+<div class="kanban-board">
+    <div class="column" id="ideasColumn">
+        <h3>Idees</h3>
+        <button onclick="addIdea()">+</button>
+    </div>
+    <div class="column" id="taskColumn">
+        <h3>Taches</h3>
+        <button onclick="addTask()">+</button>
+    </div>
+    <div class="column" id="inProgressColumn">
+        <h3>En Cours</h3>
+       <p id="p_element"></p>
+    </div>
+    <div class="column" id="doneColumn">
+        <h3>Termine</h3>
+        <button onclick="makeTasksGreen()">Rendre tout vert</button>
+        <button onclick="saveData()">Sauvegarder</button>
+        <button onclick="loadData()">Charger</button>
+    </div>
+</div>
+
+<script>
+    let ideaCount = 1;
+    const right = String.fromCodePoint(0x2192);
+    const left = String.fromCodePoint(0x2190);
+    const kick = String.fromCodePoint(0xd7);
+    const up = String.fromCodePoint(0x2191);
+    const down = String.fromCodePoint(0x2193);
+
+    
+    // Charge les idées depuis le stockage local
+    const storedIdeas = localStorage.getItem('ideas');
+    if (storedIdeas) {
+        document.getElementById('ideasColumn').innerHTML += storedIdeas;
+        ideaCount = document.querySelectorAll('#ideasColumn .idea').length + 1;
+    }
+
+    function addIdea() {
+        const ideasColumn = document.getElementById("ideasColumn");
+        const ideaDiv = document.createElement("div");
+        const ideaColor = getRandomColor();
+
+        ideaDiv.innerHTML = `<p><b>Idee ${ideaCount}</b><br>
+                            <textarea id="ideaDesc${ideaCount}" placeholder="Entrez la description de l'idée"></textarea>
+                            <input onclick="" type="color" value="${ideaColor}" id="ideaColor${ideaCount}">
+                            <button onclick="removeIdea(this)">${kick}</button></p>`;
+        ideaDiv.className = "idea";
+        ideaDiv.id = "idée "+ideaCount;
+        ideasColumn.appendChild(ideaDiv);
+        ideaDiv.getElementsByTagName("input")[0].addEventListener("change",changeColor);
+        ideaCount++;
+        updateTaskOptions();
+    }
+    
+    function changeColor(event) {
+        const colorInput = event.target;
+        const ideaDiv = colorInput.parentNode.parentNode;
+        ideaDiv.style.backgroundColor = colorInput.value;
+        color = colorInput.value
+        
+        
+        const taskSelects = document.querySelectorAll('.task');
+        //document.querySelectorAll('#taskColumn .task')[0].getElementsByTagName("select")[0].childNodes[0].
+        for(let i = 0; i < taskSelects.length;i++){
+            if(taskSelects[i].getElementsByTagName("select")[0].childNodes[taskSelects[i].getElementsByTagName("select")[0].value].innerText == ideaDiv.getAttribute("id") ){
+                taskSelects[i].style.backgroundColor = color
+            }
+        }
+          //  taskSelects.forEach((textarea, index) => {
+            //    textarea.value = ideaDiv[index];
+           // });
+    }
+    
+    
+    function updateTaskOptions() {
+        let taskSelectedValue = [];
+        const taskSelects = document.querySelectorAll('#taskColumn select');
+        taskSelects.forEach((select,index) => {
+            taskSelectedValue.push(select.value);
+            select.innerHTML = getTaskOptions();
+            select.value = taskSelectedValue[index];
+        });
+    }
+
+    function getRandomColor() {
+        const colors = ['blue', 'gray', 'red'];
+        return colors[Math.floor(Math.random() * colors.length)];
+    }
+
+    
+    function taskColor(elementP){
+        let element = elementP.parentNode;
+       let select =  element.getElementsByTagName("select")[0];
+       let val = select.value;
+       let color  = document.querySelectorAll('#ideasColumn .idea')[val].getElementsByTagName("input")[0].value; 
+       element.style.backgroundColor = color;
+    }
+    
+    let tabularTaskPosition = [];
+    let taskCount = 0;
+    function addTask() {
+        const taskColumn = document.getElementById("taskColumn");
+        const taskDiv = document.createElement("div");
+        const taskOptions = getTaskOptions();
+        taskDiv.innerHTML = `<select onclick="taskColor(this)">${taskOptions}</select> task-${taskCount+1} <br>
+                            <textarea placeholder="Entrez la description de la tache"></textarea><br>
+                            <button onclick="moveTask(this, -1)">${left}</button>
+                            <button onclick="moveTask(this, 1)">${right}</button>
+                            <button onclick="moveTaskV(this, -1)">${up}</button>
+                            <button onclick="moveTaskV(this, 1)">${down}</button>
+                            <button onclick="removeTask(this)">${kick}</button>`;
+        taskDiv.className = "task";
+        taskDiv.id = taskCount;
+        taskColumn.appendChild(taskDiv);
+        tabularTaskPosition.push(0);
+        taskCount++;
+    }
+
+    function getTaskOptions() {
+        let options = "";
+        ideasColumn = document.querySelectorAll('#ideasColumn .idea'); 
+        for(let i = 0; i <ideasColumn.length ;i++){
+            options += `<option value="${i}">${ideasColumn[i].getAttribute("id")}</option>`;
+        }
+
+        return options;
+    }
+    
+
+    function moveTask(button, direction) {
+        const taskDiv = button.parentNode;
+        const currentColumn = taskDiv.parentNode;
+        let count = tabularTaskPosition[taskDiv.getAttribute("id")];
+        
+        if(direction === -1 && count == 0){
+        
+            //const targetColumn = direction === -1 ? currentColumn.previousElementSibling : currentColumn.nextElementSibling;
+
+            //if (targetColumn) {
+                //targetColumn.appendChild(taskDiv);
+            //}
+        }
+        else{
+            if(direction === 1 && count == 1){
+                const targetColumn = currentColumn.nextElementSibling;
+                taskDiv.style.backgroundColor = 'lightgreen';
+                tabularTaskPosition[taskDiv.getAttribute("id")]++ ; 
+                if (targetColumn) {
+                    targetColumn.appendChild(taskDiv);
+                }
+            }
+            else{
+                if(direction == 1){
+                    const targetColumn = direction === -1 ? currentColumn.previousElementSibling : currentColumn.nextElementSibling;
+                    tabularTaskPosition[taskDiv.getAttribute("id")]++ ; 
+                    taskDiv.style.backgroundColor = document.querySelectorAll('#ideasColumn .idea')[taskDiv.getElementsByTagName("select")[0].value].getElementsByTagName("input")[0].value; 
+                    if (targetColumn) {
+                        targetColumn.appendChild(taskDiv);
+                    }
+                }
+            
+                if(direction == -1){
+                    const targetColumn = direction === -1 ? currentColumn.previousElementSibling : currentColumn.nextElementSibling;
+                    tabularTaskPosition[taskDiv.getAttribute("id")]--;
+                    taskDiv.style.backgroundColor = document.querySelectorAll('#ideasColumn .idea')[taskDiv.getElementsByTagName("select")[0].value].getElementsByTagName("input")[0].value; 
+                    if (targetColumn) {
+                        targetColumn.appendChild(taskDiv);
+                    }
+                }
+            
+            }
+
+        }
+     document.getElementById("p_element")[0].value = document.querySelectorAll('#inProgressColumn .task').lenght;  
+
+    }
+    
+    
+    function moveTaskV(button, direction) {
+    const taskDiv = button.parentElement;
+    const taskColumn = document.getElementById(taskDiv.parentNode.id);
+    const currentIndex = Array.from(taskColumn.children).indexOf(taskDiv);
+    const newIndex = currentIndex + direction;
+
+    if (newIndex >= 0 && newIndex < taskColumn.children.length) {
+        taskColumn.removeChild(taskDiv);
+        taskColumn.insertBefore(taskDiv, taskColumn.children[newIndex]);
+    }
+    }
+
+    function setColor(button, color) {
+        const taskDiv = button.parentNode;
+        taskDiv.style.backgroundColor = color;
+    }
+
+    function removeIdea(button) {
+        const ideaDiv = button.parentNode.parentNode;
+        ideaDiv.remove();
+        updateTaskOptions();
+    }
+
+    function removeTask(button) {
+        const taskDiv = button.parentNode;
+        taskDiv.remove();
+    }
+
+    function makeTasksGreen() {
+        const taskDivs = document.querySelectorAll('#doneColumn .task');
+        taskDivs.forEach(taskDiv => {
+            taskDiv.style.backgroundColor = 'lightgreen';
+        });
+    }
+
+    function saveData() {
+        const ideasColumn = document.getElementById('ideasColumn').innerHTML;
+        const taskColumn = document.getElementById('taskColumn').innerHTML;
+        const inProgressColumn = document.getElementById('inProgressColumn').innerHTML;
+        const doneColumn = document.getElementById('doneColumn').innerHTML;
+        const doneTaskPosition = tabularTaskPosition;
+        const ideaDescs = Array.from(document.querySelectorAll('.idea textarea')).map(idea => idea.value);
+        const ideaDescsColor = Array.from(document.querySelectorAll('.idea input')).map(idea => idea.value);
+        const taskDescs = Array.from(document.querySelectorAll('.task textarea')).map(task => task.value);
+        const taskSelectValues = Array.from(document.querySelectorAll('.task select')).map(task => task.value);
+
+        const dataToSave = {
+            ideas: ideasColumn,
+            tasks: taskColumn,
+            inProgress: inProgressColumn,
+            done: doneColumn,
+            ideaDescs: ideaDescs,
+            taskDescs: taskDescs,
+            doneTaskPosition: doneTaskPosition,
+            taskCount:taskCount,
+            ideaDescsColor:ideaDescsColor,
+            taskSelectValues:taskSelectValues
+        };
+
+        localStorage.setItem('kanbanData', JSON.stringify(dataToSave));
+    }
+
+    function loadData() {
+    
+        const storedData = localStorage.getItem('kanbanData');
+        if (storedData) {
+            const data = JSON.parse(storedData);
+            tabularTaskPosition = data.doneTaskPosition;
+            taskCount = data.taskCount;
+
+            document.getElementById('ideasColumn').innerHTML = data.ideas;
+            document.getElementById('taskColumn').innerHTML = data.tasks;
+            document.getElementById('inProgressColumn').innerHTML = data.inProgress;
+            document.getElementById('doneColumn').innerHTML = data.done;
+
+            ideaCount = document.querySelectorAll('#ideasColumn .idea').length + 1;
+
+            const ideaDescs = data.ideaDescs;
+            const taskDescs = data.taskDescs;
+
+            const ideaTextareas = document.querySelectorAll('.idea textarea');
+            ideaTextareas.forEach((textarea, index) => {
+                //textarea.value = data.ideaDescsColor[index];
+                textarea.value = data.ideaDescs[index];
+            });
+            
+            const ideas = document.querySelectorAll('.idea');
+            ideas.forEach((textarea, index) => {
+                textarea.style.backgroundColor = data.ideaDescsColor[index];
+            });
+    
+            
+            const ideaInput = document.querySelectorAll('.idea input');
+            ideaInput.forEach((textarea, index) => {
+                //textarea.value = ideaDescs[index];
+                textarea.value = data.ideaDescsColor[index];
+            });
+
+            const taskTextareas = document.querySelectorAll('.task textarea');
+            taskTextareas.forEach((textarea, index) => {
+                textarea.value = taskDescs[index];
+            });
+
+            const taskSelectValuess = document.querySelectorAll('.task select');
+            taskSelectValuess.forEach((textarea, index) => {
+                textarea.value = data.taskSelectValues[index];
+            });
+            
+            updateTaskOptions();
+        }
+    }
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,333 @@
+### Résumé
+
+En tant que première tentative, cet article propose un modèle pour les problèmes d'emploi du temps des lycées chinois (CHSTP) dans le cadre de la nouvelle innovation curriculaire lancée en 2014 par le gouvernement chinois. Selon cette nouvelle réforme, les élèves du lycée peuvent choisir les matières qui les intéressent plutôt que d'être obligés de sélectionner l'une des deux filières d'études, à savoir les Sciences et les Arts libéraux. Parallèlement, ils doivent également suivre des matières obligatoires comme le veut la tradition. Les CHSTP sont orientés vers les élèves et impliquent plus de contraintes liées aux étudiants, ce qui les rend plus complexes que le modèle typique « Classe-Professeur », où l'élément « Professeur » est la contrainte principale. Dans cet article, nous décrivons d'abord en détail le modèle mathématique des CHSTP, puis nous concevons une nouvelle représentation en deux parties pour la solution candidate. Sur la base de cette nouvelle représentation, nous adoptons un algorithme de recuit simulé (SA) en deux phases pour résoudre les CHSTP. Un total de 45 instances synthétiques avec différentes quantités de classes, de professeurs et de niveaux de contraintes pour les étudiants sont générées et utilisées pour illustrer les caractéristiques du modèle CHSTP et l'efficacité de la représentation et de l'algorithme conçus. Enfin, nous appliquons le modèle proposé, la représentation en deux parties conçue et le SA en deux phases à 10 lycées réels.
+
+### Introduction
+
+Le problème de l'emploi du temps des lycées (HSTP) est un type de problème complexe d'emploi du temps éducatif auquel sont confrontées les institutions académiques, en particulier les organisations éducatives du monde entier [1–3]. L'objectif des HSTP est de trouver des emplois du temps hebdomadaires pour les cours, les enseignants, les élèves et les salles de classe qui satisfont un ensemble de contraintes strictes et souples [1,2]. Par exemple, un enseignant ne peut pas être assigné à plus d'une classe au même créneau horaire, ce qui est une contrainte stricte, tandis que les créneaux horaires assignés à un enseignant doivent être répartis uniformément tout au long de la semaine, ce qui est une contrainte souple. Un emploi du temps faisable est celui qui ne viole aucune contrainte stricte, tandis qu'un bon emploi du temps est d'abord faisable puis doit satisfaire autant que possible les contraintes souples. Les HSTP sont hautement contraints et prouvés comme étant NP-complets [2].
+
+En 2014, le gouvernement chinois a lancé une nouvelle innovation curriculaire qui prône des systèmes d'examen plus flexibles pour l'examen d'entrée national des collèges en Chine. Parmi les nombreux nouveaux systèmes éducatifs depuis lors, le système « 3+X » a été largement mis en œuvre. Dans ce nouveau système, « 3 » représente trois matières obligatoires et « X » représente le nombre de matières optionnelles que les élèves peuvent choisir selon leurs intérêts. Comparé à l'emploi du temps pour l'ancien système qui divise les élèves en deux groupes, à savoir les groupes Sciences et Arts libéraux, l'emploi du temps pour le nouveau système est évidemment plus complexe et difficile à gérer.
+
+Cependant, à notre connaissance, aucun modèle des problèmes d'emploi du temps des lycées chinois (CHSTP) n'a été étudié jusqu'à présent. Kwok et al. [4] ont enquêté sur le processus d'emploi du temps et les problèmes existants des lycées de Hong Kong, mais le système éducatif à Hong Kong, en Chine, est différent de celui de la Chine continentale. Par conséquent, dans cet article, nous nous efforçons de modéliser les CHSTP et de proposer un algorithme alternatif faisable pour résoudre le modèle proposé.
+
+Dans les CHSTP, les élèves sont d'abord regroupés en classes scolaires, et tous les élèves de la même classe scolaire partagent les mêmes emplois du temps pour les matières obligatoires. Parallèlement, ils doivent sélectionner trois matières optionnelles de leur choix. Par conséquent, dans le modèle CHSTP proposé, deux types de classes, à savoir les classes scolaires et les classes optionnelles, sont considérés. Les classes scolaires sont mutuellement disjointes, et les classes optionnelles sont dépendantes des matières ; en d'autres termes, elles peuvent avoir des élèves en commun. Les enseignants sont préassignés aux classes et peuvent avoir des préférences pour les créneaux horaires d'enseignement. Dans cet article, nous avons assoupli la contrainte de salle car elle n'est pas une demande forte dans notre problème.
+
+Un emploi du temps peut être facilement représenté sous la forme d'une matrice bidimensionnelle Qm×n de taille m×n. Chaque ligne de Qm×n représente un emploi du temps hebdomadaire pour un enseignant [5,6] ou une classe [7–15], et chaque colonne représente un créneau horaire sur une semaine. L'avantage de la structure bidimensionnelle réside dans la commodité de transformer la solution actuelle en ses voisinages. Par exemple, en échangeant différentes valeurs dans deux colonnes, une nouvelle solution peut être générée ; de plus, cette propriété permet aux algorithmes heuristiques de bien fonctionner dans la résolution des HSTP [5,6,16]. Par conséquent, pour exploiter les avantages des structures bidimensionnelles, une représentation en deux parties contenant deux matrices bidimensionnelles est conçue pour représenter les solutions, où une matrice représente l'emploi du temps des classes scolaires et l'autre représente l'emploi du temps des classes optionnelles.
+
+Sur la base de la représentation en deux parties conçue, nous avons adopté le recuit simulé en deux phases proposé par Zhang et al. [9] pour résoudre les CHSTP dans cet article. La première phase vise à construire des solutions faisables, tandis que la deuxième phase optimise la qualité des emplois du temps obtenus lors de la première phase. Tout d'abord, trois ensembles de données synthétiques, C10, C30 et C50, qui comptent respectivement 10, 30 et 50 classes scolaires, sont construits pour simuler les lycées réalistes de petite, moyenne et grande échelle. Chaque ensemble de données contient trois niveaux différents de contraintes pour les élèves et chaque niveau comporte cinq instances. En d'autres termes, un total de 45 instances sont utilisées dans nos expériences. Les résultats expérimentaux montrent que la représentation en deux parties est applicable aux CHSTP, et que le recuit simulé en deux phases peut résoudre les instances de petite échelle et obtenir des performances modérées dans les instances de moyenne et grande échelle. De plus, selon les coûts initiaux des ensembles de données et les résultats expérimentaux, il peut être observé que la contrainte des élèves est le goulot d'étranglement pour les CHSTP. Ensuite, nous appliquons le modèle CHSTP, la représentation en deux parties et le recuit simulé en deux phases à 10 lycées réels. Les résultats montrent que le modèle CHSTP peut s'adapter à la nouvelle innovation curriculaire ; de plus, la représentation en deux parties conçue et le recuit simulé en deux phases sont applicables pour résoudre les CHSTP.
+
+Les principales contributions de cet article peuvent être résumées comme suit :
+- Nous proposons un modèle de CHSTP qui correspond au nouveau système éducatif « 3+X » adopté par la plupart des lycées en Chine depuis 2014.
+- Une représentation en deux parties est conçue pour représenter la solution dans le modèle proposé.
+- Un recuit simulé en deux phases est adapté pour générer des emplois du temps.
+- Trois ensembles de données synthétiques sont construits pour simuler les cas réels et des applications dans 10 lycées réels sont réalisées.
+
+Le reste de cet article est organisé comme suit : la section 2 présente le contexte des HSTP et du recuit simulé. La section 3 donne les hypothèses et le modèle mathématique des CHSTP. La section 4 décrit la représentation de la solution en deux parties et le recuit simulé en deux phases. Les résultats expérimentaux sur les ensembles de données synthétiques, les applications dans les lycées réels, les discussions des résultats et les orientations futures sont présentés dans la section 5. Enfin, la section 6 résume cet article. En raison de la limitation de l'espace, des explications supplémentaires, y compris un exemple de la structure de l'emploi du temps, la caractérisation des données synthétiques, la description des données réelles et d'autres tableaux et figures connexes sont fournies dans le matériel supplémentaire. Les sections, tableaux et figures commençant par la lettre S proviennent du matériel supplémentaire.
+
+
+
+### 2. Contexte
+
+#### 2.1 Définition générale des HSTP
+
+Les problèmes d'emploi du temps des lycées (HSTP) rencontrés dans différentes régions varient considérablement. Par conséquent, les modèles HSTP conçus dans la littérature pertinente diffèrent également largement. L'enquête menée par Pillay [2] donne la définition des HSTP, sur la base de laquelle nous pouvons conclure que les HSTP sont principalement façonnés par deux facteurs : l'organisation des données de base et les contraintes. Les données de base dans les HSTP peuvent être résumées comme suit :
+- Les élèves sont répartis en différentes classes dans lesquelles ils recevront des cours de la part des enseignants.
+- Les enseignants sont spécialisés dans certaines matières.
+- Les matières sont les contenus enseignés.
+- Les créneaux horaires et les salles de classe déterminent respectivement les heures et les lieux où les élèves et les enseignants peuvent se rencontrer.
+
+Les contraintes peuvent être divisées en contraintes souples et rigides. Les contraintes rigides définissent la faisabilité d'un emploi du temps tandis que les contraintes souples définissent la qualité. Les contraintes souples sont également traitées comme des objectifs à minimiser dans les HSTP.
+
+Normalement, une rencontre entre un enseignant et une classe peut être appelée un événement ou une activité ; ainsi, résoudre les HSTP consiste essentiellement à répondre aux questions : qui, quand et où.
+- **Qui** indique les participants à un événement, à savoir les élèves, l'enseignant et les matières.
+- **Quand** indique à quelle heure ils doivent se rencontrer.
+- **Où** indique l'emplacement de leur rencontre.
+
+#### 2.2 Travaux connexes
+
+##### 2.2.1 Par régions
+
+Les HSTP sont dépendants de la région. Des enquêtes ont été menées sur de nombreux systèmes éducatifs dans différents pays [1,2]. Les modèles HSTP existants peuvent être classés en deux catégories. La première catégorie est le modèle Classe-Enseignant, utilisé par de nombreux pays, tels que les lycées australiens [17-19], les écoles brésiliennes [5,6,20-25], les écoles danoises [26,27], les écoles grecques [7-9,28-33], les écoles italiennes [34-36], les écoles portugaises [37,38], les écoles espagnoles [39] et les écoles finlandaises [40]. Dans le modèle Classe-Enseignant, les élèves sont regroupés en classes et tous les élèves d'une classe suivent les mêmes emplois du temps pour toutes les matières.
+
+La deuxième catégorie est le modèle orienté vers les élèves, utilisé par les écoles néerlandaises [21,41-44], les écoles allemandes [45-49] et les écoles néo-zélandaises [50]. La principale différence avec le modèle Classe-Enseignant est que dans le modèle orienté vers les élèves, ceux-ci ont plus de liberté pour choisir les matières ou les directions d'apprentissage de leur choix au lieu d'être regroupés en classes fixes partageant les mêmes emplois du temps pour toutes les matières. Par exemple, dans les écoles secondaires allemandes, plusieurs directions d'apprentissage sont proposées aux élèves dans chaque classe, et chaque direction a une combinaison fixe de matières et un nombre de créneaux horaires hebdomadaires pour chaque matière. De même, les écoles secondaires néerlandaises offrent différentes directions d'apprentissage aux élèves, et en plus de cela, deux ou plusieurs matières sont obligatoires. De plus, dans le cas de la Nouvelle-Zélande, les élèves ont la liberté de choisir les matières sans être limités à une direction d'apprentissage fixe ; cela est très similaire aux problèmes d'emploi du temps post-inscription. En général, la planification du modèle orienté vers les élèves est plus difficile que celle du modèle Classe-Enseignant car le premier offre la liberté aux élèves de choisir les matières, ce qui introduit des contraintes supplémentaires rendant encore plus difficile la recherche d'emplois du temps faisables.
+
+Les CHSTP appartiennent au modèle orienté vers les élèves et sont similaires au cas des écoles néerlandaises. Cependant, les élèves des lycées chinois ont plus de liberté par rapport aux cas néerlandais pour choisir des matières optionnelles plutôt que des directions d'apprentissage composées de combinaisons fixes de matières prédéterminées. De plus, la différence entre les CHSTP et les cas de la Nouvelle-Zélande réside dans le fait que dans les écoles néo-zélandaises, l'organisation des élèves est similaire à celle de l'université, c'est-à-dire qu'il n'y a aucune restriction quant au choix des cours par les élèves ; alors que dans les CHSTP, les élèves doivent assister aux matières obligatoires dans leurs classes scolaires. En un mot, il y a plus de restrictions pour les élèves dans les CHSTP que dans les cas néo-zélandais.
+
+##### 2.2.2 Par méthodologies
+
+L'enquête menée par Pillay [2] fournit de bonnes synthèses des algorithmes développés pour résoudre les HSTP jusqu'à cette époque. Ces algorithmes sont classés en termes de méthodologies utilisées en algorithmes de l'abeille, programmation par contraintes, méthodes de satisfaction de contraintes, transferts cycliques, algorithmes évolutionnaires, GRASP, programmation linéaire en nombres entiers, réseaux de neurones, recuit simulé [9,16,51-53] et recherche tabou, etc. Des détails supplémentaires sont conseillés dans [2]. Dans les contextes suivants, nous résumons brièvement plusieurs algorithmes développés récemment qui ont obtenu des résultats prometteurs sur les ensembles de données utilisés dans la troisième compétition internationale d'emplois du temps (ITC 2011).
+
+Fonseca et al. [54] ont conçu le solveur GOAL, qui a été le vainqueur de l'ITC 2011. Il a utilisé le Kingston High School Timetabling Engine (KHE) (voir la page d'accueil de Jeffrey H. Kingston) pour gérer et construire la solution initiale, puis le recuit simulé (SA) et la recherche locale itérative (ILS) ont été utilisés pour améliorer la qualité de la solution. Sept structures de voisinage, l'échange d'événements, le déplacement d'événements, l'échange de blocs d'événements, l'échange de ressources, le déplacement de ressources, la chaîne de Kempe et la réassignation des temps de ressources ont été utilisées pour explorer les voisinages de la solution actuelle dans SA et ILS. Le succès du solveur GOAL réside dans la construction rapide de la solution initiale et les stratégies contrôlées dans l'utilisation des mouvements de voisinage mentionnés dans SA et ILS.
+
+Après le solveur GOAL, Fonseca et ses co-auteurs ont continuellement examiné les performances de la recherche par voisinage variable (VNS) [55] et de l'acceptation tardive en montée de colline (LAHC) [56] dans la résolution des instances d'emplois du temps des lycées fournies dans ITC 2011. Les deux études [55] et [56] ont utilisé le KHE comme plateforme pour gérer et construire les solutions initiales, et six des structures de voisinage décrites ci-dessus ont été utilisées à l'exception de la réassignation des temps de ressources. Dans [55], les auteurs ont implémenté les variantes de VNS, RVNS, SVND et SVNS. Les résultats expérimentaux ont démontré que la VNS et ses variantes sont de bonnes alternatives pour résoudre les HSTP. De même, les variantes LAHC originales, sf-LAHC (sans stagnation), hybride de SA et LAHC, hybride de SA et sf-LAHC ont été examinées dans [56]. Les résultats obtenus par les variantes LACH implémentées se sont révélés compétitifs par rapport à d'autres concurrents dans ITC 2011.
+
+Récemment, Kristiansen et al. [57] ont proposé la première formulation en programmation linéaire en nombres entiers (IP) pour les instances de HSTP décrites dans le format XHSTT [58]. Le XHSTT sert de format commun pour les instances HSTP du monde réel provenant de 12 pays différents. Les résultats expérimentaux sur l'ensemble de données d'ITC 2011 montrent qu'en résolvant la formulation IP proposée, de nouvelles solutions optimales pour 2 instances ont été trouvées et l'optimalité de 4 solutions connues a été prouvée. Par la suite, Fonseca et al. [59] ont intégré cette formulation IP et la VNS dans une approche hybride. Tout d'abord, la méthode VNS est utilisée pour générer une solution sous-optimale, puis la formulation IP est invoquée pour améliorer continuellement la qualité de la solution. Dans leur dernier travail [60], les auteurs ont reformulé le modèle IP existant et trouvé de nouvelles meilleures bornes inférieures et de nouvelles meilleures solutions pour plusieurs instances.
+
+#### 2.3 Algorithme de recuit simulé
+
+Le recuit simulé (SA) simule le processus de recuit physique des atomes chauds, où à mesure que la température diminue, les atomes deviennent de moins en moins actifs jusqu'à être congelés. À chaque température, un nouvel état des atomes est accepté si la performance du système s'améliore. Cependant, un pire état est également accepté selon une probabilité donnée. En commençant par une solution initiale, le SA explore un voisinage de la solution actuelle et décide ensuite de l'ac
+
+cepter ou de la rejeter à chaque itération. Pendant le processus de recherche, les solutions améliorées et égales sont toujours acceptées, et les pires solutions sont acceptées avec une probabilité décroissante pour échapper aux optima locaux. L'algorithme 1 montre l'implémentation de base de SA.
+
+Le SA est un algorithme heuristique facile à utiliser et efficace pour traiter les HSTP [1,2,9,16,51-53] et d'autres problèmes connexes de planification éducative tels que les problèmes d'emploi du temps des examens [61,62] et les problèmes d'emploi du temps des cours [63,64]. Dans [51], la recherche tabou, le recuit simulé, les algorithmes génétiques et branch & bound ont été utilisés pour résoudre les problèmes d'emploi du temps scolaire, où le SA a été recommandé par les auteurs comme le meilleur choix dans ce domaine. De plus, une comparaison étendue des performances dans la résolution des problèmes d'emploi du temps scolaire entre sept algorithmes, y compris l'algorithme génétique, le système immunitaire, la recherche d'harmonie, la recherche tabou, le SA, le déluge et la marche vers le bas puis le saut a conclu que le SA était le vainqueur global en termes de résultats et de coûts de fonctionnement [52]. En outre, dans [65], la performance de nombreuses méthodes d'acceptation de mouvement a été comparée pour résoudre plusieurs problèmes d'optimisation combinatoire, et le SA est de nouveau recommandé par les auteurs pour résoudre les nouveaux problèmes modélisés. Par conséquent, nous employons le SA comme algorithme alternatif pour fournir des points de référence pour résoudre les CHSTP. Plus précisément, le SA en deux phases conçu dans [9] est implémenté.
+
+
+
+### 3. Définition du problème
+
+#### 3.1 Connaissances préliminaires sur les lycées chinois
+
+En général, il y a trois niveaux dans les lycées chinois, à savoir les niveaux senior un, senior deux et senior trois. Les élèves de la première année doivent suivre toutes les matières prescrites par le ministère de l'éducation, tandis que pour les élèves des deuxième et troisième années, leurs emplois du temps incluent trois matières obligatoires et des matières optionnelles "X".
+
+Un emploi du temps implique des entités telles que les leçons, les élèves, les enseignants, les créneaux horaires et les salles de classe. Construire un emploi du temps signifie attribuer des créneaux horaires aux réunions des leçons, des élèves et des enseignants dans les salles de classe. Une leçon est ici traitée comme une combinaison d'une matière et d'une classe. Par exemple, la combinaison d'anglais et de la classe 2-1 signifie que l'anglais a lieu dans la première classe de la deuxième année. Dans cet article, nous nous concentrons sur la planification des emplois du temps pour les deuxième et troisième années, car la planification des emplois du temps pour la première année est un problème typique du modèle Classe-Enseignant, qui a été largement étudié. Cependant, le modèle CHSTP proposé est capable de gérer la planification des emplois du temps pour la première année.
+
+Comme mentionné précédemment, il y a deux types de classes, à savoir les classes scolaires et les classes optionnelles. Les matières obligatoires sont enseignées dans les classes scolaires. Les classes optionnelles dépendent des matières. Par exemple, Physique-1 signifie la première classe de physique. Les élèves qui choisissent les mêmes classes optionnelles suivent les mêmes emplois du temps pour les matières choisies. Il est à noter que, quelle que soit la classe scolaire à laquelle appartiennent les élèves, ils ont une liberté totale dans le choix des classes optionnelles (le nombre de sélections pour les classes optionnelles appartenant à la même matière est généralement limité à une). Cependant, lorsque tous les élèves d'une classe optionnelle appartiennent à la même classe scolaire, la matière enseignée dans la classe optionnelle est convertie en une matière obligatoire de cette classe scolaire.
+
+Les élèves peuvent avoir des emplois du temps différents pour les classes optionnelles. Pour éviter d'utiliser des élèves individuels dans la planification des classes optionnelles, un nouveau concept, appelé schéma de sélection, est introduit dans les CHSTP. Un schéma de sélection est une combinaison de trois classes optionnelles ou moins au sein d'une même classe scolaire. Reportez-vous aux exemples montrés dans le tableau SXIII du matériel complémentaire : il y a trois schémas de sélection dans la classe 2-1. Le schéma de sélection 1 est la combinaison de Physique-1, Chimie-1 et Biologie-1, le schéma de sélection 2 contient Histoire-1, Chimie-1 et Biologie-1, et Physique-2, Chimie-1 et Biologie-1 forment le schéma de sélection 3. Cela signifie que les élèves d'une classe scolaire peuvent être regroupés en schémas de sélection, dans lesquels ils partagent les mêmes emplois du temps pour les matières optionnelles. En conséquence, pendant le processus de planification des emplois du temps, ce sont les schémas de sélection, et non les élèves individuels, qui sont utilisés, ce qui simplifie les calculs de coût. Par exemple, étant donné que chaque schéma de sélection dans le tableau SXIII contient cinq élèves, dans les processus de planification des emplois du temps réels, seules trois circonstances correspondant aux trois schémas de sélection sont prises en compte dans les calculs de coût, ce qui peut réduire considérablement la complexité des CHSTP.
+
+En général, les enseignants dans les lycées chinois sont tous à temps plein. Une leçon ne peut être attribuée qu'à un seul enseignant, mais un enseignant peut être attribué à plusieurs leçons. Les enseignants sont préaffectés aux leçons et peuvent avoir des préférences pour les créneaux horaires d'enseignement.
+
+La salle de classe est un type de ressource qui doit être attribué aux leçons. Une salle peut être attribuée à une leçon par créneau horaire. Cependant, le nombre de salles de classe n'est pas une contrainte forte dans les CHSTP. Ainsi, dans cet article, nous avons assoupli les contraintes liées aux salles.
+
+Le plan d'enseignement d'un enseignant est défini comme une préparation pour une matière. Par exemple, si l'enseignant t enseigne le chinois aux classes c1 et c2 quatre fois par semaine, alors le nombre de plans d'enseignement de l'enseignant t est de quatre.
+
+#### 3.2 Contraintes
+
+Sans exception, les contraintes dans les CHSTP sont classées en contraintes rigides et souples. Les contraintes rigides doivent être satisfaites, tandis que les contraintes souples sont souhaitables mais non obligatoires. Les coûts des violations des contraintes rigides et souples sont définis respectivement comme coût de faisabilité et coût de qualité. Les contraintes rigides considérées dans les CHSTP sont les suivantes :
+- (H1) : Les leçons ne peuvent pas être attribuées à des créneaux horaires où les enseignants sont indisponibles ;
+- (H2) : Les leçons doivent être attribuées exactement au nombre de créneaux horaires spécifié pour une semaine ;
+- (H3) : Un enseignant ne peut pas être attribué plus d'une fois au même créneau horaire ;
+- (H4) : Les leçons attribuées au même créneau horaire ne peuvent pas avoir d'élèves en commun, c'est-à-dire qu'un élève ne peut pas être attribué plus d'une fois au même créneau horaire.
+
+Les contraintes souples à satisfaire autant que possible pour obtenir des emplois du temps de haute qualité sont les suivantes :
+- (S1) : L'emploi du temps d'un enseignant pendant une journée de travail devrait avoir le moins de créneaux horaires inoccupés possible (un créneau horaire inoccupé signifie un créneau horaire libre entre deux leçons adjacentes).
+- (S2) : La charge de travail d'un enseignant devrait être répartie aussi uniformément que possible tout au long de la semaine.
+- (S3) : Les plans d'enseignement d'un enseignant devraient être synchronisés s'il/elle enseigne à plus d'une classe. Par exemple, le tableau SXIV du matériel complémentaire montre deux emplois du temps (Emploi du temps-1 et -2) d'un enseignant d'anglais qui enseigne à deux classes. On peut voir que dans l'emploi du temps-1, les plans d'enseignement se croisent, mais sont synchronisés dans l'emploi du temps-2. Par conséquent, l'emploi du temps-2 est préféré à l'emploi du temps-1 en raison de la synchronisation des plans d'enseignement.
+### 3.3 Modèle mathématique
+
+Le tableau 1 présente les symboles utilisés dans le modèle mathématique. Les coûts de faisabilité peuvent être modélisés comme suit :
+
+\[ \text{coût}_{f1} = \sum_{t \in T} \sum_{l \in L_t} \sum_{p,d \in A_t} \Psi_{tlpd}, \]
+
+\[ \text{coût}_{f2} = \sum_{l \in L} \left| \sum_{d \in D} \sum_{p \in P} \Psi_{tlpd} - h_l \right|, \quad t \in T, \]
+
+### Tableau 1 Définitions des symboles
+| Symbole | Définitions |
+| --- | --- |
+| D | Ensemble des jours ouvrables par semaine |
+| P | Ensemble des créneaux horaires par jour |
+| T | Ensemble des enseignants |
+| SM | Ensemble des schémas de sélection dans toutes les classes |
+| L | Ensemble des leçons, L_t ⊆ L désigne l'ensemble des leçons attribuées à l'enseignant t ∈ T, L_sm ⊆ L désigne l'ensemble des leçons appartenant à un schéma de sélection sm ∈ SM |
+| h_l | Le nombre spécifié de créneaux horaires (ou périodes) qui doivent être attribués à une leçon l ∈ L par semaine |
+| A_t (A_t) | Ensemble des créneaux horaires indisponibles (disponibles) de l'enseignant t ∈ T |
+| Ψ_{tlpd} | Si l'enseignant t ∈ T qui enseigne la leçon l ∈ L est attribué au créneau horaire p ∈ P du jour d ∈ D, alors Ψ_{tlpd} = 1 ; sinon Ψ_{tlpd} = 0 |
+
+\[ \text{coût}_{f3} = \sum_{t \in T} \sum_{d \in D} \sum_{p \in P} \delta_{tlpd}, \]
+
+\[ \delta_{tlpd} = 
+\begin{cases} 
+\sum_{l \in L_t} \Psi_{tlpd} - 1, & \text{si} \sum_{l \in L_t} \Psi_{tlpd} > 1, \\
+0, & \text{sinon},
+\end{cases}
+\]
+
+\[ \text{coût}_{f4} = \sum_{sm \in SM} \sum_{d \in D} \sum_{p \in P} \delta_{mdp}, \]
+
+\[ \delta_{mdp} = 
+\begin{cases} 
+\sum_{l \in L_{sm}} \Psi_{tlpd} - 1, & \text{si} \sum_{l \in L_{sm}} \Psi_{tlpd} > 1, \\
+0, & \text{sinon}, \quad t \in T,
+\end{cases}
+\]
+
+où \(\text{coût}_{f1}\), \(\text{coût}_{f2}\), \(\text{coût}_{f3}\) et \(\text{coût}_{f4}\) correspondent respectivement à H1, H2, H3 et H4. \(\text{coût}_{f1}\) compte le nombre de créneaux horaires attribués aux enseignants indisponibles. \(\text{coût}_{f2}\) calcule les différences entre les créneaux horaires réels de leçons sur une semaine et les créneaux horaires spécifiés par semaine pour toutes les matières. \(\text{coût}_{f3}\) calcule le nombre total de créneaux horaires en conflit pour les enseignants, et \(\text{coût}_{f4}\) calcule le nombre de créneaux horaires en conflit pour les schémas de sélection.
+
+Les coûts de qualité sont modélisés comme suit :
+
+\[ \text{coût}_{q1} = \sum_{t \in T} \sum_{d \in D} (p2 - p1 - \sum_{l \in L_t} \sum_{p \in P} \Psi_{tlpd}), \]
+
+\[ \text{coût}_{q2} = \sum_{t \in T} \sum_{d \in D} [\sum_{l \in L_t} \sum_{p \in P} \Psi_{tlpd} - M_{td}], \]
+
+\[ \text{coût}_{q3} = \sum_{t \in T} \sum_{d \in D} \sum_{l \in L_t} [\sum_{p \in P} \Psi_{tlpd} - M_{tld}], \]
+
+où \(\text{coût}_{q1}\), \(\text{coût}_{q2}\) et \(\text{coût}_{q3}\) correspondent respectivement à S1, S2 et S3. Dans l'équation (5), p1 et p2 représentent le premier et le dernier créneau horaire d'enseignement de l'enseignant t ∈ T dans une journée d ∈ D. Par conséquent, le nombre de créneaux horaires inoccupés de l'enseignant t pendant une journée d est calculé comme la différence entre (p2 - p1) et le total des créneaux horaires d'enseignement de l'enseignant t pendant la journée d. \(\text{coût}_{q1}\) est la somme des créneaux horaires inoccupés pour tous les enseignants. Mtd dans l'équation (6) est la médiane des créneaux horaires d'enseignement quotidiens de l'enseignant t ∈ T pendant une semaine, et Mtld dans l'équation (7) est la médiane des périodes d'enseignement quotidiennes pour la leçon l ∈ L attribuées à l'enseignant t ∈ T. Ainsi, le modèle mathématique des CHSTP peut être exprimé comme suit :
+
+\[ \text{Min Ob j} = \text{coût}_{q1} + \text{coût}_{q2} + \text{coût}_{q3}, \]
+
+s.t.
+
+\[ \text{Ob ji} = \text{coût}_{f1} + \text{coût}_{f2} + \text{coût}_{f3} + \text{coût}_{f4} = 0, \]
+
+où Obj est la fonction objectif et Objh est la contrainte.
+
+Les complexités de plusieurs sous-problèmes de construction d'emplois du temps ont été théoriquement analysées dans [21]. En tant que l'un de ces sous-problèmes, le problème du modèle Classe-Enseignant avec les disponibilités des enseignants (CTTA) s'est avéré être NP-complet. La contrainte (H1) dans notre modèle proposé fait que le CHSTP satisfait à la définition de CTTA, il peut donc être déduit que le CHSTP est NP-complet.
+
+
+### 4. Simulated Annealing à Deux Phases pour la Résolution des CHSTP
+
+Cette section décrit d'abord la représentation en deux parties conçue pour les solutions candidates, puis fournit des détails sur l'algorithme de simulated annealing (SA) en deux phases.
+
+#### 4.1 Représentation et Structures de Voisinage
+
+##### 4.1.1 Représentation en Deux Parties
+
+Une solution (ou emploi du temps) \( Q \) se compose de deux parties, l'emploi du temps obligatoire \( Q_c \) et l'emploi du temps optionnel \( Q_o \); les deux sont représentés sous forme de matrices bidimensionnelles. L'emploi du temps obligatoire \( Q_c \) a une dimension de \( n_c \times n_p \), où \( n_c \) est le nombre de classes scolaires et \( n_p \) est le nombre total de créneaux horaires en une semaine. Chaque cellule \( Q_c(c, p) \) dans \( Q_c \) indique la matière assignée à la classe \( c \) au créneau \( p \). La structure de \( Q_c \) est similaire à celle conçue dans [9], sauf que dans [9], les paires matière-enseignant sont remplies dans les cellules, alors que dans \( Q_c \), seuls les codes des matières sont remplis. Les enseignants sont pré-assignés aux leçons. Lorsque la matière est déterminée, l'enseignant qui enseigne cette matière est également déterminé.
+
+L'emploi du temps optionnel \( Q_o \) a une dimension de \( n_o \times n_p \), où \( n_o \) est le nombre total de classes optionnelles. Par exemple, si la physique, la chimie et la biologie ont respectivement 5, 4 et 3 classes, alors \( n_o = 5 + 4 + 3 = 12 \). Chaque cellule \( Q_o(o, p) \) dans \( Q_o \) est un entier 0-1, où 1 indique que la classe optionnelle \( o \) est assignée à la matière optionnelle correspondante au créneau \( p \), et 0 signifie des créneaux libres.
+
+Un exemple de l'emploi du temps \( Q \) est donné dans la Section SI du Matériel Supplémentaire, où les détails des affectations des enseignants pour les classes scolaires et les classes optionnelles ainsi que la structure de \( Q_c \) et \( Q_o \) sont fournis.
+
+##### 4.1.2 Initialisation de la Solution et Structure de Voisinage
+
+La procédure d'initialisation de la solution est résumée dans l'Algorithme 2, qui contient deux phases. La première phase est l'initialisation de \( Q_c \), et la deuxième phase concerne \( Q_o \). En fait, le processus d'initialisation équivaut à disperser le nombre spécifié de leçons dans \( Q_c \) et \( Q_o \). Notez que la contrainte H2 est automatiquement satisfaite par les solutions initiales et ne sera pas violée pendant le processus d'optimisation. C'est un avantage de la représentation en deux parties conçue.
+
+Le voisinage, noté \( Q' \), d'une solution \( Q \) est construit en échangeant les affectations des créneaux dans \( Q \). Par exemple, l'échange des affectations des créneaux \( p = 1 \) et \( 2 \) pour la classe scolaire-2-2 dans le Tableau SII générera une nouvelle solution où la collision pour l'enseignant Zhao au créneau \( p = 1 \) est éliminée. De la même manière, l'échange des affectations aux créneaux \( p = 2 \) et \( 5 \) pour Histoire-2 peut également créer un nouveau voisinage qui peut éliminer les collisions des classes. Dans le SA en deux phases décrit dans la sous-section suivante, les créneaux utilisés pour effectuer les échanges à chaque itération sont sélectionnés en utilisant une stratégie gloutonne.
+
+
+
+
+
+
+
+### 4.2 Simulated Annealing à Deux Phases
+
+Le pseudocode pour le simulated annealing (SA) à deux phases est détaillé dans l'Algorithme 3 et la Fig. 1 montre son flux de travail. Tout d'abord, l'emploi du temps initial est construit en utilisant l'Algorithme 2. Ensuite, deux phases sont effectuées séquentiellement. La première phase vise à trouver une solution faisable, c'est-à-dire à minimiser Objh à 0 ou autant que possible. La deuxième phase commence avec la solution obtenue lors de la première phase et vise à trouver un quasi-optimum, c'est-à-dire à minimiser Obj autant que possible sans augmenter les violations des contraintes dures.
+
+#### Algorithme 2 Initialisation de la Solution
+
+Entrée : \( n_c \), \( n_o \), \( n_p \), \( n_{sc} \), \( h_{scp} \), \( h_{sop} \);
+
+Sortie : \( Q \) : Solution initiale.
+
+\( n_c \) est le nombre de classes scolaires. \( n_o \) est le nombre de classes optionnelles. \( n_p \) est le nombre de créneaux horaires en une semaine. \( n_{sc} \) est le nombre de matières obligatoires. \( h_{scp} \) et \( h_{sop} \) sont les nombres de créneaux spécifiés que les matières obligatoires \( c \) et la matière optionnelle \( op \) doivent occuper en une semaine, respectivement.
+
+1. Phase un : Initialisation de \( Q_c \);
+2. Initialiser \( Q_c \) à une matrice zéro de \( n_c \times n_p \);
+3. pour \( c = 1 \) à \( n_c \) faire
+4.   pour \( sc = 1 \) à \( n_{sc} \) faire
+5.     Choisir aléatoirement \( h_{scp} \) créneaux horaires libres \(\{p1, \ldots, p_{h_{scp}}\}\) et définir \( Q_c(c, \{p1, \ldots, p_{h_{scp}}\}) = sc \);
+6.   fin pour
+7. fin pour
+8. Phase deux : Initialisation de \( Q_o \);
+9. Initialiser \( Q_o \) à une matrice zéro de \( n_o \times n_p \);
+10. pour \( o = 1 \) à \( n_o \) faire
+11.    Choisir aléatoirement \( h_{sop} \) créneaux horaires libres \(\{p1, \ldots, p_{h_{sop}}\}\) et définir \( Q_o(o, \{p1, \ldots, p_{h_{sop}}\}) = 1 \);
+12. fin pour
+13. retourner \( Q = (Q_c, Q_o) \).
+
+#### Algorithme 3 SA à Deux Phases
+
+Entrée : \( T1_{ini} \), \( T2_{ini} \) : Températures initiales des phases un et deux, respectivement;
+\( T1_{end} \), \( T2_{end} \) : Températures terminales des phases un et deux, respectivement;
+\( \alpha1 \), \( \alpha2 \) : Taux de refroidissement des phases un et deux, respectivement;
+\( L1 \), \( L2 \) : Nombre de boucles des phases un et deux, respectivement.
+
+Sortie : Solution finale.
+
+1. Initialiser la solution \( Q \) en utilisant l'Algorithme 2;
+2. Phase un :
+3. Définir \( T = T1_{ini} \);
+4. tant que \( (T > T1_{end} \) et \( Objh(Q) > 0) \) faire
+5.    pour \( n = 1 : L1 \) faire
+6.      Choisir un créneau \( t1 \) qui viole les contraintes dures;
+7.      Choisir un créneau \( t2 \), \( t2 \ne t1 \);
+8.      pour chaque classe \( c \) dans \( Q \) faire
+9.        Échanger \( Q(c, t1) \) et \( Q(c, t2) \), obtenir une nouvelle solution \( Q' \);
+10.       si \( Objh(Q') \le Objh(Q) \) alors
+11.          \( Q = Q' \);
+12.       sinon
+13.          Calculer \( \Delta C = Objh(Q') - Objh(Q) \);
+14.          \( r = random(0, 1) \); // random(0, 1) génère un nombre réel aléatoire dans \([0, 1]\)
+15.          si \( r < 0.5 \times exp(-\Delta C / T) \) alors
+16.             \( Q = Q' \);
+17.          fin si
+18.       fin si
+19.    fin pour // pour chaque classe \( c \) dans \( Q \)
+20. fin pour // pour \( n = 1 : L1 \)
+21. \( T = \alpha1 \times T \);
+22. fin tant que
+23. Phase deux :
+24. Définir \( T = T2_{ini} \);
+25. tant que \( (T > T2_{end} \) et \( Objh(Q) > 0) \) faire
+26.    pour \( n = 1 : L2 \) faire
+27.      Choisir aléatoirement un créneau \( t1 \);
+28.      pour \( i = 2 \) à \(|D| \times |P|\) faire
+29.        Choisir aléatoirement un créneau \( t2 \) qui n'a jamais été choisi;
+30.        pour chaque classe \( c \) dans \( Q \) faire
+31.          si \( Q(c, t1) \ne Q(c, t2) \) alors
+32.             Échanger \( Q(c, t1) \) et \( Q(c, t2) \), obtenir une nouvelle solution \( Q' \);
+33.          fin si
+34.          si \( Objh(Q') < Objh(Q) \) alors // Si les contraintes dures s'améliorent.
+35.             \( Q = Q' \);
+36.          sinon si \( Objh(Q') > Objh(Q) \) // Les contraintes dures s'aggravent.
+37.             continuer;
+38.          fin si
+39.          si \( Obj(Q') \le Obj(Q) \) alors // Les contraintes dures restent inchangées et les contraintes souples s'améliorent ou restent inchangées.
+40.             \( Q = Q' \);
+41.          sinon
+42.             Calculer \( \Delta C = Obj(Q') - Obj(Q) \);
+43.             \( r = random(0, 1) \);
+44.             si \( r < 0.5 \times exp(-\Delta C / T) \) alors
+45.                \( Q = Q' \);
+46.             fin si
+47.          fin si
+48.        fin pour // pour chaque classe \( c \) dans \( Q \)
+49.      fin pour // pour \( i = 2 \) à \(|D| \times |P|\)
+50.    fin pour // pour \( n = 1 : L2 \)
+51. \( T_{k+1} = \alpha2 \times T_k \);
+52. fin tant que
+
+La probabilité d'acceptation des solutions moins bonnes \( 0.5 \times exp(-\Delta C / T) \) tend à diminuer pendant le processus de refroidissement, ce qui signifie que les solutions dégradées seront plus difficiles à accepter à la fin de la recherche. De plus, à toute température, plus la valeur de \( \Delta C \) est grande, plus la valeur de \( 0.5 \times exp(-\Delta C / T) \) est petite, c'est-à-dire que plus la solution est mauvaise, moins elle a de chances d'être acceptée. Cela a du sens car, au début, une bonne diversité est utile pour explorer une grande région, mais à un stade ultérieur, une bonne convergence est essentielle pour améliorer la qualité des solutions. Une fois que les boucles \( L1 \) se terminent, la température actuelle \( T \) est mise à jour en multipliant le taux de refroidissement \( \alpha1 \). Les étapes ci-dessus sont répétées jusqu'à atteindre les critères d'arrêt.
+
+La phase deux commence avec la solution obtenue lors de la phase un. Elle vise à minimiser la valeur de l'objectif \( Obj \). Similar to phase one, at first, the current temperature \( T \) is initialized to \( T2_{ini} \), and the value of \( Obj \) for the timetable \( Q \) is calculated. The stopping criteria for phase two are either \( T \) reaches the termination temperature \( T2_{end} \), or an optimal solution is found. In the inner iterative phase (begin at line 26), a random timeslot \( t1 \) is selected at first. Then for every remaining timeslot \( t2 \) in the week that is different from \( t1 \), assignments of \( t1 \) and \( t2 \) for every class \( c \) in \( Q \) are swapped. The neighborhood solution \( Q' \
+
+) is accepted if the feasibility cost is decreased. Otherwise, when \( Objh \) is unchanged, the procedure accepts \( Q' \) if \( Obj(Q') \le Obj(Q) \), or \( Obj(Q') > Obj(Q) \) but a random real number \( r \in [0, 1] \) satisfies \( r < 0.5 \times exp(-\Delta C / T) \), where \( \Delta C = Obj(Q') - Obj(Q) \). When \( L2 \) loops terminate, the current temperature \( T \) is updated by multiplying the cooling rate \( \alpha2 \). The above steps are repeated until reach the stopping criteria.
+
+
+
+
+
+
+
+
+### 5 Expériences Computationnelles
+
+#### 5.1 Caractérisation des Ensembles de Données
+
+Dans cette partie, nous générons trois ensembles de données, C10, C30 et C50, pour simuler les cas des lycées de petite, moyenne et grande taille, respectivement. Le "X" dans "3+X" est fixé à 3 et le nombre total de matières optionnelles est fixé à 6. Le nombre de classes scolaires dans C10, C30 et C50 est fixé à 10, 30 et 50, respectivement. Chaque ensemble de données contient trois sous-groupes, à savoir SM-1, SM-2 et SM-3, qui représentent différents groupes de schémas de sélection. Chaque groupe de schémas de sélection contient cinq instances. Par conséquent, un total de 45 instances sont générées. En outre, les données de dix lycées réels sont également utilisées pour illustrer les caractéristiques du modèle CHSTP et tester l'efficacité de la représentation en deux parties et du simulated annealing (SA) à deux phases. En raison de la limitation de l'espace, les détails des ensembles de données générés et des instances du monde réel sont donnés dans les Sections SII et SIII, respectivement, dans le Matériel Supplémentaire.
+
+#### 5.2 Résultats Expérimentaux
+
+Les paramètres utilisés dans le simulated annealing (SA) à deux phases sont définis dans le Tableau 2. Dix exécutions indépendantes sont effectuées pour chaque instance. Toutes les expériences se déroulent dans un environnement Windows 7 (64 bits) avec un processeur Intel (R) Xeon (R) E5606 2.13GHz et 8GB de RAM en utilisant le langage de programmation C++. Les résultats expérimentaux pour C10, C30 et C50 sont montrés dans les Tableaux 3, 4 et 5, respectivement, où \( c^*_h \) et \( c^*_s \) représentent les meilleures valeurs de faisabilité et d'objectif sur dix exécutions indépendantes, respectivement. \( c_h \) et \( c_s \) représentent les valeurs moyennes de faisabilité et d'objectif, respectivement. Best h% est le pourcentage de diminution des valeurs de faisabilité en comparant la valeur initiale Objh et la meilleure valeur Objh de chaque instance, et Best s% est le pourcentage correspondant de diminution des valeurs d'objectif. Le temps d'exécution moyen est indiqué par CPU (en secondes).
+
+D'après le Tableau 3, on peut voir que les instances dans SM-1 sont relativement faciles à résoudre. Presque toutes les cinq instances peuvent trouver des solutions faisables lors de la meilleure exécution ; et les valeurs moyennes de faisabilité de trois instances sont 0, ce qui signifie que des solutions faisables peuvent être trouvées à chaque exécution. Cependant, pour les instances de SM-2, les meilleures exécutions réduisent les coûts de faisabilité de 86 à 93 % mais ne parviennent pas à obtenir des solutions faisables, et pour SM-3, les valeurs de Best h% sont plus basses. La raison en est que le nombre de schémas de sélection pour les instances de SM-2 et SM-3 est plus grand que pour SM-1, donc plus de contraintes pour les étudiants dans SM-2 et SM-3 rendent plus difficile de trouver des solutions faisables pour eux. Le même phénomène peut être observé dans les résultats expérimentaux sur les ensembles de données C30 et C50 dans les Tableaux 4 et 5, respectivement. 
+
+Les résultats ci-dessus soulignent le fait que le schéma de sélection considéré dans les CHSTPs est l'un des facteurs vitaux qui affectent l'efficacité du SA à deux phases pour trouver des solutions faisables. En comparant les résultats des instances dans le groupe de schémas SM-1 sur les ensembles de données C10, C30 et C50, nous pouvons voir que bien que le nombre de classes scolaires dans les ensembles de données C30 et C50 augmente respectivement de trois et cinq fois par rapport à celui de C10 (ainsi que le nombre de professeurs, de classes optionnelles et le nombre total de schémas de sélection également), les pourcentages de diminution des valeurs de faisabilité pour C30 et C50 sont très proches. Le même phénomène peut être observé dans les résultats des groupes de schémas SM-2 et SM-3 dans C30 et C50. Dans C30 et C50, les valeurs moyennes de Best h% pour SM-2 sont respectivement de 77,6 et 76,46, ce qui est approximativement égal. De plus, les valeurs moyennes de Best h% pour SM-3 dans C30 et C50 sont de 68,32 et 61,5, ce qui présente des différences mais pas très distinctes. Par conséquent, on peut conclure que le SA à deux phases est relativement robuste au nombre d'écoles, de classes optionnelles, de professeurs et au nombre total de schémas de sélection, mais est sensible au nombre de schémas de sélection dans une classe scolaire.
+
+### 5 Expériences Computationnelles
+
+#### 5.3 Discussion des Résultats
+
+Le nombre de schémas de sélection dans une classe scolaire joue un rôle vital dans la détermination du coût initial élevé des instances, c'est-à-dire des niveaux de difficulté à trouver des emplois du temps faisables pour elles. De plus, selon les résultats expérimentaux donnés dans les Tableaux 3 à 5, seules les instances de SM-1 peuvent être résolues, et pour les autres instances de SM-2 et SM-3, l'algorithme conçu ne parvient même pas à trouver un emploi du temps faisable.
+
+Pour identifier les raisons des échecs dans la résolution des instances SM-2 et SM-3, les violations détaillées liées aux schémas de sélection et aux enseignants dans SM-2 et SM-3 à partir de C10 sont fournies dans le Tableau SXV. Dans le Tableau SXV, rhs et rht représentent la proportion de violations causées respectivement par les schémas de sélection et les enseignants dans le total des violations des contraintes strictes ; rs et rt représentent la proportion des schémas de sélection et des enseignants, respectivement, qui ont des conflits. Comme on peut le voir dans le Tableau SXV, par rapport aux enseignants, les schémas de sélection contribuent le plus aux violations des contraintes strictes. De plus, près de 70 % et 80 % des schémas de sélection dans SM-2 et SM-3, respectivement, ont des conflits, tandis que le rt correspondant est d'environ 15 % et 30 % dans SM-2 et SM-3, respectivement. Par conséquent, nous en déduisons que le nombre de schémas de sélection dans une classe scolaire est le goulot d'étranglement pour résoudre les CHSTP.
+
+Le temps CPU utilisé par le SA à deux phases pour résoudre les problèmes de petite échelle est inférieur à 4 minutes, ce qui est relativement rapide. Pour l'ensemble de données C30, la recherche peut être terminée en moins d'une demi-heure, et pour C50, il faut environ 30 à 80 minutes pour terminer la recherche, ce qui est acceptable compte tenu des difficultés des instances dans C30 et C50.
+
+#### 5.4 Analyse de la Convergence
+
+Pour analyser la convergence des coûts stricts et souples en appliquant le SA à deux phases avec les paramètres définis dans le Tableau 2, nous sélectionnons au hasard une instance de SM-1, SM-2 et SM-3 dans l'ensemble de données C10, respectivement. La Figure 2 illustre les évolutions des coûts stricts et souples pour l'instance sélectionnée dans une seule exécution. L'axe des X représente le nombre d'itérations débutant à la ligne 5 de la phase une et à la ligne 26 de la phase deux dans l'Algorithme 3 ; et l'axe des Y représente les coûts stricts et souples dans les colonnes gauche et droite, respectivement. Comme on peut le voir sur la Figure 2, les coûts stricts et souples diminuent avec l'augmentation des itérations, mais les solutions pires seraient acceptées pendant les premières étapes des évolutions. À la fin, lorsque la température devient basse, il devient plus difficile d'accepter les solutions pires et les deux coûts convergent. Notez que dans la phase deux, le coût strict a encore des opportunités d'être amélioré. Les mêmes résultats peuvent être obtenus en utilisant les ensembles de données C30 et C50.
+
+#### 5.5 Applications dans les Lycées Réels
+
+Pour vérifier le modèle CHSTP proposé, le SA à deux phases avec les paramètres définis dans le Tableau 2 est appliqué à dix instances réelles. Les propriétés détaillées des instances réelles et les résultats expérimentaux mentionnés dans le contexte suivant peuvent être trouvés dans la Section SIII du Matériel Supplémentaire. Dix exécutions indépendantes sont effectuées sur chacune d'elles et les résultats sont montrés dans le Tableau SXI. Comme on peut le voir dans le Tableau SXI, toutes les dix instances peuvent être résolues par le SA à deux phases. La valeur de Best h% est de 100 pour toutes les instances et la valeur de Best s% est comprise entre 44,4 et 83,5 avec une valeur moyenne de 66,3.
+
+Cependant, avec les paramètres actuels, le SA à deux phases ne peut garantir un succès à 100 % pour trouver des emplois du temps faisables pour School2, School3, School7 et School9. Ainsi, nous augmentons L1 à 500 et gardons les autres paramètres inchangés. Le Tableau SXII montre les résultats obtenus en résolvant les quatre instances ci-dessus. Comme on peut le voir dans le Tableau SXII, le SA à deux phases peut trouver des emplois du temps faisables pour School2, School3 et School9 à chaque fois, sauf pour School7 où une exécution a échoué.
+
+En un mot, les résultats obtenus avec les données réelles prouvent que le modèle proposé peut s'adapter au système éducatif sous la nouvelle innovation du curriculum ; et la représentation en deux parties conçue peut être utilisée pour résoudre les CHSTP. De plus, le SA à deux phases qui coopère avec la représentation en deux parties s'avère également être un algorithme alternatif faisable pour résoudre le modèle proposé.
+
+#### 5.6 Directions Futures
+
+Dans des cas pratiques, il est possible que des solutions faisables, c'est-à-dire des emplois du temps sans conflits pour chaque enseignant et élève, n'existent pas du tout. Pour faire face à de telles situations, les planificateurs expérimentés changeraient les affectations des enseignants, le nombre de créneaux horaires ou les paramètres des contraintes. À notre connaissance, aucune littérature existante n'a proposé un modèle dont l'objectif est de trouver les modifications minimales relatives aux plans de travail des enseignants ou aux paramètres des contraintes. Cependant, il s'agit probablement du moyen le plus simple de résoudre les problèmes de planification éducative hautement contraints comme SM2 et SM3. Ainsi, la conception d'un tel modèle pour le domaine des problèmes de planification hautement contraints devrait être une direction prometteuse digne d'étude.
+

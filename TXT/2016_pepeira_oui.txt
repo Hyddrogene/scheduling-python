@@ -1,0 +1,231 @@
+### 1. Introduction
+
+Ce travail présente un modèle de programmation linéaire en nombres entiers qui résout un problème d'emploi du temps d'une faculté à Rio de Janeiro, Brésil. Le modèle a été conçu pour générer des solutions répondant aux préférences des gestionnaires de la faculté, à savoir, allouer le maximum de professeurs avec le plus haut titre académique et minimiser les coûts en fusionnant les cours avec des programmes équivalents. Le modèle linéaire en nombres entiers trouve également des solutions qui respectent les préférences de planning des enseignants, générant ainsi des horaires plus pratiques et confortables pour ces professionnels. Les préférences ont été représentées dans la fonction objectif, chacune avec un poids spécifique. Le modèle a surpassé les solutions manuelles en termes de temps de réponse et de qualité. Il a également démontré que les préférences de planning des enseignants sont en réalité des objectifs conflictuels. Le modèle a été approuvé par les gestionnaires de la faculté et est utilisé depuis le second semestre de 2011.
+
+### 1. Introduction
+
+Tripathy [1] définit la planification des cours universitaires (UCT) comme un problème de programmation qui alloue un certain nombre de réunions entre étudiants et enseignants pour une période donnée. Chacune de ces réunions est suivie par des groupes spécifiques d'étudiants et un enseignant. Chaque réunion peut également nécessiter des ressources spécifiques (projecteurs, ordinateurs, etc.). Les choix d'allocation doivent prendre en compte la disponibilité des enseignants, des ressources et, si nécessaire, d'autres facteurs. Schaerf [2] définit l'UCT comme la planification d'une série de séances d'enseignement entre enseignants et étudiants dans une période prédéterminée, généralement d'une semaine, tout en satisfaisant un ensemble de contraintes. L'emploi du temps peut être créé manuellement, souvent laborieusement, et la solution ainsi obtenue est généralement insatisfaisante d'une certaine manière. de Werra [3] estime que, parce que les problèmes d'UCT peuvent être très différents, il semble déraisonnable de développer des modèles de programmation universels qui pourraient être utilisés dans toutes les institutions.
+
+La fonction objective de ces problèmes consiste généralement à minimiser les coûts et/ou à maximiser les préférences ; c'est-à-dire que la fonction objective mesure à la fois la qualité des solutions et la validité des emplois du temps générés [4]. Les contraintes des problèmes d'UCT sont au cœur de ces modèles et sont définies par les véritables caractéristiques de chaque institution. Les contraintes sont généralement divisées en deux catégories : les contraintes strictes (hard constraints) et les contraintes souples (soft constraints) [5]. Une solution de planification qui viole même une seule contrainte stricte n'est pas faisable, alors qu'une solution qui viole un certain nombre de contraintes souples reste faisable. Les contraintes souples sont utilisées pour améliorer la qualité de la solution car en satisfaire une signifie que la solution répond à une préférence particulière ; ainsi, une solution faisable peut être trouvée en satisfaisant ou non une contrainte souple. Par exemple, un enseignant est disponible pour donner des cours uniquement le lundi matin, après-midi ou soir, mais il préfère la période du matin. Un emploi du temps avec des cours à un autre moment que le lundi est considéré comme infaisable, donc nous pouvons conclure que c'est une contrainte stricte. En revanche, un emploi du temps avec des cours le lundi après-midi ou soir est considéré comme faisable, et un emploi du temps avec des cours le lundi matin est considéré comme faisable et satisfait la préférence de l'enseignant, améliorant ainsi la qualité de l'emploi du temps, donc nous pouvons conclure que c'est une contrainte souple [6].
+
+Ce travail vise à proposer un modèle qui résout le problème d'UCT dans une faculté de Rio de Janeiro. Cet article est organisé comme suit. La section 2 propose une revue de la littérature pour présenter le problème d'utilisation de la programmation UCT pour résoudre des cas réels. La section 3 détaille les caractéristiques de l'institution éducative dans cette étude, et la section 4 détaille la modélisation pour résoudre les problèmes correspondants. La section 5 montre comment la méthodologie a été appliquée, et enfin, la section 6 contient les conclusions et une discussion des principaux enjeux soulevés.
+
+### 2. Revue de la littérature
+
+L'objectif principal de cette revue de la littérature est d'identifier les différences et les similitudes entre les divers modèles développés. Chaque institution possédant des caractéristiques uniques, il est attendu que leurs modèles mathématiques respectifs aient également des caractéristiques uniques, pouvant être représentées par des contraintes strictes ou souples, ou même par la fonction objective elle-même, le cas échéant.
+
+Daskalaki et al. [7] ont développé un modèle de programmation linéaire en nombres entiers binaires auquel plusieurs contraintes peuvent être ajoutées pour incorporer un grand nombre d'exigences et de règles opérationnelles, comme c'est le cas dans la plupart des institutions académiques. Le modèle a été utilisé au Département d'Ingénierie Électrique et Informatique de l'Université de Patras en Grèce. L'objectif de ce modèle est de minimiser une fonction de coût linéaire tout en satisfaisant les préférences liées au temps, au jour de la semaine ou même à la salle de classe pour un cours spécifié. La fonction de coût se compose de deux termes : le premier représente le coût de l'allocation d'un module (cours) à une heure donnée d'une séance d'enseignement ; le second représente le coût encouru en allouant ces modules à un jour de la semaine donné. Les contraintes strictes sont les suivantes : les modules ne sont pas autorisés à se chevaucher ; tous les modules prévus pour un semestre donné doivent être proposés ; et la durée de la séance d'enseignement doit répondre aux demandes des enseignants et se dérouler dans les salles requises. Les contraintes souples sont les suivantes : les collisions dans les horaires de disponibilité des enseignants ne sont pas permises ; l'emploi du temps doit être aussi compact que possible ; et les modules doivent être limités à une seule salle de classe. Le modèle a été utilisé dans une étude de cas, et les auteurs ont rapporté qu'une solution faisable a été générée.
+
+Thompson [8] a étudié la construction d'un emploi du temps universitaire en tenant compte des préférences des étudiants concernant l'allocation des cours. La fonction objective mesure la qualité de la solution en fonction de la satisfaction des préférences des étudiants. Le modèle a été testé avec trois ensembles de données de la School of Hotel Administration de l'Université Cornell aux États-Unis. Sa fonction objective consistait à minimiser le nombre de modules alloués aux enseignants ; minimiser le nombre de modules non inclus dans l'emploi du temps ; minimiser les collisions des modules dans le temps ; minimiser les violations concernant les modules qui doivent être programmés les mêmes jours ; et minimiser les cas où les modules devraient être programmés en même temps mais ne le sont pas. Les contraintes strictes sont les suivantes : les horaires des enseignants ne doivent pas se chevaucher ; la distance entre l'emplacement d'une classe et la suivante doit être aussi petite que possible ; un enseignant doit avoir ses heures de travail entièrement allouées ; les horaires des salles de classe ne doivent pas se chevaucher ; et les horaires des modules ne doivent pas se chevaucher. Les contraintes souples sont les suivantes : certains modules ne doivent pas être proposés les mêmes jours que d'autres modules, tandis que certains modules doivent être proposés le même jour que d'autres modules. L'auteur pense que son modèle est applicable à d'autres institutions.
+
+Schimmelpfeng et Helber [9] ont décrit une approche de programmation linéaire en nombres entiers binaires utilisée à la School of Economics and Administration de l'Université de Hanovre en Allemagne. Le modèle résout le problème d'UCT et alloue les salles de classe. Sa fonction objective consiste à minimiser les violations de chacune des contraintes souples du problème. Les contraintes strictes sont les suivantes : les horaires de disponibilité des enseignants doivent être respectés ; les collisions dans les horaires de disponibilité des enseignants ne sont pas autorisées, ni les collisions entre les modules ; et les séquences des modules doivent être respectées. Les contraintes souples sont les suivantes : certaines préférences de planification des classes doivent être respectées, et certaines préférences de planification des enseignants doivent être respectées. Après avoir appliqué le modèle, les auteurs ont mené une enquête pour évaluer les résultats du modèle du point de vue des enseignants. Un seul des 100 répondants était insatisfait du nouveau système.
+
+Bakir et Aksop [10] ont formulé un modèle de programmation en nombres entiers binaires pour la planification des emplois du temps au Département de Statistiques de l'Université de Gazi en Turquie. Le modèle vise à minimiser l'insatisfaction des étudiants et des enseignants, et donc la fonction objective évalue ces quantités. Les contraintes strictes sont les suivantes : les modules et les salles de classe ne doivent pas se chevaucher ; les étudiants ne peuvent s'inscrire qu'aux cours correspondant à leur semestre actuel ; certains cours doivent respecter une séquence logique dans le temps ; et les séances d'enseignement allouées aux modules doivent respecter la durée requise de chaque module. Les contraintes souples sont les suivantes : l'emploi du temps doit être aussi compact que possible, et les étudiants en échec ne peuvent s'inscrire qu'aux cours de leur semestre actuel et précédent, si possible. Les auteurs affirment que la solution optimale a été trouvée ; cependant, la taille du problème a nécessité beaucoup de temps pour trouver cette solution.
+
+Adewumi et al. [11] ont développé un algorithme génétique pour aborder un problème d'UCT dans une université non identifiée au Nigeria. Les contraintes strictes sont que les horaires des enseignants et des salles de classe ne doivent pas se chevaucher et les capacités des salles de classe doivent être respectées. Les auteurs affirment que l'heuristique a trouvé de bons résultats et que leur modèle peut facilement être adapté pour satisfaire des contraintes souples, si nécessaire.
+
+Razak et al. [12] présentent une approche utilisant un graphe biparti et la coloration des graphes pour résoudre un problème d'UCT pour le Département de Technologie de l'Information d'une université privée. Les contraintes strictes sont que les disponibilités des modules et des enseignants ne doivent pas se chevaucher. Les contraintes souples sont les suivantes : l'emploi du temps doit prévoir des pauses déjeuner si possible ; les séances d'enseignement doivent avoir une durée maximale limitée ; le nombre total de modules ne doit pas dépasser les heures de travail disponibles des enseignants ; les enseignants ne doivent pas enseigner des cours pendant plus de trois heures consécutives ; les étudiants ne doivent pas assister à des cours pendant plus de quatre heures consécutives ; les étudiants plus âgés doivent avoir des horaires préférentiels ; une classe d'étudiants ne doit pas avoir qu'un seul cours par jour donné ; et un module ne doit pas être enseigné pendant plus de deux heures consécutives. Les auteurs ont rapporté que les résultats des études expérimentales ont démontré que le modèle proposé résout les problèmes d'UCT plus facilement que d'autres méthodes.
+
+Al-Tarawneh et Ayob [13] ont appliqué une recherche tabou et une structure de voisinage multiple pour résoudre le problème d'UCT de l'École d'Ingénierie de l'Université Kebangsan en Malaisie. La fonction objective additionne les poids des pénalités associées aux contraintes souples du modèle, déterminées par des spécialistes. Les contraintes strictes sont les suivantes : les collisions entre les salles de classe et dans les horaires de disponibilité des enseignants ne sont pas autorisées ; les capacités des salles de classe doivent être respectées ; et les modules de plus de deux heures ne peuvent pas être divisés en plusieurs séances d'enseignement. Les contraintes souples sont les suivantes : chaque classe d'étudiants doit avoir un module isolé chaque jour ; aucune classe d'étudiants ne doit avoir deux cours consécutifs ; les intervalles entre les modules ne doivent pas être longs ; aucun enseignant ne doit enseigner deux séances consécutives ; et aucune enseignante ne doit être affectée à des modules en soirée. Les auteurs affirment que les résultats obtenus sont meilleurs que ceux obtenus manuellement.
+
+Cette revue de la littérature montre que le noyau des contraintes strictes est assez cohérent dans les travaux analysés, car ce sont, en fait, des contraintes logiques qui ne peuvent pas être laissées insatisfaites. En revanche, l'ensemble des contraintes souples peut être considéré comme une sorte d'"empreinte institutionnelle" qui rend la modélisation extrêmement spécifique à chaque cas et donc impossible à généraliser.
+
+### 3. Description de l'institution à analyser
+
+L'université privée qui fait l'objet de cette étude est située à São Gonçalo, dans l'état de Rio de Janeiro, au Brésil. La période d'analyse concerne l'année 2011 car c'est la période pour laquelle les données étaient entièrement disponibles pour les auteurs. La collecte de données sur l'institution a été exhaustive, les principales sources étant la page institutionnelle sur Internet, l'intranet institutionnel, la recherche documentaire et les entretiens avec le personnel clé. Au premier semestre 2011, l'institution comptait un total de 1 297 étudiants répartis sur neuf cours de premier cycle et 92 enseignants. Son infrastructure comprend 47 salles de classe et cinq laboratoires, pouvant accueillir un total de 1 857 étudiants. Il y a deux plages horaires distinctes pour les cours : le matin et le soir. Le matin est divisé en deux sessions : la première commence à 7h20 et se termine à 9h00 ; après une pause de 20 minutes, la deuxième session commence à 9h20 et se termine à 10h20. Le soir, il y a également deux sessions : la première commence à 19h00 et se termine à 20h20 ; après une pause de 20 minutes, la deuxième session commence à 20h40 et se termine à 22h00.
+
+Parce que chaque plage horaire est divisée en deux sessions, les modules sont classés en deux catégories : les modules à double session (DS) et les modules à session unique (SS). Les premiers correspondent aux modules qui comprennent deux sessions (de 7h20 à 10h20 ou de 19h00 à 22h00), et les seconds correspondent aux modules qui ne comprennent qu'une session (de 7h20 à 9h00 ; de 9h20 à 10h20 ; de 19h00 à 20h20 ; ou de 20h40 à 22h00). Chaque module a strictement une classe par semaine, ce qui signifie qu'un étudiant régulier peut être inscrit à cinq à dix modules dans une seule plage horaire.
+
+Certains modules peuvent avoir des cours communs, c'est-à-dire que des étudiants de différents programmes de premier cycle peuvent assister au même cours car les modules ont les mêmes programmes ; Foulds et Johnson [14] appellent cette pratique le "piggybacking" (empilage).
+
+L'institution propose neuf programmes de premier cycle, chacun ayant une durée différente : Administration (ADM) en huit semestres, Droit (LAW) en dix semestres, Systèmes d'Information (INF) en huit semestres, Pédagogie (PED) en six semestres, Langues (LAN) en six semestres, Tourisme (TOU) en sept semestres, Technologie en Logistique (LOG) en cinq semestres, Technologie en Gestion de la Qualité (QUA) en cinq semestres, et Technologie en Gestion Financière (FIN) en cinq semestres.
+
+Le groupe technologique représente une nouvelle étape dans le système d'enseignement supérieur brésilien vers l'éducation professionnelle. Ces cours de premier cycle confèrent des diplômes technologiques aux étudiants qui veulent répondre à des demandes spécifiques du marché du travail et peuvent être rapidement affectés comme professionnels spécialisés. Le titre de "technologue" est accordé à l'issue de ces cours, qui sont autorisés par le Ministère brésilien de l'Éducation.
+
+Le Tableau 1 montre la répartition totale des étudiants parmi les neuf programmes de premier cycle au premier semestre 2011.
+
+Il y a un total de 17 modules récepteurs, c'est-à-dire des modules ayant les mêmes programmes que les modules d'autres programmes de premier cycle et ayant un plus grand nombre d'étudiants, pouvant ainsi "recevoir" des classes d'étudiants d'autres programmes. Cet ensemble de modules récepteurs peut accueillir un total de 29 modules communs, c'est-à-dire des modules ayant des programmes correspondants mais moins d'étudiants et ne pouvant donc pas "recevoir" d'autres étudiants. L'institution préfère que toutes ces fusions aient lieu (si l'espace physique requis est disponible). En tout, pour la planification du deuxième semestre 2011, il y avait 302 modules à offrir, dont 198 étaient des DS et 104 des SS. Parmi ceux-ci, 73 nécessitaient de nouvelles embauches car il n'y avait pas suffisamment d'enseignants qualifiés pour enseigner leur contenu. Des embauches supplémentaires étaient nécessaires en raison de pertes de personnel, passant de 92 enseignants au premier semestre 2011 à 77 au second semestre de la même année.
+
+Après avoir déterminé les caractéristiques de l'institution et l'offre prévue de modules pour le semestre, les besoins préférentiels suivants pour l'emploi du temps ont été identifiés : agréger les modules avec les mêmes programmes (piggybacking) et attribuer de préférence autant de modules que possible aux enseignants ayant les titres académiques les plus élevés. Cette dernière préférence s'aligne stratégiquement avec l'institution pour augmenter la qualité de ses services éducatifs et encourager les groupes de recherche au sein de la faculté.
+
+Deux autres préférences ont émergé des préférences horaires des enseignants : éviter la dispersion des cours SS (et ainsi éviter les lacunes dans les horaires des enseignants) et, s'il y a des lacunes, programmer les modules dans la première session afin que les enseignants puissent partir plus tôt. Le temps total estimé par les coordinateurs de chaque cours pour résoudre ce problème manuellement était d'environ deux mois.
+
+### 4. Modélisation du problème
+
+La modélisation développée dans cette étude ne considère que la planification des modules offerts au deuxième semestre 2011 en cours du soir, car le cours du matin a un nombre minimal d'étudiants et ne nécessitait donc pas de modélisation mathématique. Un total de 77 enseignants devait être attribué à 302 modules différents répartis sur les neuf programmes de premier cycle.
+
+Le groupe des enseignants disponibles sera appelé \( I \), et chaque élément de ce groupe sera désigné par \( i \). Dans \( I \), il y a des enseignants qui peuvent enseigner des modules à session unique (SS) pendant la première et/ou la deuxième session d'enseignement. Les enseignants qui enseignent des modules pendant la première session d'enseignement forment le sous-groupe \( I_g \), et ceux qui enseignent des modules pendant la deuxième session d'enseignement forment le sous-groupe \( I_h \). Le groupe des modules planifiés sera appelé \( K \), et chaque élément de ce groupe sera désigné par \( k \). Parmi les modules \( K \), il y a des modules récepteurs et des modules communs, qui forment ensemble les sous-groupes \( K_r \) et \( K_c \), respectivement.
+
+#### 4.1. Fonction objective
+
+L'objectif de la modélisation proposée est de maximiser l'allocation des enseignants en fonction d'un poids ou score attribué à chacun d'eux. Ce score peut être généré via un ou plusieurs critères ; dans le présent travail, un seul critère a été utilisé : le titre académique. Cela est un indicateur général de l'avantage d'attribuer un enseignant donné à un module donné : plus le score est élevé, plus les chances d'attribution de cet enseignant sont grandes. Si l'enseignant n'est pas disponible un jour de la semaine, ce jour sera pénalisé par une valeur négative suffisamment grande pour éviter que le modèle ne l'attribue en dehors de sa disponibilité. La fonction objective est représentée par l'équation suivante :
+
+\[
+\text{max} \sum_{i} \sum_{j} \sum_{k} \sum_{l} \sum_{m} \sum_{n} \sum_{o} x_{ijkl mno} \cdot T_{ij} \cdot \alpha_i,
+\]
+
+où \( i \) représente les enseignants disponibles pour le deuxième semestre de 2011. \( j \) représente les jours de la semaine où les modules sont enseignés, avec des valeurs de 1 à 5 correspondant de lundi à vendredi. \( k \) représente les modules disponibles pour le deuxième semestre de 2011. \( l \) indique la période de classe à laquelle un cours/enseignant est attribué : si attribué à la première session d'enseignement, alors \( l = 1 \) ; si attribué à la deuxième, alors \( l = 2 \) ; si attribué aux deux, alors \( l = 3 \). \( m \) indique le semestre du programme de premier cycle \( n \). \( n \) indique le programme de diplôme, où Administration = 1, Droit = 2, Langues = 3, Pédagogie = 4, Tourisme = 5, Systèmes d'Information = 6, Technologie en Logistique = 7, Technologie en Gestion de la Qualité = 8, et Technologie en Gestion Financière = 9. \( o \) indique la classe dans le semestre \( m \) du programme de premier cycle \( n \). \( x_{ijkl mno} \) est une variable de décision binaire indiquant quel enseignant a été attribué ; le jour d'attribution ; le module à enseigner ; la session d'enseignement ; le semestre du cours ; le programme de premier cycle ; et la classe. La valeur 1 signifie que l'attribution a été faite, tandis que 0 signifie qu'elle ne l'a pas été. Ces variables sont définies dans ce travail comme des variables d'attribution binaires. \( T_{ij} \) est un paramètre binaire qui indique les jours \( j \) où l'enseignant \( i \) est disponible. La valeur 1 indique la disponibilité, tandis que 0 indique l'indisponibilité. \( \alpha_i \) est le poids ou le score attribué à chaque enseignant \( i \) ; ce poids ou score peut être le résultat d'un ou plusieurs critères, et plus sa valeur est élevée, plus les chances d'attribution de l'enseignant \( i \) sont grandes.
+
+La fonction objective est construite de telle sorte que chaque fois qu'un enseignant est attribué un de ses jours disponibles, il contribue avec un incrément en points à la fonction objective ; plus son titre est élevé, plus cet incrément est grand. La fonction objective est diminuée (pénalité) si l'enseignant est attribué un jour où il n'est pas disponible (la pénalité est la même quel que soit son titre).
+
+#### 4.2. Premier groupe de contraintes fortes : Contraintes de complétude
+
+Le premier groupe de contraintes du problème est de type fort et impose que le programme pour tous les programmes de premier cycle soit complet (contrainte de complétude), c'est-à-dire que, une fois que les semestres de cours planifiés et les modules pour un semestre donné sont définis, tous ces modules planifiés doivent être offerts :
+
+\[
+\sum_{i} \sum_{j} x_{ijk3mno} = 1, \quad \forall k, \forall m, \forall n, \forall o,
+\]
+
+\[
+\sum_{i} \sum_{j} x_{ijk1mno} + \sum_{i} \sum_{j} x_{ijk2mno} = 1, \quad \forall k, \forall m, \forall n, \forall o.
+\]
+
+L'équation (2) impose que tous les modules DS planifiés pour un terme \( m \) du programme \( n \) et de la classe \( o \) doivent être offerts un jour de semaine \( j \) par un enseignant \( i \). L'équation (3) impose la même contrainte pour tous les modules SS planifiés, qui doivent être offerts soit lors de la première, soit lors de la deuxième session.
+
+#### 4.3. Deuxième groupe de contraintes fortes : Collisions entre cours
+
+Le deuxième groupe de contraintes est de type fort et impose que deux modules d'un seul terme \( m \) d'un programme de premier cycle \( n \) et de la classe \( o \) ne peuvent pas être offerts le même jour de semaine \( j \). Cette contrainte évite les collisions entre les cours :
+
+\[
+\sum_{i} x_{ijk1mno} + \sum_{i} x_{ijk3mno} \leq 1, \quad \forall j, \forall k, \forall m, \forall n, \forall o,
+\]
+
+\[
+\sum_{i} x_{ijk2mno} + \sum_{i} x_{ijk3mno} \leq 1, \quad \forall j, \forall k, \forall m, \forall n, \forall o,
+\]
+
+\[
+\sum_{i} x_{ijk1mno} + \sum_{i} x_{ijk2mno} \leq 1, \quad \forall j, \forall k, \forall m, \forall n, \forall o.
+\]
+
+Les contraintes (4) et (5) garantissent qu'un module DS ne sera pas offert le même jour de semaine \( j \) qu'un module SS. La contrainte (6) garantit que le même module SS ne sera pas offert à la fois lors de la première et de la deuxième session d'enseignement.
+
+#### 4.4. Troisième groupe de contraintes fortes : Collisions dans les emplois du temps des enseignants
+
+Le troisième et dernier groupe de contraintes, qui est également de type fort, impose qu'il n'est pas possible pour un enseignant \( i \) d'enseigner différents modules \( k \) au même moment le même jour de semaine. Cette contrainte évite les collisions dans les emplois du temps des enseignants :
+
+\[
+\sum_{i} \sum_{m} \sum_{n} \sum_{o} x_{ijk1mno} + \sum_{i} \sum_{m} \sum_{n} \sum_{o} x_{ijk3mno} \leq 1, \quad \forall j, \forall k,
+\]
+
+\[
+\sum_{i} \sum_{m} \sum_{n} \sum_{o} x_{ijk2mno} + \sum_{i} \sum_{m} \sum_{n} \sum_{o} x_{ijk3mno} \leq 1, \quad \forall j, \forall k,
+\]
+
+\[
+\sum_{i} \sum_{m} \sum_{n} \sum_{o} x_{ijk1mno} + \sum_{i} \sum_{m} \sum_{n} \sum_{o} x_{ijk2mno} \leq 1, \quad \forall j, \forall k.
+\]
+
+Les contraintes (7) et (8) garantissent que, le jour \( j \), un module DS de n'importe quel semestre \( m \) de n'importe quel programme de premier cycle \( n \) de n'importe quelle classe \( o \) sera enseigné par un enseignant \( i \) avec n
+
+'importe quel module SS. La contrainte (9) garantit que 2 modules SS de n'importe quel semestre \( m \) de n'importe quel programme de premier cycle \( n \) et de n'importe quelle classe \( o \) seront enseignés par un enseignant \( i \) en même temps. On peut ajouter à ces contraintes une autre empêchant les enseignants d'avoir une charge de travail nulle, mais une telle contrainte pourrait rendre le problème infaisable.
+
+Pour garantir que le modèle et ses variantes génèrent des solutions toujours faisables, un artefact doit être introduit ; à savoir, un élément est ajouté à \( I \) qui a une disponibilité totale dans son emploi du temps, ne peut pas souffrir de collisions de programmation, et est autorisé à "enseigner" n'importe quel cours. Cet élément est appelé NOUVEL ENSEIGNANT À RECRUTER ou HNL. 
+
+#### 4.5. Premier groupe de contraintes souples
+
+Dans le premier groupe de contraintes souples ou la catégorie S1, il y a les préférences pour regrouper les classes de différents programmes de premier cycle dont les modules partagent le même programme. Pour ce groupe, il est souhaitable que deux modules ou plus partagent le même enseignant, la même salle de classe et le même horaire (empilage). Cette préférence nécessite l'ajout du terme suivant à la fonction objective :
+
+\[
+\beta \cdot \sum_{k_r} \sum_{k_c} S1_{k_r k_c},
+\]
+
+où \( k_r \) représente les cours récepteurs appartenant au sous-groupe \( K_r \). \( k_c \) représente les cours communs appartenant au sous-groupe \( K_c \). \( S1_{k_r k_c} \) sont des variables binaires pour lesquelles la valeur 1 signifie que deux cours ont été regroupés et la valeur 0 signifie le contraire. Chaque variable binaire est connectée par une paire \( (k_r, k_c) \). \( \beta \) est la valeur par laquelle la fonction objective devrait être augmentée lorsque \( S1_{k_r k_c} \) est 1.
+
+Les contraintes souples sont alors les suivantes :
+
+\[
+2 \cdot S1_{k_r k_c} - x_{ijk3mno} - x_{ijk3mno} \leq 0, \quad \forall i, \forall j, \forall k_r, \forall k_c, \forall m, \forall n, \forall o,
+\]
+
+\[
+2 \cdot S1_{k_r k_c} - x_{ijk1mno} - x_{ijk1mno} \leq 0, \quad \forall i, \forall j, \forall k_r, \forall k_c, \forall m, \forall n, \forall o,
+\]
+
+\[
+2 \cdot S1_{k_r k_c} - x_{ijk2mno} - x_{ijk2mno} \leq 0, \quad \forall i, \forall j, \forall k_r, \forall k_c, \forall m, \forall n, \forall o.
+\]
+
+La contrainte (11) indique que lorsque des modules récepteurs DS et des modules communs sont regroupés, la fonction objective est augmentée de \( \beta \) unités. Les contraintes (12) et (13) indiquent que lorsque des modules récepteurs SS et des modules communs (ayant lieu dans la même session d'enseignement) sont regroupés, la fonction objective est augmentée de \( \beta \) unités. Dans tous les cas, la fonction objective n'est pas augmentée s'il n'est pas possible de regrouper les modules.
+
+#### 4.6. Deuxième groupe de contraintes souples
+
+Le deuxième groupe de contraintes souples ou la catégorie S2 contient des préférences indiquant que les enseignants qui enseignent plus d'un module SS peuvent les allouer le même jour de la semaine \( j \). Cela évite des journées "brisées" avec une seule session d'enseignement. Cette préférence nécessite l'ajout du terme suivant à la fonction objective :
+
+\[
+\gamma \sum_{i_g} \sum_{i_h} S2_{i_g i_h},
+\]
+
+où \( i_g \) représente les enseignants qui enseignent des modules SS lors de la première session d'enseignement, appartenant ainsi à \( I_g \). \( i_h \) représente les enseignants qui enseignent des modules SS lors de la deuxième session d'enseignement, appartenant ainsi à \( I_h \). \( S2_{i_g i_h} \) sont des variables binaires indiquant qu'un module pour la première session d'enseignement et un module pour la deuxième session d'enseignement sont alloués le même jour si sa valeur est 1 ; sinon, sa valeur est 0. Chaque variable binaire est connectée à une paire \( (i_g, i_h) \). \( \gamma \) est la valeur pour augmenter la fonction objective si la valeur de \( S2_{i_g i_h} \) est 1.
+
+La contrainte souple est la suivante :
+
+\[
+2 \cdot S2_{i_g i_h} - x_{ij1mno} - x_{ij2mno} \leq 0, \quad \forall j, \forall i_g, \forall i_h, \forall m, \forall n, \forall o.
+\]
+
+La contrainte (15) indique que lorsque deux modules enseignés par un seul enseignant sont offerts le même jour, l'un lors de la première session et l'autre lors de la deuxième session d'enseignement, il devrait y avoir une augmentation de \( \gamma \) unités dans la fonction objective. Si ce n'est pas possible d'offrir les deux modules le même jour, il n'y aura pas d'augmentation dans la fonction objective.
+
+#### 4.7. Troisième groupe de contraintes souples
+
+Le troisième groupe de contraintes souples ou la catégorie \( S3 \) indique que si un enseignant n'enseigne qu'un seul module SS un jour donné, ce module devrait de préférence être attribué à la première session d'enseignement. Cela permet à l'enseignant de quitter l'université plus tôt. Cette préférence nécessite l'ajout du terme suivant à la fonction objective :
+
+\[
+\delta \sum_{i_g} \sum_{i_h} S3_{i_g i_h},
+\]
+
+où \( S3_{i_g i_h} \) est une variable binaire qui, lorsqu'elle est évaluée à 1, signifie qu'un module SS a été attribué à la première session d'enseignement ; ces variables sont évaluées à 0 sinon. Chaque variable binaire est connectée à une paire de modules des première et deuxième sessions d'enseignement. \( \delta \) est la valeur par laquelle la fonction objective devrait être augmentée si \( S3_{i_g i_h} \) est 1.
+
+La contrainte souple est la suivante :
+
+\[
+2 \cdot S3_{i_g i_h} - x_{ij1mno} + x_{ij2mno} \leq 1, \quad \forall j, \forall k, \forall i_g, \forall i_h, \forall m, \forall n, \forall o.
+\]
+
+La contrainte (17) indique que, lorsqu'un module SS est attribué à la première session d'enseignement, la fonction objective est augmentée de \( \delta \) unités. Si cette attribution n'est pas possible, aucun incrément n'est ajouté à la fonction objective.
+
+
+### 5. Application du modèle à critère unique pour la planification du deuxième semestre de 2011
+
+Le critère adopté pour évaluer les enseignants lors de la modélisation du deuxième semestre de 2011 était leur titre académique, c'est-à-dire que plus le titre d'un enseignant est élevé, plus il est susceptible d'être affecté. Un enseignant avec seulement une licence ou l'équivalent reçoit un score de quatre, un enseignant avec une spécialisation reçoit un score de six, un enseignant avec un master reçoit un score de huit, et un enseignant avec un doctorat reçoit un score de dix. Le titre le plus élevé détermine le score. Les pénalités pour l'élément HNL (nouvel enseignant à recruter) et pour l'indisponibilité de planification étaient de -1 et -10, respectivement.
+
+Les modèles ont été résolus en utilisant Microsoft Excel 2010 avec le plug-in gratuit OpenSolver [15] version 1.9 ; un ordinateur sous Windows 7 avec une architecture 64 bits, un processeur Quad Core à 2,40 GHz, et 8 Go de mémoire DDR 2 a été utilisé.
+
+Le tableau ci-dessous présente les données quantitatives détaillées :
+
+(i) **Nombre de variables binaires d'allocation** : indique le nombre total de variables binaires d'allocation.
+(ii) **Nombre de variables binaires \(S1\)** : indique le nombre de variables binaires du premier groupe de contraintes souples.
+(iii) **Nombre de variables binaires \(S2\)** : indique le nombre de variables binaires du deuxième groupe de contraintes souples.
+(iv) **Nombre de variables binaires \(S3\)** : indique le nombre de variables binaires du troisième groupe de contraintes souples.
+(v) **Nombre total de variables entières** : indique le total des variables entières dans chaque modèle donné.
+(vi) **Nombre de contraintes fortes dans le premier groupe** : indique le nombre de contraintes fortes dans le premier groupe.
+(vii) **Nombre de contraintes fortes dans le deuxième groupe** : indique le nombre de contraintes fortes dans le deuxième groupe.
+(viii) **Nombre de contraintes fortes dans le troisième groupe** : indique le nombre de contraintes fortes dans le troisième groupe.
+(ix) **Nombre de contraintes souples dans le premier groupe** : indique le nombre de contraintes souples dans le premier groupe.
+(x) **Nombre de contraintes souples dans le deuxième groupe** : indique le nombre de contraintes souples dans le deuxième groupe.
+(xi) **Nombre de contraintes souples dans le troisième groupe** : indique le nombre de contraintes souples dans le troisième groupe.
+(xii) **Nombre total de contraintes** : indique le nombre total de contraintes dans chaque modèle donné.
+(xiii) **Poids (\(\beta\), \(\gamma\), \(\delta\))** : indique le poids (\(\beta\), \(\gamma\), \(\delta\)) utilisé pour chaque groupe de contraintes souples. Dans les modèles deux, trois et quatre, les poids ont été progressivement augmentés pour trouver le nombre maximal de contraintes souples d'un groupe donné pouvant être satisfaites. Pour ces modèles, la valeur 100 est un poids suffisamment grand pour obtenir la satisfaction maximale des contraintes.
+
+Les résultats de satisfaction des contraintes souples sont les suivants :
+(xiv) **Satisfaction des contraintes souples du premier groupe** : indique combien de contraintes souples du premier groupe ont été satisfaites. Pour le problème présenté ici, il y a 29 possibilités de regroupement.
+(xv) **Satisfaction des contraintes souples du deuxième groupe** : indique combien de contraintes souples du deuxième groupe ont été satisfaites. Pour chaque paire de modules SS alloués, une contrainte du deuxième groupe peut être satisfaite ; par conséquent, le nombre total de contraintes satisfaites varie selon la solution trouvée pour le problème. Pour comparer les modèles, le résultat sera présenté en pourcentage.
+(xvi) **Satisfaction des contraintes souples du troisième groupe** : indique combien de contraintes souples du troisième groupe ont été satisfaites. Pour chaque contrainte du deuxième groupe satisfaite, une contrainte du troisième groupe a été supprimée. Ce nombre de contraintes varie également selon la solution trouvée pour le problème : pour comparer les modèles, le résultat sera présenté en pourcentage.
+(xvii) **Enseignants alloués en dehors de leur emploi du temps disponible** : indique combien d'enseignants, sur un total de 77, ont été alloués en dehors des jours disponibles indiqués par eux.
+(xviii) **Enseignants sans modules alloués** : indique combien d'enseignants, sur un total de 77, n'ont pas été alloués.
+(xix) **Temps de calcul** : indique le temps total pour trouver une solution, en secondes.
+(xx) **Nombre de modules non alloués** : indique combien de modules, sur une estimation initiale de 73, n'ont pas été alloués.
+
+Le modèle contient 4 180 variables binaires d'allocation et un total de 1 176 contraintes. La valeur de la fonction objective d'allocation était de 1 318 ; le modèle a réussi à satisfaire 96,55 % des contraintes souples du premier groupe, 85,29 % des contraintes souples du deuxième groupe, et 60,00 % des contraintes souples du troisième groupe. Aucun enseignant n'est resté sans module attribué ou attribué en dehors de l'emploi du temps fourni. La solution a été atteinte en 261,41 secondes, et un total de 80 modules est resté non alloué. Le modèle complet a utilisé les poids suivants : dix pour le premier groupe de contraintes souples, 100 pour le deuxième groupe de contraintes souples, et un pour le troisième groupe de contraintes souples. Ces poids ont été choisis après plusieurs tests avec des valeurs différentes, qui ont révélé que les contraintes souples des deuxième et troisième groupes sont en concurrence. Alors que les contraintes du deuxième groupe tentent d'allouer les modules SS le même jour, les contraintes du troisième groupe tentent d'allouer tous les modules SS à la première session d'enseignement. Pour garantir que les horaires soient aussi cohérents que possible, les contraintes du deuxième groupe devraient avoir des poids plus importants que les contraintes du troisième groupe. Le nombre de modules non alloués est resté assez proche de l'estimation initiale ; par conséquent, le nombre de nouveaux enseignants à recruter est resté pratiquement inchangé. Les gestionnaires de l'institution et les coordinateurs des cours ont approuvé l'emploi du temps généré par le modèle complet, qui a été mis en œuvre au deuxième semestre de 2011.
+
+
+
+### 6. Remarques finales
+
+L'objectif général de cette étude a été atteint : construire un modèle mathématique permettant d'identifier les emplois du temps qui répondent le mieux aux besoins spécifiques de l'affectation des enseignants dans l'institution étudiée. La collecte de données sur l'institution a été exhaustive ; les principales sources étaient la page institutionnelle sur Internet, l'Intranet institutionnel, la recherche documentaire et les entretiens avec des membres clés du personnel. À partir des informations obtenues, il a été possible d'identifier et de classifier clairement les principaux problèmes liés à cette planification des horaires, à savoir l'utilisation du piggybacking pour minimiser les coûts, la programmation des modules SS le même jour et, en cas d'horaires fragmentés, le remplissage de la première session d'enseignement plutôt que la seconde.
+
+La littérature qualifie ces problèmes ou défis de contraintes souples. La littérature identifie également une autre catégorie de contraintes comme étant dures ; ces contraintes doivent être satisfaites pour générer des solutions faisables. Pour l'étude de cas abordée dans ce travail, les contraintes dures ont complètement évité des problèmes tels que les collisions dans les emplois du temps des enseignants, les modules en conflit et l'incapacité à offrir les modules planifiés pour une période donnée. Les contraintes souples ont été séparées en groupes et résolues par l'introduction de variables binaires. Lorsque chaque variable binaire prenait la valeur 1, une contrainte souple d'un groupe donné était satisfaite. La solution du modèle s'améliorait à mesure que les contraintes souples étaient satisfaites.
+
+Il a toujours été possible de satisfaire les contraintes dures car un artefact a été introduit pour permettre la création d'emplois du temps faisables même si le personnel enseignant n'était pas complet ; lorsqu'un module était affecté à cet artefact, cela indiquait qu'un nouvel enseignant devait être recruté. Une fois les contraintes dures et souples clairement définies, un modèle a été développé pour affecter les enseignants en fonction de leur titre académique (plus le titre est élevé, plus la possibilité d'affectation est grande), minimiser les coûts en regroupant les cours dont les programmes sont équivalents, et répondre aux préférences de planification des enseignants (générant ainsi des emplois du temps plus pratiques et confortables pour ces professionnels).
+
+Le modèle a été accepté par les responsables de l'institution et par les coordinateurs des cours et est utilisé dans l'institution depuis le deuxième semestre de 2011. Cependant, on peut noter que notre approche est basée sur une étude de cas et, en raison de la nature du problème, le modèle ne peut pas être entièrement généralisé pour résoudre tous les types de problèmes.

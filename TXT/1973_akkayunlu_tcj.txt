@@ -1,0 +1,243 @@
+Un algorithme pour calculer un emploi du temps pour un département universitaire est discuté. Le problème est formulé en termes de coûts associés aux caractéristiques de l'emploi du temps, y compris les interactions entre les cours. L'algorithme trouve une solution globalement optimale en utilisant un modèle mathématique linéaire.
+
+(Reçu en octobre 1972)
+
+La construction informatique des emplois du temps universitaires a reçu beaucoup d'attention, et plusieurs algorithmes ont été publiés (Barraclough, 1965; Yule, 1968; Almond, 1969). La nature complexe des exigences a généralement favorisé l'adoption d'une approche heuristique pour résoudre ce problème.
+
+Cet article décrit un modèle mathématique pour planifier les cours au sein d'un seul département universitaire et propose un algorithme pour calculer une solution globalement optimale en associant un coût à chaque caractéristique de l'emploi du temps. Les coûts peuvent être infinis (dans ce cas, la caractéristique devient une contrainte), ainsi que positifs ou négatifs (correspondant respectivement à des caractéristiques indésirables et souhaitables). Le modèle est suffisamment puissant pour répondre à toutes les exigences habituelles, à l'exception suivante : il est supposé qu'il n'y a pas de limite au nombre total de salles de classe disponibles. Au moins pour les universités américaines, cela ne pose aucun problème réel puisque les salles de classe sont généralement allouées à partir d'une réserve globale du campus. Le problème plus simple et plus pratique de plusieurs cours se disputant des installations spécifiques (un laboratoire ou un auditorium) est facilement intégré dans le modèle.
+
+L'algorithme consiste à réduire le problème à ce qui est essentiellement un programme linéaire résolu pour calculer un emploi du temps globalement optimal.
+
+1. Énoncé du problème
+
+Un emploi du temps de cours départemental implique généralement environ 30 cours et couvre environ 40 heures par semaine. La plupart des cours se tiennent entre une et trois séances hebdomadaires totalisant 2 ou 3 heures. Le problème de planification consiste à choisir une des plusieurs alternatives pour chaque cours. Idéalement, l'emploi du temps représente le meilleur compromis entre les besoins des étudiants, du corps enseignant et de l'administration. Les critères utilisés pour parvenir à un bon emploi du temps peuvent être formulés en termes des considérations énumérées ci-dessous.
+
+Contraintes
+
+Ce sont des exigences minimales qui doivent être respectées par l'emploi du temps. Un emploi du temps qui satisfait à toutes les contraintes est appelé une solution faisable. Il existe plusieurs types de contraintes.
+
+1. Restrictions globales sur les alternatives disponibles pour chaque type de cours ; par exemple :
+   (a) Les cours de premier cycle ont lieu les lundis, mercredis et vendredis,
+   (b) Les cours de cycle supérieur ont lieu deux fois par semaine,
+   (c) Il existe des cours désignés en soirée.
+
+2. Contraintes spécifiques limitant davantage les choix pour chaque cours individuel :
+   (d) L'instructeur peut ne pas être disponible un jour donné ou pendant certaines heures.
+   (e) Un chevauchement d'un cours spécifique programmé (offert par un autre département) peut devoir être évité.
+
+3. Conflits qui ne peuvent être tolérés. Inclus sont :
+   (a) Les co-requis,
+   (b) Les cours faisant partie d'un curriculum fixe, de même niveau et dans des domaines connexes,
+   (c) Les cours enseignés par le même instructeur,
+   (d) Les cours qui partagent les mêmes installations, telles qu'un laboratoire.
+
+4. Contraintes supplémentaires sur la manière dont certains paires de cours peuvent être programmées :
+   (a) Les cours donnés par le même conférencier ne peuvent pas être assignés à des heures consécutives.
+   (b) Il y a une limite au nombre de jours d'enseignement.
+
+5. Contraintes administratives :
+   (a) Du temps doit être prévu pour les réunions de la faculté, les colloques, etc.
+   (b) L'emploi du temps doit permettre des sessions de comité et d'autres activités impliquant seulement une partie de la faculté.
+
+Caractéristiques secondaires
+
+Ce sont des propriétés supplémentaires qui sont souhaitables mais non essentielles. La ligne entre les contraintes et les caractéristiques n'est pas claire et, dans certains cas, les contraintes et les caractéristiques sont incluses dans la même solution existante. Les caractéristiques peuvent être associées à un élément, et l'objectif est de trouver une solution globale dans laquelle la somme de ces coûts est minimale. Les classes suivantes sont typiques des caractéristiques secondaires.
+
+1. S'il existe des alternatives disponibles pour un cours donné, certaines peuvent être préférables à d'autres parce que, par exemple,
+   (a) L'instructeur préfère enseigner l'après-midi, ou aimerait avoir le mardi libre,
+   (b) Le cours attire des étudiants à temps partiel qui préfèrent les heures de fin d'après-midi ou de soirée.
+
+2. Les caractéristiques peuvent impliquer la position relative de deux cours dans l'emploi du temps.
+   (a) Un conflit inévitable doit être évité si possible, car il est prévu que certains étudiants suivraient les deux cours.
+   (b) Les instructeurs peuvent indiquer une préférence sur la durée de l'intervalle entre leurs cours.
+   (c) Pour accommoder les étudiants à temps partiel dont la présence est limitée à un ou deux jours par semaine, il peut être souhaitable que certains cours portant sur des matières connexes soient programmés consécutivement.
+
+Le modèle mathématique à présenter ci-dessous utilise...
+
+
+### Disposition spéciale pour les contraintes de type 5
+
+Les contraintes de type 5 peuvent être traitées exactement comme celles de type 3 : chaque activité de 5(a) correspond à un cours qui ne doit pas entrer en conflit avec aucun autre; chaque activité de 5(b) à un cours qui ne doit entrer en conflit qu'avec certains autres cours.
+
+### 2. Notation
+
+Soit \( A \) l'ensemble des cours, et pour chaque cours \( a \in A \), soit \( J_a \) l'ensemble des alternatives disponibles pour programmer \( a \). Le problème sera formulé en termes de variables :
+
+\[ x_{a,i} \quad (a \in A, i \in J_a) \]
+
+associées à l'affectation :
+\[ \text{cours } a = \text{alternative } i \]
+
+Les solutions auront \( x_{a,i} = 0 \) ou 1, l'emploi du temps consistant en ces affectations \( a = i \) pour lesquelles \( x_{a,i} = 1 \).
+
+Le coût direct de l'affectation \( a = i \) est \( c_{a,i} \) et le coût de l'interaction entre la paire d'affectations \( a = i \) et \( b = j \) est \( c_{a,i,b,j} \). (Les coûts d'interaction ne sont pas symétriques, dans le sens où soit \( c_{a,i,b,j} \) soit \( c_{a,j,b,i} \) est toujours zéro.) Soit :
+
+\[ C_1 = \{ (a,i), (a,i') \in x : i \neq i' \} \]
+\[ C_2 = \{ (a,i), (b,j) \in x : a \neq b, c_{a,i,b,j} \neq 0 \} \]
+
+Enfin, soit \( D_0 \) l'ensemble des paires d'affectations mutuellement incompatibles, c'est-à-dire des paires d'affectations dont l'interaction a un coût infini.
+
+\[ D_0 = \{ (x_{a,i}, x_{b,j}) \mid a = i, b = j \text{ sont incompatibles} \} \]
+
+### 3. Exemple
+
+Soit \( J = \{ A, B, \ldots, O \} \) l'ensemble des affectations alternatives pour les cours, correspondant aux affectations du Tableau 1. Supposons que \( w \) soit un cours de deuxième cycle dont l'instructeur n'est pas disponible les après-midi de jeudi.
+
+Pour satisfaire les contraintes 1(b) et 2(d), les variables \( x_{a,i} \) sont uniquement définies pour \( i \in J \) si \( i = \{ H, I, J, K, L \} \). Supposons en outre que le même instructeur enseigne également le cours \( b \). Les contraintes de types 3(a), 4(a), 4(b), 4(c) sont formulées en incluant dans \( D_0 \) les paires listées dans les tableaux 2(a), 2(b), 2(c) et 2(d) respectivement.
+
+Si l'instructeur n'aime pas enseigner le matin, cela se reflète en choisissant des coûts positifs \( c_{a,H} \) et \( c_{a,I} \). Les coûts d'interaction négatifs dans le tableau 3(a) indiqueraient l'espacement préféré de \( w \) et \( b \) (correspondant à la caractéristique 2(b)).
+
+De même, si \( w \) est un autre cours dans le même domaine, les considérations mentionnées dans la caractéristique 2(c) conduiraient à des valeurs négatives pour les coûts d'interaction dans le tableau 3(b).
+
+### 4. Le modèle mathématique
+
+Considérons l'ensemble \( D_0 = D_0 \cup \{ (x_{a,i}, x_{b,i}) \mid i \neq k \} \) qui est l'ensemble complet des paires d'affectations mutuellement incompatibles. Les informations dans \( D_0 \) peuvent généralement être exprimées sous une forme plus compacte. Tout \( D_0 \) avec les propriétés suivantes est une forme équivalente de \( D_0 \) :
+
+1. Les éléments de \( D_0 \) ont la forme \( \{ x_{a,i}, x_{b,j}, \ldots \} \) où \( x_{a,i} \), \( x_{b,j} \) peuvent apparaître ensemble dans un élément de \( D_0 \) uniquement si \( (x_{a,i}, x_{b,j}) \in D_0 \).
+
+En général, \( D_0 \) n'est pas unique. En effet, l'ensemble \( D_0 \) lui-même a ces propriétés. Cependant, puisque les éléments de \( D_0 \) ne sont pas limités aux paires, mais peuvent se composer de plus grands ensembles d'affectations mutuellement exclusives, il est souvent possible de trouver un ensemble \( D_0 \) avec considérablement moins d'éléments que \( D_0 \). Par exemple, les 27 paires du tableau 2 peuvent être réduites à 15 ensembles dans le tableau 3. Notez que chaque paire du tableau 2 apparaît dans un ensemble du tableau 3 en remplaçant deux paires dans ce dernier, et que les entrées du tableau 4 ne consistent qu'en paires d'éléments qui ne sont pas mentionnées ou sont incluses comme \( D_0 \) dans le tableau 2. Dans ce qui suit, \( D_0 \) représentera toute partition de ces formes équivalentes de \( D_0 \).
+
+Soit \( R^* \) la région linéaire
+
+\[ \sum_{a \in A} x_{a,i} \leq 1, \forall (a,i) \in D_0 \]
+\[ x_{a,i} + x_{a,i'} \leq 1, \forall (a,i), (a,i') \in C_1 \]
+\[ x_{a,i} + x_{b,j} \leq 1, \forall (a,i), (b,j) \in C_2 \]
+
+avec tous \( x_{a,i} \geq 0, x_{a,i'} \geq 0 \). Pour garantir que tous les cours apparaissent dans l'emploi du temps, nous sélectionnons une grande constante \( W \) où
+
+\[ W > \sum_{a \in A} - c_{a,i} + \sum_{(a,i),(b,j) \in C_2} - c_{a,i,b,j} \]
+
+La fonction objective à minimiser sur les vecteurs entiers de \( R^* \) (l'algorithme discuté ne considérera que ces points comme solutions.) L'effet de \( W \) est que chaque solution où \( x_{a,i} = 0 \) pour certains \( a \in A \) et tous \( i \in J_a \), a un coût plus élevé que toutes les solutions dans lesquelles certains \( x_{a,i} = 1 \). De plus, puisque
+
+\[ \forall (a,i) \in C_1 \rightarrow \sum_{a \in A} (W x_{a,i}) \]
+
+pour tous \( x_{a,i} \in C_1 \), à tout point de solution, le \( C_1 \) ne contribuera au score que lorsque \( x_{a,i} = 1 \).
+
+
+
+### 5. Aperçu et justification de la technique de solution
+
+Normalement, puisque nous insistons pour que
+
+\[ x_{a,i} = 0 \text{ ou } 1, \, \forall (a, i) \in J \]
+
+nous devrions inclure les relations (5) comme un ensemble supplémentaire de contraintes et recourir à des techniques de programmation en nombres entiers pour la solution. L'approche présentée ici remplace l'ensemble (6) par la condition plus faible que \( x_{a,i} \) soit non négatif, et utilise une technique de solution linéaire qui est considérablement plus efficace. La justification repose sur les assertions suivantes dont les preuves peuvent être trouvées ailleurs (Akkoyunlu, 1971).
+
+1. L'ensemble des sommets (0 - 1) de \( R^* \) (c'est-à-dire, ces points extrêmes de \( R^* \) dont toutes les coordonnées sont 0 ou 1) est identique à l'ensemble \( S \) des horaires réalisables.
+2. Habituellement, \( R^* \) aura d'autres sommets. Considérons cependant l'enveloppe convexe de \( R \) (c'est-à-dire la région polyédrale linéaire dont l'ensemble des sommets est exactement \( S \)). En pratique, la tâche de spécifier \( R \) à travers un ensemble d'inégalités linéaires équivaut à énumérer tous les horaires. Supposons un moment qu'une telle formulation linéaire de \( R \) soit disponible. Alors un algorithme de programmation linéaire (Simplex) pourrait être utilisé pour minimiser \( F \) sur \( R \). La solution adoptée ici repose sur le fait qu'il n'est pas nécessaire de spécifier \( R \) explicitement, car \( R^* \) est très fortement lié à \( R \) :
+
+(a) Chaque arête de \( R \) est une arête de \( R^* \),
+(b) Chaque sommet (0 - 1) de \( R^* \) est un sommet de \( R \),
+\( R^* \) est appelé une caractérisation linéaire des sommets de \( R \).
+
+3. Nous définissons la procédure S\(^*\) pour l'algorithme Primal Simplex (PS) avec la règle de sélection supplémentaire suivante : chaque fois que l'élément pivot potentiel diffère de 1, rejetez la colonne correspondante comme candidate pour le pivot.
+
+4. Les deux procédures,
+S\(^*\) appliquée à \( F \) sur \( R^* \),
+PS appliquée à \( F \) sur \( R \)
+sont équivalentes, en ce sens que la première imite la seconde étape par étape.
+
+La modification de la règle de sélection signifie que dans la recherche d'une solution optimale, la procédure S\(^*\) ignorera les sommets extrinsèques de \( R^* \). De plus, l'équivalence des deux processus est forte : le corps de la théorie de la programmation linéaire qui traite du cyclage, de la dégénérescence, des taux de convergence, etc., ainsi que des techniques spécialisées telles que la partition, la paramétrisation restent valides.
+
+### 6. L'algorithme
+
+Étape 0 : (Initialisation) Définir \( D^* = D^0 \).
+Étape 1 : (Facultatif - Compression des contraintes). Obtenez un ensemble plus compact \( D^0 \).
+
+Étape 2 : Appliquez la procédure S\(^*\) pour minimiser \( F \) sur la région \( R^* \) spécifiée par le système (1), (2), (3).
+
+L'étape 1 est un processus bien compris qui consiste à trouver des sous-graphes complets maximaux dans un graphe non orienté (Akkoyunlu, 1972). L'objectif est d'arriver à une formulation compacte des contraintes, car la taille du problème et l'efficacité de la solution dépendent de manière critique de la taille de \( D^0 \). Cette étape peut être interrompue à tout moment. En effet, cette étape est complètement facultative, car \( D^0 \) lui-même pourrait également servir. Cependant, il est généralement possible d'obtenir une réduction considérable par cette simple inspection. Par exemple, la contrainte unique
+
+\[ \sum_{i \in J_a} x_{a,i} \leq 1 \]
+
+peut remplacer l'ensemble complet des inégalités
+
+\[ \{ x_{a,i} + x_{a,i'} \leq 1 \mid i \neq k \} \]
+
+Toute réduction de ce type, systématique ou autre, ne doit être spécifiée qu'une fois.
+
+L'étape 2 est la technique essentielle. Comme il correspond exactement à une arête de \( R^* \) à chacune des contraintes, l'algorithme Simplex peut être appliqué directement à la région condensée \( R^* \).
+
+Dans cette formulation, la région \( R^* \) a un sommet, 2 sommets correspondants de \( R \), dont l'un est la solution optimale finale.
+
+Dans l'étape de sélection résultante, l'étape 2 correspond à un algorithme Simplex (Simonard, 1966). En exécutant cette étape, il semble souhaitable d'atteindre une solution réellement faisable (c'est-à-dire une dans laquelle chaque cours est programmé) aussi rapidement que possible. Cela se fait en insistant pour que chaque étape de pivot entraîne une amélioration potentielle d'au moins \( W/2 \). Une fois qu'une solution acceptable est atteinte, cette condition est bien sûr relâchée.
+
+### 7. Discussion
+
+**Taille**
+En pratique, le nombre d'alternatives à considérer varie entre quatre et sept en moyenne, avoisinant environ six ou sept. Il y aura donc environ 700 variables \( x_{a,i} \), ainsi que 150-200 termes d'interaction de la forme \( c_{a,i,b,j} \).
+
+La taille du problème est essentiellement due au nombre de contraintes définies : chaque cours doit être combiné dans chaque élément de \( D^* \). Cela est particulièrement vrai dans le cas des contraintes pour les cours qui ne doivent pas se produire dans la même période (c'est-à-dire qu'ils nécessitent leur propre zone) et des contraintes qui garantissent que les cours se produisent de manière récurrente.
+
+Alors que les contraintes sont relativement indépendantes de la taille, les caractéristiques ne le sont pas. Le nombre de classes impliquées (3) et les contraintes de faisabilité (4) restent globalement inchangés. Cela est particulièrement vrai puisque chaque classe est associée à un enseignant.
+
+Une considération importante est la quantité d'informations requises pour être stockées, car la matrice \( D_0 \) peut être stockée efficacement malgré sa taille, puisque ses éléments sont dominés par des entrées non nulles emballées en moins d'un octet. De plus, comme la plupart des éléments de \( D_0 \) sont nuls, des méthodes de matrice creuse peuvent être utilisées.
+
+**Coûts**
+Il y a malheureusement très peu de principes directeurs pour décider des coûts à associer à chaque caractéristique, mais l'idée d'ancrer le coût sur des quantités physiques directes et mesurables est encore la plus distinguée. Dans certaines situations, un léger changement dans les coûts peut entraîner un emploi du temps radicalement différent.
+
+Lorsque les caractéristiques du type 1(b) 2(a), ou 2(c) sont vues séparément, il semble raisonnable d'associer à chaque caractéristique un coût proportionnel au nombre d'étudiants qui seraient affectés par elle. (Ce nombre est dérivé de l'expérience passée en tant qu'expérience efficace.) La difficulté réside dans l'évaluation de la totalité de l'impact des différents types de caractéristiques, où la longueur de chaque jour pour un conférencier par rapport au chevauchement d'une paire donnée de cours, etc.
+
+Les stratégies suivantes valent également la peine d'être considérées :
+
+1. Sélectionnez deux constantes \( c < 0, c' > 0 \) et définissez
+\[ c_{a,i} = c, \quad c_{a,i} = c', \forall c_{a,i} \in C_2 \]
+Cela rend le processus de réduction indiqué en Annexe I moins arbitraire.
+
+2. Les coûts peuvent être utilisés pour ordonner les caractéristiques de la manière suivante : la caractéristique A a la priorité la plus élevée si la différence entre elle et la prochaine caractéristique est inférieure au coût de la violation de la caractéristique A.
+
+Ce concept peut facilement être étendu à des groupes de caractéristiques, mais de telles considérations peuvent être visualisées par le fait qu'attribuer une caractéristique de coût inférieur "délogera" la k-ième caractéristique.
+
+L'approche séquentielle peut être utilisée, chaque instructeur recevant un nombre fixe de "jetons" qu'il alloue comme bon lui semble.
+
+Enfin, des scores plus élevés dans la spécification du moment où les rondes doivent être effectuées - les cours du matin peuvent être regroupés de 11h00 à 12h00, puis de nouveau l'après-midi.
+
+
+
+Solutions quasi-optimales
+Il est possible que la solution optimale traite un instructeur ou un groupe d'étudiants de manière injuste en leur imposant la majeure partie du coût. Cela est malheureux, surtout s'il existe d'autres horaires quasi-optimaux plus équitables. Il est donc utile d'imprimer quelques-unes des solutions quasi-optimales ainsi que l'optimum global.
+
+Remerciements
+Je tiens à remercier les professeurs S. H. Unger et H. D. Eskin pour les nombreuses longues discussions qui ont aidé à orienter ce travail.
+
+Annexe 1 : Réductions supplémentaires
+Cette annexe considère un cas spécial dans lequel une réduction du nombre d'inégalités (2) et (3) est possible. Soient \(\alpha, \beta\) des ensembles avec la propriété suivante : soit \(\alpha\) contient un seul élément \(x_{a,i}\), soit si \(x_{a,i}\) et \(x_{a,i'}\) sont tous deux dans \(\alpha\), alors \((x_{a,i}, x_{a,i'}) \in D^0\); et de même pour \(\beta\).
+De plus, soit \(c_0\) une constante telle que \(c_{a,i,b,j} = c_0\) pour tous \(x_{a,i}, x_{b,j} \in \beta\). Nous définissons \(\hat{x}_{a,i} \geq 0\), et remplaçons dans \(F\) pour tous \(x_{a,i}\) où \(x_{a,i} \in \alpha \cup \beta\).
+Enfin,
+1. si \(c_0 < 0\), l'inégalité simple
+\[
+x_{a,i} \geq \sum_{j \in J} x_{b,j} - \sum_{j \in J} x_{b,j}
+\]
+remplace l'ensemble entier
+\[
+\{ x_{a,i} \geq x_{b,j} - x_{a,i} \mid x_{a,i} \in \alpha, x_{b,j} \in \beta \}
+\]
+des inégalités (2).
+2. si \(c_0 > 0\), nous écrivons
+\[
+x_{a,i} \geq \sum_{j \in J} x_{b,j} + \sum_{j \in J} x_{b,j} - 1
+\]
+pour toutes les inégalités de la forme (3) pour lesquelles
+\[
+\{ x_{a,i} \geq x_{b,j} + x_{a,i} - 1 \mid x_{a,i} \in \alpha, x_{b,j} \in \beta \}
+\]
+
+Annexe 2 : Considérations de programmation
+L'entrée
+Dans les algorithmes de planification de ce type, une attention particulière doit être portée à la manière dont les spécifications sont communiquées au programme. Le langage d'entrée doit être suffisamment naturel pour minimiser les erreurs. Le programme doit accepter TUTH, 'TUES' et 'Thursday' comme équivalents, et ne doit pas accepter une version expérimentale du programme qui inclut un paquet SNOBOL4 capable d'accepter l'entrée, de formuler les contraintes sous forme mathématique et de réaliser les réductions indiquées dans l'Étape 1 de l'algorithme et l'Annexe 1. Les données intermédiaires étaient ensuite transmises à un programme FORTRAN IV exécutant l'Étape 2.
+
+Le programme SNOBOL4 était suffisamment 'intelligent' pour accepter les descriptions de cours sous la forme :
+TYPE A : MWF9-9:50, 10:10-50, ...,), 10:10-11:45
+et déduire que TUTH 10:30-11:45 chevauche TUTH 9-11:00, etc., ainsi que déduire quelles alternatives ont les attributs 'early', 'late', 'afternoon', 'Friday'.
+
+Un professeur précise ses préférences sous la forme :
+UNGER (E6832, E8l11) M(-2), WED(6), EARLY(-2)S
+indiquant les cours enseignés, ainsi que son indisponibilité le lundi, son aversion pour enseigner le mercredi et sa préférence pour enseigner tôt dans la journée.
+Les exigences pour chaque cours sont listées de la même manière :
+E6832 (A)/G : E6814(-3)/C : E8A01(-6), E6811(-5)
+ce qui indique le type de cours comme A, spécifiant ainsi quelles sont les alternatives à considérer, déclare que regrouper ce cours avec E6814 vaut 3 points, que les conflits avec E8A01 et E6811 ne sont pas tolérés, et qu'un chevauchement avec E6711 coûterait 5 points.
+
+La solution
+Le programme FORTRAN est une procédure Simplex modifiée. La prépondérance des coefficients 0, ±1 dans la matrice est exploitée de manière à ce que la plupart des étapes de pivot utilisent des additions et des soustractions plutôt que des multiplications. La matrice typique consistait en 200 x 400 emplacements demi-mots. Inclus ici est une matrice identité 200 x 200 qui pourrait bien sûr être éliminée.
+Le programme SNOBOL4 prenait environ 45 secondes pour s'exécuter. Le programme de solution prenait entre 7 et 15 secondes, le temps total ne dépassant jamais 11,5 secondes. Les superpositions (un IBM 360/91 a été utilisé) étaient incluses. Le compilateur SPITBOL récemment disponible pour SNOBOL4 augmenterait encore la vitesse de l'entrée.
+Dans l'étude pilote, la solution a été atteinte en environ 10 secondes et il a fallu encore 80 étapes pour atteindre l'optimum.

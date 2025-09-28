@@ -1,0 +1,56 @@
+Portail MPC : <version en ligne>(25/05/2022)
+P1:
+M*PC-(PC,M)
+-Analyse élémentaire 1 [maths] <Vincent>0.5
+-Algèbre élémentaire 1 [maths] <Vincent>0.5
+
+MPC-PC
+-Analyse élémentaire* 1 [maths] <Vincent>
+-Algèbre élémentaire* 1 [maths] <Vincent>
+
+Les 3
+-Physique des ondes [physique] <Vincent>
+-Mécanique 1 [physique] <Corentin>
+-Atomistique 1 [chimie] <Corentin>
+-Introduction à la chimie 1 [chimie] <Corentin>
+-Anglais 1 <Corentin>0.5
+-EEO 1 <Corentin>0.5
+
+P2:
+M*PC-(PC,M)
+-Analyse élémentaire 2 [maths] <David G>0.5
+-Algèbre élémentaire 2 [maths] <David G>0.5
+
+MPC-PC
+-Analyse élémentaire* 2 [maths] <David G>
+-Algèbre élémentaire* 2 [maths] <David G>
+
+Les 3
+-Mécanique 2 [physique] <David G>
+-Électrocinétique 1 [physique] <Marc>
+-Atomistique 2 [chimie] <Marc>
+-Introduction à la chimie 2 [chimie] <Marc>
+-Cinétique [chimie] <Marc>
+-Anglais 2 <Marc>0.5
+-EEO 2 <David L>0.5
+//=========================================
+
+Portail MI : <version en ligne>(25/05/2022)
+P1:
+-Analyse élémentaire 1 [maths] <Vincent>0.5
+-Algèbre élémentaire 1 [maths] <Vincent>0.5
+-Algorithmique 1 [info] <David L>
+-bases d'informatique 1 [info] <David L>
+-Anglais 1 <Corentin>0.5
+-EEO 1 <Corentin>0.5
+
+P2:
+-Analyse élémentaire 2 [maths] <David G>0.5
+-Algèbre élémentaire 2 [maths] <David G>0.5
+-Algorithmique 2 [info] <David L>
+-Bases d'informatique 2 [info] <David L>
+-Anglais 2 <Marc>0.5
+-EEO 2 <David L>0.5
+//=========================================
+
+tar -xvzf /home/etud/Téléchargements/android-studio-2021.2.1.15-linux.tar.gz  -C /home/etud/android_studio

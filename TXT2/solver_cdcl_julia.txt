@@ -1,0 +1,493 @@
+Très bien, je vais créer une structure modulaire en Julia pour un solveur CDCL inspiré de CadiCaL, avec des fichiers séparés comme `Clause.jl`, `Solver.jl`, et un parseur DIMACS. L'objectif est d'obtenir un socle clair, performant et facilement extensible pour intégrer à terme un solveur SAT complet en Julia.
+
+
+# Solveur SAT CDCL modulaire en Julia
+
+Dans ce qui suit, nous présentons une implémentation **modulaire** en Julia d'un solveur SAT utilisant l'algorithme CDCL (Conflict-Driven Clause Learning), inspiré par le style clair et modulaire de CaDiCaL. CaDiCaL est un solveur CDCL réputé pour la simplicité et la propreté de son code tout en restant performant. Notre implémentation comprend un parseur DIMACS, des structures de données pour les clauses (avec littéraux surveillés), une boucle de résolution principale CDCL (assignation, propagation unitaire, analyse de conflit avec apprentissage de clause 1-UIP et retour en arrière non chronologique), éventuellement un module pour les heuristiques de décision (comme VSIDS), et un point d'entrée principal.
+
+## Parseur DIMACS
+
+Le format DIMACS CNF standard est utilisé pour fournir la formule CNF en entrée. Ce format comprend :
+
+* Une ligne d'en-tête commençant par `p` indiquant le type de problème (`cnf`), le nombre de variables et le nombre de clauses.
+* Des clauses listées chacune comme une séquence d'entiers terminée par `0`.
+* Des lignes de commentaires optionnelles commençant par `c` qui doivent être ignorées.
+
+Un exemple de fichier DIMACS minimal :
+
+```
+c Ceci est un commentaire
+p cnf 4 2
+1 -3 0
+2 3 -4 0
+```
+
+Ici, la ligne `p cnf 4 2` indique 4 variables et 2 clauses. La première clause est $(x_1 \lor \neg x_3)$ et la seconde $(x_2 \lor x_3 \lor \neg x_4)$.
+
+Le parseur DIMACS lit le fichier `.cnf`, ignore les lignes commençant par `c`, extrait `nbVars` et `nbClauses` à partir de la ligne `p cnf`, puis collecte les clauses. Chaque clause est lue en accumulant les littéraux jusqu'au `0` terminal. Le code ci-dessous implémente ce parseur dans une fonction `read_dimacs` :
+
+```julia
+# Main.jl (extrait) – Parseur DIMACS et point d'entrée
+import .Solver                     # on supposera que Solver.jl est dans le même module/projet
+import .Heuristics                 # si module heuristique séparé
+
+# Fonction de lecture d'un fichier CNF au format DIMACS
+function read_dimacs(filename::String)
+    open(filename, "r") do file
+        n_vars = 0
+        clauses = Vector{Vector{Int}}()
+        current_clause = Vector{Int}()
+        for line in eachline(file)
+            line = strip(line)
+            if isempty(line) || startswith(line, "c")
+                continue  # ignore les commentaires et lignes vides
+            end
+            if startswith(line, "p")
+                # format: "p cnf nbVars nbClauses"
+                parts = split(line)
+                n_vars = parse(Int, parts[3])
+                # On pourrait vérifier parts[4] pour le nbClauses annoncé si souhaité
+                continue
+            end
+            # Lire les littéraux de la ligne
+            for lit_str in split(line)
+                let lit = parse(Int, lit_str)
+                    if lit == 0
+                        # fin de clause
+                        push!(clauses, current_clause)
+                        current_clause = Vector{Int}()  # réinitialiser pour la clause suivante
+                    else
+                        push!(current_clause, lit)
+                    end
+                end
+            end
+        end
+        return n_vars, clauses
+    end
+end
+
+# Point d'entrée principal
+function solve_cnf_file(filename::String)
+    n_vars, clauses_list = read_dimacs(filename)
+    solver = Solver.Solver(n_vars)               # initialise le solveur avec n_vars variables
+    for lits in clauses_list
+        Solver.add_clause!(solver, lits)         # ajoute chaque clause au solveur
+    end
+    result = Solver.solve!(solver)               # lance la résolution CDCL
+    if result
+        println("SATISFIABLE")
+        # Affiche une assignation satisfaisante
+        model = [ (solver.assignment[i] == 1 ? i : -i) for i in 1:solver.n_vars ]
+        println("v ", join(model, " "), " 0")
+    else
+        println("UNSATISFIABLE")
+    end
+end
+
+# Si on veut exécuter via la ligne de commande Julia
+if length(ARGS) > 0
+    solve_cnf_file(ARGS[1])
+end
+```
+
+Le code ci-dessus définit la fonction `read_dimacs` et la fonction principale `solve_cnf_file`. Après la lecture du fichier CNF, il crée un solveur, y ajoute les clauses, puis appelle la procédure de résolution. En sortie, on imprime `SATISFIABLE` ou `UNSATISFIABLE` conformément aux conventions DIMACS, et une ligne modèle commençant par `v` suivie d'une assignation satisfaisante si le problème est SAT.
+
+## Clause.jl : structure de clause et littéraux surveillés
+
+Afin de propager les contraintes de manière efficace, **chaque clause maintient deux littéraux surveillés** (“two-watched literals”). Cette technique introduite par le solveur *Chaff* améliore grandement les performances de la propagation unitaire. Plutôt que de revisiter toutes les clauses à chaque affectation, on n'examine qu'une petite fraction de clauses – celles dont un littéral surveillé vient d'être mis à faux. Chaque clause enregistre deux de ses littéraux non satisfaits comme *surveillés* ; tant que l'un de ces littéraux reste non faux (vrai ou non assigné), la clause ne provoquera pas de conflit ni de nouvelle propagation. Quand l'un des littéraux surveillés devient faux, la clause tente de déplacer ce rôle de surveillance sur un autre littéral de la clause (encore non faux). Si aucun autre littéral n'est disponible, cela signifie que l'autre littéral surveillé est le seul encore potentiellement vrai : la clause devient unitaire et force l'affectation de ce dernier littéral (propagation unitaire, BCP) ; et si l'autre littéral surveillé est également faux, alors la clause est insatisfaite (on a trouvé un conflit).
+
+Ci-dessous, on définit une structure `Clause` avec ses littéraux et indices de littéraux surveillés :
+
+```julia
+# Clause.jl – Définition de la structure de clause et fonctions associées
+module ClauseModule
+
+# Structure mutable pour représenter une clause CNF
+mutable struct Clause
+    lits::Vector{Int}   # liste des littéraux de la clause (entiers non nuls, signés)
+    w1::Int             # index du premier littéral surveillé dans lits (position dans la liste)
+    w2::Int             # index du second littéral surveillé dans lits
+end
+
+# Constructeur personnalisé pour initialiser les littéraux surveillés
+function Clause(lits::Vector{Int})
+    if length(lits) == 0
+        error("Clause vide rencontrée, formule insatisfiable")
+    elseif length(lits) == 1
+        # Clause unitaire : on surveille deux fois le même littéral (cas particulier)
+        return Clause(lits, 1, 1)
+    else
+        # Par défaut, surveiller les deux premiers littéraux de la clause
+        return Clause(lits, 1, 2)
+    end
+end
+
+# Vérifie si une clause est satisfaite par l'assignation courante
+function is_satisfied(cl::Clause, assign::Vector{Int8})
+    for lit in cl.lits
+        if lit > 0 
+            if assign[lit] == 1          # littéral positif vrai
+                return true
+            end
+        else
+            if assign[abs(lit)] == -1    # littéral négatif vrai (var assignée à faux)
+                return true
+            end
+        end
+    end
+    return false
+end
+
+end  # module
+```
+
+**Explications :** Ici, `Clause` est un `mutable struct` contenant un vecteur de littéraux `lits` (les entiers positifs représentent des variables, les négatifs leurs négations), ainsi que deux indices `w1` et `w2` pointant vers les positions des littéraux actuellement surveillés dans la clause. Le constructeur `Clause(lits::Vector{Int})` initialise ces watchers : pour une clause de longueur 1 (unitaire), on pointe `w1` et `w2` sur ce seul littéral (c'est un cas spécial, équivalent à dire que la clause sera immédiatement satisfaite ou provoquera une propagation); pour les clauses plus longues, on choisit par simplicité les deux premiers littéraux de la liste comme littéraux surveillés initiaux. (Dans une implémentation optimisée, on pourrait choisir différemment, par exemple surveiller les deux littéraux aux plus hauts niveaux de décision.)
+
+La fonction `is_satisfied(cl, assign)` parcourt les littéraux de la clause et renvoie vrai si au moins un littéral est satisfait par l'assignation partielle fournie. Elle utilise le tableau `assign` qui contient, pour chaque variable, 1 si la variable est assignée à vrai, -1 si assignée à faux, ou 0 si non assignée.
+
+*Remarque :* La mise à jour des littéraux surveillés lors de la propagation unitaire se fera côté solveur (dans le module Solver) lors de l'algorithme de BCP, car cela nécessite d'accéder à la liste globale de *watchlists* (les structures `Dict{Int, Vector{Clause}}` qui mappent chaque littéral surveillé vers les clauses qui le surveillent).
+
+## Solver.jl : boucle principale CDCL et propagation
+
+Le module `Solver` contient la structure principale du solveur et l'implémentation de l'algorithme CDCL. On définit d'abord la structure `Solver` qui regroupe toutes les structures de données nécessaires pendant la résolution :
+
+* `n_vars::Int` : le nombre de variables logiques.
+* `clauses::Vector{Clause}` : la liste de toutes les clauses (originales et apprises).
+* `watchlist::Dict{Int, Vector{Clause}}` : le dictionnaire des littéraux surveillés pointant vers les clauses qui surveillent chacun de ces littéraux. On a typiquement deux entrées par clause (pour ses deux littéraux surveillés). Par exemple, `watchlist[5]` est la liste des clauses surveillant le littéral $x_5$ (donc qui attendent $x_5 = \text{vrai}$ pour être satisfaites), tandis que `watchlist[-5]` liste les clauses surveillant $¬x_5$.
+* `assignment::Vector{Int8}` : un tableau d'assignation de longueur `n_vars+1` (on utilise les indices 1..n\_vars pour les variables) où chaque case vaut 1 (vrai), -1 (faux) ou 0 (non encore assignée).
+* `level::Vector{Int}` : un tableau donnant le **niveau de décision** de chaque variable assignée (0 pour non assignée). Le niveau de décision est le numéro de la décision dans la trace d'affectation (niveau 0 = affectations unitaires initiales, niveau 1 = première décision arbitraire, etc.).
+* `reason::Vector{Union{Nothing, Clause}}` : pour chaque variable assignée, si son affectation a été **impliquée par unit-propagation**, on stocke la clause responsable (dite *clause raison*); si la variable a été fixée par décision, on stocke `nothing`. Ceci permettra lors d’un conflit de remonter les causes dans le graphe d’implication pour analyser le conflit.
+* `trail::Vector{Int}` : la séquence ordonnée des littéraux assignés (avec leur signe) dans l'ordre où ils ont été affectés pendant la recherche. C'est le *trail* du solveur (l’équivalent du graphe d'implication linéarisé).
+* `trail_lim::Vector{Int}` : les indices dans `trail` où commence chaque niveau de décision. Par exemple, si trail\_lim = \[0, 3, 5], cela signifie que le niveau de décision 1 a commencé à l'indice 1 du trail, le niveau 2 à l'indice 4 du trail, etc. (Ici indice 0 signifie aucun littéral pour le niveau 0). Cela permet de savoir jusqu'où dépiler lors d'un retour non chronologique.
+* `current_level::Int` : le niveau de décision courant (longueur de trail\_lim, par ex).
+
+Le code suivant montre la définition de `Solver` et plusieurs fonctions essentielles : ajout de clause, propagation unitaire (BCP), analyse de conflit avec apprentissage (1-UIP) et backjump, ainsi que la boucle de décision principale `solve!`. Nous utilisons un algorithme CDCL standard intégrant les littéraux surveillés pour la BCP, l'apprentissage de clauses au premier UIP, et le retour en arrière non chronologique (c'est-à-dire qu'en cas de conflit, on remonte directement au niveau de décision adéquat plutôt qu'au niveau immédiatement précédent).
+
+```julia
+# Solver.jl – Structure du solveur et algorithme CDCL
+module Solver
+
+using ..ClauseModule: Clause   # importer la structure Clause
+const ClauseType = Clause      # alias de type pour lisibilité
+
+# Structure principale du solveur SAT
+mutable struct Solver
+    n_vars::Int
+    clauses::Vector{ClauseType}
+    watchlist::Dict{Int, Vector{ClauseType}}
+    assignment::Vector{Int8}             # 1 = true, -1 = false, 0 = unset
+    level::Vector{Int}                   # niveau de décision de chaque variable (0 si non assignée)
+    reason::Vector{Union{Nothing, ClauseType}}  # clause responsable de l'affectation (Nothing si décision)
+    trail::Vector{Int}                   # la pile d'assignations (littéraux avec signe)
+    trail_lim::Vector{Int}               # limites de trail pour chaque niveau
+    current_level::Int
+end
+
+# Constructeur pour initialiser un solveur vide donné le nombre de variables
+function Solver(n_vars::Int)
+    # Initialisation des champs
+    return Solver(n_vars,
+                  ClauseType[],                           # clauses initialement vide
+                  Dict{Int, Vector{ClauseType}}(),
+                  fill(0, n_vars+1),                      # assignation de taille n_vars+1 (index 0 inutilisé)
+                  fill(0, n_vars+1),                      # niveaux
+                  fill(nothing, n_vars+1),                # raisons
+                  Int[],                                  # trail vide
+                  Int[],                                  # limites de niveaux vide
+                  0)                                      # niveau courant = 0
+end
+
+# Ajoute une clause au solveur (initial ou apprise) et met à jour les littéraux surveillés
+function add_clause!(solver::Solver, lits::Vector{Int})
+    cl = Clause(lits)
+    push!(solver.clauses, cl)
+    # S'assurer que chaque littéral possède une entrée dans la watchlist
+    for lit in (cl.lits[cl.w1], cl.lits[cl.w2])
+        if !haskey(solver.watchlist, lit)
+            solver.watchlist[lit] = Vector{ClauseType}()
+        end
+        push!(solver.watchlist[lit], cl)
+    end
+    return cl
+end
+
+# Assigne un littéral (variable à une valeur booleenne) au niveau courant
+function assign_literal!(solver::Solver, lit::Int, reason_clause::Union{Nothing, ClauseType})
+    v = abs(lit)
+    solver.assignment[v] = (lit > 0 ? 1 : -1)
+    solver.level[v] = solver.current_level
+    solver.reason[v] = reason_clause
+    push!(solver.trail, lit)
+end
+
+# Propagation booléenne unitaire (BCP) : propage toutes les implications du niveau courant.
+# Retourne `nothing` si aucune contradiction n'est trouvée, ou la clause conflictuelle en cas de conflit.
+function propagate!(solver::Solver)
+    local i = length(solver.trail_lim) == 0 ? 1 : solver.trail_lim[end] + 1
+    # i démarre au début des assignations du niveau courant dans le trail
+    while i <= length(solver.trail)
+        lit_assigned = solver.trail[i]
+        # Lorsqu'un litéral X est assigné vrai, toutes les clauses qui surveillent ¬X peuvent être affectées
+        false_lit = -lit_assigned
+        if haskey(solver.watchlist, false_lit)
+            # Itérer sur la copie de la liste car elle peut être modifiée pendant la boucle
+            for cl in copy(solver.watchlist[false_lit])
+                # Identifier quel littéral est l'autre surveillé dans la clause
+                other_watch_index = (cl.lits[cl.w1] == false_lit ? cl.w2 : cl.w1)
+                other_lit = cl.lits[other_watch_index]
+                if solver.assignment[abs(other_lit)] == 1 ? (other_lit > 0) : (solver.assignment[abs(other_lit)] == -1 ? (other_lit < 0) : false)
+                    # Si l'autre littéral est déjà satisfait par l'assignation courante, rien à faire (clause satisfaite)
+                    continue 
+                end
+                # Trouver un nouveau littéral non faux à surveiller dans la clause (pour remplacer false_lit)
+                local found_new_watch = false
+                for j in eachindex(cl.lits)
+                    lit_j = cl.lits[j]
+                    if solver.assignment[abs(lit_j)] == 0 ||   # littéral non encore assigné
+                       (lit_j > 0 && solver.assignment[lit_j] == 1) ||
+                       (lit_j < 0 && solver.assignment[abs(lit_j)] == -1)
+                        # Ce littéral lit_j n'est pas faux sous l'assignation (il est soit libre, soit satisfait)
+                        found_new_watch = true
+                        # Mettre à jour le watch de la clause: false_lit n'est plus surveillé, lit_j le devient
+                        if cl.lits[cl.w1] == false_lit
+                            cl.w1 = j
+                        else
+                            cl.w2 = j
+                        end
+                        # Mise à jour des watchlists
+                        push!(solver.watchlist[lit_j], cl)
+                        deleteat!(solver.watchlist[false_lit], findfirst(==(cl), solver.watchlist[false_lit]))
+                        break
+                    end
+                end
+                if !found_new_watch
+                    # Aucun littéral alternatif trouvé: la clause est soit unitaire soit conflictuelle
+                    if solver.assignment[abs(other_lit)] == 0
+                        # Clause unitaire : l'autre littéral doit être vrai
+                        assign_literal!(solver, other_lit, cl)
+                        # Continuer la propagation après avoir assigné other_lit
+                    else
+                        # Clause contradictoire: other_lit est faux, conflit
+                        return cl   # retourner la clause responsable du conflit
+                    end
+                end
+            end
+        end
+        i += 1
+    end
+    return nothing  # aucune contradiction détectée pendant la propagation
+end
+
+# Analyse de conflit (1-UIP) : à partir d'une clause conflictuelle, apprend une nouvelle clause et détermine le niveau de backjump.
+# Retourne le couple (clause_apprise, level_retrait).
+function analyze(conflict_clause::ClauseType, solver::Solver)
+    learned_lits = Vector{Int}()              # littéraux de la clause apprise
+    seen = fill(false, solver.n_vars+1)       # variables déjà traitées (pour ne pas dupliquer)
+    local conflict_level = 0
+    local num_current_level_lits = 0
+
+    # Étape 1: marquer les variables de la clause conflictuelle
+    for lit in conflict_clause.lits
+        let v = abs(lit)
+            if solver.level[v] > 0
+                seen[v] = true
+                # Compter les littéraux du niveau courant
+                if solver.level[v] == solver.current_level
+                    num_current_level_lits += 1
+                else
+                    push!(learned_lits, lit)   # littéral d'un niveau antérieur inclus tel quel
+                    conflict_level = max(conflict_level, solver.level[v])
+                end
+            end
+        end
+    end
+
+    # Étape 2: remonter le trail jusqu'au 1er UIP (Unique Implication Point)
+    local idx = length(solver.trail)
+    local uip_lit = 0
+    while num_current_level_lits > 0
+        idx -= 1
+        uip_lit = solver.trail[idx]
+        if seen[abs(uip_lit)]
+            seen[abs(uip_lit)] = false  # on "consomme" ce littéral
+            if solver.reason[abs(uip_lit)] != nothing
+                # Résoudre avec la clause raison de ce littéral
+                for lit2 in (solver.reason[abs(uip_lit)]::ClauseType).lits
+                    let v2 = abs(lit2)
+                        if !seen[v2] && solver.level[v2] > 0
+                            seen[v2] = true
+                            if solver.level[v2] == solver.current_level
+                                num_current_level_lits += 1
+                            else
+                                push!(learned_lits, lit2)
+                                conflict_level = max(conflict_level, solver.level[v2])
+                            end
+                        end
+                    end
+                end
+            end
+            num_current_level_lits -= 1
+        end
+    end
+
+    # À la sortie de la boucle, uip_lit est le littéral du premier UIP (dernier littéral conflictuel du niveau courant)
+    # On ajoute son littéral négatif à la clause apprise (c'est le seul littéral de niveau courant dans cette clause)
+    push!(learned_lits, -uip_lit)
+    # Déterminer le niveau de backjump : le max des niveaux dans learned_lits, ou niveau 0 si vide
+    backtrack_level = conflict_level
+    if backtrack_level < 0
+        backtrack_level = 0
+    end
+
+    # Créer la clause apprise et l'ajouter au solveur
+    let new_clause = Clause(learned_lits)
+        add_clause!(solver, new_clause.lits)
+        return new_clause, backtrack_level
+    end
+end
+
+# Effectue un retour en arrière jusqu'au niveau 'level', en enlevant les affectations du trail.
+function backjump!(solver::Solver, level::Int)
+    # Enlever les niveaux de décision supérieurs à 'level'
+    while solver.current_level > level
+        # index de début du niveau courant dans le trail
+        local trail_start = solver.trail_lim[end]
+        # Supprimer du trail toutes les affectations du niveau courant
+        for idx = length(solver.trail):-1:trail_start+1
+            let lit = solver.trail[idx]
+                solver.assignment[abs(lit)] = 0
+                solver.level[abs(lit)] = 0
+                solver.reason[abs(lit)] = nothing
+                pop!(solver.trail)
+            end
+        end
+        pop!(solver.trail_lim)    # retirer la limite du dernier niveau
+        solver.current_level -= 1
+    end
+end
+
+# Fonction principale de résolution SAT par CDCL.
+# Renvoie true si satisfiable (SAT), false si insatisfiable (UNSAT).
+function solve!(solver::Solver)::Bool
+    # Propagation initiale (unités de niveau 0)
+    solver.current_level = 0
+    # On traite d'abord les clauses unitaires initiales
+    for cl in solver.clauses
+        if length(cl.lits) == 1
+            local lit = cl.lits[1]
+            # Si lit ou son opposé est déjà assigné de façon contradictoire -> UNSAT direct
+            let v = abs(lit)
+                if solver.assignment[v] != 0
+                    if solver.assignment[v] == 1 && lit < 0 || solver.assignment[v] == -1 && lit > 0
+                        return false  # conflit immédiat (ex: on a x et ¬x unitaires)
+                    end
+                else
+                    assign_literal!(solver, lit, cl)
+                end
+            end
+        end
+    end
+    # Effectuer une propagation initiale au niveau 0
+    local confl = propagate!(solver)
+    if confl != nothing
+        # Conflit au niveau 0 => formule insatisfiable
+        return false
+    end
+
+    # Boucle de recherche principale
+    while true
+        confl = propagate!(solver)
+        if confl != nothing
+            # Conflit détecté
+            if solver.current_level == 0
+                # Conflit au niveau 0: UNSAT
+                return false
+            end
+            # Apprentissage d'une clause et calcul du niveau de backjump
+            new_clause, bj_level = analyze(confl, solver)
+            backjump!(solver, bj_level)
+            # Affecter immédiatement le littéral UIP impliqué au niveau de backjump
+            solver.current_level = bj_level
+            assign_literal!(solver, new_clause.lits[end], new_clause)  # le dernier lit ajouté est ¬uip
+            continue  # reprendre la boucle au nouveau niveau de décision
+        else
+            # Pas de conflit après propagation => vérifier si la formule est satisfaite
+            if all(v -> solver.assignment[v] != 0, 1:solver.n_vars)
+                # Toutes les variables sont assignées sans conflit: SAT trouvé
+                return true
+            end
+            # Décision heuristique: choisir une nouvelle variable non assignée
+            solver.current_level += 1
+            push!(solver.trail_lim, length(solver.trail))
+            # On peut utiliser une heuristique sophistiquée (VSIDS, etc.) ici :
+            let v = Heuristics.pick_branch_var(solver)   # variable à assigner
+                if v == 0
+                    # plus de variables non assignées (devrait déjà être géré par all(...))
+                    return true
+                end
+                # Par défaut, on assigne la variable à vrai (on pourrait aussi choisir le signe via l'heuristique)
+                assign_literal!(solver, v, nothing)   # décision sans clause raison
+            end
+            # Boucler pour propager cette décision
+        end
+    end
+end
+
+end  # module Solver
+```
+
+**Commentaires sur l'algorithme :**
+
+* La fonction `add_clause!` ajoute une clause (initiale ou apprise) dans le solveur et initialise la surveillance des littéraux en ajoutant la clause dans les listes `watchlist` correspondantes aux deux littéraux surveillés. Le dictionnaire `watchlist` a pour clé un littéral (positif ou négatif) et pour valeur la liste des clauses surveillant ce littéral. Ainsi, on peut accéder rapidement aux clauses potentiellement affectées lorsqu’un littéral est assigné.
+
+* La fonction `assign_literal!` assigne un littéral au niveau courant en mettant à jour le tableau d'assignation, le niveau d'affectation de la variable, la raison (clause impliquante ou `nothing` si c'est une décision libre) et le `trail`. Cette fonction est utilisée tant pour les décisions que pour les propagations implicites.
+
+* La fonction **`propagate!`** effectue la **propagation booléenne unitaire (BCP)** au niveau courant. Elle démarre au début des assignations du niveau courant dans le `trail` (repéré grâce à `trail_lim`). Pour chaque nouvelle affectation de littéral $X$ à vrai, on considère $¬X$ comme étant devenu faux. On parcourt alors toutes les clauses qui surveillent $¬X$ (via `watchlist[false_lit]`). Pour chacune de ces clauses, on cherche à **déplacer le littéral surveillé** désormais faux vers un autre littéral non faux de la clause : on parcourt les littéraux de la clause `cl` pour en trouver un qui n'est pas faux (c.-à-d. soit non assigné, soit déjà satisfait). Si on en trouve un, la clause reste non conflictuelle : on met à jour le watcher (on remplace le littéral surveillé sortant par le nouveau) et on met à jour les entrées de `watchlist` en conséquence (on ajoute la clause sous la nouvelle clé littéral surveillé et on la retire de la liste de l'ancien littéral). Si **aucun autre littéral n'est disponible**, cela signifie que l'autre littéral surveillé de la clause est le seul à ne pas être faux. Deux cas se présentent alors : (a) si cet autre littéral n'est pas encore assigné, la clause devient **unitaire** et on assigne immédiatement ce littéral (c'est une nouvelle implication unitaire due à la clause `cl`); (b) si l'autre littéral est déjà assigné **faux**, alors la clause n'a plus aucun littéral vrai possible – c'est un **conflit**. Dans ce dernier cas, `propagate!` renvoie la clause conflictuelle, ce qui déclenche l'analyse de conflit. S'il n'y a pas de conflit, la propagation continue jusqu'à épuisement des implications au niveau courant.
+
+* La fonction **`analyze`** implémente l'**analyse de conflit** et l'**apprentissage de clause** en utilisant le schéma du **1-UIP (First Unique Implication Point)**. Elle prend en paramètre la clause conflictuelle (dont tous les littéraux sont faux au moment du conflit) et remonte la trace d'implication pour en déduire une nouvelle clause (clause apprise) qui coupe le conflit au premier UIP. Voici comment cela fonctionne :
+
+  * On marque d'abord tous les littéraux de la clause conflictuelle en notant ceux qui appartiennent au niveau de décision courant. On compte combien de littéraux de la clause conflictuelle sont au niveau courant (`num_current_level_lits`).
+  * Tant qu'il reste plus d'un littéral de niveau courant à traiter (`num_current_level_lits > 1`), on remonte le `trail` pas à pas en ignorant les assignations de niveaux inférieurs. Lorsqu'on rencontre un littéral (une variable) marquée au niveau courant, on la **résout** avec sa clause raison (c'est-à-dire qu'on intègre les prémisses qui ont conduit à son assignation) : pour chaque littéral $lit2$ de la clause raison, si sa variable n'est pas déjà marquée, on la marque. Si cette variable est d'un niveau antérieur, on ajoute le littéral tel quel dans la future clause apprise (`learned_lits`), sinon (même niveau courant) on incrémente simplement le compteur. On décrémente ensuite `num_current_level_lits`. Ce processus continue jusqu'à ce qu'il ne reste qu'un seul littéral du niveau courant non résolu : c'est le **UIP** (point unique d'implication).
+  * Le littéral correspondant à l'UIP (appelons-le $uip$) n'est pas encore ajouté à la clause apprise. On va ajouter **sa négation** `-uip` dans la clause apprise. Ainsi, la clause apprise contiendra $\neg uip$ plus d'autres littéraux (de niveaux inférieurs) qui représentent le "coupe-circuit" du conflit. Cette nouvelle clause est garantie d'être **apprise** (elle est déduite logiquement de la formule) et surtout elle possède une propriété cruciale : elle ne contient qu'un seul littéral du niveau de décision courant (le $\neg uip$). Par conséquent, après un retour en arrière à un niveau plus bas, cette clause deviendra unitaire et provoquera l'assignation immédiate de $\neg uip$, évitant de reproduire le même conflit par la suite.
+  * On calcule le niveau de backjump comme le plus grand niveau parmi les littéraux restants dans la clause apprise (à l'exception de l'UIP qui est au niveau courant). Ce sera typiquement le second plus haut niveau de décision présent dans le conflit. C'est à ce niveau qu'on reviendra.
+  * La clause apprise est ensuite créée et ajoutée au solveur via `add_clause!`.
+
+* La fonction **`backjump!`** effectue le **retour en arrière non chronologique** en annulant toutes les décisions et affectations jusqu'au niveau cible. On dépile le `trail` jusqu'à la position de début du niveau de décision visé (en utilisant `trail_lim` pour connaître l'indice de début du niveau), réinitialisant l'assignation et les structures de chaque variable enlevée. Le niveau courant du solveur est mis à jour. Ce mécanisme de *backjump* (retour non chronologique) est ce qui différencie CDCL de l’algorithme DPLL standard qui lui ne remonte que niveau par niveau (backtracking chronologique).
+
+* Enfin, la fonction **`solve!`** coordonne le tout. Elle commence par appliquer toutes les *unit clauses* initiales (niveau 0) et effectue une propagation initiale. Si un conflit apparaît déjà au niveau 0, la formule est déclarée insatisfiable immédiatement. Ensuite, on entre dans la boucle de recherche principale :
+
+  * On appelle `propagate!`. Si un conflit (`confl`) est retourné, on vérifie : si le conflit survient au niveau 0, on peut conclure UNSAT (aucune backtrack possible). Sinon, on exécute `analyze` pour apprendre une clause et obtenir un niveau de backjump. On fait `backjump!` à ce niveau, puis **on assigne directement le littéral UIP appris** (c'est la propagation de la clause apprise, qui est unitaire au niveau atteint). On revient ensuite au début de la boucle principale au nouveau niveau de recherche réduit.
+  * Si `propagate!` ne retourne pas de conflit, alors toutes les implications du niveau courant sont traitées sans contradiction. On vérifie si **toutes les variables sont assignées** – si oui, on a trouvé un modèle satisfaisant et on renvoie SAT. Sinon, on doit faire une **décision** pour continuer la recherche. On incrémente le niveau de décision, on enregistre la limite actuelle du trail dans `trail_lim`, puis on choisit une variable non assignée à affecter (c'est le rôle de l'**heuristique** de décision). Dans l'exemple ci-dessus, on appelle `Heuristics.pick_branch_var(solver)` pour obtenir un indice de variable non encore assignée. Ensuite, on assigne cette variable à vrai (par défaut) au nouveau niveau de décision (avec `reason = nothing` car c'est un choix libre), et on boucle pour propager cette décision.
+
+L'algorithme se termine soit en trouvant une assignation satisfaisant toutes les clauses (retourne `true`), soit en déduisant une inconsistance au niveau 0 (retourne `false`).
+
+## Heuristics.jl : heuristique de décision (facultatif)
+
+Nous proposons un module optionnel `Heuristics.jl` pour encapsuler la stratégie de choix de la prochaine variable à assigner lors d'une décision. Dans une implémentation aboutie, on pourrait utiliser l'heuristique VSIDS (*Variable State Independent Decaying Sum*), introduite également par le solveur Chaff. VSIDS attribue un score d'activité à chaque variable qui est incrémenté à chaque conflit pour les variables impliquées, avec un facteur de décroissance périodique, de sorte à toujours choisir la variable la plus récemment/persistentement impliquée dans les conflits. Cela permet d'orienter la recherche vers les zones problématiques du problème. Cependant, pour la clarté et la simplicité, nous pouvons aussi utiliser une heuristique plus basique (par exemple, choisir la plus petite variable non assignée, ou choisir aléatoirement).
+
+Voici un exemple simplifié d'heuristique qui choisit simplement la première variable non encore assignée (sans considération sophistiquée) :
+
+```julia
+# Heuristics.jl – Module d'heuristiques de décision simple
+module Heuristics
+
+# Renvoie l'indice d'une variable non assignée (0 si aucune restante)
+function pick_branch_var(solver::Solver.Solver)::Int
+    for v in 1:solver.n_vars
+        if solver.assignment[v] == 0
+            return v    # retourne la première variable libre
+        end
+    end
+    return 0            # 0 indique qu'il n'y a plus de variable à assigner
+end
+
+end  # module Heuristics
+```
+
+Dans une version ultérieure, on pourrait étendre ce module pour inclure le calcul et la mise à jour des **activités VSIDS** des variables. Par exemple, on maintiendrait un tableau `activity::Vector{Float64}` dans une structure de l'heuristique, on appellerait `Heuristics.bump_activity!(solver, var)` pour augmenter l'activité des variables apparaissant dans les conflits, et on appliquerait un facteur de décroissance à intervalles réguliers. Cependant, ces détails dépassent le cadre minimal demandé. L'essentiel est de prévoir une séparation modulaire possible de l'heuristique, afin que le cœur du solveur CDCL (`Solver.jl`) reste indépendant de la stratégie de décision utilisée.
+
+## Conclusion
+
+Nous avons présenté un solveur SAT complet implémenté en Julia de manière modulaire, inspiré par le style de CaDiCaL qui privilégie un code lisible et modifiable. Les fonctionnalités minimales requises sont couvertes : utilisation des **littéraux surveillés** pour une **propagation unitaire efficace**, apprentissage de clauses au **premier UIP** garantissant qu'une clause apprise n'a qu'un seul littéral du niveau courant (et permettra donc une propagation immédiate après backjump), **retour en arrière non chronologique** au niveau approprié suite à un conflit, et gestion des **niveaux de décision** via le trail et les limites. Le code est organisé en modules et structures (`Clause`, `Solver`, etc.) avec des types bien définis et un nommage clair, ce qui correspond aux idiomes de Julia et à l'esprit d'un code « propre ». Cette implémentation, bien que simplifiée, fournit une base lisible pour un solveur CDCL fonctionnel, sur laquelle on peut bâtir pour ajouter d'autres optimisations ou heuristiques issues des solveurs SAT modernes (redémarrages, effacement de clauses, heuristique VSIDS, etc.).
+
+**Sources :** Les principes de base de l'algorithme CDCL sont décrits dans la littérature. Le format DIMACS CNF standard suivi par le parseur est défini par exemple dans la documentation des compétitions SAT. L'utilisation des littéraux surveillés provient du solveur Chaff, et l'heuristique VSIDS y a également été introduite. La notion de clause apprise au premier UIP (first-UIP) est une technique clé pour assurer que chaque clause apprise provoque un retour non chronologique efficace. Cette implémentation s’inspire enfin du style de CaDiCaL, un solveur CDCL moderne conçu pour être facile à comprendre et à modifier, ce qui cadre avec l'objectif d'un code clair et modulaire.

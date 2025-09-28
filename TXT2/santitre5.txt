@@ -1,0 +1,8 @@
+\newcommand{\featuremodelwtxt}{modèle}
+
+\NewDocumentCommand{\featuremodelw}{o}{\featuremodelwtxt{}\IfValueT{#1}{s} de \ftrs{}}
+
+
+
+
+

@@ -1,0 +1,121 @@
+%------------------------------------------------------------
+%------------------------------------------------------------
+\subsection{{\UTP} Predicates}
+\label{sec:model-predicates}
+
+%%%%{\ADJACENTROOMS}
+%%%%{\ATMOSTDAILY}
+%%%%{\ATMOSTWEEKLY}
+%%%%{\TRAVEL}
+%{\FORBIDDENPERIOD}
+%{\NOOVERLAP}
+%%%%{\SAMEDAILYSLOT}
+%%%%{\SAMEDAY}
+%{\SAMEROOMS}
+%%%%{\SAMESLOT}
+%%%%{\SAMESTUDENTS}
+%%%%{\SAMETEACHERS}
+%{\SAMEWEEKDAY}
+%%%%{\SAMEWEEKLYSLOT}
+%%%%{\SAMEWEEK}
+%{\SEQUENCED}
+%%%%{\TEACHERDISTRIBUTION}
+%%%%{\WEEKLY}
+
+We present a subset of {\UTP} constraint predicates, namely,
+\texttt{\FORBIDDENPERIOD}~(\ref{ctr:forbiddenperiod}),
+\texttt{\SAMEWEEKDAY}~(\ref{ctr:sameweekday}), 
+\texttt{\SAMEROOMS}~(\ref{ctr:samerooms}),
+\texttt{\NOOVERLAP}~(\ref{ctr:nooverlap}) 
+and \texttt{\SEQUENCED}~(\ref{ctr:sequenced}).
+Note that \texttt{\FORBIDDENPERIOD} accepts start and end point parameters.
+Predicate \texttt{\NOOVERLAP}
+uses auxiliary predicate $split$ for resources (\ref{ctr:disjointconditional})
+and a variant for course elements (\ref{ctr:disjointunconditional}).
+
+
+%Constraint~\ref{ctr:forbiddenperiod} implements predicate \texttt{\FORBIDDENPERIOD} which accepts start and end point parameters. Constraint~\ref{ctr:sameweekday} implements predicate \texttt{\SAMEWEEKDAY}. Constraint~\ref{ctr:samerooms} implements predicate \texttt{\SAMEROOMS}. Constraint~\ref{ctr:sequenced} implements predicate \texttt{\SEQUENCED}. Constraint~\ref{ctr:nooverlap} implements predicate \texttt{\NOOVERLAP} using built-in model predicate $split$ for resources (\ref{ctr:disjointconditional}) and its variant for course elements (predicate~\ref{ctr:disjointunconditional}).
+
+{\noindent}Let $X\in\TYPE, e\in X,S'\subseteq\map{X}{\SESSION}{e}, h,h'\in\SLOT\ (h<h')$.
+\begin{equation}
+\begin{split}
+%Let\ X\in\TYPE, e\in X,S'\subseteq\map{X}{\SESSION}{e}, h,&h'\in\SLOT\ (h<h'):
+%\\
+\FORBIDDENPERIOD((e,S'),h,h')
+\ \ \ &\\
+\leftrightarrow
+&\bigwedge_{\substack{s\in S'}}
+(\var{\SESSION}{\SLOT}{s}+\sessionduration{s}\leq h
+\vee
+h'<\var{\SESSION}{\SLOT}{s}
+)
+\label{ctr:forbiddenperiod}
+\end{split}
+\end{equation}
+
+\begin{flalign}
+%\begin{equation}
+%\begin{split}
+%Let\ X&\in\TYPE, e\in X,S'\subseteq\map{X}{\SESSION}{e}:
+%\\
+&\SAMEWEEKDAY((e,S'))
+\leftrightarrow
+\bigwedge_{\substack{s\in S'}}
+\var{\SESSION}{\SLOT}{s} / {\WEEKDAY} = (\var{\SESSION}{\SLOT}{s} + \sessionduration{s}) / {\WEEKDAY}
+%&\var{\SESSION}{\SLOT}{s} \div{\DAILYSLOT} = \sessionend{s} \div{\DAILYSLOT}
+&\label{ctr:sameweekday}
+\\
+%\end{split}
+%\end{equation}
+%
+%\begin{equation}
+%\begin{split}
+%Let\ X\in\TYPE, e\in X,S'\subseteq\map{X}{\SESSION}{e}:&
+%\\
+&\SAMEROOMS((e,S'))
+\leftrightarrow
+\bigwedge_{\substack{s,s'\in S'}}
+(\var{\SESSION}{\ROOM}{s}=\var{\SESSION}{\ROOM}{s'}
+)
+&\label{ctr:samerooms}
+\\
+%\end{split}
+%\end{equation}
+%\begin{equation}
+%\begin{split}
+%Let\ X\in\TYPE, e\in X,S'\subseteq\map{X}{\SESSION}{e}:\ \ \ \ &
+%\\
+&\NOOVERLAP((e,S'))
+\leftrightarrow
+\disjointroom{e}{S'}{S'}
+&\label{ctr:nooverlap}
+%\end{split}
+%\end{equation}
+\end{flalign}
+
+{\noindent}Let $i\in\myset{1,\ldots,n},X_i\in\TYPE,e_i\in X_i,S_i\subseteq\map{X_i}{\SESSION}{e_i}:$
+\begin{equation}
+\begin{split}
+%Let\ i\in\myset{1,\ldots,n},X_i\in\TYPE,e_i\in X_i,S_i\subseteq\map{X_i}{\SESSION}{e_i}:&
+%\\
+\SEQUENCED((e_1,S_1),\ldots&,(e_n,S_n))
+\\
+&\leftrightarrow
+\bigwedge_{\substack{j=1\ldots n-1}}
+\max_{\substack{s\in S_j}}{(\var{\SESSION}{\SLOT}{s} + \sessionduration{s})}
+\leq
+\min_{\substack{s\in S_{j+1}}}{\var{\SESSION}{\SLOT}{s}}
+\label{ctr:sequenced}
+\end{split}
+\end{equation}
+
+{\noindent}Let $X\in\myset{\COURSES,\COURSE,\PART,\CLASS},e\in X,S_1,S_2\subseteq\SESSION:$
+\begin{flalign}
+\disjointroom{e}{S_1}{S_2}
+\leftrightarrow
+\bigwedge_{\substack{s_1\in S_1,s_2\in S_2\\s_1\neq s_2}}
+(e\in\map{\SESSION}{X}{s_1}\cap\map{\SESSION}{X}{s_2}
+\rightarrow
+\disjoint{s_1}{s_2})
+\label{ctr:disjointunconditional}
+\end{flalign}

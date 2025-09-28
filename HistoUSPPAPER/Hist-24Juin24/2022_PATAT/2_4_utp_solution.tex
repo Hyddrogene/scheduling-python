@@ -1,0 +1,78 @@
+%------------------------------------------------------------
+%------------------------------------------------------------
+\subsection{Solution}
+\label{sec:solution}
+%From introduction
+%{\UTP} instances may therefore be used to model subproblems and solution seeds when the whole problem is solved in successive stages (e.g., sequential workflows chaining student sectioning, course scheduling and resource allocation). 
+%Since no assumption is made on the computing task, {\UTP} instances may also be used to repair timetables, complete partial timetables or generate full solutions. 
+
+The solution component includes assignment decisions
+relating to the choice of slots and resources for sessions,
+the placement of students in groups and
+the assignment of groups to classes.
+The solution hence represented may be partial, even empty,
+and does not have to be consistent with the constraints built in the entity model or entailed by the rules.
+The support for partial solutions allows to tackle subproblems using separate {\UTP} instances and solution seeds.
+For instance, a scheduling instance may be defined on the basis of partial and consistent solutions pre-generated for the student sectioning and resource allocation subproblems.
+Likewise, the support for inconsistent solutions is paramount to repair solutions that have become inconsistent due to unforeseen changes.
+
+%As mentioned before, 
+Student groups are considered a by-product of student sectioning.
+For this reason, groups may only be listed in the solution component, not in the entity model, and defined both by the students they include and the classes they are assigned to. 
+This sectioning process is subject to different constraints. 
+First, students are partitionned into groups and students are inextricably bound to their group.
+Second, a group may only include students with identical course registrations.
+Third, group-to-class assignments must comply with any subgroup inclusion constraint stated in the entity model.
+
+%Let ${\SLOT}$ denote the range of slots defining the schedule horizon, $\maptype{\PART}{\SLOT}$ denotes the set of allowed slots defined for each course part in the entity model. 
+%$\maptype{\SESSION}{\SLOT}$ shall denote the set of slots assigned to each session in a solution component.
+%Let ${\GROUP}$ denote the set of groups defined in a solution, $\maptype{\GROUP}{\STUDENT}$ and $\maptype{\CLASS}{\GROUP}$ shall denote respectively the students making up each group and the groups making up each class.
+
+
+
+% %The schema thus allows to cast university timetabling problems either as cumulative or disjunctive scheduling problems that subsume student sectioning or not.
+
+
+% \paragraph{Paragraph headings} Use paragraph headings as needed.
+% \begin{equation}
+% a^2+b^2=c^2
+% \end{equation}
+
+% For one-column wide figures use
+%\begin{figure}
+% Use the relevant command to insert your figure file.
+% For example, with the graphicx package use
+%  \includegraphics{example.eps}
+% figure caption is below the figure
+%\caption{Please write your figure caption here}
+%\label{fig:1}       % Give a unique label
+%\end{figure}
+%
+% For two-column wide figures use
+%\begin{figure*}
+% Use the relevant command to insert your figure file.
+% For example, with the graphicx package use
+%  \includegraphics[width=0.75\textwidth]{example.eps}
+% figure caption is below the figure
+%\caption{Please write your figure caption here}
+%\label{fig:2}       % Give a unique label
+%\end{figure*}
+%
+% For tables use
+%\begin{table}
+% table caption is above the table
+%\caption{Please write your table caption here}
+%\label{tab:1}       % Give a unique label
+% For LaTeX tables use
+%\begin{tabular}{lll}
+%\hline\noalign{\smallskip}
+%first & second & third  \\
+%\noalign{\smallskip}\hline\noalign{\smallskip}
+%number & number & number \\
+%number & number & number \\
+%\noalign{\smallskip}\hline
+%\end{tabular}
+%\end{table}
+
+
+

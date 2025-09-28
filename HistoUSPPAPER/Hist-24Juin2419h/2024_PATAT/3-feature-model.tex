@@ -1,0 +1,193 @@
+\section{A Feature Model}
+\label{sec:feature-model}
+This section introduces a feature model
+for educational timetabling problems
+based on the \UTP{} schema.
+The model is not meant to be exhaustive, nor stable,
+but is a first attempt
+to capture %key 
+the key variability points  (the features)
+in the family of instances
+that can be expressed with the schema.
+%, effectively decomposing the problem space into different classes.
+%expressible in the \UTP{} schema.
+Some features are plain flags characterizing the compliance of an instance to the schema (e.g., whether courses are hierarchically structured or not)
+while others are logical assertions on instance data (e.g., whether the number of weeks is set to 1 or not).
+% or by a textual description of a schema-level constraint .
+% a logical statement that is based on instance data (e.g., )
+In either case, each feature may be checked against any instance
+and, in turn, instances classified into different classes
+based on the features they satisfy.
+
+The feature model hence decomposes the space of \UTP{} problems
+which serves different purposes.
+One is to quickly assess whether 
+the schema 
+is applicable to %model and tackle 
+a particular setting. % an instance wherever it comes from.
+Another is to provide a straightforward characterization of problem classes,
+similarly to the way 3-field notation is used in other scheduling domains \cite{1979_graham_ADM,robinX_3field,scheduling_zoo}.%ajouter robinX ? et schduling zoo ?  
+The aim is also to facilitate the comparison of \UTP{} with competing schemas, %for timetabling problems,
+possibly paving the way for formal reductions between problems
+and conversions between schemas.
+% Beyond instance classification, 
+Lastly, the feature model can guide the configuration of efficient computational models
+by using features to reformulate or optimize %or reformulate 
+built-in constraints and predicate implementations.
+% We first provide background on feature modeling then discuss \UTP{} features and their structuring.
+
+% \input{3-feature-model-table} 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \subsubsection{Feature Modelling}
+% \label{sec:feature-modelling}
+We first recall the basic
+%terminology,
+notations 
+and definitions commonly used in feature modeling languages \cite{1990_kang_TR,2002_czarnecki_ECOOP,2019_damir_ACM}.
+A feature model is a tree-like structure connecting features
+and factoring in different feature configurations.
+A %feature 
+configuration is a subset of features
+selected from %a feature 
+the model.
+The configuration process is subject to constraints 
+that primarily capture dependencies that 
+exist between a feature and its children (a.k.a., sub-features). 
+These fall into 4 categories:
+\textit{mandatory sub-feature} (it must be selected if the parent is) labeled by $\medbullet$,
+\textit{optional sub-feature} (it may be selected if the parent is) labeled by $\medcirc$,
+\textit{or-feature} (at least one of the sub-features must be selected) labeled by $+$, 
+and \textit{xor-feature} (exactly one sub-feature must be selected) labeled by $1$.
+Finer-grained cardinality constraints may apply
+as well as cross-tree constraints modeling dependencies or incompatibilities 
+between features that sit in different branches.
+% A feature model is readily viewable with a feature diagram
+% annotating features and parent subfeatures.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \subsubsection{Feature Model}
+% \label{sec:feature-model}
+\input{3-feature-model-table} 
+
+Table~\ref{tab:features} details our feature model.
+% The features of the model, their structuring
+% and characterization, formal or not,
+% is detailed in Table~\ref{tab:features}.
+The feature-tree (rotated anticlockwise by 90\textdegree) has 3 levels:
+the root node (not shown),
+its sub-features and their labels
+shown respectively on the 2nd and 1st columns 
+%(\hyperref[featmodel:courses]{\courses}, ..., \hyperref[featmodel:aspects]{aspects}),
+and their variants shown on the next 2 columns.
+%(\hyperref[featmodel:hierarchy]{course-hierarchy}, etc.).
+For instance, selecting feature \hyperref[featmodel:hosting]{\hosting}
+in a configuration requires selecting at least one of
+%exactly one of %the sub-features 
+\hyperref[featmodel:noroom]{\noroom}, 
+\hyperref[featmodel:singleroom]{\singleroom} or
+\hyperref[featmodel:multiroom]{\multiroom}.
+The last column provides the formal or informal characterization of each leaf feature.
+The sub-features of the root 
+%that split timetabling properties and requirements into 
+characterize core structural elements (course and time structure),
+orthogonal decision layers (scheduling, room allocation, etc.),
+and cross-cutting concerns (session planning, resource availability, etc.).
+The latter is tagged optional
+and so are
+\hyperref[featmodel:hosting]{\hosting} and
+\hyperref[featmodel:teaching]{\teaching}
+%and \hyperref[featmodel:aspects]{\aspects} are tagged optional
+as these decision layers may be out of scope in an instance.
+We explain next the variants of these sub-features.
+
+\hyperref[featmodel:hierarchy]{\coursehierarchy} applies to instances whose
+course elements are nested hierarchically.
+\hyperref[featmodel:event]{\event} applies when events unrelated to courses 
+(e.g., %lunch breaks, 
+staff meetings) must be scheduled too.
+The next 3 features characterize the sparsity and scope of the time horizon.
+%and the weekly recurrence of timetables.
+\hyperref[featmodel:fullperiod]{\fullperiod} %is an extrinsic property
+indicates if it %the horizon 
+is built on consecutive calendar weeks
+and \hyperref[featmodel:fullweek]{\fullweek} %indicates 
+if a weekday is missing. 
+\hyperref[featmodel:singleweek]{\singleweek} checks whether the instance is restricted to a single week
+which is typical of timetabling practices in high schools. %, unlike universities.
+The next 3 characterize the temporal structure imposed on sessions from ``time grids'' in high-schools
+to free-flow timetables for higher grade curricula.
+%homogeneity of sessions and allowed time slots.
+% to discriminate between 
+\hyperref[featmodel:nooverlap]{\nooverlap} holds true
+if sessions can never overlap if they start at different times,
+% based on their duration and their allowed time points
+% (e.g., in case sessions run every hour from 8am to 12am and last less than 1 hour).
+\hyperref[featmodel:sameduration]{\sameduration} %holds true
+if all sessions have the same duration,
+and \hyperref[featmodel:synchronous]{\synchronous} %holds true 
+if every session length, break time included, breaks down to a unit session length
+(e.g., some sessions are 1h long and any other session is measured in hours).
+
+The next features characterize room utilization.
+\hyperref[featmodel:noroom]{no-room},
+\hyperref[featmodel:singleroom]{\singleroom},
+\hyperref[featmodel:multiroom]{\multiroom},
+hold true if the instance includes a session that demands
+no room, a single room or more than 1 room, respectively.
+Similar features are introduced for the demand on teachers.
+\hyperref[featmodel:allexclusive]{\allexclusive},
+\hyperref[featmodel:noneexclusive]{\noneexclusive},
+\hyperref[featmodel:someexclusive]{\someexclusive},
+indicate if the instance includes only room-exclusive sessions, only inclusive sessions
+or a mix, respectively.
+%, respectively.
+\hyperref[featmodel:roomcapacity]{\roomcapacityfeat},
+\hyperref[featmodel:service]{service},
+and \hyperref[featmodel:sectioning]{\sectioning} apply
+if resp. room capacity, teaching service and student sectioning are in scope. 
+% indicates if teaching service constraints are in scope
+% applies if room capacity has to be managed.
+As for teaching, \hyperref[featmodel:teacheroverlap]{\teacheroverlap} indicates if teachers are cast as disjunctive resources %meaning none of their possible sessions may overlap.
+(the counterpart is introduced for students).
+Lastly, the sub-features of \hyperref[featmodel:aspects]{\aspects} capture
+cross-cutting concerns and we simply list examples of constraints taken from the \UTP{ catalog}
+to convey the meaning.
+% \hyperref[featmodel:service]{service} indicates if teaching service constraints are in scope
+% while
+% \hyperref[featmodel:sectioning]{sectioning} if student sectioning is out of scope. 
+
+
+
+
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% %Le modèle de features permet de représenter les différentes options valides pour un problème donné, ou schéma \EDT{}. Nous répertorions ici différentes caractéristiques issues du features modèles et notre modèle. %On retrouve ainsi les différentes features que peuvent valider les différents schémas. 
+% %Certaines sont obligatoires, tandis que d'autres sont facultatives. Les caractéristiques facultatives peuvent être choisies selon plusieurs modalités,  soit au moins une parmi toutes ($+$), et d'autres impliquent d'en choisir une seule parmi toutes ($1$), ou dans le cas le plus général, autant que l'on veut de 0 à toutes ($*$ ou $?$ dans le cas unaire). Elles sont formellement représentées comme indiqué dans le tableau \ref{tab:features}.
+
+
+% %D'un point de vue générale nous regroupons les caractéristiques liées au maquette dans la caractéristique ``model''.
+% %Pour les entités de types cours, nous avons la possibilité d'avoir une structure de cours hiérarchique (\hyperref[featmodel:hierarchy]{``course-hierarchy''}). Une hiérarchie est une relation entre des éléments de cours. Si des relations existent entre des entités qui sont des cours, alors cette caractéristique est valide. Nous avons également la possibilité d'avoir des événements qui sont des cours ayant une ressource en moins (\hyperref[featmodel:event]{``event''}). En effet, un cours auquel il manque une ou plusieurs ressources devient un événement.
+
+% %Il existe également des caractéristiques pour d'horizon temporel d'un modèle (``horizon''), telles que \hyperref[featmodel:fullperiod]{``full period''}, \hyperref[featmodel:fullweek]{``full week''} et \hyperref[featmodel:singleweek]{``single week''}. \hyperref[featmodel:fullperiod]{``Full period''} indique que si l'horizon en termes de semaines correspond aux semaines réelles, alors l'horizon temporel en semaines est complet. \hyperref[featmodel:fullweek]{``Full week''} signifie que tous les jours de la semaine sont représentés. Enfin, l'attribut \hyperref[featmodel:singleweek]{``single week''} indique que l'horizon temporel en termes de semaines est de une semaine.
+
+% %Pour les aspects temporels, nous disposons des caractéristiques de "timing" concernant les relations temporelles au sein d'un modèle EDT et des différentes grilles temporelles.
+
+% %
+% %La première de celle ci \hyperref[featmodel:nooverlap]{``nooverlap''} indique que les créneaux horaires entre eux ont une durée suffisante pour accueillir n'importe quelle séance de la maquette, sans chevauchement. 
+% %Quant à la caractéristique \hyperref[featmodel:sameduration]{``same-duration''} elle concerne la durée des séances, si toutes les séances du problème ont la même durée alors elle est caractéristique est valide.
+% %Enfin la caractéristiques  \hyperref[featmodel:synchronous]{``synchronous''} permet d'exprimer un écart inter-créneaux modulaire. Autrement dit il existe un pgcd entre les écarts des créneaux horaires permettant ainsi de relier les différents créneaux horaires des différentes grilles. Et si le minium des écarts est égale à ce pgcd alors les grilles sont synchrones.
+
+% %Pour l'hébergement des cours (``hosting'') nous avons 3 familles de caractéristiques. la première aborde la quantité de salle par cours, plusieurs modalités d'utilisation des salles sont possibles aucune salle (\hyperref[featmodel:noroom]{``no-room''}), une salle (\hyperref[featmodel:singleroom]{``single-room''}) ou plusieurs salles (\hyperref[featmodel:multiroom]{``multi-room''}). Il faut en choisir au moins une de ces modalités parmi les trois proposées. On retrouve également comme caractéristique la capacité des salles (\hyperref[featmodel:capacityroom]{``capacity-room''}) qui est facultative. Dans certains cas, elle n'est pas utile par construction des problèmes.
+
+% %
+% %Enfin, nous abordons la question du partage des salles. Il s'agit de déterminer si les séances de cours partagent ou non les salles avec d'autres cours. Il est nécessaire de choisir une seule option parmi les trois disponibles. Il peut s'agir d'un cas complètement exclusif ou toutes les séances n'admettent pas d'autres cours en même temps (\hyperref[featmodel:exclusivesession]{``full-exclusif''}), complètement inclusives permettant à toutes les séances d'avoir plusieurs cours de se dérouler dans la même salle tant que sa capacité n'est pas dépassée (\hyperref[featmodel:inclusivesession]{``full-inclusif''}), et enfin le cas mixte qui est une combinaison de séances exclusives et inclusives (\hyperref[featmodel:mixedsession]{``mixed''}).
+% %
+% %
+
+% %Ensuite pour les enseignants (``teaching''), on distingue 2 classes de features. La première concerne le nombre d'enseignants par cours, offrant plusieurs options, aucun enseignant (\hyperref[featmodel:noteacher]{``no-teacher''}), un seul enseignant (\hyperref[featmodel:singleteacher]{``single-teacher''}) ou plusieurs enseignants (\hyperref[featmodel:multiteacher]{``multi-teacher''}). Nous avons également la caractéristique de chevauchement des séances \hyperref[featmodel:teacheroverlap]{``session overlap''} pour déterminer si les  enseignants peuvent avoir plusieurs séances simultanément. Enfin, un enseignant peut avoir un nombre prédéterminé de séances à effectuer dans une partie de cours qui est représenté par une valeur appelée service (\hyperref[featmodel:service]{``service''}).
+% %
+
+% %En ce qui concerne les étudiants (``students''), ils peuvent avoir des cours qui se chevauchent ou non (\hyperref[featmodel:groupoverlap]{``session overlap''}). Dans certains cas, les étudiants sont inclus sous forme de groupes (\hyperref[featmodel:group]{``group''}). Ces groupes, s'ils sont inclus, indiquent que le problème est résolut en amont.
+% %

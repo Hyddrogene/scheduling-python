@@ -1,0 +1,112 @@
+.4 How Difficult is this for Exact Solvers?
+One might hope that it is enough to pass this formulation to a modern in-
+teger programming solver and wait. After all, integer programming has
+been used in timetabling ever since Lawrie (1969) generated feasible solu-
+tions to a school timetabling problem using a branch and bound procedure
+with Gomory cuts. Tripathy (1984) and Carter (1989) solved instances of
+a course timetabling problem of up to 287 events with several soft con-
+straints using Lagrangian relaxation. They have not, however, introduced
+any constraints penalising interaction between events in timetables other
+than, of course, straightforward conflicts. More recently, a number of mod-
+est instances of course timetabling problems have been tackled using off-
+the-shelf solvers, without introducing any new cuts (Dimopoulou and Mil-
+iotis, 2004; Qualizza and Serafini, 2005; Daskalaki et al., 2004, 2005; Mirhas-
+sani, 2006). For instance, Daskalaki et al. (2004, 2005) solved instances of
+up to 211 events using ILOG CPLEX. Of special interest are studies by
+Al-Yakoob and Sherali (2007) and Schimmelpfeng and Helber (2007), who
+have modelled a larger number of constraints. In the most rigorous study
+so far, Avella and Vasil’ev (2005) presented a branch-and-cut solver for the
+Benevento Course Timetabling Problem, which forbids some interactions
+of events in timetables other than conflicts using hard constraints. In this
+setting, Avella and Vasil’ev (2005) have been able to solve instances of up to
+233 events and 14 distinct enrolments, but conceded that application of their
+solver to the four small instances of Udine Course Timetabling available in
+2005 yielded “poor results”. In Udine Course Timetabling, such interactions
+are penalised by soft constraints (7–15), which (it turns out) make the prob-
+lem considerably more difficult. Several integer programming formulations
+of the problem have been studied by Burke et al. (2007, 2008b), and more
+recently by Lach and L ¨ubbecke (2008a,b). Both approaches can now solve
+the original instances of Udine Course Timetabling from 2005, but optimal
+solutions to instances from the International Timetabling Competition 2007,
+or optima for large real-life instances of university course timetabling prob-
+lems are, as it seems, out of reach, so far.
+In particular, it seems that it is the run-time of the linear programming (LP)
+solver that is prohibitive to progress on more difficult instances from the
+International Timetabling Competition (ITC) using the Monolithic formu-
+lation. For relatively easier instances (comp01 and comp11 from ITC 2007),
+root relaxation obtained from Monolithic takes less than thirty seconds to
+solve using the default ILOG CPLEX 11 Dual Simplex LP Solver and the
+search proceeds swiftly. On the remaining instances, however, the root re-
+laxation is far more expensive, taking up to 6489 seconds on comp07. For
+complete results obtained using the CPLEX 11 Dual Simplex LP Solver, see
+Table 4. Informal evidence suggests that run times of both the CPLEX 11
+Barrier and the CPLEX 11 Primal Simplex LP solvers are shorter, whereas
+run-times of either SoPlex (Wunderling, 1996) and CLP (Forrest et al., 2004)
+are longer. Hence, it is not particularly surprising that for most instances
+(all except from comp01, comp05, and comp11), CPLEX Mixed Integer Pro-
+gramming (MIP) solver using Monolithic and default settings does not pro-
+duce any feasible solution within 40 CPU units, branching at the speed of
+ten to thirty nodes per hour. This can hardly be described as satisfactory
+progress.
+Although the total run-time or time spent at the root node may not be of
+particular importance, as long as the instance is solved close to optimal-
+ity within a reasonable time limit, for example over a weekend, relying on
+robustness of modern solvers does not seem to be an option for real-life
+instances (Murray et al., 2007). First, such instances are often many times
+larger than those used in the International Timetabling Competition 2007,
+including comp07. Second, their formulations are considerably more com-
+plex and tend to change over time, whereas the behaviour of general solvers
+on monolithic formulations tends to be rather difficult to predict, with run-
+time often rising rapidly on addition of seemingly trivial constraints. Fi-
+nally, general solvers only seldom perform in the “anytime” fashion of Zil-
+berstein (1996) on monolithic formulations, which would make it possible
+to obtain a solution whenever the solver is stopped. It thus makes sense
+to study decompositions of the problem and the performance of heuristic
+methods based on them
+
+
+
+
+
+
+
+
+
+
+
+
+
+### 4. Quelle est la difficulté pour les solveurs exacts ?
+
+On pourrait espérer qu'il suffise de transmettre cette formulation à un solveur de programmation en nombres entiers moderne et d'attendre. Après tout, la programmation en nombres entiers est utilisée dans la planification depuis que Lawrie (1969) a généré des solutions faisables à un problème de planification scolaire en utilisant une procédure de branchement et de bornage avec des coupes de Gomory. Tripathy (1984) et Carter (1989) ont résolu des instances d'un problème de planification de cours de jusqu'à 287 événements avec plusieurs contraintes souples en utilisant la relaxation lagrangienne. Cependant, ils n'ont introduit aucune contrainte pénalisant l'interaction entre les événements dans les emplois du temps, autres que, bien sûr, les conflits simples. Plus récemment, un certain nombre d'instances modestes de problèmes de planification de cours ont été abordées en utilisant des solveurs standards, sans introduire de nouvelles coupes (Dimopoulou et Miliotis, 2004 ; Qualizza et Serafini, 2005 ; Daskalaki et al., 2004, 2005 ; Mirhassani, 2006). Par exemple, Daskalaki et al. (2004, 2005) ont résolu des instances de jusqu'à 211 événements en utilisant ILOG CPLEX. Des études d'intérêt particulier sont celles d'Al-Yakoob et Sherali (2007) et Schimmelpfeng et Helber (2007), qui ont modélisé un plus grand nombre de contraintes. Dans l'étude la plus rigoureuse à ce jour, Avella et Vasil’ev (2005) ont présenté un solveur de branchement et de coupes pour le problème de planification de cours de Benevento, qui interdit certaines interactions d'événements dans les emplois du temps autres que les conflits en utilisant des contraintes strictes. Dans ce contexte, Avella et Vasil’ev (2005) ont réussi à résoudre des instances de jusqu'à 233 événements et 14 inscriptions distinctes, mais ont concédé que l'application de leur solveur aux quatre petites instances de planification de cours de Udine disponibles en 2005 a donné des "résultats médiocres". Dans la planification de cours de Udine, ces interactions sont pénalisées par des contraintes souples (7-15), qui rendent le problème considérablement plus difficile. Plusieurs formulations de programmation en nombres entiers du problème ont été étudiées par Burke et al. (2007, 2008b), et plus récemment par Lach et Lübbecke (2008a,b). Les deux approches peuvent maintenant résoudre les instances originales de planification de cours de Udine de 2005, mais les solutions optimales aux instances de la compétition internationale de planification des horaires 2007, ou les optima pour de grandes instances réelles de problèmes de planification de cours universitaires, semblent encore hors de portée.
+
+En particulier, il semble que le temps d'exécution du solveur de programmation linéaire (PL) soit prohibitif pour progresser sur les instances les plus difficiles de la compétition internationale de planification des horaires (ITC) en utilisant la formulation Monolithic. Pour des instances relativement plus faciles (comp01 et comp11 de l'ITC 2007), la relaxation initiale obtenue à partir de Monolithic prend moins de trente secondes à résoudre en utilisant le solveur par défaut ILOG CPLEX 11 Dual Simplex LP et la recherche progresse rapidement. Cependant, sur les instances restantes, la relaxation initiale est beaucoup plus coûteuse, prenant jusqu'à 6489 secondes sur comp07. Pour des résultats complets obtenus en utilisant le solveur CPLEX 11 Dual Simplex LP, voir le tableau 4. Des preuves informelles suggèrent que les temps d'exécution des solveurs CPLEX 11 Barrier et CPLEX 11 Primal Simplex LP sont plus courts, tandis que les temps d'exécution de SoPlex (Wunderling, 1996) et CLP (Forrest et al., 2004) sont plus longs. Ainsi, il n'est pas particulièrement surprenant que pour la plupart des instances (toutes sauf comp01, comp05 et comp11), le solveur de programmation en nombres mixtes (MIP) de CPLEX utilisant Monolithic et les paramètres par défaut ne produise aucune solution faisable en 40 unités CPU, avec une branchement se faisant à une vitesse de dix à trente nœuds par heure. Cela ne peut guère être décrit comme un progrès satisfaisant.
+
+Bien que le temps d'exécution total ou le temps passé au nœud racine puisse ne pas être d'une importance particulière, tant que l'instance est résolue presque de manière optimale dans un délai raisonnable, par exemple sur un week-end, compter sur la robustesse des solveurs modernes ne semble pas être une option pour les instances réelles (Murray et al., 2007). Tout d'abord, ces instances sont souvent beaucoup plus grandes que celles utilisées dans la compétition internationale de planification des horaires 2007, y compris comp07. Deuxièmement, leurs formulations sont considérablement plus complexes et ont tendance à changer au fil du temps, tandis que le comportement des solveurs généraux sur les formulations monolithiques tend à être plutôt difficile à prévoir, le temps d'exécution augmentant souvent rapidement avec l'ajout de contraintes apparemment triviales. Enfin, les solveurs généraux ne fonctionnent que rarement selon le mode "anytime" de Zilberstein (1996) sur les formulations monolithiques, ce qui permettrait d'obtenir une solution dès que le solveur est arrêté. Il est donc logique d'étudier les décompositions du problème et la performance des méthodes heuristiques basées sur celles-ci.
+
+
+
+
+
+Presque tous les types d'organisations humaines sont parfois confrontés à des tâches de planification. Le problème de la planification des cours universitaires (UCTP) et ses variations font partie de la grande catégorie des problèmes de planification et d'ordonnancement. De nombreux problèmes de planification universitaire ont été décrits dans la littérature, et ils diffèrent les uns des autres en fonction du type d'institution concernée, des entités à planifier et des contraintes définissant le problème.
+
+En raison de la complexité inhérente et de la variabilité du problème, la plupart des problèmes de planification réels sont NP-complets [1]. Cela nécessite l'utilisation d'algorithmes heuristiques qui ne garantissent pas une solution optimale, mais qui peuvent généralement générer des solutions suffisamment bonnes pour une utilisation pratique. En raison de leur maniabilité et de leur bonne performance (si elles sont correctement mises en œuvre), les techniques métaheuristiques se sont révélées particulièrement adaptées à la résolution de ce type de problèmes.
+
+Dans ce travail, nous nous concentrons sur le problème de la planification des exercices de laboratoire (LETP), encadré comme un exemple du problème de planification des cours universitaires. Le travail décrit fait partie de la recherche sur deux métaheuristiques différentes pour la construction d'emplois du temps : l'algorithme génétique [2] et la métaheuristique d'optimisation par colonies de fourmis (ACO). La construction d'un système pour résoudre les instances de LETP est un défi à la fois technique et administratif. Parallèlement à un système de production d'emplois du temps efficace, un modèle riche en fonctionnalités des contraintes de planification a été conçu. Il est nécessaire que le système soit capable de prendre en compte un ensemble complexe de contraintes car divers départements de notre institution ont des idées très différentes de ce à quoi un bon emploi du temps devrait ressembler. La définition de LETP est élaborée en étroite coordination avec les départements et évolue constamment. Par conséquent, une bonne conception modulaire qui prend en charge les changements dans la définition du problème est nécessaire.
+
+Notre approche est basée sur la métaheuristique d'optimisation par colonies de fourmis (ACO), proposée par Dorigo et al. [3]. Il s'agit d'une procédure de recherche constructive stochastique distribuée et probabiliste, inspirée par le comportement de recherche de nourriture des fourmis. Elle utilise une représentation du problème sous la forme d'un graphe de construction, sur lequel les solutions suggérées sont construites par des fourmis artificielles. L'ACO a déjà montré son potentiel pour diverses applications de planification. Elle a été appliquée avec succès à divers ensembles de données UCTP générés artificiellement dans [4,5] et dans [6] ses performances sont comparées à celles de plusieurs autres métaheuristiques. L'ACO a également été appliquée à des instances générées artificiellement du problème de la planification des examens, par exemple dans [7]. Cependant, comme noté dans [8],
+"Une faiblesse majeure identifiée dans l'approche actuelle de la recherche opérationnelle est décrite comme suit : il existe encore un fossé entre les résultats d'un projet de recherche réussi et ce qui est nécessaire pour une utilisation directe par l'industrie. En général, le domaine de la planification éducative est un de ces domaines."
+Résoudre de tels problèmes réels est une tâche difficile qui implique la modélisation et la gestion de divers types de contraintes qui sont généralement simplifiées dans les problèmes académiques. De plus, seules quelques représentations UCTP relativement basiques ont été proposées dans la littérature pour une utilisation avec l'ACO. Il a été démontré que ces représentations ne satisfont pas aux exigences imposées par des instances LETP complexes et de grande taille.
+
+Ce travail est un effort pour combler ce fossé entre la théorie et la pratique de la planification automatisée et pour construire un système basé sur l'ACO qui réponde aux besoins de planification de notre institution. Le résultat de notre travail est un système de planification basé sur l'ACO adapté à une utilisation pratique.
+
+La suite de cet article est organisée comme suit : la section 2 introduit le problème de planification réel, et la section 3 développe notre approche. La section 4 présente les résultats, et la section 5 conclut l'article.
+
+
+
+
+
+
+
+
+

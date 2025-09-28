@@ -1,0 +1,177 @@
+% générateur d'instances
+% instances (générées + réelles [ ua_l1_p1-p2_L3-info_M1-info_M2-info.xml ])
+% présentation des instances : données statistiques sur les caractéristiques des instances
+%% nombre de salles disponibles (dans l'instance) / nb classes
+%% valeur min, moy, _max_ de la densité d'une séance sur les salles
+%% nombre d'enseignants disponibles (dans l'instance) / nb classes
+%% valeur min, moy, _max_ de la densité d'une séance sur les enseignants
+%% nombre de contraintes par variables
+%% nombre de fails par variables
+
+%5 les expérimentations et les méthodologies liées à celles-ci
+%
+%\begin{itemize}
+%    \item Faire des fichiers de config permettant de mieux faire varier l'environnement
+%    \item ajouter des contraintes n + pour mieux gérer l'espace
+%\end{itemize}
+%
+
+\subsection{Instance Generator}
+
+To generate a \UTP{} instance %is %a problem of itself.
+%Actually it is
+%a set of problems: 
+involves generating a course structure,
+groups of students, 
+teacher services, 
+and rules.
+All those generators can be configured thanks to \XML{} files to select the features we want our instance to fit in.
+
+% \subsubsection{Description d'une maquette}
+
+% Nous avons un générateur
+% Ils créent des instances en utilisant des distributions,
+% pour essayer de couvrir l'espace des données 
+
+% On exprime via un schema XML les différentes distributions.
+% On y retrouve des paramètres globaux guidant la créations et permettant d'avoir dse instance splus ou moins grtandes en termes de tailles et de structures plus ou moins complexes.
+% On y a rajouter la notion de formations permettant d'avoir un effectif étudiant et un ensemble de cours.
+% La hiérarchie et la même que dans un schéma UTP, la seule différence c'est qu'il vient doter ici les cours d'un département en plus.
+% En effet les différents cours de l'université sont aussi tous en appartenance à un département.
+%  Chaque département possède%
+%  en effet  des enseignants, des salles et des cours (et équipements).
+%  Cependant une université et aussi doté d'un pool de salles commune (amphithéâtres, salles de classe, salles multimédia) . Ce sont des salles qui sont disponibles pour tous les cours de l'université.
+%  Il y'a aussi des enseignants qui interviennent dans tout les niveaux de l'université (p.ex. des enseignants en anglais, communication).
+%  On va donc avoir une structure qui centralise les différentes formations autour des ressources partagées, les salles communes et les enseignants.
+%  Les formations vont aussi venir prendre des ressources dans les salles pour un département données (p.ex. pour un cours de travaux pratique en chimie dans une formations celle-ci va venir se servir dans le département de chimie pour avoir une salle et enseignant venant de ce département).
+ 
+%  De plus les cours formations ont une hiérarchie, les premières années de formations ont un effectif plus grand (+ d'étudiants), et une plus pluridisciplinarité plus marqué.
+%  (On peut cependant faire l'hypothèse inverse dans les options de création)
+%  Et donc chaque formation est étiqueté via un département.
+%  On peut bien sur jouer sur les taux et ce pour chaque "étape"(niveau de formation)%TODO
+%  pour avoir des instances pus fines.
+%  Sur le compte total de l'université on peut faire varier le nombre de salles par département.
+%  On peut aussi venir déclaré pour les cours des dimensions particulière existante.
+%  En effet dans le modèle \UTP{} on peut avoir cours dans plusieurs salles en même temps et avoir plusieurs enseignants pour un cours.
+%  On peut donc venir indiqué en fonction de la modalité pédagogiques les dimensions que l'on veut.
+ 
+ 
+% Il faut aussi doté chaque cours de date clé.
+% En effet un cours possède aussi un volume horaire et une distribution possible dans le temps.
+% Pour la distribution possible dans le temps on peut venir y mettre des valeurs spécifiques pour déclarer des modèles sous forme de grilles horaires.
+% On peut cependant garder une modèle ayant une grille horaires sous forme d'horizon continu.
+% Cela est ajustable en fonction du type niveau de formation.
+% On va de la même manière pouvoir venir indiqué la durée d'une leçon d'un cours.
+% On peut soit venir déclarer de multiples tailles, ou gardé des tailles standards.
+
+% \coco{Hmm incorporé les départements pour les horaires ?}
+%  \coco{Hmm incorporé les départements pour les modalités pédagogiques ? -> CM que le matin de manière structurelle}
+ 
+% Les cours ont une découpe spécifiques en fonction de leur modalité pédagogiques. Il faut donc indiqué pour chaque niveau de cours si on veut un découpages particulier des cours (en plusieurs modalité pédagogiques) que l'on va venir pondéré.
+
+% Pour ensuite savoir comment vont être distribué les cours (le nombre de séances par types de modalité pédagogiques, on utilise un export des données de l'université d'Angers qui permet d'exprimer le nombres de séances programmé en fonction des modalité pédagogiques d'un cours (si on a un cours de chimie qui est composé d'un cours magistrale suivis d'un travaux pratiques, le nombres de séances de celui sur la période peut être fondamentalement différents d'un autre exemple qui incorpore aussi des travaux dirigés(travaux en salle de classe).
+% Il faut donc un volume horaire dépendant du découpage en modalité pédagogique souhaité.
+
+% on va donc pouvoir de cette manière exprimé une grande variété d'horaire pour nos exemples.
+
+% Il faut aussi programmer le service de chacun des enseignants.
+% On doit s'assurer que toutes les séances de cours sont couvertes.
+% plusieurs possibilités s'offrent à nous :
+% Soit on équilibre le service et un enseignant prend exactement une ou plusieurs classe en service.
+% Un enseignant assure tout le service d'un cours donné, ou alors il y a plus d'enseignant que nécessaire.
+% De plus même si le nombre d'enseignant et raisonnable il peut y avoir des services quand même plus ou pins grand en fonction de manque d'aide pour dispenser d'un cours.
+%  \coco{Pour le moment ce n'est pas encore configurable il faudrait l'ajouter ? }
+
+%\subsubsection{Generate course structure}
+In our generator, we define curricula associated with faculty departments.
+Curricula enable us to associate a set of courses with a set of students and a set of teachers.
+Each department is associated with a set of courses, teachers and specific rooms (\emph{i.e.} rooms that can be used only by courses of the department).
+%An instance also have a set of common rooms and common teachers: rooms such that amphitheaters, or teachers teaching transversal courses, that can be used by all departments.
+%
+%In a curriculum, the courses are hierarchically organised: the courses of the first hierarchy will have more students than the ones of the last hierarchy, and there are more multi-department courses on the first hierarchy.
+%
+The courses are divided into several parts.
+The number of parts usually varies between 1 (only lectures) and 4 (lectures, tutorials, practices and evaluations).
+
+%Each course is also associated with time: how many hours (thus the number of sessions and the duration of each, per part), and when should the course start.
+
+%All courses that need teachers will have teachers.
+%It is possible to generate instances with one teacher for each class of a course.
+%It is also possible to generate courses with only one teacher (teaching all the parts), or to split parts between teachers.
+
+%The XML file is used to tune the number of rooms and the number of teachers, different distribution such as the number of students in a curriculum or the number of parts.
+%The time can be expressed with time grids: repetitive starting times in weeks.
+%Also, the XML file is used to select different features from the feature model: we can choose a horizon between single or multi week, the hosting between no-, single- or multi-room and the teaching between no-, single- or multi-teacher.
+
+%\subsubsection{Student sectioning}
+Student sectioning is the problem of assigning students to groups.
+The \UTP{} schema takes groups, rather than individual students, necessitating that the generator supply groups.
+%The \UTP{} problem uses groups as inputs, not students, so the generator has to provide groups.
+%
+The input of the generator is the number of students enrolled in a curriculum.
+A \CSP{} model is used by the generator to create groups.
+The different sizes of groups (lecture, tutorial, practice) should be given.
+It is possible to change the size of a specific group for a curriculum (e.g., a specific curriculum with group sizes different from the standard ones).
+%
+The sectioning \CSP{} can create groups with a fixed size, or create courses with a limited number of groups, to fix the total number of hours. 
+%
+%\subsubsection{Teaching service}
+Teaching service is a problem where we know how many hours a teacher has to do, how many hours each part of a class lasts, and we want to assign each teacher with a number of classes in each part.
+This will give us all the course parts a teacher has to teach. % in the instance.
+Note that we just know how many classes a teacher is assigned to, not to which class, which is another problem
+known as the tutor allocation problem.
+%
+%This is here also that one can specify if the instance should be a no-, single- or multi-teacher feature.
+The generator uses a \CSP{} model to tackle this problem.
+
+%\subsubsection{Rules}
+% There are different kind of rules, but usually the same ones are used together, and some are more used than others.
+% %It is also easy to generate an inconsistent instance by generating incompatible rules.
+% %
+% To generate a set of rules, we defined three packs of rules: 1) light: some classes have \texttt{\SAMEROOMS{}}, \texttt{\SAMETEACHERS{}}, \texttt{\PERIODIC{}} and a \texttt{\SEQUENCED{}} between two different parts of the course ; 2) medium: all classes have \texttt{\SAMEROOMS{}} and \texttt{\SAMETEACHERS{}}, some classes have \texttt{\PERIODIC{}} and a \texttt{\SEQUENCED{}} between two different parts of the course ; 3) heavy: same as medium, but with some \texttt{\SAMETEACHERS{}} and \texttt{\SAMESLOT{}} between classes of the same part.
+
+
+There are various rules, often used together with some being more common. We defined three rule packs: 1) light: some classes have \texttt{\SAMEROOMS{}}, \texttt{\SAMETEACHERS{}}, \texttt{\PERIODIC{}}, and a \texttt{\SEQUENCED{}} rule between two parts of the course; 2) medium: all classes have \texttt{\SAMEROOMS{}} and \texttt{\SAMETEACHERS{}}, with some also having \texttt{\PERIODIC{}} and \texttt{\SEQUENCED{}}; 3) heavy: like medium, but with additional \texttt{\SAMETEACHERS{}} and \texttt{\SAMESLOT{}} rules for classes in the same part.
+
+\subsection{Instances and Results}\label{subsec:experiments}
+
+%\input{5-1-instances-table}
+We carried out experiments on pseudo-random instances built with our generator
+and on a real-life instance from our Computer Sciences department. 
+The pseudo-random instances are listed in Appendix~\ref{appendix:instances}
+and may be downloaded from \cite{2024_UTP}.
+A selected subset is given in Table~\ref{tab:instances}.
+
+
+% We used a real-life instance from our Computer Sciences department and others generated using our generator. 
+% The list of all instances can be found in Appendix~\ref{appendix:instances}, with a selected subset listed in Table~\ref{tab:instances}.
+% They are accessible on the \hyperlink{https://ua-usp.github.io/timetabling/instances}{\UTP{} website}\cite{2024_UTP}.
+
+The generated instances were built by varying the number of rooms, groups and sessions.
+All are single-room and single-teacher
+and uses the ``medium'' rules pack, meaning that all classes have \texttt{\SAMEROOMS{}} and \texttt{\SAMETEACHERS{}}, and some have \texttt{\PERIODIC{}} and a \texttt{\SEQUENCED{}} constraint between 2 different parts of the same course.
+%
+The real-life instance consists of the 3 years of bachelor and the 2 years of master in Computer Sciences at the University of Angers in 2023.
+The instance is reduced only to courses that occur at the first time period of each curriculum.
+
+\begin{table}[t]
+\begin{tabular}{l lllll rrrr rrrr }
+\hline
+%\multicolumn{1}{r}{} 
+\multirow{2}*{name} & \multirow{2}*{$|\ROOM|$} & \multirow{2}*{$|\TEACHER|$} & \multirow{2}*{$|\STUDENT|$} & \multirow{2}*{$|\SESSION|$} & \multirow{2}{*}{\#ru} & \multicolumn{2}{c}{CP} &  \multicolumn{2}{c}{ASP} &  \multicolumn{2}{c}{CASP} &  \multicolumn{2}{c}{MIP} \\
+ &&&&&& BT & ST & BT & ST & BT & ST & BT & ST \\
+\hline
+ \grayrow   gi8201 & 82 & 4 & 33 & 118 & 23 & 0.86 & 1.86 & 15.71 & 0.08 & 0.30 & 0.23 & 0.17 & 0.26 \\
+    gi5301 & 99 & 96 & 55 & 139 & 33 & 0.85 & 483.59 & 68.70 & 0.36 & 0.40 & 0.12 & 0.22 & 0.49 \\
+   \grayrow gi4389 & 65 & 6 & 174 & 662 & 33 & 1.47 & 4.62 & 693.40 & 210.58 & 14.91 & 4.93 & 7.66 & 10.23 \\
+    gi5567 & 94 & 94 & 1770 & 6180 & 562 & 4.75 & 381.78 &  &  & 122.89 & 3548.58 &  &  \\
+   \grayrow gi2767 & 92 & 21 & 501 & 2003 & 78 & 2.02 & 30.48 &  &  & 128.21 & 57.11 & 130.51 & 7995.32 \\
+    real & 117 & 183 & 768 & 2625 & 520 & 2.21 & 8.71 & & & 219.97 & 411.79 & - & - \\
+    \hline
+\end{tabular}
+\caption{\label{tab:instances}Selected list of instances.
+$|\ROOM|$ is the number of rooms, $|\TEACHER|$ the number of teachers, $|\STUDENT|$ the number of students, $|\SESSION|$ the number of sessions, \#ru the number of rules; BT is the building time (s) and ST the solving time (s).
+}
+\end{table}
+
+%% 

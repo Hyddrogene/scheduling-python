@@ -1,0 +1,46 @@
+\begin{table*}[ht]
+%\resizebox{\textwidth}{!}{%
+\small
+\centering
+\begin{tabular}{|l|l|l|p{.6\textwidth}|}
+\hline
+\textbf{Nom}               & \textbf{Arité} & \textbf{Paramétrique} & \textbf{Sémantique}\\ \hline
+
+%assign\_slot               & 1         & yes   & Assign a slot or slot tuple to a session\\ \hline
+%assign\_room               & 1         & yes   & Assign a set of room to session in entry\\ \hline
+
+%allocation\_group           & 1        & no    & Domain allocation for class with group in the solution\\ \hline
+%part\_schedule              & 1        & no    & Allowed start time slots for sessions\\ \hline
+%domain\_class\_group        & 1        & no    & Allowed groups for classes (solution input)\\ \hline
+%domain\_session\_teacher    & 1        & no    & Allowed teachers for sessions\\ \hline
+%domain\_class\_room         & 1        & no    & Allowed rooms for sessions\\ \hline
+
+{\SAMEDAILYSLOT}            & 1         & non    & Les séances démarrent le même créneau quotidien\\ \hline
+{\SAMEWEEKDAY}              & 1         & non    & Les séances démarrent la même jour de la semaine\\ \hline
+{\SAMEWEEKLYSLOT}           & 1         & non    & Les séances démarrent les mêmes créneau et journée\\ \hline
+{\SAMEWEEK}                 & 1         & non    & Les séances démarrent la même semaine\\ \hline
+{\SAMEDAY}                  & 1         & non    & Les séances démarrent le même jour\\ \hline
+{\SAMESLOT}                 & 1         & non    & Les séances démarrent en même temps\\ \hline
+{\FORBIDDENPERIOD}          & 1         & oui   & Les séances ne peuvent pas débuter dans la période donnée\\ \hline
+{\ATMOSTDAILY}              & 1         & oui   & Le nombre de séances dans la période journalière définie est limité\\ \hline
+{\ATMOSTWEEKLY}             & 1         & oui   & Le nombre de séances dans la période hebdomadaire définie est limité\\ \hline
+%implicit\_sequenced\_sessions & 1 & \multicolumn{4}{|c|}{no} & All sessions in classes are sequenced\\ \hline
+{\SEQUENCED}                & $\geq2$   & non    & Les séances sont séquencées\\ \hline
+{\WEEKLY}                   & 1         & non    & Les séances démarrent les mêmes créneaux et jours de semaines successives \\ \hline
+
+{\NOOVERLAP}                & 1         & non    & Les séances ne peuvent être en parallèle\\ \hline
+{\TRAVEL}                   & 1         & oui   & Définition du temps de trajet entre salles\\ \hline
+
+{\SAMEROOMS}                & 1         & non    & Les séances ont lieu dans les mêmes salles\\ \hline
+{\SAMESTUDENTS}             & 1         & non    & Les mêmes étudiants suivent les séances\\ \hline
+{\SAMETEACHERS}             & 1         & non    & Les séances sont encadrées par les mêmes enseignants\\ \hline
+
+{\ADJACENTROOMS}            & 1         & oui   & Les séances doivent être dans des salles adjacentes\\ \hline
+
+{\TEACHERDISTRIBUTION}      & $\geq2$   & oui   & Distribue la charge des enseignants dans les classes\\ \hline
+
+\end{tabular}
+%}
+\caption{Catalogue des prédicats {\UTP}}
+\label{tab:catalogue_predicats}
+\end{table*}

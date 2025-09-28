@@ -1,0 +1,51 @@
+filtre salles -> filtre en fonction des entités fonctionnenent 
+on fournis les refID et se fait tout seul
+filtre filtre les autres filtres
+catégorie -> avec activation des filtres
+champs texte sur les filtres utilisé
+Nouvelle syntaxe de label propre
+label eval
+panneau -> clique courrs tous les allowed rooms teachers etc..
+2 types de vue :
+    visualisation de solution finis
+    analyse
+vu analytique pour nous
+afficher toutes les salles possibles-> on les caches si  elles sont pas dans les alloweds rooms
+afficher poteiellement dans la solution-> coché utilisé, pas cohcer elles ne sont pas utiliser
+entités hors jeu, nr de fois ressources utilisé, et lesquelles sont utilisé
+filtre des alloweds-> cochable que ceux solutions événements liés, -> pas d'ensemble vide
+nom des groupes
+dates
+<réunion Stage; 2 MAi 15H30; David disponible ? -> plus tard possible>
+12868
+
+
+
+<M1 stage >
+
+pas d'étudaints commun au 2 classes
+
+same attentees -> disjunctive-> not overlap
+
+sameTime -> cours i egale ou dans le cours j
+
+approche parametable pour les configs
+
+un seul time par classe-> on crée
+
+
+ajouter des regles de domaines -> forbidden_rooms, forbidden_lecturers, (allocate_rooms, allocate_lecturers) -> solution tactique ? 
+
+scanner le graph des  sames attendes pour trouver les profs
+
+calcul de clique retoruver un prof ? 
+test volume horaire
+test fixé element et si fonctionne faire un gloubigoulba
+Allowed -> union sur les différents allowed slots -> add des forbidden Period sur la perido des classes
+same dailyslot + weeklyslot sur les bit sets puis weelky periodc pour les autres
+
+On taille des trous dans le domaine des slots d'une classe si les times sont tous définis de la même manière
+peridoc(valeur(toute les valeurs), unit(slot,day,week))
+[p,t,serv,
+
+]

@@ -1,0 +1,203 @@
+\section{Related Work}
+\label{sec:state-of-art}
+%On peut citer tout plusieurs problèmes spécifiques au \EDT{} scolaire :
+%BCACP problème sur l'équilibrage des périodes 
+%STUDENT SECTIONNING répartition des étudiants dans différents groupes
+%ETT emplois du temps des examens
+%CBTT emplois ud temps avec maquette
+%PETT emplois du temps avec enregistrement des étudiants
+%TAP affectations des enseignants au différents cours
+%MPTTP perturbation minimal du problème d'emplois du temps.
+%Repair réparation des emplois du temps
+
+%%%%
+%La conception d'emplois du temps pour le domaine scolaire et universitaire est un problème largement étudié. Devant la multitude de situations rencontrées, des variantes spécialisées, plus simples, du problème général ont été créées afin de pouvoir produire une solution dans un temps acceptable.
+The design of timetables is a widely studied problem. Given the multitude of situations encountered, simpler, specialized variants of the general problem have been created in order to produce solutions within an acceptable time frame.
+%Parmi les problèmes dérivés les plus connus, nous pouvons citer l'ETT (Exam Timetabling)~\cite{2021_bellio_COR,2021_gorgos_SEEDA} qui se focalise sur l'organisation des examens, le PE-TT (Post-Enrollment-based Timetabling) \cite{ 2018_nagata_COR,2019_goh_JORS} dans lequel les étudiants s'inscrivent à l'ensemble de cours qu'ils souhaitent suivre, le CB-TT (Curriculum-Based Timetabling)~\cite{2010_hao_EJOR,2012_abdullah_IS,2016_kiefer_AOR} qui considère que les étudiants s'inscrivent à un cursus qui comprend l'ensemble des cours à suivre, le TAP (tutor allocation problem)~\cite{2022_caselli_ESWA} qui gère l'affectation des enseignants après que les créneaux de cours aient été fixés et le HTT (Highschool Timetabling)~\cite{2016_Kingston_AOR, 2018_stuckey_CPAIOR} qui traite spécifiquement de la conception d'emplois du temps de lycées et collèges.
+The best-known variants include \ETT{} (Exam Timetabling)~\cite{2021_bellio_COR,2021_gorgos_SEEDA} which focuses on exams, \PETT{} (Post-Enrolment-based Timetabling)~\cite{ 2018_nagata_COR,2019_goh_JORS} in which students register for the courses they wish to take, \CBTT{} (Curriculum-Based Timetabling)~\cite{2010_hao_EJOR,2012_abdullah_IS,2016_kiefer_AOR}, in which students enroll for a curriculum that includes all the courses they have to take, \TAP{} (Tutor Allocation Problem)~\cite{2022_caselli_ESWA}, which manages the allocation of teachers after the course slots have been set, and \HTT{} (Highschool Timetabling)~\cite{2016_Kingston_AOR, 2018_stuckey_CPAIOR}, which deals with timetables for high schools.
+
+%Un problème de conception d'un emploi du temps est plus large que la simple planification des créneaux de cours. Il dépend, par exemple, du student sectioning~\cite{2017_schindl_AOR,2004_amintoosi_patat} qui consiste à répartir les étudiants dans différents groupes. Mais, il peut également être le point de départ d'autres problèmes comme le BACP~\cite{2013_rubio_MPE,2012_chiarandini_JH} qui cherche à équilibrer les périodes d'enseignements. Devant la difficulté à déterminer une solution, ces problèmes annexes sont souvent résolus en amont comme pour le student sectioning ou l'affectation des enseignants aux cours dans certaines variantes du problème.
+
+\input{3-state-of-art-features-table}
+A timetable design problem is broader than simply scheduling lessons. It depends, for example, on student sectioning~\cite{2017_schindl_AOR,2004_amintoosi_patat} which consists in dividing students into different groups. But it can also be the starting point for other problems such as \BACP{}~\cite{2013_rubio_MPE,2012_chiarandini_JH} which seeks to balance teaching periods. Given the difficulty of finding a solution, these ancillary problems are often solved beforehand. %, as in the case of student sectioning or the assignment of teachers to courses in certain variants of the problem.
+%Les hypothèses de simplification et la gestion des ressources diffèrent d'un problème à l'autre. Le tableau \ref{tab:featuresproblem} liste les principales caractéristiques, regroupées par famille, des problèmes cités. Il met en évidence les caractéristiques communes et les différences de chaque problème. Ce tableau montre, par exemple, que la quasi totalité des problèmes cités gèrent les contraintes de Timing mais traitent l'Horizon de manière différente.
+Simplification assumptions and resource management differ from problem to problem.
+Table~\ref{tab:featuresproblem} uses the feature model
+to compare the scope of the different problems, highlighting the common features and differences. % of each problem. %This table shows, for example, that almost all the problems cited manage Timing constraints but deal with Horizon in different ways.
+
+%Bien que largement étudié, le problème de conception des emplois du temps est souvent traité de manière ad-hoc. C'est un problème crucial dans la gestion de certaines institutions qui cherchent avant tout à produire une solution à leur problème spécifique. Ceci explique l'hétérogénéité des représentations et des approches de résolution, complexifiant l'évaluation et la comparaison des travaux du domaine. 
+%La nécessité d'un cadre homogène de représentation des problèmes s'est vite fait ressentir. L'émergence de compétitions telles que ITC (International Timetabling competition) a permis la création de formats standardisés, facilitant la comparaison des approches et l'étude d'instances provenant de différentes institutions.
+
+Although widely studied, the problem of timetable design is often dealt with on an ad-hoc basis. It is a crucial problem in the management of certain institutions which seek above all to produce a solution to their specific problem. This explains the heterogeneity of approaches, making it difficult to evaluate and compare work in the field.
+%The need for a homogeneous framework for representing problems was soon felt.
+The emergence of competitions such as \ITC{} (International Timetabling Competition) has led to the creation of standardized formats, making it easier to compare approaches. % and study instances from different institutions.
+%\subsubsection*{schéma ITC 2007 et les critères auxquels il souscrit}
+%Les compétitions ITC ont joué un rôle fondamental dans l'établissement de formats de problèmes standardisés pour les emplois du temps (\EDT{}). L'un des schémas les plus étudiés est ITC-2007, qui offre une représentation simplifiée de trois problèmes majeurs d'emplois du temps : ETT, PE-TT, et CB-TT.
+%ITC competitions have played a fundamental role in establishing standardised problem formats for timetables.
+\ITC{}-2007, one of the most studied schemas, 
+provides a simplified representation of \ETT{}, \PETT{}, and \CBTT{}.
+%Bien que largement utilisé comme référence pour les benchmarks, le format ITC-2007 présente des limitations. Il définit notamment un horizon temporel limité à une semaine type qui se répète, ce qui est une simplification qui ne permet pas de représenter des subtilités d'emplois du temps réels.
+%Dans ce schéma, l'objectif est d'affecter une (seule) salle et un (seul) enseignant à chaque séance d'enseignement(\hyperref[feat:roommodal]{``single room''},\hyperref[feat:teachermodal]{``single teacher''}).
+In this schema, the aim is to assign one room and one teacher to each session  
+(\hyperref[feat:roommodal]{single-room},\hyperref[feat:teachermodal]{single-teacher}).
+%La  description des cursus académiques est portée dans le problème CB-TT par les curiculum qui regroupent les cours, et dans le problème PE-TT par les étudiants (\hyperref[feat:studentsessionoverlap]{``session overlap''}).
+The description of academic courses is carried in \CBTT{} by the curricula which group the courses together, and in \PETT{} by the students 
+(\hyperref[feat:studentsessionoverlap]{session-overlap}).
+%Le service des enseignants\footnote{affectation d'enseignants aux cours, à supprimer si bien décrit dans la section features} est fourni en entrée et supposé déjà résolu en amont. Un enseignant affecté à un cours effectue toutes les séances du cours qui lui est attribué, elles sont par ailleurs exclusives ( \hyperref[feat:teachersessionoverlap]{``session overlap''}). 
+The teachers service is assumed to have already been resolved upstream. A teacher assigned to a course does all the sessions of a course, and sessions are otherwise exclusive  
+(\hyperref[feat:teachersessionoverlap]{session-overlap}).
+%Le temps est exprimé sous forme de créneaux relatifs, c'est à dire qu'il y a une durée standard d'une séance de cours entre 2 créneaux (\hyperref[feat:nooverlap]{``no overlap''}). \davidg{pas clair} Les séances de cours ont par ailleurs toutes la même durée (\hyperref[feat:sameduration]{``same duration''}) et les créneaux quotidiens sont répétés selon le même motif tous les jours (\hyperref[feat:synchronous]{``synchronous''}).
+Time is expressed in terms of relative slots, i.e., there is a standard duration of one lesson between 2 slots 
+(\hyperref[feat:nooverlap]{no-overlap}). 
+Class sessions also all have the same duration 
+(\hyperref[feat:sameduration]{same-duration}) 
+and daily slots are repeated in the same pattern every day 
+(\hyperref[feat:synchronous]{synchronous}).
+%Toutes les salles sont disponibles pour un cours, chacune ayant une capacité définie (\hyperref[feat:roommodal]{``exclusive room''},\hyperref[feat:roomcapacity]{``capacity''}). Il est possible de représenter l'interdiction d'un ensemble de salles pour les cours(\hyperref[feat:availability]{``availability''}). Enfin, la charge de travail minimale et maximale par jour de travail  est donnée sous forme d'intervalle en entrée du modèle (\hyperref[feat:sessiondistribution]{``session distribution''}).
+%All rooms are available for a course, each with a defined capacity (\hyperref[feat:roommodal]{``exclusive room''},\hyperref[feat:roomcapacity]{``capacity''}). It is possible to represent the prohibition of a set of rooms for lessons(\hyperref[feat:availability]{``availability''}). Finally, the minimum and maximum workload per working day is given in the form of an interval as input to the model (\hyperref[feat:sessiondistribution]{``session distribution''}).
+
+%%%%%%%%%%%%%%%%
+%
+%%% limite 
+%
+%Il y a un ensemble de contraintes de créneau interdit pour les cours. C'est contraintes vont provenir des enseignants qui leurs sont assignés. (on perd le lien sémantiques)
+%
+%On peut représenter certaines instances UTP en ITC-2007 et les instances ITC-2007 en UTP.
+%room stability prise en compte.
+%Pour résoudre ce problème il existe plusieurs approche 
+%Burke et all 2010, il s'agit d'un MIP hybridé avec une exploration de voisinage, cela permet d'augmenter l'efficacité de la recherche en résolvant des sous problèmes qui guide le problème globale.
+%En approche exact eon retrouve
+%MIP sorensen
+%Algo gen  2007 nagata 2018, Holm 2017
+%
+%\subsubsection*{deux extensions à ITC 2007 : XHSTT et ITC 2019} (une phrase ou deux)
+%Deux extensions importantes du format ITC-2007, XHSTT et ITC-2019, ont été développées pour aborder des aspects spécifiques et des problèmes plus complexes sur les emplois du temps.
+%
+%Two important extensions to the ITC-2007 format, XHSTT and ITC-2019, have been developed to address specific aspects and more complex problems with timetables.
+%\subsubsection*{XHSTT et les critères auxquels il souscrit}
+%% catalogue contriante
+%%autant de ressource que l'on veut
+%% contrainte soft et dur
+%% choix de la grille
+%Le schéma XHSTT-2014~\cite{2014_demirovic_patat, 2017_demirovic_cor,2014_demirovic_lash}, basé sur le schéma ITC, se concentre principalement sur la modélisation des emplois du temps des lycées et des collèges.  Ce schéma a donné lieu à la publication d'un grand nombre d'instances et de nombreux travaux de recherche sur des algorithmes performant.
+The \XHSTT{}-2014~\cite{2014_demirovic_patat, 2017_demirovic_cor,2014_demirovic_lash} schema, based on the \ITC{} schema, focuses mainly on modeling timetables for secondary schools. % This schema has given rise to the publication of a large number of instances and numerous research works on high-performance algorithms.
+%Des problèmes annexes sont résolus en amont et leurs résultats sont donnés en entrée du modèle : calcul des groupes, ventilation des salles, services des enseignants. 
+Ancillary problems are solved beforehand: %and their results are given as input to the model:
+generation of groups, breakdown of rooms, teacher services.
+%Dans ce schéma il est possible, outre les ressources usuelles (salles, enseignant, étudiants, groupes d'étudiants, éléments de maquette liés aux cours), de représenter d'autres types de ressources (p.ex. les équipements, véhicules etc.).
+%Généralement l'affectation de certaines ressources usuelles (salles, enseignant) est résolue en amont du schéma et intégrée au schéma, ce qui oriente davantage le problème à résoudre vers un problème d'ordonnancement. 
+%Il est toutefois possible de laisser un ensemble de ressources sur lesquelles effectuer un choix d'affectations lors de la résolution par un solveur(\hyperref[feat:roommodal]{``single room''},\hyperref[feat:teachermodal]{``single teacher''}). 
+%Un pré-fitrage est effectué en amont du schéma pour réduire l'ensemble des salles à celles autorisées en fonction de la taille des groupes d'étudiants liés aux cours (\hyperref[feat:roomcapacity]{``room capacity''}, \hyperref[feat:group]{``group''}).
+In addition to the usual resources (rooms, teacher, students, etc.), %groups of students, model elements linked to the courses)
+it is possible to represent other types of resource (e.g. equipment, vehicles, etc.).
+%Generally, the allocation of certain common resources (rooms, teacher) is solved before the schema and integrated into the schema, which makes the problem to be solved more of a scheduling problem.
+However, it is possible to leave out a set of resources on which to make a choice of allocations when solving 
+(\hyperref[feat:roommodal]{single-room},\hyperref[feat:teachermodal]{single-teacher}).
+A pre-fit is carried out upstream of the schema to reduce the set of rooms to those authorized according to the size of the groups of students 
+(\hyperref[feat:roomcapacity]{room-capacity}, \hyperref[feat:group]{group}).
+ %Le schéma contient généralement une unique grille temporelle mais rien n'empêche d'en avoir plusieurs. 
+ %Avec ce schéma, l'objectif du solveur est de fournir une semaine type (\hyperref[feat:singleweek]{``single week''},\hyperref[feat:periodicity]{``periodicity''}). 
+ %On peut déclarer des groupes de temps (p.ex. les horaires du matin ou les horaires du mercredi et du samedi), l'utilisation de ces groupes est faites au niveau des contraintes métiers%. \davidg{Je ne comprends pas le "aussi", donc le lien avec la phrase précédente. La déclaration de groupes de temps permet d'exprimer des contraintes particulières ?}
+ %Les cours ont une durée totale exprimée en nombre de créneaux, cette durée de cours est subdivisée en séances de durée variable, offrant ainsi au solveur la flexibilité nécessaire pour trouver une solution satisfaisante au problème. %\davidg{j'ai un peu modifié cette phrase, que je ne trouvais pas claire, vérifie si je n'ai pas fait d'erreur en changeant le sens de ce que tu voulais dire.}
+ The schema generally contains a single time grid, but there's nothing to stop having several.
+ With this schema, the objective of the solver is to build a typical week
+ (\hyperref[feat:singleweek]{single-week},\hyperref[feat:periodicity]{periodicity}).
+% You can declare groups of times (e.g. morning times or Wednesday and Saturday times), the use of these groups is made at the level of business constraints.
+% The courses have a total duration expressed as a number of slots, and this duration is subdivided into sessions of variable duration. %, thus giving the solver the flexibility it needs to find a satisfactory solution to the problem.
+%Le modèle propose un catalogue de contraintes, avec une distinction entre les contraintes dures et souples. Les contraintes qualifiées de dures sont interprétables comme des contraintes coeurs dans le schéma, tandis que les contraintes souples ont un score de violation à minimiser(\hyperref[feat:sessiondistribution]{``session distribution''}).
+%Des contraintes peuvent être ajoutées sur les ressources (\hyperref[feat:ressourcedistribution]{``resource distribution''}). 
+The model proposes a catalog of constraints: hard constraints are interpreted as core constraints, while soft constraints have a violation score to minimize 
+(\hyperref[feat:sessiondistribution]{session-distribution}).
+Constraints can be imposed on resources 
+(\hyperref[feat:ressourcedistribution]{resource-distribution}).
+
+%%%%
+%pour convertir de UTp vers XHSTT , il faudrait fixé les enseignants.
+%Il semble plus adaptés pour les instances qui sont basés sur une semaine type. 
+%Le  découpage des séances est faites par l'algorithme de résolution.
+
+%%limite 
+%Il présentent des similitudes cependant (pour le choix des salles on peut assigner un groupes).
+%%% générateur 
+%pas de générateur d'instances
+
+%%% résolution
+%Pour le résoudre il y'a en résolution exact des odèles MIP utilisant des réductiosn de via des graphes cylcique fonseca \& sorensen, auinsi que 
+%Stuckey à un fait un model CSP pour le résoudre qui utilisent chuffed.
+%Il obtient des résultats aussi bon que ceux de l'état de l'art (ALNS , GOAL) 
+%Citon Demorovic17,17,18 avec un modèle MAX-SAt qui donne des bon résultats, un %modèle SMT qui prend un encodage un peu différent pour les variables de décision en utilisant une décomposition en binaire des dates, et en définissants les opérations de calculs.
+%Sorensen 2018 il s'agit de MIP.
+
+
+%\subsubsection*{ITC-2019 et les critères auxquels il souscrit}
+
+%% catalogue contriante
+%% pas de prof, choix des salles avec pénalités
+%% contrainte soft et dur
+%% choix de la grille
+
+%Le modèle ITC-2019~\cite{2018_muller_PATAT,2019_lindahl_EJOR ,2019_jawa_JIM} porte spécifiquement sur les \EDT{} des universités, et plus spécifiquement les universités anglo-saxones, et ne correspond donc pas à la réalité des \EDT{} de l'université en France.
+
+
+The \ITC{}-2019~\cite{2018_muller_PATAT,2019_lindahl_EJOR,2019_jawa_JIM} model focuses specifically on university timetables, more specifically anglo-saxon universities. %, which does not correspond to timetabling practices in french universities.
+%Le schéma ITC-2019 traite la planification comme un problème d'optimisation combinatoire, avec une fonction de coût qui tient compte de quatre critères. Ces critères de pénalité concernent les choix des créneaux horaires pour les séances, de salles pour les séances, les violations de contraintes soft et le chevauchement de séances par étudiant (``\hyperref[feat:studentsessionoverlap]{session overlap}'').
+%Entre autres apports, ce modèle prend un compte un horizon de plusieurs semaines (\hyperref[feat:fullperiod]{``full period''},\hyperref[feat:fullweek]{``full week''}.
+%En effet, dans le schéma les horaires sont définis comme la répétition sur un ensemble de semaines (\hyperref[feat:singleweek]{``multi week''}) d'une ou plusieurs séances ayant la même durée et commençant des jours spécifiques de la semaine à la même heure prédéfinie (\hyperref[feat:periodicity]{``periodicity''}). 
+%On retrouve certaines ressources usuelles (salles, étudiants, éléments de maquette). Chaque salle a un score de pénalité pour une séance. Cela permet d'avoir un impact sur le choix de la salle (\hyperref[feat:roommodal]{``single room''}, \hyperref[feat:roommodal]{``exclusive room''}).
+%De plus, entre 2 séances consécutives pour les étudiants, il faut prendre en compte le temps pour passer d'une salle à une autre, et cette donnée fait partie intégrante du schéma (\hyperref[feat:travel]{``travel''}).
+%Le choix a été fait de ne pas représenter les enseignants, pas plus que les groupes d'étudiants,  car il ne portent pas d'informations supplémentaires dans le cadre de ce modèle.
+%Un problème exprimé dans ce modèle comprend un catalogue de contraintes composé de contraintes souples ayant un score de pénalité. Le catalogue de contraintes permet d'assurer la qualité et d'exprimer les différents besoin de l'emploi du temps (\hyperref[feat:sessiondistribution]{``session distribution''}, \hyperref[feat:availability]{``availability''}). %\davidg{quelle diversité ? Tu dis "cette diversité" mais la diversité n'est pas introduite par la phrase précédente qui parle de contraintes souples et pénalités, donc qu'est-ce que tu as voulu dire ?}
+The \ITC{}-2019 schema addresses scheduling as a combinatorial optimization problem, with a cost function that takes into account 4 criteria. The criteria concern the choice of time slots for sessions, rooms for sessions, violations of soft constraints and the overlap of sessions per student 
+(\hyperref[feat:studentsessionoverlap]{session overlap}).
+This model takes into account a time horizon of several weeks 
+(\hyperref[feat:fullperiod]{full-period},\hyperref[feat:fullweek]{full-week}.
+Timetables are defined as the repetition over a set of weeks 
+(\hyperref[feat:singleweek]{multi-week}) 
+of one or more sessions of the same duration starting on specific days of the week at the same predefined time 
+(\hyperref[feat:periodicity]{periodicity}).
+%There are some common resources (rooms, students, model elements).
+Each room has a penalty score for a session. This has an impact on the choice of room 
+(\hyperref[feat:roommodal]{single-room}, \hyperref[feat:roommodal]{exclusive-room}).
+%In addition, between two consecutive sessions for students, the time taken to move from one room to another must be taken into account (\hyperref[feat:travel]{``travel''}).
+%In addition, between two consecutive sessions for students, the time taken to move from one room to another must be taken into account, and this is an integral part of the schema (\hyperref[feat:travel]{``travel''}).
+The choice has been made not to represent teachers, nor groups of students. %, as they do not carry any additional information. % within the framework of this model.
+A problem expressed in this model comprises a constraint catalog made up of flexible constraints with a penalty score. The catalog of constraints is used to ensure quality and to express the different needs of the timetable 
+(\hyperref[feat:sessiondistribution]{session-distribution}, \hyperref[feat:availability]{availability}).
+
+%Les deux représentations ne sont pas réductibles l'une à l'autre. 
+%%UTP limit
+%%% résolution
+
+%Le schéma UTP a été conçu pour pouvoir représenter des problèmes dans lequel les étudiants s'inscrivent à des cursus. Comme pour les autres schémas, des simplifications sont faites. Il est ainsi supposé que le sectionnement des étudiants en groupes est réalisé en amont, tout comme la constitution du service des enseignants (l'attribution d'un enseignant à un groupe et une séance est réalisé dynamiquement lors du processus de conception). Mais il permet de représenter des problèmes sur un horizon de temps modulaire et identifie clairement chaque enseignant. Il permet également de traiter les ressources (salles, enseignants \ldots) de manière disjonctive ou cumulative en fonction du besoin. Cela fait d'UTP un schéma bien adapté à la représentation d'un grand nombre de variantes du problème, et notamment conception d'emploi du temps universitaires.
+
+The \UTP{} schema~\cite{2022_barichard_PATAT} has been designed to represent problems in which students enrol on courses. As with the other schemas, simplifications are made. For example, it is assumed that students are divided up into groups beforehand, just like the teachers (the allocation of a teacher to a group and a session is done during the design process). It allows problems to be represented over a modular time horizon and clearly identifies teachers. It also allows resources (rooms, teachers, etc.) to be treated disjunctively or cumulatively according to need. % This makes UTP a schema that is well suited to representing a large number of variants of the problem, including the design of university timetables.
+%Le schéma UTP a été introduit dans \cite{2022_barichard_PATAT}. Néanmoins, quelques évolutions ont été apportées depuis. Parmi les évolutions majeures, nous pouvons citer un changement de la gestion des groupes d'étudiants ainsi que de la représentation l'horizon de temps.
+%The UTP schema was introduced in \cite{2022_barichard_PATAT}.
+A few changes have been made since~\cite{2022_barichard_PATAT}. %Among the major evolutions, we can cite a change in the management of student groups as well as the representation of the time horizon.
+%Dans \cite{2022_barichard_PATAT}, les étudiants étaient identifiés lors de la représentation du problème. Cela permettait de traiter le problème de sectionnement des groupes conjointement avec celui de la conception de l'emploi du temps. Mais, un emploi du temps est souvent conçu sur des effectifs prévisionnels, les inscriptions définitives n'étant pas encore closes. La constitution des groupes réels n'est donc pas possible si tôt. Il est donc intéressant de pouvoir dissocier ces deux problèmes et comme pour les autres schémas, le sectionnement est considéré comme avoir été résolu en amont. Le schéma UTP prend comme entrée la liste des groupes constitués, qu'ils soient fictifs ou réels.
+%In \cite{2022_barichard_PATAT}, the students were identified when the problem was represented. This made it possible to deal with the problem of sectioning groups in conjunction with that of designing the timetable. However, a timetable is often designed on the basis of provisional enrolments, as the definitive enrolments are not yet closed. It is therefore not possible to set up the actual groups at such an early stage. It is therefore interesting to be able to dissociate these two problems and, as with the other schemas, sectioning is considered to have been resolved upstream. The UTP schema takes as input the list of groups formed, whether they are fictitious or real.
+In \cite{2022_barichard_PATAT}, the problem of groups sectioning is dealt in conjunction with that of designing the timetable. However, a timetable is often designed on the basis of provisional enrolments, as the definitive enrolments are not yet closed. It is therefore not possible to set up the actual groups at such an early stage. It is interesting to be able to dissociate these two problems and, as with the other schemas, sectioning is considered to have been resolved upstream. The \UTP{} schema takes as input the list of groups formed. %, whether they are fictitious or real.
+%La deuxième évolution majeure concerne la gestion de l'horizon de temps. Dans \cite{2022_barichard_PATAT}, la grille de temps est identique quelque soit la semaine. Dans la version actuelle, celle-ci peut être adaptée pour un jour ou ensemble de jours en particulier de tout l'horizon de temps.
+%Afin de comparer les différentes approches de résolution utilisant un schéma en particulier, des compétitions sont régulièrement organisées~\cite{2019_ITC}. Ces compétitions sont l'occasion de mettre à disposition un ensemble d'instances réelles ou fictives permettant de comparer tout nouvel algorithme aux approches existantes.
+%The second major change concerns the management of the time horizon.
+In \cite{2022_barichard_PATAT}, the time grid is identical whatever the week. In the current version, this can be adapted for a particular day or set of days in the entire time horizon.
+%Les schémas présentés précédemment proviennent pour la majorité de la volonté d'abstraire et généraliser une variante réelle du problème. Ainsi, certaines hypothèses et simplifications sont faites, limitant l'expressivité du schéma notamment pour exprimer d'autres variantes orthogonales aux hypothèses de départ. En analysant, le tableau \ref{tab:features_schemas}, nous pouvons citer trois cas où ces hypothèses simplificatrices empêchent la représentation de certaines autres variantes du problème~: la gestion de l'horizon de temps, la gestion des services des enseignants et la gestion des ressources (salles, enseignants \ldots).  
+
+\input{3-state-of-art-feature-model-table}
+
+Most of the schemas presented above stem from a desire to abstract and generalize a real variant of the problem. Thus, certain assumptions and simplifications are made, limiting the expressiveness of the schema, in particular to express other variants orthogonal to the initial assumptions. By analyzing Table~\ref{tab:features_schemas}, we can cite 3 cases where these simplifying assumptions prevent the representation of other variants: the management of the time horizon, the management of teacher services and the management of resources.  
+%En ce qui concerne la gestion de l'horizon de temps, nous remarquons que parmi les schémas existants (hormis UTP), seul ITC-2019 permet de représenter un problème dont l'horizon de temps dépasse la semaine. La gestion de l'emploi du temps à la semaine est adaptée aux collèges et lycées où la semaine type et répétitive est la norme. Mais cela est incompatible avec les universités et autres institutions dans lesquelles chaque semaine est différente et liée aux autres.
+As far as time horizon management is concerned, only \ITC{}-2019 and \UTP{} can represent a problem with a time horizon longer than a week. Managing the timetable on a weekly basis is incompatible with institutions where each week is different. % and linked to the others.
+%Nous remarquons également que hormis UTP, aucun schéma ne prend en compte la représentation du service d'un enseignant. Ils considèrent que les enseignants sont affectés en amont et ne peuvent être échangés. Or, lorsque plusieurs groupes suivent le même enseignement et que plusieurs enseignants interviennent, cela enlève de la flexibilité sur la conception et empêche d'atteindre certaines solutions qui pourraient être de très bonne qualité.
+With the exception of \UTP{}, no schema takes into account the representation of a teacher's service. They consider that teachers are assigned upstream and cannot be exchanged. However, when several groups follow the same course and several teachers are involved, this removes flexibility and prevents certain solutions that could be of high quality from being achieved.
+%Enfin, la gestion des ressources (salles, enseignants \ldots) est également différente d'un schéma à l'autre. XHSTT et UTP permettent de représenter un enseignant en tant que tel là où les modèles ITC ne le font pas intervenir explicitement. De plus, que cela soit pour les salles ou les enseignants, les différents schémas (hormis UTP) ne permettent pas de partager la ressource sur plusieurs séances (cf. tableau~\ref{tab:features_schemas}. Par exemple, il n'est pas possible de représenter un problème où un enseignant supervise plusieurs séances de travaux pratiques. Il n'est pas non plus possible de représenter un problème dans lequel une séance doit être répartie sur plusieurs salles (adjacentes ou non). Seul UTP permet de représenter des problèmes dans lesquels les ressources sont disjonctives ou cumulatives.
+Finally, the management of resources also differs from one schema to another. \XHSTT{} and \UTP{} allow teachers to be represented as such, whereas the \ITC{} models do not explicitly include them. In addition, whether for rooms or teachers, the various schemas, apart from \UTP{}, do not allow the resource to be shared over several sessions. For example, it is not possible to represent a problem where one teacher supervises several practical sessions. Nor is it possible to represent a problem in which a session must be hosted in several rooms (adjacent or not). Only \UTP{} can represent problems in which the resources are disjunctive or cumulative.
+
+
+
+%In order to compare the different resolution approaches using a particular schema, competitions are regularly organised~\cite{2019_ITC}. 
+Competitions are regularly organized~\cite{2019_ITC} and provide an opportunity to make available a set of real or fictitious instances, enabling any new algorithm to be compared with existing approaches.
+%Que cela soit à des fins de simulation ou de comparaison, il est intéressant de disposer d'un moyen de générer de nouvelles instances. Cet outil vient en complément des instances connues et déjà publiées afin de pouvoir simuler des problèmes où certaines ressources sont sous forte tension. Dans la littérature, seul le schéma ITC-2007 dispose d'un générateur instances. Développé en 2008, ce générateur a été amélioré en 2010 puis en 2022 afin de produire des instances plus réalistes et de mieux couvrir l'espace des configurations possibles. Il est disponible à l'adresse \url{https://cdlab-artis.dbai.tuwien.ac.at/papers/cb-ctt/}. 
+Whether for simulation or comparison purposes, it is useful to have a means of generating new instances.
+%This tool complements the known and already published instances in order to be able to simulate problems where certain resources are under great strain.
+Only the \ITC{}-2007 schema has an instance generator. Developed in 2008, this generator was improved in 2010 and again in 2022 to produce more realistic instances and better cover the range of possible configurations (available on \cite{2022_dataset}).

@@ -1,0 +1,61 @@
+%------------------------------------------------------------
+%------------------------------------------------------------
+\section{Expérimentations}
+\label{sec:experimentations}
+
+% 
+% Expérimentations Timetabling :
+% -> Présentation des instances / résultats
+% -> Différentes heuristiques ?
+% -> Mesure sur la "qualité" des solutions (les solutions entre CHR et MZN peuvent être différentes)
+% 
+%We performed our experimentation on a custom instance depicting the last semester of the last year of Bachelor in Computer Sciences at Université d'Angers.
+%The instance is freely available on our website \cite{usp_website}.
+
+Nous avons mené des expérimentations sur une instance réelle modélisant le second semestre de la Licence 3 d'informatique à l'Université d'Angers.
+L'instance est disponible aux formats \XML{}, \JSON{} et \DZN{} sur le site \cite{uspSite}.
+%\marc{présenter le site (données XML + JSON/DZN)}
+
+% Présentation de l'instance L3 : (TODO: vérifier les chiffres)
+%The instance contains 3 mandatory courses and 2 choices among two courses, meaning that a student registers to 5 courses and the instance contains 7 courses.
+%The courses are split into 24 parts and 42 classes.
+%Those courses must be taught during 12 weeks, 5 days a week (Monday to Friday).
+%In this instance, we chose that one slot would represent one minute of the day, thus each day is divided into 1440 slots.
+L'instance comporte 5 cours communs à tous les étudiants et 2 choix d'options, chacun portant sur 2 cours, soit un total de 7 cours suivis par les étudiants sur les 9.
+L'instance compte 24 parties de cours et 42 classes.
+Les séances sont à programmer sur un horizon de 12 semaines de 5 jours chacune % (du lundi au vendredi).
+où chaque journée se divise en créneaux de 1 minute.
+%Dans cette instance, nous avons choisi de découper une journée à la minute près, soit 1440 créneaux par jour. \davidg{Donc un créneau = 1 mn, mais juste au dessous, on réutilise le terme créneau pour une durée d'1h20}
+% structure : CM TD TP
+%At the Faculty of Sciences of Université d'Angers, the courses must be placed on a time grid: each course slot lasts 80 minutes and there are 8 course slots: from 08:00 to 19:50, every 90 minutes.
+%Note that there is a 10 minutes break between every course allowing students and teachers to change rooms.
+%Following this time grid, the instance has 3 lengths of sessions: 80, 160 and 240 slots representing 1, 2 and 3 course slots respectively.
+%The instance has 106, 109 and 24 sessions of length 80, 160 and 240, respectively.
+%À la Faculté des Sciences de l'Université d'Angers, 
+Les séances doivent être placées sur une grille horaire qui commence à 08\string:00, se termine à 19\string:50 et est composée de plages d'1h20 espacées de 10 minutes.
+Une séance qui dure 1 plage a donc une durée de 80 créneaux et a 8 créneaux de départ possibles.
+Certaines séances durent 2 plages, et ont donc une durée de 170 créneaux avec 7 créneaux de départ possibles.
+Dans le cas où une séance dure 2h (120 créneaux), la séance doit commencer ou se terminer pour s'aligner sur la grille, soit 13 créneaux de départ possibles.
+
+
+%The instance contains 67 students and involves 11 different teachers.
+%There are 50 rules defined in the instance generating 339 constraints.
+% quel types de règles : orchestration, restriction de salles, etc.
+L'instance est constituée de 67 étudiants prédivisés en 4 groupes, 12 enseignants et 8 salles.
+Elle intègre 46 règles dont une majorité de règles coordonnant les séances (parallélisation entre classes de travaux pratiques ou options, séquencement entre cours magistraux, travaux dirigés et travaux pratiques, etc.) et quelques règles restreignant salles et enseignants possibles selon les cours.
+
+% Présentation des caractéristiques techniques :
+%Both the MZN and CHR solvers presented in Section~\ref{sec:model} were used to solve the instance with an Intel Core i7-10875H 2.30GHz.
+Les solveurs \MINIZINC{} et \CHRPP{} présentés en section~\ref{sec:model} ont été utilisés pour résoudre cette instance avec une architecture Intel Core i7-10875H 2.30GHz et la résolvent en moins de 5s (hors flattening pour \MINIZINC{}).
+%Le solveur \MINIZINC{} résoud l'instance en 7s.
+
+La stratégie de résolution employée dans le modèle {\MINIZINC}
+consiste d'abord à allouer les salles, puis les enseignants avant de placer les séances sur l'horizon de temps.
+Les variables d'allocation sont ordonnées par l'heuristique \texttt{first\_fail} et leurs domaines de valeurs explorés de manière systématique.
+Les variables de choix de créneaux par séance utilisent aussi l'heuristique \texttt{first\_fail} et l'heuristique de choix de valeurs consiste à scinder chaque domaine (\texttt{indomain\_split}).
+\GECODE{} est le solveur utilisé avec \MINIZINC{} dans nos tests.
+À noter que les contraintes disjonctives y sont implémentées comme un cas particulier de la contrainte globale \texttt{cumulative} présentée dans  \cite{beldiceanu2002new}.
+
+%stratégie de redemerage, heuristique sur le graph de séquencement.
+
+La stratégie de résolution employée avec \CHRPP\ consiste à instancier les variables de décisions en commencant par le tableau de variables \arraychr{\xroom}, puis \arraychr{\xteacher} et enfin \arraychr{\xslotstart} (les autres variables sont déduites par propagation). Dans chaque tableau, la prochaine variable à instancier est choisie selon l'ordre de définition dans le tableau et la valeur testée est toujours la plus petite valeur possible du domaine. Entre chaque instanciation, une phase de propagation des contraintes (filtrage des domaines et analyse du graphe disjonctif) est itérée jusqu'à l'obtention d'un point fixe. En cas d'échec, la méthode revient sur son choix précédent pour essayer l'alternative suivante. Il n'y a pour l'instant aucune heuristique spécialisée, mais le choix de la plus petite valeur du domaine semble pertinent. En effet, pour construire un emploi du temps, il est naturel de commencer à fixer les séances en partant du début de l'horizon de temps. 

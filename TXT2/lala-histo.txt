@@ -1,0 +1,1000 @@
+ 1001  python3 minisolverCSP.py 
+ 1002  sbcl --script grapheSolverCSP.lisp 
+ 1003  python3 minisolverCSP.py 
+ 1004  sbcl --script grapheSolverCSP.lisp 
+ 1005  time sbcl --script grapheSolverCSP.lisp 
+ 1006  time python3 minisolverCSP.py 
+ 1007  time sbcl --script grapheSolverCSP.lisp 
+ 1008  time python3 minisolverCSP.py 
+ 1009  time sbcl --script grapheSolverCSP.lisp 
+ 1010  time sbcl --script miniSolverLisp.lisp 
+ 1011  time sbcl --script grapheSolverCSP.lisp 
+ 1012  time sbcl --script miniSolverLisp.lisp 
+ 1013  time sbcl --script grapheSolverCSP.lisp 
+ 1014  time sbcl --script miniSolverLisp.lisp 
+ 1015  time sbcl --script grapheSolverCSP.lisp 
+ 1016  time sbcl --script miniSolverLisp.lisp 
+ 1017  time sbcl --script grapheSolverCSP.lisp 
+ 1018  time sbcl --script miniSolverLisp.lisp 
+ 1019  time sbcl --script grapheSolverCSP.lisp 
+ 1020  time sbcl --script miniSolverLisp.lisp 
+ 1021  time sbcl --script grapheSolverCSP.lisp 
+ 1022  time python3 minisolverCSP.py 
+ 1023  time python3 minisolverCSP2.py 
+ 1024  time python3 miniSolverCSP2.py 
+ 1025  conda en list
+ 1026  conda env list
+ 1027  conda activate cspenv
+ 1028  conda list
+ 1029  pip install pycosat
+ 1030  python3 miniSolverASP.py 
+ 1031  python3 miniSolverASP2.py 
+ 1032  python3 nQueenPycoSat.py 
+ 1033  time python3 miniSolverCSP2.py 
+ 1034  python3 miniAllDifferent.py 
+ 1035  cd
+ 1036  cd homeSKD/
+ 1037  ls
+ 1038  cd
+ 1039  sudo fusermount -u  homeSKD
+ 1040  ssh stargate 
+ 1041  ssh stargate
+ 1042  sshfs startrek:/home/c.behuet/ /home/etud/homeSKD/
+ 1043  ping 8.8.8.8
+ 1044  htop
+ 1045  qqq~
+ 1046  cd timetabling/src/asp/
+ 1047  python3 pymooImageTestv2.py 
+ 1048  conda activate pymoo
+ 1049  python3 pymooImageTestv2.py 
+ 1050  cd
+ 1051  ssh stargate 
+ 1052  eclipse &
+ 1053  python3
+ 1054  conda activate pymoo
+ 1055  python3 pymooExampleV4.py 
+ 1056  python3 pymooRun.py 
+ 1057  python3 pymooExampleV4.py 
+ 1058  python3 pymooRun.py 
+ 1059  python3
+ 1060  python3 pymooRun.py 
+ 1061  python3
+ 1062  python3 pymooRun.py 
+ 1063  python3
+ 1064  python3 pymooRun.py 
+ 1065  python3 pymooImageTest.py 
+ 1066  python3 pymooImageTestv2.py 
+ 1067  python3 pymooRun.py 
+ 1068  python3 pymooImageTestv2.py 
+ 1069  python3 pymooImageTest.py 
+ 1070  python3 pymooImageTestv2.py 
+ 1071  python3
+ 1072  python3 pymooRun.py 
+ 1073  python3
+ 1074  python3 pymooRun.py 
+ 1075  python3
+ 1076  python3 pymooRun.py 
+ 1077  python3
+ 1078  python3 pymooRun.py 
+ 1079  python3
+ 1080  python3 pymooRun.py 
+ 1081  python3
+ 1082  python3 pymooRun.py 
+ 1083  htop
+ 1084  w
+ 1085  python3 pymooImageTestv2.py 
+ 1086  python3 pymooImageTest.py 
+ 1087  python3 pymooImageTestv2.py 
+ 1088  clasp 
+ 1089  clasp --version
+ 1090  cd
+ 1091  cd stage_2023/
+ 1092  ls
+ 1093  git clone https://github.com/edongashi/itc-2019.git
+ 1094  lsd
+ 1095  ls
+ 1096  cd itc-2019/
+ 1097  ls
+ 1098  gringo --version
+ 1099  /gringo --version
+ 1100  ./gringo --version
+ 1101  bash
+ 1102  ./configure 
+ 1103  make all
+ 1104  make install
+ 1105  sudo make install
+ 1106  gringo --version
+ 1107  cd
+ 1108  ./bp --version
+ 1109  ./bp
+ 1110  ls
+ 1111  bp
+ 1112  ./bp 
+ 1113  cd Emulator/
+ 1114  ls
+ 1115  ./bprolog 
+ 1116  ./bprolog --version
+ 1117  bash
+ 1118  cd ..
+ 1119  cd ezcsp-2.1.1-r4660/
+ 1120  ls
+ 1121  ./configure 
+ 1122  bash
+ 1123  ./configure 
+ 1124  apt get dlv_rsig.
+ 1125  apt get dlv_rsig
+ 1126  apt install dlv_rsig
+ 1127  sudo apt install dlv_rsig
+ 1128  make
+ 1129  ./configure 
+ 1130  bash
+ 1131  ./configure 
+ 1132  make
+ 1133  make install
+ 1134  sudo make install
+ 1135  sudo apt-get install subversion
+ 1136  sudo make install
+ 1137  ezcsp __version
+ 1138  ezcsp --version
+ 1139  ezcsp -version
+ 1140  ezcsp -help
+ 1141  ezcsp --help
+ 1142  ls
+ 1143  cat EXAMPLES/
+ 1144  ls EXAMPLES/
+ 1145  ezcsp EXAMPLES/send-more-money
+ 1146  ezcsp EXAMPLES/send-more-money2.ez 
+ 1147  bash
+ 1148  ezcsp EXAMPLES/send-more-money2.ez 
+ 1149  bash
+ 1150  clasp
+ 1151  gringo 
+ 1152  ezcsp EXAMPLES/send-more-money2.ez 
+ 1153  ezcsp EXAMPLES/send-more-money3.ez 
+ 1154  ./configure 
+ 1155  make
+ 1156  make install
+ 1157  sudo make install
+ 1158  ezcsp 
+ 1159  ezcsp --version
+ 1160  ezcsp EXAMPLES/send-more-money3.ez 
+ 1161  cat EXAMPLES/send-more-money2.ez 
+ 1162  csp -n 0 EXAMPLES/send-more-money3.ez 
+ 1163  ezcsp -n 0 EXAMPLES/send-more-money3.ez 
+ 1164  clasp
+ 1165  clasp --version
+ 1166  bprolog 
+ 1167  cd
+ 1168  ssh stargate 
+ 1169  cd
+ 1170  sshfs stargate:/home/cbehuet/ /home/etud/homeSG/
+ 1171  ssh stargate 
+ 1172  ls
+ 1173  ssh stargate 
+ 1174  eclipse &
+ 1175  kill 24239
+ 1176  eclipse &
+ 1177  kill 6909
+ 1178  eclipse &
+ 1179  htop
+ 1180  eclipse &
+ 1181  ssh stargate 
+ 1182  ssh-keygen -f "/home/etud/.ssh/known_hosts" -R "[leria-ec.univ-angers.fr]:2019"
+ 1183  ssh stargate 
+ 1184  sudo fusermount -u  homeSKD
+ 1185  sudo fusermount -u  homeSG
+ 1186  ssh stargate 
+ 1187  htop
+ 1188  conda create -n pychoco python=3.11
+ 1189  conda activate pychoco
+ 1190  pip install pychoco
+ 1191  conda create --name pykan-env python=3.9.7
+ 1192  conda activate pykan-env
+ 1193  pip install pykan
+ 1194  conda env
+ 1195  conda list
+ 1196  conda install python=3.8
+ 1197  conda list
+ 1198  conda install python=3.11
+ 1199  python3 pyKanExample1.py 
+ 1200  pip install pykan
+ 1201  python3 pyKanExample1.py 
+ 1202  scp data.tar.gz username@192.168.1.10:/home/username/
+ 1203  scp dastargate:/home/cbehuet/timetabling-dev/tools/tools_php/SOLUTION15151.tar.gz 
+ 1204  scp -P 2019 dastargate:/home/cbehuet/timetabling-dev/tools/tools_php/SOLUTION15151.tar.gz 
+ 1205  scp -P 2019 stargate:/home/cbehuet/timetabling-dev/tools/tools_php/SOLUTION15151.tar.gz 
+ 1206  scp -P 2019 stargate:/home/cbehuet/timetabling-dev/tools/tools_php/SOLUTION15151.tar.gz /
+ 1207  scp -P 2019 stargate:/home/cbehuet/timetabling-dev/tools/tools_php/SOLUTION15151.tar.gz /home/etud/minizincPython/
+ 1208  ls
+ 1209  tar xzvf SOLUTION15151.tar.gz 
+ 1210  ls
+ 1211  cd SOLUTION15151/
+ 1212  ls
+ 1213  cd timetabling
+ 1214  find . -type f -name "*.sh"
+ 1215  cat ./src/asp/recupSolution.sh 
+ 1216  tar xzvf ct-23-1-sujet.tgz 
+ 1217  tar xzvf ct-23-1-solution.tgz 
+ 1218  $PATH
+ 1219  cd
+ 1220  ls
+ 1221  cd ..
+ 1222  ls
+ 1223  ls 
+ 1224  ls opt/
+ 1225  ls etc/
+ 1226  cd
+ 1227  kate .bashrc 
+ 1228  exit
+ 1229  java --version
+ 1230  javac -cp ".:/home/etud/Téléchargements/choco-parsers-4.10.14-light.jar" App.java
+ 1231  java -cp ".:/home/etud/Téléchargements/choco-parsers-4.10.14-light.jar" App.java
+ 1232  exit
+ 1233  cd examples/
+ 1234  javac -cp ".:/home/etud/Téléchargements/choco-parsers-4.10.14-light.jar" App.java
+ 1235  java -cp ".:/home/etud/Téléchargements/choco-parsers-4.10.14-light.jar" App.java
+ 1236  exit
+ 1237  cd
+ 1238  cd build-
+ 1239  cd Bureau/
+ 1240  cd ib
+ 1241  cd ex
+ 1242  cd ibex-2.8.8/
+ 1243  ccd examples/
+ 1244  cd examples/
+ 1245  javac -cp ".:/home/etud/Téléchargements/choco-parsers-4.10.14-light.jar" App.java
+ 1246  java -cp ".:/home/etud/Téléchargements/choco-parsers-4.10.14-light.jar" App.java
+ 1247  cd
+ 1248  cd Bureau/
+ 1249  mkdir ib
+ 1250  cd ib
+ 1251  wget https://github.com/ibex-team/ibex-lib/archive/ibex-2.8.8.tar.gz
+ 1252  tar xvfz ibex-2.8.8.tar.gz
+ 1253  mv ibex-lib-ibex-2.8.8/ ibex-2.8.8
+ 1254  cd ibex-2.8.8
+ 1255  chmod -R 777 *
+ 1256  ./waf configure --lp-lib=soplex
+ 1257  ./waf install
+ 1258  sudo ./waf install
+ 1259  cd plugins/
+ 1260  wget https://github.com/ibex-team/ibex-java/archive/1.0.0.tar.gz
+ 1261  tar xvfz 1.0.0.tar.gz
+ 1262  mv ibex-java-1.0.0/ ibex-java
+ 1263  cd ..
+ 1264  export | grep JAVA_HOME
+ 1265  sudo ./waf configure --enable-shared --with-jni --java-package-name=org.chocosolver.solver.constraints.real
+ 1266  JAVA_HOME="/usr/lib/jvm/jdk-20.0.1"
+ 1267  export JAVA_HOME="/usr/lib/jvm/jdk-20.0.1"
+ 1268  sudo ./waf configure --enable-shared --with-jni --java-package-name=org.chocosolver.solver.constraints.real
+ 1269  sudo ./waf install
+ 1270  cd examples
+ 1271  mkdir java
+ 1272  touch App.java
+ 1273  kate App.java 
+ 1274  wget pkg:maven/org.choco-solver/choco@4.10.12
+ 1275  javac -cp ".:/home/etud/Téléchargements/choco-parsers-4.10.14-light.jar" App.java 
+ 1276  export LD_LIBRARY_PATH=/usr/local/lib/
+ 1277  javac -cp ".:/home/etud/Téléchargements/choco-parsers-4.10.14-light.jar" App.java 
+ 1278  ls
+ 1279  java ".:/home/etud/Téléchargements/choco-parsers-4.10.14-light.jar" App.java 
+ 1280  java ".:/home/etud/Téléchargements/choco-parsers-4.10.14-light.jar" App
+ 1281  javac -cp ".:/home/etud/Téléchargements/choco-parsers-4.10.14-light.jar" App 
+ 1282  ls
+ 1283  java ".:/home/etud/Téléchargements/choco-parsers-4.10.14-light.jar" App.java 
+ 1284  javac -cp ".:/home/etud/Téléchargements/choco-parsers-4.10.14-light.jar" App 
+ 1285  javac -cp ".:/home/etud/Téléchargements/choco-parsers-4.10.14-light.jar" App.java 
+ 1286  javac -cp ".:/home/etud/Téléchargements/choco-parsers-4.10.14-light.jar" App
+ 1287  javac -cp ".:/home/etud/Téléchargements/choco-parsers-4.10.14-light.jar" App.java 
+ 1288  ls
+ 1289  java -cp ".:/home/etud/Téléchargements/choco-parsers-4.10.14-light.jar" App.java 
+ 1290  bash
+ 1291  java -cp ".:/home/etud/Téléchargements/choco-parsers-4.10.14-light.jar" App.java 
+ 1292  export LD_LIBRARY_PATH=/usr/local/lib/
+ 1293  java -cp ".:/home/etud/Téléchargements/choco-parsers-4.10.14-light.jar" App.java 
+ 1294  javac -cp ".:/home/etud/Téléchargements/choco-parsers-4.10.14-light.jar" App.java 
+ 1295  java -cp ".:/home/etud/Téléchargements/choco-parsers-4.10.14-light.jar" App.java 
+ 1296  sudo ./waf configure --lp-lib=soplex
+ 1297  cd ..
+ 1298  sudo ./waf configure --lp-lib=soplex
+ 1299  sudo ./waf install
+ 1300  sudo ./waf configure --enable-shared --with-jni --java-package-name=org.chocosolver.solver.constraints.real
+ 1301  sudo ./waf install
+ 1302  sudo ./waf configure --enable-shared --with-jni --java-package-name=org.chocosolver.solver.constraints.real
+ 1303  sudo ./waf install
+ 1304  cd examples/
+ 1305  javac -cp ".:/home/etud/Téléchargements/choco-parsers-4.10.14-light.jar" App.java 
+ 1306  java -cp ".:/home/etud/Téléchargements/choco-parsers-4.10.14-light.jar" App.java 
+ 1307  cd ..
+ 1308  sudo ./waf configure --enable-shared --with-jni --java-package-name=org.chocosolver.solver.constraints.real
+ 1309  cat  /home/etud/Bureau/ib/ibex-2.8.8/__build__/config.log
+ 1310  bash
+ 1311  sudo ./waf configure --enable-shared --with-jni --java-package-name=org.chocosolver.solver.constraints.real
+ 1312  sudo ./waf install
+ 1313  sudo ./waf configure --enable-shared --with-jni --java-package-name=org.chocosolver.solver.constraints.real
+ 1314  echo $JAVA_HOME
+ 1315  cat  /home/etud/Bureau/ib/ibex-2.8.8/__build__/config.log
+ 1316  sudo ./waf configure --lp-lib=soplex
+ 1317  sudo ./waf configure --enable-shared --with-jni --java-package-name=org.chocosolver.solver.constraints.real
+ 1318  sudo ./waf configure --enable-shared --with-jni --java-package-name=org.chocosolver.solver.constraints.real --lp-lib=soplex
+ 1319  sudo ./waf install
+ 1320  cd examples/
+ 1321  javac -cp ".:/home/etud/Téléchargements/choco-parsers-4.10.14-light.jar" App.java 
+ 1322  java -cp ".:/home/etud/Téléchargements/choco-parsers-4.10.14-light.jar" App.java 
+ 1323  ./waf check
+ 1324  cd ..
+ 1325  ./waf check
+ 1326  java -cp ".:/home/etud/Téléchargements/choco-parsers-4.10.14-light.jar" App.java 
+ 1327  cd examples/
+ 1328  java -cp ".:/home/etud/Téléchargements/choco-parsers-4.10.14-light.jar" App.java 
+ 1329  java -cp ".:/home/etud/Téléchargements/choco-parsers-4.10.14-light.jar" --with-java-package=org.chocosolver.solver.constraints.real App.java 
+ 1330  javac -cp ".:/home/etud/Téléchargements/choco-parsers-4.10.14-light.jar" --java-package-name=org.chocosolver.solver.constraints.real App.java 
+ 1331  javac -cp ".:/home/etud/Téléchargements/choco-parsers-4.10.14-light.jar" -Djava.library.path=
+ 1332  cd Téléchargements/
+ 1333  cd ibex-
+ 1334  cd ibex-2.8.9/
+ 1335  ls
+ 1336  ./waf configure
+ 1337  sudo ./waf install
+ 1338  path
+ 1339  $PATH
+ 1340  bash
+ 1341  cd ..
+ 1342  tar xzvf ibex-java-1.2.0.tar.gz --directory=ibex-2.8.9/plugins/
+ 1343  cd ibex-2.8.9/
+ 1344  ./waf configure  --enable-shared --with-solver --with-jni --java-package-name=org.chocosolver.solver.constraints.real
+ 1345  ./waf install
+ 1346  cd 
+ 1347  cd Téléchargements/
+ 1348  mv ibex-lib-ibex-2.8.9/ ibex-2.8.9/
+ 1349  cd ibex-2.8.9/
+ 1350  sudo ./waf configure --lp-lib=soplex
+ 1351  sudo ./waf install
+ 1352  cd plugins/
+ 1353  ls
+ 1354  cd ..
+ 1355  export | grep JAVA_HOME
+ 1356  sudo ./waf configure --enable-shared --with-jni --java-package-name=org.chocosolver.solver.constraints.real
+ 1357  cd ibex-2.8.9/
+ 1358  ./waf configure --enable-shared --with-jni --java-package-name=org.chocosolver.solver.constraints.real
+ 1359  sudo ./waf install
+ 1360  sudo ./waf configure --enable-shared --with-jni --java-package-name=org.chocosolver.solver.constraints.real
+ 1361  cat __build__/config.log 
+ 1362  sudo ./waf install
+ 1363  ./waf configure --enable-shared --with-jni --java-package-name=org.chocosolver.solver.constraints.real
+ 1364  cd
+ 1365  cd Bureau/
+ 1366  cd ib
+ 1367  # Utilisation d'une image de base Maven avec OpenJDK 11
+ 1368  FROM maven:3.6.3-openjdk-11-slim
+ 1369  # Définition du répertoire de travail
+ 1370  WORKDIR /opt
+ 1371  # Installation des paquets nécessaires
+ 1372  RUN apt-get update && apt-get install -y     wget     vim     python     flex     bison     gcc     g++     make     pkg-config     libgmp-dev     libmpfr-dev     libboost-all-dev     && rm -rf /var/lib/apt/lists/*
+ 1373  # Téléchargement et installation d'Ibex
+ 1374  RUN wget https://github.com/ibex-team/ibex-lib/archive/ibex-2.8.8.tar.gz     && tar xvfz ibex-2.8.8.tar.gz     && mv ibex-lib-ibex-2.8.8/ ibex-2.8.8     && cd ibex-2.8.8     && chmod -R 777 *     && ./waf configure --with-java --enable-shared --lp-lib=soplex     && ./waf install
+ 1375  # Installation du plugin Ibex-Java
+ 1376  RUN cd ibex-2.8.8/plugins     && wget https://github.com/ibex-team/ibex-java/archive/1.0.0.tar.gz     && tar xvfz 1.0.0.tar.gz     && mv ibex-java-1.0.0/ ibex-java     && cd ibex-java     && ../waf configure --enable-shared --with-jni --java-package-name=org.chocosolver.solver.constraints.real     && ../waf install
+ 1377  # Exposer le port (si nécessaire)
+ 1378  EXPOSE 5005
+ 1379  # Définir une variable d'environnement JAVA_HOME automatiquement
+ 1380  ENV JAVA_HOME /usr/local/openjdk-11
+ 1381  # Commande par défaut pour démarrer un shell interactif
+ 1382  CMD ["/bin/bash"]
+ 1383  touch Dockerfile
+ 1384  kate Dockerfile 
+ 1385  mkdir app
+ 1386  cd app/
+ 1387  touch App.java
+ 1388  kate App.java 
+ 1389  cd ..
+ 1390  docker build -t nom_de_votre_image .
+ 1391  cd
+ 1392  cd ib/
+ 1393  ls
+ 1394  docker build -t nom_de_votre_image .
+ 1395  docker build -t nom_de_votre_image . -v
+ 1396  docker build -t -v nom_de_votre_image .
+ 1397  docker build -t nom_de_votre_image .
+ 1398  export | grep JAVA_HOME
+ 1399  eclipse 
+ 1400  cd stage_2023/
+ 1401  git clone https://github.com/GregoireBellon/cellion.git
+ 1402  ls
+ 1403  cd cellion/
+ 1404  ls
+ 1405  docker-compose up --build --force-recreate
+ 1406  ls
+ 1407  cat docker-compose.yml 
+ 1408  docker-compose up --build --force-recreate
+ 1409  docker-compose --version
+ 1410  libex
+ 1411  htop
+ 1412  kstart plasma-desktop
+ 1413  kstart plasmashell 
+ 1414  ~/Ibex/ibex-2.6.0/$ ./waf configure [...] --enable-shared --with-solver --with-jni --java-package-name=org.chocosolver.solver.constraints.real
+ 1415  javac -cp ".:/usr/local/share/java/org.chocosolver.solver.constraints.real.jar" App.java
+ 1416  exit
+ 1417  cd
+ 1418  cd Bureau/
+ 1419  cd ib/
+ 1420  cd ibex-2.8.8/
+ 1421  cd examples/
+ 1422  javac -cp ".:/home/etud/Téléchargements/choco-parsers-4.10.14-light.jar" -Djava.library.path=
+ 1423  javac -cp ".:/home/etud/Téléchargements/choco-parsers-4.10.14-light.jar" App.java 
+ 1424  java -cp ".:/home/etud/Téléchargements/choco-parsers-4.10.14-light.jar" App.java 
+ 1425  cd
+ 1426  cd  Bureau/
+ 1427  cd id
+ 1428  cd ib/
+ 1429  cd ibex-2.8.8/
+ 1430  Lysfanga: The Time Shift Warrior 
+ 1431  ./waf configure
+ 1432  ./waf configure --with-optim --lp-lib=soplex
+ 1433  ./waf configure --lp-lib=soplex
+ 1434  sudo apt-get install -y python2.7 flex bison gcc g++ make pkg-config
+ 1435  sudo ./waf install
+ 1436  cat /home/etud/.bashrc 
+ 1437  ls /usr/local/lib/
+ 1438  ENV
+ 1439  $ENV
+ 1440  cd ..
+ 1441  cd projet_annuel/
+ 1442  ls
+ 1443  cd feature_model
+ 1444  sudo npm 
+ 1445  sudo npm install
+ 1446  sudo npm run dev
+ 1447  sudo npm run
+ 1448  sudo npm start
+ 1449  sudo npm run
+ 1450  npm run
+ 1451  npm run build
+ 1452  cd
+ 1453  cd Téléchargements/
+ 1454  sudo dpkg -i zoom_amd64.deb 
+ 1455  zoom
+ 1456  cd
+ 1457  sshfs stargate:/home/c.behuet/ /home/etud/homeSKD/
+ 1458  sshfs startrek:/home/c.behuet/ /home/etud/homeSKD/
+ 1459  sudo fusermount -u  homeSKD
+ 1460  sshfs startrek:/home/c.behuet/ /home/etud/homeSKD/
+ 1461  sudo fusermount -u  homeSKD
+ 1462  sshfs startrek:/home/c.behuet/ /home/etud/homeSKD/
+ 1463  V
+ 1464  ssh ubuntu@51.75.19.224
+ 1465  ssh startrek 
+ 1466  sudo apt-get install nmap
+ 1467  nmap 
+ 1468  nmap 51.75.19.224
+ 1469  ssh ubuntu@51.75.19.224 -P 25
+ 1470  nmap -p22 51.75.19.224
+ 1471  nmap -p22 cbehuet.fr
+ 1472  nmap -p22 51.75.19.224
+ 1473  nmap 51.75.19.224
+ 1474  ssh root@51.75.19.224
+ 1475  nmap 51.75.19.224
+ 1476  ssh root@51.75.19.224 -p 25
+ 1477  ssh debian@51.75.19.224
+ 1478  tN7Ngd9yttsd
+ 1479  ssh debian@51.75.19.224
+ 1480  sudo fusermount -u  homeSKD
+ 1481  sshfs startrek:/home/c.behuet/ /home/etud/homeSKD/
+ 1482  ssh startrek 
+ 1483  sshfs startrek:/home/c.behuet/ /home/etud/homeSKD/
+ 1484  ssh root@51.75.19.224
+ 1485  ssh startrek
+ 1486  latexpand main.tex > single.tex
+ 1487  cd
+ 1488  sshfs startrek:/home/c.behuet/ /home/etud/homeSKD/
+ 1489  sudo fusermount -u  homeSKD
+ 1490  sshfs startrek:/home/c.behuet/ /home/etud/homeSKD/
+ 1491  sudo fusermount -u  homeSKD
+ 1492  ssh ubuntu@51.75.19.224
+ 1493  ssh root@51.75.19.224
+ 1494  ssh-keygen -f "/home/etud/.ssh/known_hosts" -R "51.75.19.224"
+ 1495  ssh root@51.75.19.224
+ 1496  ssh ubuntu@51.75.19.224
+ 1497  ssh ubuntu@vps-72522c17.vps.ovh.net
+ 1498  ping 51.75.19.224
+ 1499  ssh ubuntu@51.75.19.224
+ 1500  ssh ubuntu@51.75.19.224 -p 80
+ 1501  ssh ubuntu@51.75.19.224
+ 1502  nmap 51.75.19.224
+ 1503  nmap 51.75.19.224 -p22
+ 1504  ssh ubuntu@51.75.19.224
+ 1505  ssh root@51.75.19.224
+ 1506  nmap 51.75.19.224 -p22
+ 1507  nmap 51.75.19.224
+ 1508  MiniZincIDE &
+ 1509  ping 51.75.19.224
+ 1510  latexepand
+ 1511  latexpand
+ 1512  latexpand ++version
+ 1513  ssh stargate
+ 1514  eclipse &
+ 1515  latexpand main.tex > single-file.tex
+ 1516  cat single-file.tex 
+ 1517  cat single-file.tex | wc -l
+ 1518  latexpand main.tex > single-file2.tex
+ 1519  cd ..
+ 1520  ls
+ 1521  latexpand main.tex > single-file3.tex
+ 1522  ls Chapitres/
+ 1523  cd these_cyril/ls
+ 1524  ls
+ 1525  latexpand main.tex > single-file3.tex
+ 1526  wc -l single-file3.tex 
+ 1527  cat single-file3.tex 
+ 1528  python3
+ 1529  htop
+ 1530  eclipse
+ 1531  htop
+ 1532  latexpand main > single.tex
+ 1533  latexpand main.tex > single.tex
+ 1534  cd
+ 1535  cd Téléchargements/
+ 1536  ls
+ 1537  ncdu
+ 1538  cd
+ 1539  ncdu
+ 1540  cd VirtualBox\ VMs/
+ 1541  ls
+ 1542  rm -r *
+ 1543  ls
+ 1544  cd ..
+ 1545  htop
+ 1546  gcc tailleCache.c -o tailleCache.exe
+ 1547  ./tailleCache.exe 
+ 1548  gcc -o0 tailleCache.c -o tailleCache.exe -lrt
+ 1549  ./tailleCache.exe 
+ 1550  gcc -O0 tailleCache.c -o tailleCache.exe -lrt
+ 1551  ./tailleCache.exe 
+ 1552  gcc -O0 tailleCache.c -o tailleCache.exe -lrt
+ 1553  ./tailleCache.exe 
+ 1554  cd
+ 1555  cd timetabling
+ 1556  cd src/
+ 1557  cd choco/
+ 1558  ls
+ 1559  cd Démo/
+ 1560  ls
+ 1561  java -jar Solver_Choco_Basic_11_05_2023_v3.jar ua_l1-l2_p1-p6_l3info_m1info-s1_m2info-s1-s2_v1_extension_v3.json ua_l1-l2_p1-p6_l3info_m1info-s1_m2info-s1-s2_v1_bis.xml test_strategie_simple_v2.json 
+ 1562  java -jar ParserJson.jar file:///home/etud/timetabling/src/choco/Démo/exemplepourdemain.xml
+ 1563  java -jar ParserJson.jar /home/etud/timetabling/src/choco/Démo/exemplepourdemain.xml
+ 1564  cat exemplepourdemain.xml 
+ 1565  java -jar ParserJson.jar /home/etud/timetabling/src/choco/Démo/exemplepourdemain.xml
+ 1566  java -jar ParserJson.jar /home/etud/Téléchargements/document(8).xml
+ 1567  java -jar ParserJson.jar /home/etud/Téléchargements/document\(8\).xml
+ 1568  java -jar Solver_Choco_Basic_11_05_2023_v3.jar exemplepourdemain.json ua_l1-l2_p1-p6_l3info_m1info-s1_m2info-s1-s2_v1_bis.xml test_strategie_simple_v2.json 
+ 1569  cd tmp/
+ 1570  ls
+ 1571  cd experiment_19-06-24/
+ 1572  ls
+ 1573  cd ..
+ 1574  java -jar Solver_Choco_Basic_11_05_2023_v3.jar exemplepourdemain.json exemplepourdemainn.xml test_strategie_simple_v2.json 
+ 1575  java -jar ParserJson.jar documentdate_1718812440654.xml 
+ 1576  java -jar Solver_Choco_Basic_11_05_2023_v3.jar documentdate_1718812440654.json documentdate_1718812440654.xml test_strategie_simple_v2.json 
+ 1577  python3
+ 1578  htop
+ 1579  cd
+ 1580  cd FM/
+ 1581  cd FM_EDT/
+ 1582  ls
+ 1583  conda activate serviceUTP
+ 1584  python3 latexGraphModel.py 
+ 1585  conda env list
+ 1586  conda activate serviceUTP
+ 1587  python3 latexGraphModel.py 
+ 1588  touch FM_jardin.xml
+ 1589  touch FM_voiture.xml
+ 1590  touch FM_logiciel.xml
+ 1591  touch FM_kang.xml
+ 1592  kate FM_jardin.xml 
+ 1593  kate FM_voiture.xml 
+ 1594  kate FM_logiciel.xml 
+ 1595  kate FM_kang.xml 
+ 1596  ls
+ 1597  find . -name "*.xml"
+ 1598  find . -name "feature_model*.xml"
+ 1599  ls
+ 1600  kate formatModelFeature.xml 
+ 1601  python3 latexGraphModel.py 
+ 1602  python3 exampleDebouleNoir.py 
+ 1603  python3 latexGraphModel.py 
+ 1604  python3 latexDiapoSetEntiy.py 
+ 1605  mkdir FM
+ 1606  man mv
+ 1607  mv FM*.xml FM/
+ 1608  ls
+ 1609  cd FM/
+ 1610  ls
+ 1611  cd ..
+ 1612  mv latex*.py FM/
+ 1613  mv Fm_*.xml FM/
+ 1614  mv FM_graha FM/
+ 1615  mv FM*.png FM/
+ 1616  ls
+ 1617  mkdir TXT
+ 1618  mv *.txt TXT/
+ 1619  ls
+ 1620  mkdir ImageNew
+ 1621  mv *.png ImageNew/
+ 1622  ls
+ 1623  mv *.txt TXT/
+ 1624  ls
+ 1625  mkdir zipFile
+ 1626  mv *.tar.gz zipFile/
+ 1627  ls
+ 1628  mv *.tgz zipFile/
+ 1629  mv zoom_amd64.deb zipFile/ 
+ 1630  ls
+ 1631  mv *.zip zipFile/
+ 1632  ls
+ 1633  cd FM/
+ 1634  conda activate serviceUTP
+ 1635  python3 latexGraphModel.py 
+ 1636  touch FM_gc2.xml
+ 1637  kate FM_gc2.xml 
+ 1638  python3 latexGraphModel.py 
+ 1639  htop
+ 1640  cat readme.md 
+ 1641  docker-compose up
+ 1642  python3
+ 1643  conda env lis
+ 1644  conda env list
+ 1645  conda activate serviceUTP
+ 1646  python3 latexGraphModel.py 
+ 1647  python3 latexDiapoCours.py 
+ 1648  python3 latexDiapoCoursV2.py 
+ 1649  python3 latexDiapoCoursV3.py 
+ 1650  python3 latexDiapoCours3.py 
+ 1651  python3 latexTestforPython3.py 
+ 1652  python3 latexDiapoCours3.py 
+ 1653  python3 latexTestforPython3.py 
+ 1654  sudo apt install open-cobol
+ 1655  cobc 
+ 1656  cobc --version
+ 1657  cobc -x hello.cob -o hellocob.exe
+ 1658  .:hellocob.exe 
+ 1659  /:hellocob.exe 
+ 1660  ./hellocob.exe 
+ 1661  cobc -x hello.cob -o hellocob.exe
+ 1662  ./hellocob.exe 
+ 1663  touch imageOntology.py
+ 1664  kate imageOntology.py 
+ 1665  conda activate serviceUTP
+ 1666  python3 imageOntology.py 
+ 1667  python
+ 1668  python3
+ 1669  ls
+ 1670  python3 latexTestforPython3.py 
+ 1671  python3 latexGraphModel.py 
+ 1672  conda activate serviceUTP
+ 1673  ls
+ 1674  python3 latexGraphModel.py 
+ 1675  python3
+ 1676  ls
+ 1677  conda env list
+ 1678  conda activate ortoolsenv
+ 1679  ls
+ 1680  python3 fichier.py 
+ 1681  python3
+ 1682  eclipse
+ 1683  etud@localhost:~/stage_2023/projet_annuel$ latexpand main.tex > single.tex
+ 1684  latexpand main.tex > single.tex
+ 1685  cd ..
+ 1686  cd fusion3/
+ 1687  latexpand main.tex > single.tex
+ 1688  cd ..
+ 1689  cd fusion4/
+ 1690  latexpand main.tex > single.tex
+ 1691  cd ..
+ 1692  cd fusion5
+ 1693  ls
+ 1694  latexpand main.tex > single.tex
+ 1695  cd
+ 1696  cd timetabling
+ 1697  ls
+ 1698  cd src
+ 1699  ls
+ 1700  cd asp
+ 1701  ls
+ 1702  python3 csvToLatexPaper.py ^
+ 1703  python3 csvToLatexPaper.py
+ 1704  python3
+ 1705  htop
+ 1706  ls
+ 1707  cd ..
+ 1708  eclipse
+ 1709  python3 latexDiapoSetEntiy.py 
+ 1710  python3 csvToLatexPaper2.py 
+ 1711  cd timetabling
+ 1712  cd src/
+ 1713  cd
+ 1714  prolog
+ 1715  man prolog 
+ 1716  prolog exempleChrPrlog.pl 
+ 1717  swipl exempleChrPrlog.pl 
+ 1718  mkdir prologTest
+ 1719  cd prologTest/
+ 1720  touch exempleProlog.pl
+ 1721  kate exempleProlog.pl 
+ 1722  swipl exempleChrPrlog.pl 
+ 1723  swipl exempleProlog.pl 
+ 1724  touch testPiggy.pl
+ 1725  kate testPiggy.pl 
+ 1726  prolog testPiggy.pl 
+ 1727  swipl testCHR.lp 
+ 1728  cd
+ 1729  ls
+ 1730  cd prologTest/
+ 1731  ls
+ 1732  swipl testCHR.lp 
+ 1733  conda list env
+ 1734  conda env list
+ 1735  conda activate pythonMIP
+ 1736  conda list
+ 1737  python3 sudoky-mip.py 
+ 1738  python3 sudoku-int.py 
+ 1739  gcc -o example.cpp exemple.ex
+ 1740  gcc example.cpp -o example.exe
+ 1741  g++ example.cpp -o example.exe
+ 1742  ./example.exe 
+ 1743  g++ example.cpp -o example.exe
+ 1744  ./example.exe 
+ 1745  g++ example.cpp -o example.exe
+ 1746  ./example.exe 
+ 1747  g++ example.cpp -o example.exe
+ 1748  ./example.exe 
+ 1749  g++ example.cpp -o example.exe
+ 1750  ./example.exe 
+ 1751  g++ example.cpp -o example.exe
+ 1752  ./example.exe 
+ 1753  g++ example.cpp -o example.exe
+ 1754  ./example.exe 
+ 1755  g++ example.cpp -o example.exe
+ 1756  ./example.exe 
+ 1757  g++ example.cpp -o example.exe
+ 1758  ./example.exe 
+ 1759  g++ example.cpp -o example.exe
+ 1760  ./example.exe 
+ 1761  g++ example.cpp -o example.exe
+ 1762  ./example.exe 
+ 1763  g++ example.cpp -o example.exe
+ 1764  ./example.exe 
+ 1765  g++ example.cpp -o example.exe
+ 1766  ./example.exe 
+ 1767  g++ example.cpp -o example.exe
+ 1768  ./example.exe 
+ 1769  g++ example.cpp -o example2.cpp 
+ 1770  ./example.exe 
+ 1771  rm example2.cpp 
+ 1772  g++ example2.cpp -o example.exe
+ 1773  rm example2.cpp 
+ 1774  ./example.exe 
+ 1775  rm example2.cpp 
+ 1776  g++ example.cpp -o example.exe
+ 1777  ./example.exe 
+ 1778  g++ example.cpp -o example.exe
+ 1779  ./example.exe 
+ 1780  g++ example.cpp -o example.exe
+ 1781  ./example.exe 
+ 1782  g++ example.cpp -o example.exe
+ 1783  ./example.exe 
+ 1784  python3 mipSudoku.py 
+ 1785  python3
+ 1786  snap spotify
+ 1787  snap help
+ 1788  snap remove spotify
+ 1789  snap install spotify
+ 1790  g++ exempleTime.cpp -o exempleTime.exe
+ 1791  ./exempleTime.exe 
+ 1792  g++ -O1 exempleTime.cpp -o exempleTime.exe
+ 1793  ./exempleTime.exe 
+ 1794  g++ -O3 exempleTime.cpp -o exempleTime.exe
+ 1795  ./exempleTime.exe 
+ 1796  g++ -O0 exempleTime.cpp -o exempleTime.exe
+ 1797  ./exempleTime.exe 
+ 1798  g++ -O1 exempleTime.cpp -o exempleTime.exe
+ 1799  ./exempleTime.exe 
+ 1800  g++ -fmath exempleTime.cpp -o exempleTime.exe
+ 1801  g++ -std=c++17 -O1 exempleTime.cpp -o exempleTime.exe
+ 1802  ./exempleTime.exe 
+ 1803  g++ -std=c++17  exempleTime.cpp -o exempleTime.exe
+ 1804  ./exempleTime.exe 
+ 1805  g++ -std=c++17 -masm=intel -S exempleTime.cpp -o exempleTime.s
+ 1806  kate exempleTime.s 
+ 1807  g++ -std=c++17 -O1  -masm=intel -S exempleTime.cpp -o exempleTime.s
+ 1808  kate exempleTime.s 
+ 1809  g++ -std=c++17 -masm=intel -S exempleTime.cpp -o exempleTime2.s
+ 1810  kate exempleTime2.s 
+ 1811  g++ -std=c++17  exempleTime.cpp -o exempleTime.exe
+ 1812  ./exempleTime.exe 
+ 1813  g++ -std=c++17 -O1 -march=native exempleTime.cpp -o exempleTime.exe
+ 1814  ./exempleTime.exe 
+ 1815  g++ -std=c++17  exempleTimeIt.cpp -o exempleTimeIt.exe
+ 1816  ./exempleTimeIt.exe 
+ 1817  g++ -std=c++17 -O1  exempleTimeIt.cpp -o exempleTimeIt.exe
+ 1818  ./exempleTimeIt.exe 
+ 1819  g++ -std=c++17 -O1  exempleTimeIt.cpp -o exempleTimeIt.exe
+ 1820  ./exempleTimeIt.exe 
+ 1821  g++ -std=c++17  exempleTimeOt.cpp -o exempleTimeOt.exe
+ 1822  ./exempleTimeOt.exe 
+ 1823  g++ -std=c++17 -O3  exempleTimeOt.cpp -o exempleTimeOt.exe
+ 1824  ./exempleTimeOt.exe 
+ 1825  g++ -std=c++17 -O1  exempleTimeOt.cpp -o exempleTimeOt.exe
+ 1826  ./exempleTimeOt.exe 
+ 1827  latexpand main.tex > single.tex
+ 1828  cd
+ 1829  eclipse &
+ 1830  conda activate serviceUTP
+ 1831  python3 latexGraphModel.py 
+ 1832  conda activate serviceUTP
+ 1833  python3 banane.py 
+ 1834  python3 latexGraphModel.py 
+ 1835  htop
+ 1836  latexpand main.tex > single.tex
+ 1837  cd ..
+ 1838  cd these-langage-usp-reduce-4/
+ 1839  latexpand main.tex > single.tex
+ 1840  latexpand main.tex > single.tex
+ 1841  cd ..
+ 1842  cd 2023-paper-theseEDT-experimentation-reduce_chap4/
+ 1843  latexpand main.tex > single.tex
+ 1844  eclipse &
+ 1845  kill 8886
+ 1846  eclipse &
+ 1847  cd Démo/
+ 1848  java -jar Solver_Choco_Basic_11_05_2023_v3.jar ./documentdate_1718812440654.json ./documentdate_1718812440654.xml test_strategie_simple_v2.json 
+ 1849  java -jar Solver_Choco_Basic_11_05_2023_v3.jar ./exemplepourdemain.json ./exemplepourdemainn.xml test_strategie_simple_v2.json 
+ 1850  java -jar Solver_Choco_Basic_11_05_2023_v3.jar ./ua_l1-l2_p1-p6_l3info_m1info-s1_m2info-s1-s2_v1_extension_v3.json ./ua_l1-l2_p1-p6_l3info_m1info-s1_m2info-s1-s2_v1.xml test_strategie_simple_v2.json 
+ 1851  htop
+ 1852  htop
+ 1853  snap install spotify
+ 1854  snap remove spotify
+ 1855  snap install spotify
+ 1856  htop
+ 1857  eclipse &
+ 1858  java --version
+ 1859  java -jar Solver22042025_new.jar /home/etud/timetabling/src/asp/ua_l1_p1-p2_l3-info_2023.json /home/etud/timetabling/src/asp/ua_l1_p1-p2_l3-info_2023.xml /home/etud/Téléchargements/solver-config-202504055555.json 
+ 1860  conda activate serviceUTP
+ 1861  conda install networkx python-louvain
+ 1862  conda install networkx
+ 1863  conda install python-louvain
+ 1864  python calculCommunity.py 
+ 1865  conda install infomap
+ 1866  pip install infomap
+ 1867  python calculCommunity.py 
+ 1868  prolog solver.pl
+ 1869  ls
+ 1870  python converteur.py 
+ 1871  prolog solver.pl 
+ 1872  , [1, 10, 14], [32, 47, -65], [8, -15, 94], [32, 34, -99], [-36, -49, 87], [-20, 30, -85], [-53, -81, -98], [-20, -53, 69], [22, 23, -53], [23, 78, -88], [13, 63, -77], [-69, 72, -95], [2, -27, 54], [-53, 59, 89], [-87, 92, 95], [-77, 92, -98], [-75, 85, -90], [-1, 36, 72], [-15, -45, 78], [5, 21, 100], [5, 35, 41], [-20, -23, 96], [30, 76, -88], [41, 82, 97], [6, -37, -44], [-23, -32, 88], [-16, 34, 88], [-3, 60, 96], [-45, 64, 73], [5, -75, 80], [-17, 75, 90], [15, 42, 71], [24, -36, -38], [1, -5, -38], [-11, 14, -63], [-48, 84, 87], [31, -72, -78], [-29, 35, 45], [-10, -67, -71], [18, 31, -54], [5, 17, 59], [22, 42, -95], [-16, 17, 90], [-5, 23, -43], [46, 73, -88], [-22, -59, 96], [-24, -27, 81], [47, 73, 87], [14, 27, 35], [-12, -48, 82], [39, 43, 48], [-17, -18, 99], [-22, -35, -80], [51, 57, -92], [8, -39, 59], [-6, -18, -21], [-29, -45, -65], [-4, 16, -33], [37, -64, 70], [-6, 96, 98], [21, 34, -78], [-2, -15, -53], [62, -84, 97], [76, -84, 88], [21, -85, -88], [-3, -48, 88], [24, -33, -35], [6, -47, 95], [1, 8, -24], [31, 48, 95], [-12, -52, 55], [-89, -95, 100], [-23, 81, 96], [52, -86, -95], [-22, 50, -84], [10, 26, 61], [-3, -6, -16], [-5, -7, 32], [-83, 85, 100], [26, 42, -55], [41, -73, 99], [-12, 27, -99], [1, -40, 74], [-24, 31, -76], [2, 15, -47], [-46, -64, 99], [-19, -62, -93], [15, 41, -72], [-14, 39, -68], [-37, 39, 45], [2, 61, -92], [42, 56, -67], [-81, 86, -96], [7, -66, -98], [-23, 67, -82], [9, 29, -58], [44, -45, -50], [49, -67, 69], [-2, 36, 71], [46, 53, 77], [-2, 28, 33], [-16, -51, -100], [-3, 50, 56], [31, -35, -87], [-13, 55, -58], [-13, -43, 80], [-27, -49, 72], [29, 34, -79], [-40, -49, 84], [-43, -72, 88], [-49, 65, -92], [-35, 64, 71], [-21, -28, 96], [-13, 45, 98], [-15, 28, -78], [-6, 26, 90], [-39, -80, -84], [-44, -46, 66], [44, 54, 60], [-23, 91, -100], [-59, -66, 85], [20, 28, -99], [59, -77, -82], [49, 54, -60], [-12, 63, 68], [-8, 50, 90], [-30, -45, 53], [-56, 71, -97], [-7, -20, 52], [-2, 33, 87], [49, 56, -74]]).
+ 1873  python converteur.py >> topl.txt
+ 1874  kate topl.txt 
+ 1875  python converteur.py >> topl.txt
+ 1876  prolog solver.pl 
+ 1877  , [1, 10, 14], [32, 47, -65], [8, -15, 94], [32, 34, -99], [-36, -49, 87], [-20, 30, -85], [-53, -81, -98], [-20, -53, 69], [22, 23, -53], [23, 78, -88], [13, 63, -77], [-69, 72, -95], [2, -27, 54], [-53, 59, 89], [-87, 92, 95], [-77, 92, -98], [-75, 85, -90], [-1, 36, 72], [-15, -45, 78], [5, 21, 100], [5, 35, 41], [-20, -23, 96], [30, 76, -88], [41, 82, 97], [6, -37, -44], [-23, -32, 88], [-16, 34, 88], [-3, 60, 96], [-45, 64, 73], [5, -75, 80], [-17, 75, 90], [15, 42, 71], [24, -36, -38], [1, -5, -38], [-11, 14, -63], [-48, 84, 87], [31, -72, -78], [-29, 35, 45], [-10, -67, -71], [18, 31, -54], [5, 17, 59], [22, 42, -95], [-16, 17, 90], [-5, 23, -43], [46, 73, -88], [-22, -59, 96], [-24, -27, 81], [47, 73, 87], [14, 27, 35], [-12, -48, 82], [39, 43, 48], [-17, -18, 99], [-22, -35, -80], [51, 57, -92], [8, -39, 59], [-6, -18, -21], [-29, -45, -65], [-4, 16, -33], [37, -64, 70], [-6, 96, 98], [21, 34, -78], [-2, -15, -53], [62, -84, 97], [76, -84, 88], [21, -85, -88], [-3, -48, 88], [24, -33, -35], [6, -47, 95], [1, 8, -24], [31, 48, 95], [-12, -52, 55], [-89, -95, 100], [-23, 81, 96], [52, -86, -95], [-22, 50, -84], [10, 26, 61], [-3, -6, -16], [-5, -7, 32], [-83, 85, 100], [26, 42, -55], [41, -73, 99], [-12, 27, -99], [1, -40, 74], [-24, 31, -76], [2, 15, -47], [-46, -64, 99], [-19, -62, -93], [15, 41, -72], [-14, 39, -68], [-37, 39, 45], [2, 61, -92], [42, 56, -67], [-81, 86, -96], [7, -66, -98], [-23, 67, -82], [9, 29, -58], [44, -45, -50], [49, -67, 69], [-2, 36, 71], [46, 53, 77], [-2, 28, 33], [-16, -51, -100], [-3, 50, 56], [31, -35, -87], [-13, 55, -58], [-13, -43, 80], [-27, -49, 72], [29, 34, -79], [-40, -49, 84], [-43, -72, 88], [-49, 65, -92], [-35, 64, 71], [-21, -28, 96], [-13, 45, 98], [-15, 28, -78], [-6, 26, 90], [-39, -80, -84], [-44, -46, 66], [44, 54, 60], [-23, 91, -100], [-59, -66, 85], [20, 28, -99], [59, -77, -82], [49, 54, -60], [-12, 63, 68], [-8, 50, 90], [-30, -45, 53], [-56, 71, -97], [-7, -20, 52], [-2, 33, 87], [49, 56, -74]]).
+ 1878  prolog solver.pl 
+ 1879  , [1, 10, 14], [32, 47, -65], [8, -15, 94], [32, 34, -99], [-36, -49, 87], [-20, 30, -85], [-53, -81, -98], [-20, -53, 69], [22, 23, -53], [23, 78, -88], [13, 63, -77], [-69, 72, -95], [2, -27, 54], [-53, 59, 89], [-87, 92, 95], [-77, 92, -98], [-75, 85, -90], [-1, 36, 72], [-15, -45, 78], [5, 21, 100], [5, 35, 41], [-20, -23, 96], [30, 76, -88], [41, 82, 97], [6, -37, -44], [-23, -32, 88], [-16, 34, 88], [-3, 60, 96], [-45, 64, 73], [5, -75, 80], [-17, 75, 90], [15, 42, 71], [24, -36, -38], [1, -5, -38], [-11, 14, -63], [-48, 84, 87], [31, -72, -78], [-29, 35, 45], [-10, -67, -71], [18, 31, -54], [5, 17, 59], [22, 42, -95], [-16, 17, 90], [-5, 23, -43], [46, 73, -88], [-22, -59, 96], [-24, -27, 81], [47, 73, 87], [14, 27, 35], [-12, -48, 82], [39, 43, 48], [-17, -18, 99], [-22, -35, -80], [51, 57, -92], [8, -39, 59], [-6, -18, -21], [-29, -45, -65], [-4, 16, -33], [37, -64, 70], [-6, 96, 98], [21, 34, -78], [-2, -15, -53], [62, -84, 97], [76, -84, 88], [21, -85, -88], [-3, -48, 88], [24, -33, -35], [6, -47, 95], [1, 8, -24], [31, 48, 95], [-12, -52, 55], [-89, -95, 100], [-23, 81, 96], [52, -86, -95], [-22, 50, -84], [10, 26, 61], [-3, -6, -16], [-5, -7, 32], [-83, 85, 100], [26, 42, -55], [41, -73, 99], [-12, 27, -99], [1, -40, 74], [-24, 31, -76], [2, 15, -47], [-46, -64, 99], [-19, -62, -93], [15, 41, -72], [-14, 39, -68], [-37, 39, 45], [2, 61, -92], [42, 56, -67], [-81, 86, -96], [7, -66, -98], [-23, 67, -82], [9, 29, -58], [44, -45, -50], [49, -67, 69], [-2, 36, 71], [46, 53, 77], [-2, 28, 33], [-16, -51, -100], [-3, 50, 56], [31, -35, -87], [-13, 55, -58], [-13, -43, 80], [-27, -49, 72], [29, 34, -79], [-40, -49, 84], [-43, -72, 88], [-49, 65, -92], [-35, 64, 71], [-21, -28, 96], [-13, 45, 98], [-15, 28, -78], [-6, 26, 90], [-39, -80, -84], [-44, -46, 66], [44, 54, 60], [-23, 91, -100], [-59, -66, 85], [20, 28, -99], [59, -77, -82], [49, 54, -60], [-12, 63, 68], [-8, 50, 90], [-30, -45, 53], [-56, 71, -97], [-7, -20, 52], [-2, 33, 87], [49, 56, -74]]).
+ 1880  prolog solver.pl 
+ 1881  ls
+ 1882  touch topl2.txt
+ 1883  kate topl2.txt 
+ 1884  prolog solver.pl 
+ 1885  cat topl.
+ 1886  cat topl.txt 
+ 1887  ls
+ 1888  python converteur.py >> topl3.txt
+ 1889  prolog solver.pl 
+ 1890  python cnf_generator.py 
+ 1891  python" cnf_generator.py 
+ 1892  python3 cnf_generator.py 
+ 1893  ls
+ 1894  cat generated_30_100_3_12805.cnf 
+ 1895  python converteur.py  >> topl3.txt
+ 1896  ls
+ 1897  python converteur.py generated_30_100_3_12805.cnf  >> topl3.txt
+ 1898  python converteur.py generated_30_100_3_12805.cnf  >> topl4.txt
+ 1899  cat topl4.txt 
+ 1900  prolog solver.pl 
+ 1901  python3 cnf_generator.py 
+ 1902  ls
+ 1903  python converteur.py generated_30_100_3_4651.cnf  >> topl4.txt
+ 1904  python converteur.py generated_30_100_3_4651.cnf  >> top5.txt
+ 1905  rm topl4.txt 
+ 1906  python converteur.py generated_30_100_3_12805.cnf  >> topl4.txt
+ 1907  rm topl3.txt 
+ 1908  python converteur.py topl2.txt  >> top3.txt
+ 1909  prolog solver.pl 
+ 1910  python converteur.py pugeon_whole.cnf  >> piegon.txt
+ 1911  prolog solver.pl 
+ 1912  ssh stargate
+ 1913  latexpand main.tex > single.tex
+ 1914  latexpand main.tex > single.tex
+ 1915  prolog --version
+ 1916  prolog exempleCDCL.pl 
+ 1917  get https://depozit.isae.fr/theses/1995/1995_Lesaint_David.pdf
+ 1918  python3
+ 1919  htop
+ 1920  python3
+ 1921  htop
+ 1922  kate /home/etud/minizincPython/example_extension_v2.json
+ 1923  kate /home/etud/timetabling/src/choco/choco_strategie/test_strategie_simple_v2_experiment.json
+ 1924  kate /home/etud/2023-L1-dev-web/LALA/LOLO/solver-config-202504055555.json
+ 1925  htop
+ 1926  wget https://depozit.isae.fr/theses/1995/1995_Lesaint_David.pdf
+ 1927  latexpand main.tex > single.tex
+ 1928  cd ..
+ 1929  cd these-model-CP-reduce/
+ 1930  latexpand main.tex > single.tex
+ 1931  cd
+ 1932  cd 2023-L1-dev-web/
+ 1933  ls
+ 1934  cd LALA/
+ 1935  ls
+ 1936  cd Solver-CDCL/
+ 1937  ls
+ 1938  cd pl/
+ 1939  ls
+ 1940  prolog solver.pl 
+ 1941  cd
+ 1942  ssh stargate
+ 1943  clear
+ 1944  ssh stargate
+ 1945  runfm formatModelFeature_25_05_28_14_5959.xml 
+ 1946  runfm formatModelFeature_25_05_28_15_5906.xml 
+ 1947  ls
+ 1948  runfm formatModelFeature_25_05_31_17_3242.xml 
+ 1949  runfm formatModelFeature_25_05_31_17_5814.xml 
+ 1950  julia --version
+ 1951  julia solver_julia.julia 
+ 1952  lisp
+ 1953  julia solver_julia.julia 
+ 1954  julia reseau_de_neurone.julia 
+ 1955  julia reseau_de_neurone2.julia 
+ 1956  julia solver_julia.julia 
+ 1957  sudo fusermount -u  homeSKD
+ 1958  conda activate serviceUTP
+ 1959  python3 -m pip install pytoulbar2
+ 1960  python3 weightedqueens.py 
+ 1961  python3 weightedqueens.py 8
+ 1962  python3 weightedqueens.py 10
+ 1963  htop
+ 1964  ls
+ 1965  cat curriculumbalancingMonoObjectivePonderadoSINUFVJM.py 
+ 1966  eclipse &
+ 1967  kate /home/etud/timetabling/tools/tools_php/config_maquette_create/maquette_test_01.xml
+ 1968  python3
+ 1969  cd
+ 1970  alias runfm='conda run -n ServiceUTP python /home/etud/FM/FM_EDT/latexGraphModel.py'
+ 1971  kate .bashrc 
+ 1972  alias runfm='conda run -n serviceUTP python /home/etud/FM/FM_EDT/latexGraphModel.py'
+ 1973  sshfs stargate:/home/cbehuet/ /home/etud/homeSKD/
+ 1974  sudo fusermount -u  homeSKD
+ 1975  lsof +D /home/etud/homeSKD
+ 1976  fuser -m /home/etud/homeSKD
+ 1977  htop
+ 1978  fuser -m /home/etud/homeSKD
+ 1979  sudo fusermount -u  homeSKD
+ 1980  htop
+ 1981  sudo fusermount -u  homeSKD
+ 1982  fuser -m /home/etud/homeSKD
+ 1983  kill 24610c
+ 1984  kill 24610
+ 1985  fuser -m /home/etud/homeSKD
+ 1986  sudo umount -l /home/etud/homeSKD
+ 1987  sshfs stargate:/home/cbehuet/ /home/etud/homeSKD/
+ 1988  sudo fusermount -u  homeSKD
+ 1989  ssh stargate
+ 1990* ssh 
+ 1991  squeue
+ 1992  kate .bashrc 
+ 1993  cat .ssh 
+ 1994  ls .ssh/
+ 1995  cat contrainteUTPJFPC2022 
+ 1996  cat .ssh/config 
+ 1997  ssh 51.75.19.224
+ 1998  hsitory
+ 1999  history
+ 2000  history >> lala-histo.txt

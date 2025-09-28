@@ -1,0 +1,11 @@
+Un cas particulier important est celui où le cardinal d'un ensemble
+critique est égal à deux : on parle alors de contraintes disjonctives (la paire [i, j] constituant l'ensemble critique est appelée paire de disjonctions). Pour
+résoudre le conflit relatif à cet ensemble critique, i et j doivent être ordonnées
+dans un sens ou dans l'autre. Ainsi lorsqu'on ne s'intéresse qu'à la résolution
+de conflits relatifs à des ensembles critiques d'ordre deux, on parle de
+problème disjonctif (utilisation de robots, de machines-outils...). Dans le cas
+général, c'est-à-dire en présence d'ensembles critiques d'ordre supérieur à
+deux et lorsqu'on s'intéresse à la résolution de tous les conflits, on parlera
+de problème cumulatif. Par exemple si on dispose de trois maçons, il ne sera
+pas possible d'exécuter simultanément trois tâches nécessitant respectivement
+deux, un et un maçon.

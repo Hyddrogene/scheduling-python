@@ -1,0 +1,65 @@
+
+
+assign\_slot & All & max 1 & slot & max 1 & min 1 & slots  & yes & Assign a slot or slot tuple to a session&time\\ \hline
+
+allocation\_group&Part& max 1  & \multicolumn{4}{|c|}{no}  & no  & Domain allocation for class with group in the solution&group, domain\\ \hline
+
+assign\_room  & Course, Part, Class, Sessions, Teacher, Student &max 1 &rooms &  1 & min 1 &room & yes & Assign a set of room to session in entry&room, instanciation\\ \hline
+
+\multirow{2}{4em}{at\_most\_daily} & \multirow{2}{4em}{Course, Part, Class, Teacher, Room, Student }& \multirow{2}{4em}{max 1} &count & 1 & 1 & slot &\multirow{2}{4em}{ yes} &\multirow{2}{4em}{ Limit a number of session in intervalle } &\multirow{2}{4em}{ time, repartition}\\ 
+\cline{4-7}
+  & & &first& 1& 1& slot & &  &  \\
+  \cline{4-7}
+  & & &last& 1& 1& slot & &  &  \\
+\hline
+at\_most\_weekly & Course, Part, Class, Teacher, Room, Student & max 1 & count &  1 & 1 & slot & yes & Limit a number of session in intervalle &time,repartition\\ \hline
+
+connected\_room &  Course, Part, Class, Teacher, Room, Student ​& max 1 & roomChain & min 1  & min 2 & room [ordered]  & yes & Session need connected rooms &room, share\\ \hline
+
+disjunctive\_group & Student & max 1 & \multicolumn{4}{|c|}{no} & yes & A group cant have overlap of 2 sessions & overlap, student \\ \hline
+
+disjunctive\_room & Room   & max 1 & \multicolumn{4}{|c|}{no} & yes & A room cant host 2 sessions at same moment & overlap, room \\ \hline
+
+disjunctive\_teacher & Teacher & max 1 & \multicolumn{4}{|c|}{no} & yes & A teacher cant gives  classes at same moment& overlap, teacher\\ \hline
+
+domain\_class\_group & Class & max 1 & \multicolumn{4}{|c|}{no} & no & A subset of group to classes (need solution)& domain, group, class\\ \hline
+
+domain\_session\_teacher & Session & max 1 & \multicolumn{4}{|c|}{no} & no & A subset of teacher for sessions& domain, teacher, session\\ \hline
+
+domain\_class\_room &Class & max 1 & \multicolumn{4}{|c|}{no} & no & A subset of room for class &domain, class, room\\ \hline
+
+\multirow{2}{4em}{forbidden\_slot} & \multirow{2}{4em}{All} & \multirow{2}{4em}{max 1} & first & 1 & 1& slot & \multirow{2}{4em}{yes} & \multirow{2}{4em}{A session cant take slot in intervalle} & \multirow{2}{4em}{time, domain}\\
+  \cline{4-7}
+  & & &last& 1& 1& slot & &  &  \\
+\hline
+
+implicite\_sequenced\_sessions & Class & max 1 & \multicolumn{4}{|c|}{no} & no & All sessions in classes are sequenced&session, orchestration\\ \hline
+
+\multirow{2}{4em}{not\_consecutive\_rooms} &\multirow{2}{4em}{ Course, Part, Class, Teacher, Student} &\multirow{2}{4em}{ max 1} & minGap & 1 & 1 & slot & \multirow{2}{4em}{yes} & \multirow{2}{4em}{If 2 sessions have rooms in tuple then need a gap of mingap to walk from one the other} & \multirow{2}{4em}{ room, domain}\\ 
+  \cline{4-7}
+  & & &rooms& 2 & min 1 & room,label & &  &  \\
+\hline
+
+part\_schedule & all & max 1 & \multicolumn{4}{|c|}{no}  & yes & we allowed time part value&time, part, domain\\ \hline
+
+same\_daily\_slot & all & min 1, max n & \multicolumn{4}{|c|}{no} & yes & all slots of  selected sessions  are equal to the same daily slot & time, repartition, domain\\ \hline
+
+same\_day  & all & min 1, max n & \multicolumn{4}{|c|}{no} & yes & all slots of  selected sessions  are equal to the same day & time, repartition, domain\\ \hline
+
+same\_rooms & Course, Part, Class, Session, Teacher, Student  & min 1, max n & \multicolumn{4}{|c|}{no} & yes & all set rooms of  selected sessions  are equal &rooms, domain, repartition\\ \hline
+
+same\_slots & all  & min 1, max n & \multicolumn{4}{|c|}{no} & yes & all slots of  selected sessions  are equal &time, domain, repartition\\ \hline
+
+same\_teachers & Course, Part, Class, Session, Room, Student  & min 1, max n & \multicolumn{4}{|c|}{no} & yes & all set teachers of  selected sessions  are equal & teacher, repartition, domain\\ \hline
+
+same\_week & all & min 1, max n & \multicolumn{4}{|c|}{no} & yes & all slots of  selected sessions  are equal to the same week & time, repartition, domain\\ \hline
+
+same\_weeklyday & all & min 1, max n & \multicolumn{4}{|c|}{no} & yes & all slots of  selected sessions  are equal to the same weekly day & time, repartition, domain\\ \hline
+
+same\_weeklyslot & all & min 1, max n & \multicolumn{4}{|c|}{no} & yes & all slots of  selected sessions  are equal to the same weekly slot & time, repartition, domain\\ \hline
+
+sequenced & Course, Part, Class, Session & min 1, max n & \multicolumn{4}{|c|}{no} & no & Sessions are ordered in the horizon slot (i.e i < j slot[session[i]] < slot[session[j]] &session, orchestration\\ \hline
+
+teacher\_repartition & Class & min 2, max n & class & min 2 & 1 & option  & no & repartition of teacher into a differentes classes of part & repartition, teacher, session\\ \hline
+
+weekly & Course, Part, Class, Session & min 1, max n & \multicolumn{4}{|c|}{no} & no & A session tuple is weekly & repartition, time, orchestration\\ \hline

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<FeatureModel name="feature model for UTP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="featureModel-schema.xsd">
+
+<Features>
+    <Feature name="Cours" mandatory="false" activate="true" >
+        <subFeature>
+            
+            <Feature name="Horaires" mandatory="true" activate="true" >
+            </Feature>
+            
+            <Feature name="Salles" mandatory="false" activate="true" >
+            </Feature>
+            
+            <Feature name="Enseignant" mandatory="false" activate="true" >
+            </Feature>
+            
+
+            <Feature name="Modalité" mandatory="true" activate="true" >
+                <subFeature>
+                    <subFeature type="XOR">
+                        <Feature name="CM" activate="true" />
+                        <Feature name="TD" />
+                        <Feature name="TP" />
+                    </subFeature>
+                </subFeature>
+            </Feature>
+
+            <Feature name="Matériel" mandatory="false" activate="true" >
+                <subFeature>
+                    <subFeature type="OR">
+                        <Feature name="Tableau" activate="true" />
+                        <Feature name="Vidéoprojecteur" activate="true" />
+                        <Feature name="Tableau interactif" />
+                        <Feature name="Micro" />
+                    </subFeature>
+                </subFeature>
+            </Feature>
+            
+            
+            <Feature name="jean" mandatory="false" activate="true" >
+                <subFeature>
+                        <Feature name="David" activate="true" />
+                        <Feature name="Guillaume" activate="true" />
+                </subFeature>
+            </Feature>
+            
+        </subFeature>
+    </Feature>  
+
+</Features>
+
+    
+
+</FeatureModel>
+
+            
+   

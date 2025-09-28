@@ -1,0 +1,22 @@
+{
+"time_out":"40s",
+"vars":[
+{"x_room":[{"rank":"*"},"first_fail","indomain_random"]},
+{"x_teacher":[{"rank":"*"},"first_fail","indomain_max"]},
+{"x_slot":[{"label":"REPAS"},"first_fail","indomain_min"]},
+{"x_slot":[{"label":"EEO"},"first_fail","indomain_min"]},
+{"x_slot":[{"label":"CM"},"first_fail","indomain_min"]},
+{"x_slot":[{"rank":"[1-6]"},"first_fail","indomain_min"]},
+{"x_slot":[{"label":"CTD"},"first_fail","indomain_min"]},
+{"x_slot":[{"label":"TD"},"first_fail","indomain_min"]},
+{"x_slot":[{"label":"TP"},"first_fail","indomain_min"]},
+{"x_slot":[{"label":"CC,TPN"},"first_fail","indomain_max"]},
+{"x_teachers":[{"rank":"*"},"first_fail","indomain_min"]},
+{"x_rooms":[{"rank":"*"},"input_order","indomain_min"]}
+{"x_slot":[{"rank":"[7-*]"},"first_fail","indomain_min"]},
+
+],
+"constraint_hard":["implicite_sequenced_sessions","teacher_service","disjunctive_teacher","disjunctive_group","disjunctive_room","size_of_multiroom","bench_class_equilibrate"],
+"constraint_soft":["sameWeekDay","sameWeeklySlot","forbiddenPeriod","sameTeachers","sameRooms","periodic","weekly","allowedPeriod","sequenced","sameWeek","assignRoom","forbiddenRooms","differentWeekDay","differentWeek","differentSlots","disjunct","sameSlot","sameSlots"],
+"deactivate_rules":[{"rules":"276-282","comment":"Regle sameWeeklySlot qui pose probleme"}]
+}

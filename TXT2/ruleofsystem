@@ -1,0 +1,269 @@
+    <rules>
+        <!-- Regle CM systeme -->
+
+        <rule>
+            <sessions groupBy="class" sessionsMask="1,5-10" > 
+                <filter type="part" attributeName="id" in="Systeme-CM"/>
+            </sessions>
+            <constraint name="weekly" type="hard">
+            </constraint>
+        </rule>
+
+        <rule>
+            <sessions groupBy="class" sessionsMask="1-4" > 
+                <filter type="part" attributeName="id" in="Systeme-CM"/>
+            </sessions>
+            <constraint name="sameWeek" type="hard">
+            </constraint>
+        </rule>
+
+        <rule>
+            <sessions groupBy="part" sessionsMask="1-2" > 
+                <filter type="part" attributeName="id" in="Systeme-CM"/>
+            </sessions>
+            <constraint name="sameWeek" type="hard">
+            </constraint>
+        </rule>
+        <!-- TODO : add constraint sameDailySlot-->
+        <!--
+        <rule>
+            <sessions groupBy="part" sessionsMask="1" > 
+                <filter type="part" attributeName="id" in="Systeme-CM"/>
+            </sessions>
+            <sessions groupBy="part" sessionsMask="1" > 
+                <filter type="part" attributeName="id" in="Administration-CM"/>
+            </sessions>
+            <constraint name="sameDailyslot" type="hard">
+            </constraint>
+        </rule>
+        -->
+
+        <rule>
+            <sessions groupBy="class" sessionsMask="4">
+                <filter type="part" attributeName="id" in="Systeme-CM"/>
+            </sessions>
+            <sessions groupBy="class" sessionsMask="1">
+                <filter type="part" attributeName="id" in="Systeme-TP"/>
+            </sessions>
+            <constraint name="sequenced" type="hard">
+            </constraint>
+        </rule>
+
+        <rule>
+            <sessions groupBy="class" sessionsMask="10">
+                <filter type="part" attributeName="id" in="Systeme-CM"/>
+            </sessions>
+            <sessions groupBy="class" sessionsMask="1">
+                <filter type="part" attributeName="id" in="Systeme-Administration-CC"/>
+            </sessions>
+            <constraint name="sequenced" type="hard">
+            </constraint>
+        </rule>
+
+        <rule>
+            <sessions groupBy="class" sessionsMask="10">
+                <filter type="part" attributeName="id" in="Systeme-CM"/>
+            </sessions>
+            <sessions groupBy="class" sessionsMask="1">
+                <filter type="part" attributeName="id" in="Administration-CM"/>
+            </sessions>
+            <constraint name="sequenced" type="hard">
+            </constraint>
+        </rule>
+
+        <rule>
+            <sessions groupBy="class" sessionsMask="10">
+                <filter type="part" attributeName="id" in="Systeme-CM"/>
+            </sessions>
+            <sessions groupBy="class" sessionsMask="1">
+                <filter type="part" attributeName="id" in="Administration-TD"/>
+            </sessions>
+            <constraint name="sequenced" type="hard">
+            </constraint>
+        </rule>
+
+
+        <rule>
+            <sessions groupBy="class" >
+                <filter type="part" attributeName="id" in="Systeme-CM"/>
+            </sessions>
+            <constraint name="sameTeachers" type="hard">
+            </constraint>      
+        </rule>
+
+        <rule>
+            <sessions groupBy="class" >
+                <filter type="part" attributeName="id" in="Systeme-CM"/>
+            </sessions>
+            <constraint name="sameRooms" type="hard">
+            </constraint>      
+        </rule>
+
+               <!-- Regle CM Administration -->
+
+               <rule>
+                <sessions groupBy="class" > 
+                    <filter type="part" attributeName="id" in="Administration-CM"/>
+                </sessions>
+                <constraint name="weekly" type="hard">
+                </constraint>
+            </rule>
+    
+            <rule>
+                <sessions groupBy="class" sessionsMask="1">
+                    <filter type="part" attributeName="id" in="Administration-CM"/>
+                </sessions>
+                <sessions groupBy="class" sessionsMask="1">
+                    <filter type="part" attributeName="id" in="Administration-TD"/>
+                </sessions>
+                <constraint name="sequenced" type="hard">
+                </constraint>
+            </rule>
+    
+            <rule>
+                <sessions groupBy="class" sessionsMask="6">
+                    <filter type="part" attributeName="id" in="Administration-CM"/>
+                </sessions>
+                <sessions groupBy="class" sessionsMask="1">
+                    <filter type="part" attributeName="id" in="Systeme-Administration-CC"/>
+                </sessions>
+                <constraint name="sequenced" type="hard">
+                </constraint>
+            </rule>
+    
+    
+            <rule>
+                <sessions groupBy="class" >
+                    <filter type="part" attributeName="id" in="Administration-CM"/>
+                </sessions>
+                <constraint name="sameTeachers" type="hard">
+                </constraint>      
+            </rule>
+    
+            <rule>
+                <sessions groupBy="class" >
+                    <filter type="part" attributeName="id" in="Administration-CM"/>
+                </sessions>
+                <constraint name="sameRooms" type="hard">
+                </constraint>      
+            </rule>
+
+        <!-- Regle TP systeme -->
+
+        <rule>
+            <sessions groupBy="class" > 
+                <filter type="part" attributeName="id" in="Systeme-TP"/>
+            </sessions>
+            <constraint name="weekly" type="hard">
+            </constraint>
+        </rule>
+
+        <!--
+        <rule>
+            <sessions groupBy="part" sessionsMask="1" > 
+                <filter type="part" attributeName="id" in="Systeme-TP"/>
+            </sessions>
+            <sessions groupBy="part" sessionsMask="1" > 
+                <filter type="part" attributeName="id" in="Administration-TD"/>
+            </sessions>
+            <constraint name="sameDailyslot" type="hard">
+            </constraint>
+        </rule>
+    -->
+
+        <rule>
+            <sessions groupBy="class" sessionsMask="6">
+                <filter type="part" attributeName="id" in="Systeme-TP"/>
+            </sessions>
+            <sessions groupBy="class" sessionsMask="1">
+                <filter type="part" attributeName="id" in="Systeme-Administration-CC"/>
+            </sessions>
+            <constraint name="sequenced" type="hard">
+            </constraint>
+        </rule>
+
+        <rule>
+            <sessions groupBy="class" sessionsMask="6">
+                <filter type="part" attributeName="id" in="Systeme-TP"/>
+            </sessions>
+            <sessions groupBy="class" sessionsMask="1">
+                <filter type="part" attributeName="id" in="Administration-CM"/>
+            </sessions>
+            <constraint name="sequenced" type="hard">
+            </constraint>
+        </rule>
+
+        <rule>
+            <sessions groupBy="class" sessionsMask="6">
+                <filter type="part" attributeName="id" in="Systeme-TP"/>
+            </sessions>
+            <sessions groupBy="class" sessionsMask="1">
+                <filter type="part" attributeName="id" in="Administration-TD"/>
+            </sessions>
+            <constraint name="sequenced" type="hard">
+            </constraint>
+        </rule>
+
+
+        <rule>
+            <sessions groupBy="class" >
+                <filter type="part" attributeName="id" in="Systeme-TP"/>
+            </sessions>
+            <constraint name="sameTeachers" type="hard">
+            </constraint>      
+        </rule>
+
+        <rule>
+            <sessions groupBy="class" >
+                <filter type="part" attributeName="id" in="Systeme-TP"/>
+            </sessions>
+            <constraint name="sameRooms" type="hard">
+            </constraint>      
+        </rule>
+
+<!-- Regle TD Administration -->
+
+        <rule>
+            <sessions groupBy="class" sessionsMask="1,3,5,7,9,11" >
+                <filter type="part" attributeName="id" in="Administration-TD"/>
+            </sessions>
+            <constraint name="weekly" type="hard">
+            </constraint>
+        </rule>
+
+        <rule>
+            <sessions groupBy="class" sessionsMask="2,4,6,8,10,12" >
+                <filter type="part" attributeName="id" in="Administration-TD"/>
+            </sessions>
+            <constraint name="weekly" type="hard">
+            </constraint>
+        </rule>
+
+        <rule>
+            <sessions groupBy="class" >
+                <filter type="part" attributeName="id" in="Administration-TD"/>
+            </sessions>
+            <constraint name="sameRooms" type="hard">
+            </constraint>
+        </rule>
+
+        <rule>
+            <sessions groupBy="class" >
+                <filter type="part" attributeName="id" in="Administration-TD"/>
+            </sessions>
+            <constraint name="sameTeachers" type="hard">
+            </constraint>
+        </rule>
+
+        <rule>
+            <sessions groupBy="class" sessionsMask="6" >
+                <filter type="part" attributeName="id" in="Administration-TD"/>
+            </sessions>
+            <sessions groupBy="class" sessionsMask="1">
+                <filter type="part" attributeName="id" in="Systeme-Administration-CC"/>
+            </sessions>
+            <constraint name="sequenced" type="hard">
+            </constraint>
+        </rule>
+
+    </rules>

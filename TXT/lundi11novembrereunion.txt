@@ -1,0 +1,51 @@
+Changer le parser -> modifier la structure de donnée dans le modèle mzn.
+
+réussir à gerer le nouveau modele + contrainte
+
+vérifier la gestion de ITC avec le nouveau modèles.
+
+concomitente et coercion
+
+presenter haut niveau lanage de regle et maquette
+
+Pour nous les donner ensuite.
+
+instance -> bien expliquer à quoi cela correspond
+
+
+les données dont on a besoin
+valider experimentalement
+substision -> c'est chaud
+On se focalise sur le coeur du systeme
+aspect repartione et conception
+
+feuille de service avec le nombre d'heure par prof ?? -> tjrs utiles ?? 
+
+P1 et P2 -> dur et bcp de jour férié genre les jours férié et le campus day
+-> gérer les contraintes de périodicité
+
+
+contrainte enorme sur les jours pour kes intervenattns
+
+tp de chimie -> 2 jours pour tout faire rentrée -> salles très occupés et en amont on vérifie les salles
+
+élargir autres filières de chimie-> solver se depatouille
+
+notiosn d'arrivés d'étudiants-> pour le tutorat -> viol pour les tp de chimies
+bienvenue UA -> très contraignant
+les maths de communes
+les svt peu de périodicité-> fonctionnement chelou, ils mettent des TP partout ?-> permet de relacher peut être contrainte-> residus pratique manuel
+pose des problèmes pour les autres EDT !!!
+Dur de faire rentrer dans les trous
+bcp de CM:TD P1
+séance de correction d'(évalutation
+tnat de séance de cours avant de faire ....
+regle invariante d'année en année-> chimie resultats difficulté à programmer
+arrivé à dsicerner parmi les regles celles asboslue et celles de rsidus et recette manuelle
+manque actuellement-> trouver un creneau ou tous les etudiants sont libres-> chiant-> réunion collectives-> pénibles à chercher edt aerer
+génétique svt -> nom inervenats
+licence pro savent pas cm:td-> maquette que enseignement -> pas les examens
+possibilités cours suplémentaires
+-> indication pour la maquette peut être interessant
+salles traitement spéciale-> salle multimedia (videoproj),salles non multimedia -> maths,
+algebre elementaire etoiel

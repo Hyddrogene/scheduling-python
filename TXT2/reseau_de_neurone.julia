@@ -1,0 +1,103 @@
+# Reseau de neurones simple en Julia - Backpropagation manuelle avec vraie fonction sigmoide
+
+using Random
+
+# Fonction d'activation sigmoide (logisticienne) exacte et sa derivee
+function sigma(x)
+    return 1.0 ./ (1.0 .+ exp.(-x))
+end
+
+function sigma_prime(x)
+    s = sigma(x)
+    return s .* (1 .- s)
+end
+
+# Definition d'une structure de couche dense
+struct DenseLayer
+    W::Matrix{Float64}
+    b::Vector{Float64}
+end
+
+# Definition d'un reseau de neurones simple avec une couche cachee et une couche de sortie
+struct NeuralNetwork
+    layer1::DenseLayer
+    layer2::DenseLayer
+end
+
+# Initialisation du reseau (pour XOR)
+function create_network(input_size::Int, hidden_size::Int, output_size::Int)
+    Random.seed!(42)
+    layer1 = DenseLayer(randn(hidden_size, input_size), randn(hidden_size))
+    layer2 = DenseLayer(randn(output_size, hidden_size), randn(output_size))
+    return NeuralNetwork(layer1, layer2)
+end
+
+model = create_network(2, 4, 1)
+
+eta = 0.1  # taux d'apprentissage
+
+# Dataset XOR
+X = [
+    [0.0, 0.0],
+    [0.0, 1.0],
+    [1.0, 0.0],
+    [1.0, 1.0]
+]
+Y = [0.0, 1.0, 1.0, 0.0]
+
+# Forward pass
+function forward(model::NeuralNetwork, x)
+    z1 = model.layer1.W * x .+ model.layer1.b
+    a1 = sigma(z1)
+    z2 = model.layer2.W * a1 .+ model.layer2.b
+    y_hat = sigma(z2)
+    return z1, a1, z2, y_hat
+end
+
+# Backpropagation
+function backward(model::NeuralNetwork, x, y, z1, a1, z2, y_hat)
+    delta2 = (y_hat .- y) .* sigma_prime(z2)
+    delta1 = (model.layer2.W' * delta2) .* sigma_prime(z1)
+
+    dW2 = delta2 * a1'
+    db2 = delta2
+
+    dW1 = delta1 * x'
+    db1 = delta1
+
+    return dW1, db1, dW2, db2
+end
+
+# Entrainement
+epochs = 10000
+for epoch in 1:epochs
+    total_loss = 0.0
+    for i in 1:4
+        x = X[i]
+        y = Y[i]
+        x_vec = reshape(x, :, 1)  # colonne
+        y_vec = reshape([y], :, 1)
+
+        z1, a1, z2, y_hat = forward(model, x_vec)
+        dW1, db1, dW2, db2 = backward(model, x_vec, y_vec, z1, a1, z2, y_hat)
+
+        model.layer1.W .-= eta .* dW1
+        model.layer1.b .-= eta .* db1
+        model.layer2.W .-= eta .* dW2
+        model.layer2.b .-= eta .* db2
+
+        total_loss += sum((y_hat .- y_vec).^2)
+    end
+    if epoch % 1000 == 0
+        println("Epoch $epoch - Loss: $(round(total_loss, digits=4))")
+    end
+end
+
+# Test
+println("\nResultats apres entrainement :")
+for i in 1:4
+    x = X[i]
+    x_vec = reshape(x, :, 1)
+    _, _, _, y_hat = forward(model, x_vec)
+    println("Entree: $x -> Predite: $(round(y_hat[1], digits=4))")
+end

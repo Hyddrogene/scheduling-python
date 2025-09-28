@@ -1,0 +1,39 @@
+{
+    "openFiles": [
+        "data.mzn",
+        "heuristics.mzn",
+        "mwssp.mzn",
+        "mwssp_heuristics.mzn",
+        "mwssp_solve.mzn",
+        "wvcp.mzn",
+        "wvcp_heuristics.mzn",
+        "wvcp_solve.mzn",
+        "mwssp_wvcp.mzn",
+        "mwssp_wvcp_heuristics.mzn",
+        "mwssp_wvcp_solve.mzn"
+    ],
+    "openTab": 10,
+    "projectFiles": [
+        "../../../graphes_dzn/C2000.5.dzn",
+        "../../../graphes_dzn/C2000.9.dzn",
+        "../../../graphes_dzn/GEOM20.dzn",
+        "../../../graphes_dzn/GEOM30.dzn",
+        "../../../graphes_dzn/GEOM30b.dzn",
+        "../../../graphes_dzn/wap06a.dzn",
+        "../../../graphes_dzn/wap08a.dzn",
+        "data.mzn",
+        "heuristics.mzn",
+        "mwssp.mzn",
+        "mwssp_heuristics.mzn",
+        "mwssp_solve.mzn",
+        "mwssp_wvcp.mzn",
+        "mwssp_wvcp_heuristics.mzn",
+        "mwssp_wvcp_solve.mzn",
+        "wvcp.mzn",
+        "wvcp_heuristics.mzn",
+        "wvcp_solve.mzn"
+    ],
+    "selectedBuiltinConfigId": "org.gecode.gecode",
+    "selectedBuiltinConfigVersion": "6.3.0",
+    "version": 106
+}

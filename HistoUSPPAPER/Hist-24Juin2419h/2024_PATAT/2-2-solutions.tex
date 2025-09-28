@@ -1,0 +1,33 @@
+% ------------------------------------------------------------
+% ------------------------------------------------------------
+\subsection{Solutions}
+\label{sec:solution}
+
+The solution schema is used to encode
+any solution pre-computed for an instance.
+%(e.g., the choice of rooms and start times for sessions).
+Such a solution needs not be complete, nor consistent with the instance constraints.
+An instance may hence be associated with any kind of input solution based on the
+computational task,
+e.g. no solution at all when generating a timetable from scratch, 
+a resource allocation solution to extend into a complete timetable,
+a seed solution to improve, 
+or an inconsistent solution to repair.
+Formally, the solution schema
+supports the representation of
+any decision made for a session
+as to its start time,
+% on time points ($\var{\SESSION}{\SLOT}{s}$),
+its set of rooms
+%($\var{\SESSION}{\ROOM}{s}$)
+and its set of teachers.
+%($\var{\SESSION}{\TEACHER}{s}$)
+%for sessions.
+
+% the 
+% on time points ($\var{\SESSION}{\SLOT}{s}$),
+% rooms ($\var{\SESSION}{\ROOM}{s}$)
+% and lecturers ($\var{\SESSION}{\TEACHER}{s}$)
+% for sessions.
+
+

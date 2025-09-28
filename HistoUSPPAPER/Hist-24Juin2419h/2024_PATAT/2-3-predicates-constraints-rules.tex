@@ -1,0 +1,274 @@
+%------------------------------------------------------------
+%------------------------------------------------------------
+\subsection{Predicates, Constraints and Rules}
+\label{sec:schema-predicates-constraints-rules}
+
+The \UTP{} schema comes with a rule language to formulate instance-specific constraints.
+Rule constraints add to the built-in constraints of the schema
+and all must be checked when evaluating a solution.
+The rule language is designed to target groups of entities, or individual entities,
+and constrain the scheduling of their sessions
+from any standpoint
+(e.g., an institutional rule imposing a time structure on curricula,
+a disjunctive scheduling rule applied to student groups,
+a rule modeling the service plan within a faculty department,
+a rule for a lecturer's agenda).
+%the unavailability of department staff).
+% Each rule provides a compact representation
+% of a conjunction of constraints on selected entities and sessions.
+The schema comes with a catalog of timetabling predicates
+to build rules and compile them into constraints.
+It also includes a query language to select
+entities and sessions on which rules should apply.
+%to forge rules on selected entities and sessions.
+
+
+% Both the constraint syntax and query language
+All these components are designed around the concept of \textit{e-map}.
+Formally, an e-map is a pair $(e_i,S_i)$ 
+mapping an entity $e_i$ to a set $S_i$ of sessions.
+The query language is used to forge queries that retrieve sets of e-maps.
+Each query selects, filters and binds entities to sessions from instance data 
+in order to extract one or more sets of e-maps.
+% before assembling them into tuples.
+Each rule is bound to a predicate and scoped by a query.
+At flattening time, 
+the query is performed to retrieve a fixed number of sets of e-maps.
+The rule is then compiled into a conjunction of constraints
+by computing the cross-product of the extracted sets %of e-maps
+and applying the predicate to each tuple of e-maps in the cross-product.
+Constraint e-maps act as guards when checking solutions
+and they also narrow the scope of interpretation.
+The rationale is to discard constraints that are irrelevant
+(e.g., a teacher's constraint forbidding afternoon lectures while the solution only assigns him lab sessions)
+and, more generally, to limit constraint checks to the proposed assignments
+(e.g., checking the above lecturer's constraint on the actual lectures the solution assigns him).
+% E-maps may be classified as course or resource e-maps based on their entity.
+
+As mentioned above, 
+each %\UTP{} 
+constraint applies a predicate to a tuple of e-maps.
+\UTP{} predicates %accept one or more e-map variable arguments.
+%They 
+either accept a fixed number of %have a fixed arity (the number of 
+e-maps % variables % arguments)
+or are variadic.
+Their semantics may be indifferent to the ordering of their arguments or not,
+and some accept parameters.
+Besides, each predicate may be used indistinctly
+with course e-maps or resource e-maps (i.e., e-maps pairing course elements or resources),
+and any n-ary constraint may freely mix the two types
+(e.g., a constraint booking rooms for sessions involving different classes).
+Let ${\EMAP}=\ENTITY\times{2^{\SESSION}}$ denote the domain of e-maps,
+% defined by
+% and defined by:
+% \begin{equation*}
+% {\EMAP}=
+% \setunion{X}{\TYPE}
+% \myset{(e,S')\ |\ e\in X,
+% %\emptyset\subset 
+% S'\subseteq\map{X}{\SESSION}{e}}
+% \end{equation*}
+the general form of a %n-ary %{\UTP} 
+constraint is
+% \begin{equation*}
+% \begin{align}
+$c((e_1,S_1),\ldots,(e_n,S_n),p_1,\ldots,p_m)$ %\label{rule:constraint}
+% \end{align}
+% \end{equation*}
+where 
+$c$ is a predicate of arity $n$,
+$(e_1,S_1),\ldots,(e_n,S_n)$ are e-maps ($(e_i,S_i)\in{\EMAP}$ for $i=1\ldots n$) 
+and 
+$p_1,\ldots,p_m$ are values for the parameters of $c$ ($m\geq0$).
+
+The semantics of constraints relies on a join operation between constraint e-maps and solutions.
+% The pairing of entities and sessions to form e-maps
+% is subject to typing rules imposed by the instance schema.
+% Specifically, a course element (class, part, course or course domain)
+% may only be paired with some of its constitutive sessions,
+% whereas a resource 
+% may only be paired with some of its allowed sessions 
+% (or fixed sessions in the case of students and groups).
+% %consistently with the instance schema data.
+% E-maps may hence be classified as course or resource e-maps.
+% We associate an e-map variable to each entity of the instance
+% to denote the set of sessions it is assigned in a solution.
+% Course e-map variables are actually constants 
+% since each one represents the fixed set of constitutive sessions of a course element.
+% Resource e-map variables however do vary since sessions have to be chosen for each resource.
+Note first that any solution may be cast as a tuple of e-maps 
+by converting the session-to-resource assignments into resource e-maps
+and re-encoding the fixed maps binding course elements to their sessions.
+We say an e-map is \textit{null} if it pairs an entity with an empty set of sessions,
+and, by extension, a tuple of e-maps is null if it includes a null e-map.
+Given a solution and an e-map for some entity,
+we call \textit{joint e-map} the pairing of the entity with the set of sessions
+on which the solution and the e-map agree,
+i.e., the set-intersection of the sessions of the e-map and those assigned/bound to the entity in the solution encoding.
+We say a solution is \textit{inconsistent} with an e-map if their joint e-map is null.
+The join operation extends to tuples by performing the operation component-wise
+%By extension, %a tuple of e-maps may be joined with a solution by joining individual e-maps
+and a solution is said to be inconsistent with a tuple of e-maps 
+if its is inconsistent with at least one e-map in the tuple.
+
+%As for satisfiability, 
+% t
+The evaluation of a solution against a constraint
+%(to decide whether it is satisfied or not)
+% depends on the consistency of its e-map tuple with the solution.
+is conditioned by the tuple of e-maps joining those of the solution and the constraint.
+If the joint tuple is null, 
+the constraint is considered satisfied
+(i.e., it is deemed irrelevant and discarded).
+% that is, it is deemed irrelevant and hence discarded
+% (e.g., a constraint forbidding afternoon lectures while the solution does not include any).
+Otherwise, the predicate is evaluated on the joint e-map
+and the result depends on its built-in semantics.
+% \footnote{Formally, 
+% a constraint 
+% $c((e_1,S_1),\ldots,(e_n,S_n),p_1,\ldots,p_m)$
+% is satisfied by a solution
+% verifying
+% $\var{X}{\SESSION}{e_i}=S'_i$ ($i=1\ldots n$)
+% iff
+% there exists $i\in\myset{1,\ldots,n}$ s.t. $S_i\cap S'_i=\emptyset$
+% or else
+% $c((e_1,S_1\cap S'_1),\ldots,(e_n,S_n\cap S'_n),p_1,\ldots,p_m))$
+% holds true.}
+Specifically, the predicate is assessed on
+the tuple of sets obtained by substituting each set of sessions
+in the joint e-map
+either by the set of their assigned start times,
+or the set of their assigned resources of a given type (rooms, etc).
+Which type (time or resource type) to pick per e-map is fixed and predicate-specific
+(e.g., a temporal predicate will substitute any e-map argument by start times).
+Note that entities play no role in the evaluation %of e-map tuples
+once the join and substitution operations are over:
+each predicate is ultimately evaluated on sets made of start times or sets of resources.
+Note also that join operations leave course e-maps unchanged unlike resource e-maps.
+This means constraints applying exclusively to course e-maps are de facto unconditional. 
+
+% course e-maps 
+% E-maps bound to resources are interpreted as conditional session-to-resource assignments
+% when checking constraints
+% whereas e-maps defined on course elements are unconditional assignments since they model constitutive sessions.
+% It follows that 
+% a constraint is evaluated on every session that is mapped to a course element by one of its e-map arguments.
+% Constraints that apply exclusively to course elements are therefore unconditional. 
+% Note also that the use of e-maps that model the whole set of sessions compatible with an entity 
+% will necessarily constrain any session that may be assigned to this entity.
+
+The \UTP{} catalog provides predicates to cover the various dimensions of time--tabling problems.
+Some only address scheduling (i.e., start times),
+others room allocation, and so on.
+Table~\ref{tab:predicate_catalog} and Table~\ref{tab:constraintformel} given in Appendix~\ref{appendix:constraintcatalog} describe the predicates of the catalog and provide their semantics.
+%of the language
+%and indicates which are variadic or parametric.
+Syntactically, each rule binds a predicate to a query
+and denotes the conjunction of constraints obtained 
+by applying the predicate to
+each tuple of e-maps extracted by the query.
+% Note that a query actually retrieves one or more sets of e-maps
+% and does not explicitly compute their cross product.
+% Formally, a rule is a universally quantified formula 
+% wherein each quantifier restricts the domain of one of the e-map variables. 
+%A language of selectors is provided to build and filter domains of e-maps based on session ranks, entity identifiers, entity types, or any user-defined class of elements (e.g., team of lecturers, block of rooms). A rule hence denotes the conjunction of constraints obtained by instantiating the predicate over the cross-product of the domains of the e-map variables. 
+% Let 
+% ${\SELECTOR}$
+% denote the language of e-map domain selectors,
+% %(${\SELECTOR}\subseteq({\TYPE}\times{\LABEL}\times{2^{\RANK}})^{n}$).
+A %{\UTP} 
+rule has the form %is a tuple 
+% \begin{align}
+$c\langle{\SELECTOR},p_1,\ldots,p_m\rangle$
+% $r_c(F_1,\ldots,F_m,p_1,\ldots,p_n)$
+% \end{align}
+and is interpreted by %The semantics of a rule $(c,D_1,\ldots,D_m,p_1,\ldots,p_n)$ is 
+the %quantified 
+formula
+\begin{equation*}
+% \begin{flalign}
+\forall (e_1,S_1)\in\denote{\SELECTOR_1},\ldots,(e_n,S_n)\in\denote{\SELECTOR_{n}}: c((e_1,S_1),\ldots,(e_n,S_n),p_1,\ldots,p_m)
+% \forall (e_1,S_1)\in\denote{F_1},\ldots,(e_m,S_m)\in\denote{F_{m}}: c((e_1,S_1),\ldots,(e_m,S_m),p_1,\ldots,p_n)
+%&\label{rule:rule}
+% \end{flalign}
+\end{equation*}
+where 
+$c$ is a predicate of arity $n$ accepting $m$ parameters ($m\geq0$),
+$\SELECTOR$ is a query sized to extract $n$ sets of e-maps,
+$\denote{\SELECTOR_i}$
+denotes the $i$-th set of e-maps extracted with $\SELECTOR$
+ (%$F_i\in{\SELECTOR}$, 
+$i=1\ldots n$),
+% $
+% F_i\in{\SELECTOR}
+% $,
+and
+$p_1,\ldots p_m$ are values for the parameters of $c$.
+
+
+
+
+% E-maps bound to resources are interpreted as conditional session-to-resource assignments
+% when checking constraints
+% whereas e-maps defined on course elements are unconditional assignments since they model constitutive sessions.
+% It follows that 
+% a constraint is evaluated on every session that is mapped to a course element by one of its e-map arguments.
+% Constraints that apply exclusively to course elements are therefore unconditional. 
+
+% Note also that the use of e-maps that model the whole set of sessions compatible with an entity 
+% will necessarily constrain any session that may be assigned to this entity.
+
+% In the first case, the e-map is interpreted as a set of conditional entity-to-session assignments while it is unconditional if it models a course element. 
+% Specifically, a constraint is only evaluated on the sessions for which its e-map argument(s) and the considered solution propose the same entity. 
+% Each predicate may be applied equally well to any type of e-map and be used to constrain resources (e.g., lecturer unavailability), course elements (e.g., class periodicity) or individual sessions (e.g., session parallelization). 
+% Note that constraints on e-maps modeling sessions of course elements are de facto unconditional. 
+
+% A rule is tied to a predicate and models a conjunction of constraints on selected classes of entities and sessions (e.g., disjunctive scheduling rule for lecturers, time constraints on the courses of a curriculum).
+%For instance, unconditional start time restrictions using predicates such as {\SAMEDAILYSLOT} or {\FORBIDDENPERIOD}  may be enforced on any set of sessions bound to a course, a part, a class or more generally to the course domain. Conversely, start time restrictions on a set of sessions bound to a resource will only be enforced on those which are eventually assigned to the resource.
+%Predicates serve to constrain the possible sessions of resources (e.g., unavailabilities of a teacher) or the constitutive sessions of course elements (e.g., periodicity of a class). 
+%e-maps may then be adjusted to constrain candidate sessions of resources (e.g., teacher unavailability), constitutive sessions of course elements (e.g., class periodicity), or individual sessions (e.g., session sequencing and parallelization).
+
+% All {\UTP} constraints apply to pairs, called e-maps,
+% which associate an entity with a set of sessions.
+% % Specifically, 
+% % an e-map
+% % associates a course element with a subset of its constitutive sessions,
+% % or a resource with a subset of its allowed sessions.
+% The domain of e-maps is denoted by ${\EMAP}$
+% and defined by:
+% \begin{equation*}
+% {\EMAP}=
+% \setunion{X}{\TYPE}
+% \myset{(e,S')\ |\ e\in X,\emptyset\subset S'\subseteq\map{X}{\SESSION}{e}}
+% \end{equation*}
+
+% Constraints are built with predicates of the \UTP{} catalog.
+% The signature of a predicate includes one or more e-map variables
+% (i.e., variables ranging over the e-map domain),
+% the number of which defines the arity of the predicate. 
+% Note that some predicates may accept parameters.
+% Let 
+% ${\EMAP}=
+% \setunion{X}{\TYPE}
+% \myset{(e,S')\ |\ e\in X,S'\subseteq\map{X}{\SESSION}{e}\wedge S'\neq\emptyset}$
+% denote the set of e-maps,
+% The general form of a n-ary {\UTP} constraint is
+% \begin{align}
+% c((e_1,S_1),\ldots,(e_n,S_n),p_1,\ldots,p_k) \label{rule:constraint}
+% \end{align}
+% where 
+% $c$ is a predicate symbol of arity $n$,
+% $(e_1,S_1),\ldots,(e_n,S_n)$ are e-maps ($(e_i,S_i)\in{\EMAP}$, $i=1\ldots n$) 
+% and 
+% $p_1,\ldots,p_m$ are values for the parameters of $c$ ($m\geq0$).
+% Formally, let $\var{E}{\SESSION}{e}$ be the variable denoting the set of sessions assigned to entity $e$ and $S'_1,\ldots,S'_m$ be sets of sessions, the conditionality of a constraint $c$ is stated as follows: 
+% $(\var{E}{\SESSION}{e_1}=S'_1 \wedge\ldots\wedge\var{E}{\SESSION}{e_m}=S'_m)
+% \Rightarrow
+% (c((e_1,S_1),\ldots,(e_m,S_m),p_1,\ldots,p_n)
+% \Leftrightarrow
+% c((e_1,S_1\cap S'_1),\ldots,(e_m,S_m\cap S'_m),p_1,\ldots,p_n))$.
+
+%Three constraints (\ref{constraint-example-1}, \ref{constraint-example-2}, \ref{constraint-example-3}) are illustrated in Figure~\ref{fig:utp-rule-1}.
+

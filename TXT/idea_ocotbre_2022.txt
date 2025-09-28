@@ -1,0 +1,2 @@
+enlever les variables ensemblistes -> multilevel
+Passage des sessions aux classes

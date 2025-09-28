@@ -1,0 +1,26 @@
+rajouter Amphi DE C
+rajouter les salles de réunion-> G203,G208,G206
+
+On fait P1
+tutorat on ignore
+forbideen slot horaire décalé
+plus d'heure à CBH
+nombre de groupe-> 2,5
+cours hebdomadaire
+pragmatique on ignore bienvenueUA
+groupe1 cmi -> parcoursSUp que en 2éme année
+risque de regrouper les cours en fin de semaine
+
+weekly paire , weekly impaire , mingap dernière séances et le cc (correction)
+ajouter des contraintes sur l'ordre des cours
+sameSlot pour regrouper des séances-> les groupes de TP du même TD sont en parallele
+semaine enseignant référent -> EEO remplace une semaine simplification on fait le EEO chaque semaine
+
+étiquette additionnel ? -> pas forcément pour le moement
+
+<! Jour férié !>
+Weekly soft sur une semaine
+réparation relacher les jours fériés, 
+espace de relaxation -> travail analyse de l'échec
+sans bruit -> tu plaques -> puis corriger
+Tu isoles les jours fériés

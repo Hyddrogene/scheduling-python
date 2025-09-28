@@ -1,0 +1,186 @@
+Parfait ! On a ici **deux fichiers liés** dans une application Node.js / Express utilisant TypeScript. Je vais te détailler **leur rôle et fonctionnement**, étape par étape, pour que tu comprennes ce qu’ils font et comment ils interagissent.
+
+---
+
+# **1. Premier fichier : `featureRoutes`**
+
+```ts
+import { Router } from 'express';
+const featureRoutes = (container) => {
+  const router = Router();
+  const featureController = container.resolve('featureController');
+
+  router.get('/features', (req, res) => featureController.getFeatures(req, res));
+  router.put('/features/configure',(req, res) => featureController.configureFeatures(req, res));
+  router.get('/features/files', (req, res) => featureController.getFiles(req, res));
+  router.get('/download/:filePath', (req, res) => featureController.downloadFile(req, res));
+  router.delete('/features/files/:filePath', (req, res) => featureController.deleteFile(req, res));
+
+  return router;
+};
+
+export default featureRoutes;
+```
+
+### **Ce que fait ce fichier**
+
+1. **Création d’un routeur Express**
+
+   * `Router()` permet de créer un routeur dédié à un groupe de routes (`/features`, `/download`, etc.).
+
+2. **Injection de dépendances via `container.resolve`**
+
+   * Ici, le `featureController` est récupéré depuis un conteneur (souvent un **IoC container** comme `awilix` ou `inversify`).
+   * Cela permet de séparer **la logique métier** (controller) de la configuration des routes.
+
+3. **Définition des routes**
+
+   * `GET /features` → liste des fonctionnalités (méthode `getFeatures`)
+   * `PUT /features/configure` → configure les fonctionnalités (méthode `configureFeatures`)
+   * `GET /features/files` → liste des fichiers dans le stockage
+   * `GET /download/:filePath` → téléchargement d’un fichier ou d’un dossier
+   * `DELETE /features/files/:filePath` → suppression d’un fichier ou d’un dossier
+
+4. **Export du routeur**
+
+   * Le routeur sera utilisé dans le serveur principal (`app.use('/api', featureRoutes(container))`).
+
+---
+
+# **2. Deuxième fichier : `FeatureController`**
+
+Ce fichier contient toute la **logique métier pour les fonctionnalités** et la manipulation des fichiers.
+
+### **Imports principaux**
+
+* `fs`, `fsPromises` → gestion des fichiers et dossiers
+* `path` → manipulation des chemins
+* `archiver` → compression des dossiers en ZIP
+* `fs-extra` + `util.promisify` → fonctions promises pour suppression de fichiers
+* `FeatureService` et `FeatureModel` → logique métier pour les “features”
+
+---
+
+### **Classe `FeatureController`**
+
+```ts
+export class FeatureController {
+  featureService: FeatureService;
+  constructor({ featureService }: { featureService: FeatureService }) {
+    this.featureService = featureService;
+  }
+  ...
+}
+```
+
+* **Constructeur** : reçoit le service `featureService` qui contient la logique métier réelle pour gérer les “features”.
+* **Séparation nette** : le controller s’occupe **de la réception des requêtes et des réponses HTTP**, pas de la logique métier pure.
+
+---
+
+### **Méthodes principales**
+
+#### 1️⃣ `getFeatures`
+
+```ts
+public async getFeatures(req: Request, res: Response): Promise<void> {
+  const featureModel: FeatureModel =
+        await this.featureService.parseFromXMLToFeatures();
+  res.json(featureModel);
+}
+```
+
+* Appelle le service pour récupérer les features à partir d’un XML et les renvoie en JSON.
+* Gestion des erreurs avec un code `500` si problème.
+
+---
+
+#### 2️⃣ `configureFeatures`
+
+```ts
+async configureFeatures(req: Request, res: Response): Promise<void> {
+  const featureData = req.body;
+  await this.featureService.configureFeatures(featureData);
+  res.status(200).json({ message: "Features configured successfully", featureData });
+}
+```
+
+* Reçoit des données depuis le corps de la requête (`req.body`) et les transmet au service pour configuration.
+* Renvoie un message de succès en JSON.
+
+---
+
+#### 3️⃣ `getFilesTree` + `getFiles`
+
+```ts
+private async getFilesTree(dir: string) { ... }
+async getFiles(req: Request, res: Response): Promise<void> {
+  const files = await this.getFilesTree("src/storage/");
+  res.json(files);
+}
+```
+
+* Parcourt récursivement le dossier `src/storage` pour créer un **arbre de fichiers** avec structure `{name, path, children}`.
+* Retourne cet arbre en JSON au client.
+
+---
+
+#### 4️⃣ `downloadFile`
+
+```ts
+async downloadFile(req: Request, res: Response): Promise<void> {
+  const fullPath = path.join(basicPath, req.params.filePath);
+  const stats = fs.statSync(fullPath);
+
+  if (stats.isDirectory()) { ... zip le dossier ... }
+  else if (stats.isFile()) { res.download(fullPath); }
+}
+```
+
+* Si la cible est un **dossier**, le compresse en ZIP avant de le renvoyer.
+* Si c’est un **fichier**, le renvoie directement avec `res.download()`.
+* Gère les erreurs et envoie un 404 si le fichier/dossier n’existe pas.
+
+---
+
+#### 5️⃣ `deleteFile`
+
+```ts
+async deleteFile(req: Request, res: Response): Promise<void> {
+  const fullPath = path.join(basicPath, req.params.filePath);
+  await removePromise(fullPath);
+  res.sendStatus(200);
+}
+```
+
+* Supprime le fichier ou dossier demandé via `fs-extra`.
+* Retourne un code 200 si succès, 500 sinon.
+
+---
+
+# **3. Flux global de la requête**
+
+1. Le client fait une requête HTTP (`GET`, `PUT`, `DELETE`) vers `/features/...`.
+2. Le **router** (`featureRoutes`) attrape la requête et appelle la méthode correspondante du `FeatureController`.
+3. Le **controller** traite la requête :
+
+   * Appel éventuel au service (`FeatureService`) pour logique métier
+   * Lecture/écriture/suppression de fichiers si nécessaire
+   * Construction de la réponse HTTP (JSON, fichier, code d’erreur)
+4. Le **client** reçoit la réponse et peut l’afficher ou déclencher une action côté front.
+
+---
+
+# **4. Points clés**
+
+* Séparation **routes → controller → service → modèle** (bonne pratique MVC).
+* `FeatureController` gère **HTTP et fichiers**, mais la logique métier spécifique est dans `FeatureService`.
+* Les routes dynamiques (`:filePath`) permettent de manipuler **n’importe quel fichier ou dossier** sous `src/storage`.
+* L’utilisation de `archiver` permet **le téléchargement de dossiers compressés**.
+* Promises et `async/await` garantissent un code **asynchrone et non bloquant** pour Node.js.
+
+---
+
+Si tu veux, je peux te faire un **schéma visuel du flux complet** de `requête HTTP → router → controller → service → réponse`, ce qui permet de voir clairement comment tout s’enchaîne et où chaque partie intervient.
+
+Veux‑tu que je fasse ce schéma ?

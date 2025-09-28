@@ -1,0 +1,16 @@
+The first predicates \SAMEDAILYSLOT, , same slot enforce common restrictions on the start times of the targeted sessions (e.g.,
+sessions starting the same day). Additionally, any start time interval may
+be forbidden by passing its start and end points as parameters to predicate
+forbidden period. Predicates at most daily and at most weekly upper-bound the number of sessions scheduled daily or weekly within the given
+time interval. sequenced is a n-ary predicate (n >= 2) which constrains the
+latest session of the i-th e-map to end before the earliest session of i + 1-th e-map (i = 1..n - 1). Predicate weekly ensures sessions are scheduled
+weekly without presuming any particular sequencing. Predicate no overlap
+ensures sessions do not overlap in time and is typically used to model disjunctive resources. Predicate travel factors in any travel time incurred between
+consecutive sessions hosted in distant rooms. The travel time matrix is a parameter of the predicate. same rooms, same students and same lecturers
+require that sessions be assigned to the same set of rooms, students or lecturers. Predicate adjacent rooms require that sessions be hosted in adjacent
+rooms based on an adjacency graph passed as a parameter. Lastly, predicate
+lecturer distribution distributes the volumes of sessions represented by
+the different e-map arguments among different lecturers. Lecturers and session volumes are parameters of the predicate.
+
+
+\textbf{\ADJACENTROOMS}((e,S'),K$_1$,$\dots$,K$_n$) with $ K_i \subseteq \ROOM, i : 1..n $ where K\_i

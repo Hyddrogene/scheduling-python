@@ -1,0 +1,65 @@
+Pour arrêter ChocoSolver avant la fin de la recherche et récupérer une solution partielle en Java, vous pouvez utiliser un moniteur pour contrôler l'exécution du solveur et récupérer la meilleure solution trouvée jusqu'à présent. Voici comment vous pouvez procéder :
+
+1. **Utiliser un Moniteur** : Implémentez un moniteur personnalisé qui interrompra la recherche après un certain temps ou lorsque certaines conditions sont remplies.
+2. **Configurer le Solveur** : Utilisez les méthodes de configuration du solveur pour enregistrer le moniteur et gérer les solutions partielles.
+
+Voici un exemple de code en Java qui montre comment faire cela :
+
+```java
+import org.chocosolver.solver.Model;
+import org.chocosolver.solver.Solver;
+import org.chocosolver.solver.search.limits.TimeCounter;
+import org.chocosolver.solver.variables.IntVar;
+
+public class ChocoSolverExample {
+    public static void main(String[] args) {
+        // Créer un modèle
+        Model model = new Model("MyModel");
+
+        // Définir les variables
+        IntVar x = model.intVar("X", 0, 10);
+        IntVar y = model.intVar("Y", 0, 10);
+
+        // Ajouter des contraintes
+        model.arithm(x, "+", y, "=", 10).post();
+
+        // Récupérer le solveur
+        Solver solver = model.getSolver();
+
+        // Définir une limite de temps (par exemple 5 secondes)
+        solver.limitTime("5s");
+
+        // Rechercher des solutions
+        while (solver.solve()) {
+            System.out.println("Solution trouvée : x=" + x.getValue() + ", y=" + y.getValue());
+        }
+
+        // Récupérer la meilleure solution trouvée avant l'arrêt
+        if (solver.isStopCriterionMet()) {
+            System.out.println("Recherche arrêtée avant la fin. Meilleure solution partielle : x=" + x.getValue() + ", y=" + y.getValue());
+        }
+    }
+}
+```
+
+### Explications
+
+1. **Créer un modèle et définir les variables** : Créez un modèle et définissez les variables que vous souhaitez utiliser dans votre problème.
+
+2. **Ajouter des contraintes** : Ajoutez les contraintes nécessaires à votre problème.
+
+3. **Récupérer le solveur** : Récupérez le solveur du modèle.
+
+4. **Définir une limite de temps** : Utilisez `solver.limitTime("5s")` pour arrêter la recherche après 5 secondes. Vous pouvez ajuster ce temps selon vos besoins.
+
+5. **Rechercher des solutions** : Utilisez une boucle `while (solver.solve())` pour rechercher des solutions jusqu'à ce que la limite de temps soit atteinte.
+
+6. **Récupérer la meilleure solution partielle** : Après l'arrêt de la recherche, vérifiez si le critère d'arrêt a été atteint avec `solver.isStopCriterionMet()` et récupérez la meilleure solution trouvée jusqu'à présent.
+
+### Note
+
+Vous pouvez également utiliser d'autres critères de limitation comme `solver.limitSolution(...)` ou `solver.limitNode(...)` pour arrêter la recherche en fonction d'autres critères comme le nombre de solutions ou de nœuds explorés. 
+
+### Avantage de cette approche
+
+Cette méthode vous permet de récupérer une solution partielle lorsque le solveur est interrompu, ce qui peut être utile dans des scénarios où vous devez obtenir des résultats rapidement ou lorsque le temps de calcul est limité.

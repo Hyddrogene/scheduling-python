@@ -1,0 +1,124 @@
+\begin{center}
+\begin{table}[!ht]
+    \centering
+    \begin{tabular}{|ll|}
+    %\begin{tabular}{ll}
+    \hline
+       \grayrow $(e_i,S_i)$
+        & e-map mapping entity $e_i$ to the set of sessions $S_i$
+        \\
+    \hline
+        ${\EMAP}=\ENTITY\times{2^{\SESSION}}$  
+        & the domain of e-maps
+        \\
+    \hline
+      \grayrow  $c((e_1,S_1),..,(e_n,S_n),p_1,..,p_m)$
+        &  constraint of predicate $c$, arity $n$, parameters $p_1,..,p_m$
+        \\
+    \grayrow    & and e-map arguments $(e_1,S_1),..,(e_n,S_n)\in{\EMAP}^{n}$
+        \\
+    \hline
+    $\RANK$ = $1..\max\limits_{s\in\SESSION} \sessionrank{s}$ & the range of session ranks 
+    \\
+    %& i.e. ${\maptype{\RANK}{\SESSION}}:\RANK\rightarrow2{^\SESSION}$ is the rank-based partitioning of sessions s.t.
+    %\\
+    %&$s\in\map{\RANK}{\SESSION}{o}$ iff $\sessionrank{s}=o$
+    %\\
+    \hline
+    ${\LABEL}^{*}={\LABEL}\cup\myset{\ENTITY}\cup\myset{\myset{e}\ |\ e\in{\ENTITY}}$
+        &
+the set of labels 
+
+    \\\hline
+   \grayrow $
+{\SELECTOR}=\cup_{n\geq1}({\TYPE}\times{\LABEL}^*\times{2^{\RANK}})^{n}
+$& the language of queries
+    \\\hline
+     \grayrow   $c\langle{\SELECTOR},p_1,\ldots,p_m\rangle$
+        & rule of predicate $c$, query $\SELECTOR$ and parameters $p_1,\ldots p_m$
+        \\
+     \grayrow   & - $c$ predicate of arity $n$ and number of parameters $m$
+        \\
+     \grayrow   & - $\SELECTOR$ query sized to extract $n$ sets of e-maps
+        \\
+     \grayrow   & - $p_1,\ldots p_m$ values for the parameters of $c$
+        \\
+    \hline
+    \end{tabular}
+    \caption{Predicates, constraints, queries and rules.}
+    \label{tab:rule-language}
+\end{table}
+\end{center}
+
+
+% Let
+% ${\RANK}$
+% denote the range of session ranks,
+% ${\maptype{\RANK}{\SESSION}}:\RANK\rightarrow2{^\SESSION}$
+% the rank-based partitioning of sessions
+% ($s\in\map{\RANK}{\SESSION}{o}$ iff $\sessionrank{s}=o$),
+% and
+% completed 
+% with the whole set of entities to mock label optionality
+% %($\ENTITY\in{\LABEL}^*$)
+% and singleton entities to support identity-based selection,
+% %($\myset{\myset{e}\ |\ e\in{\ENTITY}}\subseteq{\LABEL}^*$),
+% the language of selectors
+% is the set 
+% $
+% {\SELECTOR}=\cup_{n\geq1}({\TYPE}\times{\LABEL}^*\times{2^{\RANK}})^{n}
+% $.
+% %where each 
+% Each selector 
+% $
+% d=((T_1,L_1,O_1),\ldots,(T_k,L_k,O_k))
+% $
+% %($k\geq1$)
+% decomposes into a generator
+% $
+% (T_1,L_1,O_1)
+% $
+% and a possibly empty list of filters
+% $
+% ((T_2,L_2,O_2),\ldots,(T_k,L_k,O_k))
+% $.
+% $d$ matches any e-map
+% whose entity has type $T_1$ and label $L_1$ and whose image includes any compatible session satisfying mask $O_1$ and any of the filters.
+% The set of e-maps
+% $\denote{d}$
+% matched by $d$
+% is defined by
+% \begin{multline*}
+% \denote{d}=
+% \bigcup\limits_{e\in{T_1\cap L_1}}
+% \Big \{(e,S')
+% \ |\ 
+% S'=
+% \map{T_1}{\SESSION}{e}
+% \;\bigcap
+% %\\
+% \bigcup\limits_{i=2\ldots k}
+% {\Big(
+% \mape{T_i}{\SESSION}{L_i}
+% \bigcap
+% \mape{\RANK}{\SESSION}{O_1\cap O_i}
+% \Big)
+% }
+% \\
+% \wedge
+% S'\neq\emptyset
+% \Big \}
+% \end{multline*}
+
+% where
+% $
+% {\mape{X}{Y}{X'}}
+% =
+% %$
+% %denotes
+% %$
+% \bigcup\limits_{i\in X'}{\map{X}{Y}{i}}
+% $
+% with
+% $X'\subseteq X$
+% .

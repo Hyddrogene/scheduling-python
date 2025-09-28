@@ -1,0 +1,17 @@
+Modif ::
+
+- Correction de , ou . pour les paragraphes -> Est-ce correct ?
+- Écriture d'un chapeau pour le chapitre sur l'état de l'art -> OK  
+- Correction des macros -> OK  
+- Changement de la première phrase du problème UCTP pour la rendre plus claire -> Réécrite  
+- Ajout d'un chapeau au schéma pour mieux expliquer la différence entre problème et schéma  
+- Suppression de la phrase sur ITC-2012 -> Aucun intérêt  
+- Correction pour CP -> J'ai repris la phrase et modifié pour qu'elle corresponde vraiment à la description des mécanismes + séparation des concepts  
+- Ajout de la contribution dans le chapeau et déplacement de l'idée de classification un peu plus haut, mais de manière plus légère pour motiver l'intérêt  
+- Ajout de la contrainte transversale + correction des descriptions  
+- Ajout d'une phrase pour expliquer les pointillés et les traits pleins dans les schémas  
+- Modification du chapeau sur la classification via un FM (en deux temps : schéma et travaux)  
+- Suppression de "UTP" qui se baladait -> Il ne se balade plus  
+- Présentation de XHSTT pour les contraintes -> Sous forme de catalogue  
+- Présentation d'ITC-2019 -> Définition des "times" plus claire  
+- Corrections de petites erreurs

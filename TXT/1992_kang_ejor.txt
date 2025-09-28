@@ -1,0 +1,231 @@
+### Résumé
+
+La construction de calendriers impliquant trois ou plusieurs variables prenant des valeurs de domaines ayant des milliers de valeurs avec plusieurs dizaines de contraintes de différentes priorités est un problème commun à de nombreuses organisations. Diverses solutions heuristiques ont été proposées en utilisant des résultats basés sur la théorie des graphes, la programmation mathématique et des méthodes manuelles. Nous proposons une approche basée sur la programmation logique utilisant le calcul des prédicats du premier ordre. Un algorithme a été développé, implémenté en WPROLOG, et testé en profondeur sur un Amdahl 5880 sous VM HPL.
+
+### I. Introduction
+
+La planification ou la création de calendriers est une activité courante dans les organisations où des groupes de personnes doivent programmer un certain nombre de réunions sur une période de temps en utilisant un ensemble de ressources telles que des salles de réunion. Habituellement, il existe également un ensemble de contraintes stipulant des éléments tels que la durée permise par réunion, la présence requise aux réunions et la répartition des ressources. La planification de la réunion annuelle d'une société savante, l'utilisation des fauteuils dentaires dans une clinique multi-pratiques et l'établissement des horaires de cours universitaires sont des exemples de cette activité.
+
+Le problème serait relativement simple sans la présence de l'ensemble des contraintes. Les conflits critiques, ou contraintes de premier ordre, sont des conflits généralement considérés comme inacceptables : la planification de deux réunions dans la même salle au même moment, ou l'exigence que des participants soient à deux endroits simultanément. Les conflits non critiques, ou contraintes de second ordre, sont ceux que l'on aimerait éviter si possible mais que l'on est prêt à accepter s'il n'y a pas d'autres choix. Ces conflits, contrairement aux premiers, sont souvent d'origine locale et peuvent varier considérablement en fonction des circonstances exactes de temps et de lieu.
+
+Les contraintes de premier ordre doivent être évitées et les systèmes qui construisent des calendriers doivent être programmés pour éliminer toute possibilité de leur occurrence. Les calendriers qui satisfont toutes leurs contraintes de premier ordre sont appelés des calendriers faisables. Les contraintes de second ordre peuvent être permises si absolument nécessaire, mais même alors, elles doivent être minimisées autant que possible. Souvent, certaines des contraintes de second ordre sont plus désagréables que d'autres. Les moins souhaitables de cette dernière catégorie doivent être évitées avec plus de rigueur que les moins objectionnables. L'approche par fonction objective est généralement inappropriée pour des problèmes de cette complexité en raison de la difficulté ou de l'impossibilité de quantifier certains facteurs.
+
+Le travail rapporté ici est une étude de la résolution des contraintes avec des contraintes de premier et de second ordre examinées dans le contexte de l'établissement des horaires des cours universitaires. La motivation de cette étude découle de la nécessité pour les institutions de gérer l'utilisation croissante des ressources avec des budgets gelés qui couvrent à peine l'inflation. Les calendriers générés manuellement, qui sont utilisés presque partout actuellement, ne sont pas optimisés et sont souvent même pas faisables. Ainsi, une utilisation plus efficace des ressources existantes était l'objectif principal. Nous souhaitions également réduire le grand nombre d'heures de travail nécessaires pour préparer et modifier le calendrier.
+
+Malheureusement, les méthodes les plus évidentes pour gagner en efficacité, telles que la densification des classes, sont indésirables pour d'autres raisons. Par conséquent, tout en voulant une plus grande efficacité en termes d'utilisation des salles et de la répartition des charges par étudiant, le système doit également gérer les demandes pour un choix accru de cours pour tous les programmes étudiants, l'indisponibilité des professeurs pendant certaines périodes en raison de réunions et d'implications extérieures, la séparation géographique des bâtiments à travers le campus, et une multitude d'autres facteurs.
+
+Il n'existe pas encore de méthode généralement acceptée pour résoudre des problèmes de cette complexité. Un problème connexe plus simple, le problème de planification des examens, a été beaucoup plus étudié et plusieurs approches existent. Ces approches ont été étendues, avec divers degrés de succès, au problème de la planification des horaires. La première de ces approches, le problème de coloration de graphe, est la plus ancienne et a atteint un certain degré de succès. Cela est suivi par diverses méthodes de programmation mathématique telles que la génération de colonnes, généralement utilisées pour des problèmes nécessitant un certain degré d'optimisation. Des méthodes semi-interactives qui utilisent des experts en planification pour compléter les connaissances intégrées dans le système informatique ont trouvé une certaine utilité.
+
+L'approche étudiée ici est basée sur la programmation logique et consiste en la résolution de contraintes formulées en clauses logiques de premier ordre. C'est une technique qui vient juste d'émerger et, au moment où le projet a commencé, il n'y avait pratiquement rien de connu sur la façon dont cette approche réussirait à résoudre des problèmes de cette taille et de cette complexité. Trois raisons expliquent pourquoi cette approche semblait valable :
+
+1. **Modularité** : L'approche logique permet de modifier le programme en ajoutant ou supprimant des clauses. Une clause décrivant une contrainte est indépendante des autres et peut donc être modifiée facilement sans affecter d'autres parties du programme.
+2. **Portabilité** : La programmation a été réalisée dans une variante relativement simple d'un langage de programmation logique commun, W-PROLOG.
+3. **Faisabilité** : Un grand nombre de contraintes complexes sont plus facilement formulées en logique de premier ordre qu'avec d'autres techniques plus courantes car elles ne nécessitent pas de spécifications procédurales. Ainsi, les exigences complexes des horaires réels peuvent être fidèlement capturées par le système informatique sans compromis pratiques, produisant des résultats vraiment faisables.
+
+Nous présentons ci-dessous une définition du problème de planification via deux sous-problèmes : la planification du temps et la planification des salles. Une discussion sur quatre méthodes utilisées pour établir les horaires est ensuite suivie, et l'une d'elles, la méthode logique de premier ordre, est discutée en détail. La formulation du problème de planification en logique est présentée avec des résultats expérimentaux et des détails de mise en œuvre. Les procédures de test sont décrites et enfin, des conclusions sont tirées.
+
+### 2. Le problème de la planification des horaires
+
+Le problème de la planification des horaires a été étudié par les chercheurs depuis le début des années 60 et une quantité considérable de littérature pertinente [17] est apparue. Les approches ont varié, allant de la duplication informatisée des systèmes de comptabilité manuelle à celles basées sur le calcul des prédicats du premier ordre. Dans le but de réduire la complexité du problème, la planification des horaires est souvent réalisée en deux étapes distinctes : la planification des périodes, où les paires cours-enseignant sont programmées dans un nombre fixe de périodes, et la planification des salles, qui attribue les salles de classe aux cours. Le problème bien connu de la planification des examens [21] est un exemple de la première étape.
+
+### 2.1. Planification des périodes
+
+Une formulation du problème de la planification des périodes peut être donnée sous la forme proposée par De Werra [5]. Soit \( C = \{c_1, \ldots, c_m\} \) un ensemble de classes et \( T = \{t_1, \ldots, t_n\} \) un ensemble d'enseignants. Il existe une matrice des besoins \( m \times n \) \( R = (r_{ij}) \) où \( r_{ij} \) est le nombre de cours impliquant la classe \( c_i \) et l'enseignant \( t_j \). Soit \( x_{ijk} = 1 \) si la classe \( c_i \) et l'enseignant \( t_j \) se rencontrent à la période \( k \) pour un cours qui n'est pas une pré-affectation ; \( x_{ijk} = 0 \) sinon. Les contraintes de l'emploi du temps sont :
+
+\[ \sum_{k=1}^{p} x_{ijk} = r_{ij} \quad (i = 1, \ldots, m ; j = 1, \ldots, n) \]
+\[ \sum_{j=1}^{n} x_{ijk} \leq b_{ik} \quad (i = 1, \ldots, m ; k = 1, \ldots, p) \]
+\[ \sum_{i=1}^{m} x_{ijk} \leq c_{jk} \quad (j = 1, \ldots, n ; k = 1, \ldots, p) \]
+
+où
+- \( r_{ij} = r_{ij}' - \sum_{k=1}^{p} r_{ijk} \),
+- \( b_{ik} = 1 \) si \( c_i \) est disponible et n'est pas pré-affecté à la période \( k \), et 0 sinon,
+- \( c_{jk} = 1 \) si \( t_j \) est disponible et n'est pas pré-affecté à la période \( k \), et 0 sinon,
+- \( r_{ijk} = 1 \) s'il y a une réunion pré-affectée de la classe \( c_i \) et de l'enseignant \( t_j \) pendant la période \( k \), et 0 sinon.
+
+Bien que dans certains cas particuliers il soit possible de déterminer si un tel emploi du temps existe ou non, [5] Even, Itai et Shamir ont prouvé que le problème de décider si une solution existe pour le problème de planification des périodes est NP-complet [8].
+
+
+### 2.2. Planification des salles
+
+L'affectation des salles de classe aux cours est souvent étudiée séparément de la planification des enseignants et des cours. La formulation du problème est généralement exprimée en termes de variable d'occupation, \( x_{ij} \), qui est égale à 1 lorsque la classe \( c_i \) est affectée à la salle \( r_j \). Les contraintes pour ce problème sont [3] :
+
+\[ \sum_{j=1}^{m} x_{ij} = 1 \quad (i = 1, \ldots, n), \]
+\[ \sum_{i \in P_k} x_{ij} \leq 1 \quad (j = 1, \ldots, m ; k = 1, \ldots, p) \]
+
+où \( P_k \) représente l'ensemble de toutes les classes qui se rencontrent pendant la période \( k \). La première contrainte assure que chaque classe est affectée à une salle tandis que la deuxième contrainte empêche une salle d'avoir plus d'une classe au même moment.
+
+### 2.3. Planification des horaires
+
+Le problème complet de la planification des horaires implique un ensemble de paires classe-enseignant, un ensemble de périodes de temps, c'est-à-dire des intervalles pendant lesquels les cours sont donnés, un ensemble de programmes d'étudiants représentant les ensembles de cours que certains groupes d'étudiants doivent suivre, et un ensemble de salles de classe. Les éléments de ces ensembles doivent être planifiés de manière à :
+
+(a) Aucun enseignant ou classe n'est requis pour être à plus d'un endroit pendant la même période.
+(b) Tous les cours sont planifiés.
+(c) Toutes les salles de classe sont suffisamment grandes pour accueillir les classes qui leur sont assignées.
+
+Ces contraintes peuvent être exprimées formellement comme suit :
+ 
+Soit \( m \) le nombre de périodes de temps, \( k = 1, \ldots, m \) ; \( n_2 \) enseignants, \( j = 1, \ldots, n_2 \) ; \( n_1 \) classes, \( i = 1, \ldots, n_1 \) ; et \( n_r \) salles, \( l = 1, \ldots, n_r \). Il y a une matrice des besoins \( R = (r_{ij}) \) et deux vecteurs, \( E \) est un vecteur de taille \( n_r \) dont l'élément \( i \)-ème est l'inscription dans la classe \( i \), et \( C \) est un vecteur de taille \( n_r \) dont l'élément \( i \)-ème donne la capacité de la salle \( i \). Déterminer s'il existe une fonction
+
+\[ S = \{x_{ijkl}\} \quad : \quad \{1, \ldots, m\} \times \{1, \ldots, n_1\} \times \{1, \ldots, n_2\} \times \{1, \ldots, n_r\} \rightarrow \{0, 1\} \]
+
+où \( x_{ijkl} = 1 \) si l'enseignant \( j \) rencontre la classe \( i \) dans la salle \( l \) pendant la période \( k \), de telle sorte que :
+
+\[ \sum_{k} \sum_{l} x_{ijkl} = r_{ij}, \quad (1) \]
+\[ \sum_{i} x_{ijkl} \leq 1, \quad (2) \]
+\[ \sum_{j} x_{ijkl} \leq 1, \quad (3) \]
+\[ \sum_{l} x_{ijkl} \leq 1, \quad (4) \]
+\[ \sum_{j} \sum_{k} E_i x_{ijkl} \leq \sum_{j} \sum_{k} C_l x_{ijkl}. \quad (5) \]
+
+La contrainte (1) exige que le nombre de réunions de la classe \( i \) et de l'enseignant \( j \) soit conforme aux spécifications de la matrice des besoins ; la contrainte (2) spécifie que chaque période-classe-salle n'a au plus qu'un enseignant impliqué ; la contrainte (3) spécifie que chaque enseignant-période-salle n'a au plus qu'une classe impliquée ; la contrainte (4) spécifie que chaque enseignant-période-classe occupe au plus une salle ; et la contrainte (5) spécifie que toutes les salles sont suffisamment grandes pour contenir les classes qui y sont planifiées.
+
+Il est évident que le problème de la planification des horaires est intrinsèquement complexe. Dans des situations réelles, cette complexité devient très difficile à gérer en raison d'un certain nombre de facteurs complicateurs.
+
+(i) Lorsque le nombre de cours dépasse environ 1000, le nombre de contraintes devient si grand que de nombreux algorithmes deviennent impraticables ou impossibles à mettre en œuvre [12]. De plus, si des contraintes secondaires telles que les préférences et disponibilités des enseignants sont prises en compte, le temps de résolution peut devenir inacceptablement long et même alors, aucune solution n'est garantie.
+
+(ii) La construction d'un emploi du temps implique des contraintes psychologiques et pédagogiques. Un bon emploi du temps doit non seulement incorporer un agencement faisable des ressources physiques, comme les salles de classe et autres installations académiques, mais doit également tenter de résoudre des particularités psychologiques, comme un enseignant souhaitant enseigner uniquement dans une certaine salle à une certaine heure. De plus, presque toute résolution des problèmes de planification des horaires nécessite des compromis entre départements, par exemple [13].
+
+(iii) Les conditions locales varient tellement d'une institution à l'autre qu'un seul programme n'est probablement pas utile à plus d'une institution sans modification. Non seulement les exigences sont différentes, mais même le format des périodes de temps varie d'une institution à l'autre.
+
+Les contraintes de second ordre sont celles qui peuvent être relâchées si, et seulement si, cela est nécessaire pour obtenir une solution faisable. Il devrait y avoir le moins de relâchement possible. Dans ce travail, chaque contrainte secondaire a été donnée un niveau de priorité qui dénote sa priorité d'être maintenue en cas de nécessité de relâchement. Plus la priorité est élevée, moins elle sera relâchée. Les contraintes sont relâchées par groupes selon le niveau de priorité du groupe.
+
+**Priorité 1** : Les cours doivent être programmés dans des salles aussi proches que possible du département hôte ou du bâtiment spécifié pour eux.
+
+**Priorité 2** : Les cours doivent être programmés dans des salles du type de sièges (chaises fixes, chaises mobiles, etc.) spécifié pour eux. Les cours doivent être programmés dans des salles du type de classe (amphithéâtre, salle de séminaire, etc.) spécifié pour eux.
+
+**Priorité 3** : Les cours doivent être programmés dans des salles du type de mobilier (tables mobiles, tables fixes, etc.) spécifié pour eux.
+
+**Priorité 4** : Les cours doivent être programmés dans des salles juste assez grandes pour contenir tous les étudiants inscrits dans ces cours. Les cours recommandés d'un programme d'études doivent être programmés de manière à minimiser les conflits horaires entre eux.
+
+**Priorité 5** : Les cours doivent être programmés dans la tranche horaire (matin, midi, après-midi) spécifiée pour eux. Les cours du soir sont toujours programmés le soir. Les après-midis du vendredi ne doivent être utilisés qu'après avoir épuisé toutes les autres possibilités de planification.
+
+### 3. Algorithmes de création d'emplois du temps
+
+Les algorithmes utilisés pour créer des emplois du temps peuvent être classés en quatre types :
+1. Ceux basés sur la théorie des graphes
+2. Ceux basés sur la programmation mathématique
+3. Ceux utilisant une approche interactive basée sur l'expertise humaine
+4. Ceux basés sur la logique du premier ordre
+
+#### 3.1. Algorithmes de coloriage de graphes
+Les algorithmes de cette classe sont basés sur ou liés aux problèmes de coloriage de graphes. Pour le problème simple de planification des cours, cela peut être posé comme suit :
+1. Chaque cours est représenté par un sommet ;
+2. Une arête relie deux sommets si les deux cours correspondants seront suivis par au moins un étudiant ou donnés par le même enseignant.
+
+L'algorithme trouve alors une méthode pour "colorier" les nœuds du graphe de sorte qu'aucun deux nœuds reliés par une arête n'aient la même couleur et que le nombre de couleurs soit minimal. Certains des algorithmes, par exemple [2,15], trouveront un coloriage du graphe avec p couleurs ou moins si cela existe. Ce sont des algorithmes exacts et ne sont réalisables que si le nombre de cours est petit car les problèmes sont NP-complets et les algorithmes énumèrent implicitement tous les coloriages possibles.
+
+Divers algorithmes heuristiques ont été développés pour le coloriage de graphes dans lesquels un coloriage est trouvé mais le nombre de couleurs utilisé n'est pas garanti d'être minimal. L'un de ceux-ci est invariablement utilisé dans la construction d'emplois du temps dans le monde réel lorsque ce type est mis en œuvre parce que des solutions raisonnables peuvent être obtenues en un temps raisonnable.
+
+#### 3.2. Algorithmes de programmation mathématique
+Si le problème d'emploi du temps est considéré comme un problème de réduction des violations de contraintes existantes, il peut être présenté comme un problème d'optimisation. Le principal inconvénient de cette approche est que le nombre de variables et de contraintes devient ingérable pour des problèmes pratiques. Dans une tentative de réduire la taille du problème, les chercheurs ont proposé plusieurs modèles différents, des méthodes heuristiques [1,18], des modèles de réseau [14], la relaxation lagrangienne [3,19], et l'affectation quadratique [10].
+
+#### 3.3. Algorithmes interactifs
+Une troisième classe d'algorithmes utilise un intermédiaire humain pour suggérer des parties de la solution tandis que l'ordinateur vérifie que aucune contrainte n'a été violée. La quantité de "connaissance d'emploi du temps" informatique dans divers systèmes varie de zéro à l'ensemble complet des contraintes de premier et de second ordre [20]. Un système interactif est généralement conçu pour soutenir deux phases de construction : une phase préparatoire qui est orientée par lots et crée une base de données et une phase interactive qui comprend une ou plusieurs sessions interactives pendant lesquelles la base de données créée plus tôt est modifiée par les utilisateurs. Lorsque toutes les modifications sont terminées, l'emploi du temps est publié.
+
+Pour accommoder les changements de dernière minute à l'emploi du temps, les systèmes réels ont souvent un algorithme interactif comme dernière partie d'un système basé soit sur les approches de coloriage de graphes, soit sur la programmation mathématique. Cela élimine une relance complète de l'algorithme avec les données mises à jour, ce qui produirait un emploi du temps complètement différent du résultat précédent.
+
+Le quatrième type d'algorithme, basé sur la logique du premier ordre, est discuté dans la section suivante.
+
+
+
+
+### 4. Le modèle logique
+
+Le modèle logique utilisé ici consiste en un ensemble d'axiomes sous forme de clauses de Horn, les axiomes jouant le rôle de procédures à exécuter par un interpréteur. Le calcul se fait par inférence descendante en utilisant une procédure de preuve. Les systèmes de programmation logique disposent d'une installation de correspondance de modèles basée sur le principe d'unification de Robinson [16].
+
+Le sous-ensemble des clauses de Horn de la logique des prédicats est utilisé pour exprimer les contraintes. Une clause de Horn est soit une simple assertion (par exemple, George est le père de Christine), soit une implication (par exemple, x hérite de y si x est un enfant de z et z possède y). Chaque assertion est un fait simple qui exprime une relation entre les entités, tandis que chaque implication exprime le résultat d'une condition et a la forme :
+\[ A \text{ si } B1 \text{ et } B2 \text{ et } ... \text{ et } Bn \]
+où la conclusion A et les conditions Bi sont des atomes.
+
+La correspondance de modèles et le retour en arrière sont deux installations importantes des systèmes logiques utilisées pour trouver des solutions aux requêtes (prouver des objectifs). Un objectif ou une requête est prouvé soit en le faisant correspondre à un fait (une assertion), soit en le faisant correspondre à la partie conclusion d'une implication et en prouvant ensuite toutes les conditions de cette implication. Cette correspondance est appelée correspondance de modèles.
+
+Les systèmes logiques doivent être capables d'essayer plusieurs combinaisons si nécessaire pour prouver l'objectif ou pour trouver des moyens de le prouver. La méthode la plus populaire utilisée par les systèmes logiques pour mettre en œuvre cette fonctionnalité est appelée retour en arrière ou unification.
+
+Deux modèles, un objectif et une assertion, sont unifiés ou correspondent uniquement s'ils ont le même nom et le même nombre d'arguments et si chaque paire d'arguments correspondants est unifiée. Les arguments sont unifiés selon les règles suivantes :
+(i) Si l'un des arguments est une variable sans valeur spécifiée et l'autre est une variable avec une valeur, ils sont unifiés en attribuant la valeur à la variable.
+(ii) Si les deux arguments sont des variables sans valeurs, leur égalité est enregistrée sans leur attribuer de valeur. Plus tard, lorsque deux de ces variables se verront attribuer une valeur, l'autre recevra la même valeur.
+(iii) Sinon, les arguments peuvent être unifiés uniquement s'ils sont tous deux des constantes ou des structures.
+a) Si les deux arguments sont des constantes, ils sont unifiés s'ils correspondent exactement.
+b) Deux structures sont unifiées si elles ont le même nom et le même nombre d'arguments, et si chaque paire d'arguments correspondants est unifiée.
+
+Le retour en arrière permet aux systèmes logiques d'explorer toutes les combinaisons possibles pour prouver un objectif. L'ordre dans lequel les différentes parties d'une requête sont spécifiées n'affecte pas le résultat final bien qu'il puisse affecter l'efficacité du programme.
+
+L'utilisation de la programmation logique dans la création informatisée d'emplois du temps est une approche relativement nouvelle qui a reçu peu d'attention à ce jour. Un domaine de recherche connexe est parfois appelé le problème de satisfaction des contraintes, étudié dans le domaine de l'intelligence artificielle [4,11]. Un article récent de Feldman et Golumbic [9] rapporte sur un projet utilisant des algorithmes de satisfaction des contraintes pour la planification interactive des étudiants, un problème lié à la création d'emplois du temps. Le projet visait à déterminer quels algorithmes sont les plus performants pour résoudre le problème de planification des étudiants et dans quelles conditions.
+
+Le problème de planification des étudiants consiste à rechercher des horaires appropriés pour les étudiants à partir de l'emploi du temps général de l'université. Il existe deux types de contraintes qui doivent être respectées et qui peuvent être assouplies selon certaines priorités. Après avoir testé trois algorithmes, le retour en arrière régulier, la vérification avancée (c'est-à-dire le tri des variables par ordre croissant de leurs tailles de domaine après chaque étape), et la vérification avancée mot à mot, les auteurs ont conclu qu'avec un plus grand nombre de cours, l'algorithme mot à mot était clairement meilleur que les deux autres et le retour en arrière régulier était le pire. Si le nombre de cours était inférieur à 19, le retour en arrière régulier devenait le meilleur. De plus, l'ordre dans lequel les variables étaient assignées affectait significativement la performance des algorithmes.
+
+Le plus petit problème de l'affectation des enseignants aux cours a été formulé à la fois comme un problème de programmation en nombres entiers (IP) et comme un problème de satisfaction des contraintes (CSP) par Dhar et Ranganathan [6]. Selon les valeurs des données présentées à l'algorithme, des solutions ont été trouvées pour les deux formulations bien que le temps de solution IP soit beaucoup plus volatile que le temps CSP. De plus, le contrôle du processus de raisonnement était plus grand pour le CSP. Les solutions partielles étaient également plus faciles à formuler en CSP qu'en IP.
+
+Un problème similaire, le problème de découpe de stock, a été étudié [7] à la fois comme un CSP et en utilisant la programmation linéaire en nombres entiers. La conclusion de l'étude était que l'approche logique était beaucoup plus facile à exprimer et à programmer et était plus efficace dans son utilisation des ressources informatiques que l'approche de programmation linéaire.
+
+Le problème de satisfaction des contraintes peut être formellement défini comme suit :
+Considérons un ensemble fini de variables, \( V = \{X1, ..., Xn\} \), qui prennent des valeurs dans leurs domaines correspondants, \( D = \{D1, ..., Dn\} \). Une contrainte, \( c(Xi1, ..., Xik) \), parmi k variables de V est un sous-ensemble du produit cartésien, \( Di1 \times ... \times Dik \), qui spécifie quelles valeurs des variables sont compatibles entre elles. Maintenant, trouvez une solution au problème en assignant des valeurs à toutes les variables de leurs domaines de sorte que toutes les contraintes soient satisfaites.
+
+Il y a 5 variables prises en compte dans le système de création d'emplois du temps. Ce sont :
+1. Cours. Cette variable représente le cours à planifier dont le domaine contient tous les cours, les laboratoires et les séminaires à planifier. Un cours a plusieurs propriétés : inscription des étudiants, type, format et professeur.
+2. Temps. ou période de temps, représente le temps occupé par le cours. Son domaine, T, est l'ensemble de tous les blocs de temps autorisés dans le système de créneaux horaires. La plupart des cours tombent dans un système de créneaux horaires principal bien que de nombreux autres formats soient tolérés. Pour ce travail, nous avons adopté un système de créneaux horaires standard dans lequel les durées des cours sont limitées à des multiples de 1h30. Une semaine est divisée en 6 jours ouvrables, y compris le samedi, et chaque jour est divisé en 9 blocs de 1h30, sauf le samedi qui n'a qu'un seul bloc. Le domaine du temps a donc 46 valeurs.
+3. Salle. représente la salle de classe. Son domaine, R, contient toutes les salles de classe disponibles pour le système. Les propriétés de la salle sont le type de salle, le type de mobilier, le type de sièges, la taille de la salle et une liste de blocs de temps réservés. Pour chaque salle de classe, Ri, il existe un ensemble de paires cours-temps de la forme Ri(cj, tk) où cj est le cours dispensé en Ri au temps tk.
+4. Professeur. représente les enseignants pour les cours. Son domaine, P, est l'ensemble de tous les professeurs enseignant un cours. Un professeur peut avoir une liste de valeurs temporelles pendant lesquelles il ne peut pas enseigner. Pour chaque professeur, Pi, il existe un ensemble de cours, Qi, qu'il enseigne.
+5. Programme étudiant. représente les programmes académiques des étudiants. Cette variable a deux propriétés, cours obligatoires et cours recommandés, et sera écrite sous la forme sp(si, s2) où si et s2 représentent respectivement la liste des cours obligatoires et la liste des cours recommandés. Le domaine de cette variable, S, est l'ensemble de tous les programmes étudiants dans tous les départements et facultés de l'université. En général, un groupe d'étudiants de la même année et étudiant dans le même domaine majeur d'un département sera considéré comme étant dans le même programme académique.
+
+Le modèle logique comporte 12 contraintes de premier ordre et 6 contraintes de second ordre qui sont listées en annexe.
+
+
+
+
+
+### 5. Détails de l'implémentation
+
+Un programme intégrant l'algorithme de résolution des contraintes décrit ici a été mis en œuvre à l'Université d'Ottawa sur le mainframe Amdahl 5880 de l'université fonctionnant sous le système d'exploitation VM HPL. Cette plateforme a été choisie parce que toutes les données des étudiants de l'université y sont stockées et que les responsables administratifs ont des comptes sur le système et peuvent facilement mettre à jour les informations d'entrée et accéder au système.
+
+Le programme principal a été écrit en Waterloo PROLOG (WPROLOG) avec plusieurs programmes utilitaires écrits en C pour des raisons d'efficacité d'implémentation. WPROLOG a été choisi parce que c'était le seul moteur Prolog disponible sur la plateforme matérielle et parce que son implémentation était robuste. WPROLOG est une version simple mais complète de Prolog. L'absence de fonctionnalités non standard a été considérée comme un atout positif car cela signifiait que les programmes développés dans ce langage seraient relativement portables entre divers interpréteurs et pourraient donc être utilisés avec peu d'effort de traduction sur une variété de plateformes d'exécution. Le seul point faible découvert était la difficulté d'interface avec les programmes écrits dans d'autres langages (en particulier le C).
+
+Le programme suppose actuellement que l'emploi du temps planifiera les cours en unités de temps standard appelées créneaux horaires d'une durée fixe de 1h30. Il existe quatre formats de cours considérés comme standard : 1 x 1h30, 1 x 3h, 2 x 1h30 et 1 x 2h. Les cours au format 1 x 2h ne sont autorisés que s'ils commencent à 8h00, soit 30 minutes plus tôt que l'heure de début normale afin de ne pas perturber la séquence des blocs.
+
+Afin d'éviter la possibilité de recherches exhaustives lorsqu'un cours ne peut pas être planifié, une procédure de réversion équivalente a été développée. C'est une alternative au retour en arrière complet que l'on trouve dans les interpréteurs Prolog classiques. Lorsqu'un cours A devient non planifiable, la procédure choisit d'abord un cours équivalent B qui a déjà été traité avec succès, c'est-à-dire auquel des affectations appropriées ont été attribuées, en se basant sur certains critères. Elle supprime ensuite les affectations de B et essaie de replanifier B après avoir réussi à planifier A. Si A ne peut pas être planifié après la suppression de l'affectation de B, la procédure reprendra l'affectation de B et choisira un autre cours selon les critères et répétera le processus de suppression-planification-réplanification.
+
+Aux fins de la réversion équivalente, les cours satisfaisant les quatre critères ci-dessous sont considérés comme équivalents :
+- leurs inscriptions se situent dans la même plage de taille,
+- ils se trouvent dans la même zone horaire,
+- ils nécessitent le même type de salle,
+- ils demandent le même bâtiment.
+
+Afin d'éviter les boucles infinies et d'améliorer l'efficacité, les boucles équivalentes imbriquées n'ont pas été utilisées. Le nombre de cours équivalents pouvant être sélectionnés dans un processus de réversion a été limité à 4. De plus, les affectations de cours totalement présélectionnés ne peuvent pas être supprimées. Si le programme ne peut pas trouver d'affectation pour un cours après la procédure de réversion équivalente, il placera le cours dans une liste de cours non planifiables qui seront planifiés manuellement plus tard.
+
+Le concept de limiteur de taille a été utilisé pour intégrer la contrainte de taille des salles. Le stock disponible de salles de classe a été partitionné en groupes selon leur taille, chaque groupe ayant un numéro de plage (voir le tableau 1).
+
+Lors de la planification d'un cours, le programme essaie de trouver des salles de classe ayant le même numéro de plage que le cours. Lorsque toutes les salles de cette plage ont été essayées et qu'aucune affectation appropriée n'a été trouvée, le programme peut monter d'une ou plusieurs plages pour trouver une salle de plus grande capacité. Le limiteur de taille est le mécanisme permettant de réaliser cela. Chaque plage de taille est associée à un limiteur de taille. Le limiteur de taille d'une plage de taille indique le nombre de plages de taille plus grandes qui peuvent être recherchées pour trouver une salle appropriée. Un cours de la plage R, dont le limiteur de taille est L, ne peut être planifié que dans des salles de classe dont la taille n'est pas supérieure à la plage R + 2, L.
+
+Les limiteurs de taille sont basés sur les résultats des exécutions précédentes et de l'expérience passée.
+
+
+### 6. Tests
+
+Les tests ont commencé en utilisant un petit échantillon de données obtenu auprès du département d'informatique. 140 paires cours-enseignant ont été programmées dans 17 salles de classe. Les cours avaient des effectifs allant de 3 à 206 étudiants. 26 des paires avaient des enseignants assignés. Les autres étaient des périodes de laboratoire, des sections de tutorat ou des cours pour lesquels l'enseignant n'était pas encore spécifié. Les 17 salles de classe avaient des capacités variant de 21 à 210 places.
+
+Il y avait 40 contraintes correspondant aux divers programmes de diplôme offerts par le département. Un emploi du temps a été généré avec succès, avec tous les cours programmés. Cet exemple était suffisamment petit pour être vérifié manuellement et il a été constaté que :
+a) toutes les contraintes étaient satisfaites,
+b) le nombre d'heures-étudiants programmées était égal à 4819,
+c) l'utilisation moyenne des sièges était de 76,7 %. Ce chiffre est calculé en additionnant le nombre total de sièges disponibles dans toutes les salles de classe pendant les périodes où la salle est utilisée, puis en divisant ce nombre par le nombre d'étudiants occupant la salle pendant ces mêmes périodes.
+
+Un test complet de ce programme a été réalisé en utilisant les données des années précédentes pour l'ensemble de l'université. L'ensemble de données comprenait 2268 entrées de cours, dont 96 étaient considérées comme préprogrammées parce qu'elles ne suivaient aucun des quatre formats de base. 59 autres entrées étaient également considérées comme préprogrammées pour d'autres raisons.
+
+Il y avait 167 salles de classe dont les tailles variaient de 4 à 474 places, et il y avait 363 programmes d'étudiants, ce qui entraînait plus de 14 329 paires de cours potentiellement en conflit d'horaire. De plus, il y avait 256 blocs de temps pour les professeurs. Pour les deux exécutions rapportées ici, le seul changement apporté concernait le limiteur de taille. Dans le tableau 2, les deux limiteurs de taille utilisés sont indiqués. Les résultats les plus importants des tests sont résumés dans le tableau 3.
+
+Un examen de ces facteurs numériques montre l'importance du limiteur de taille. En utilisant le limiteur de taille 1, qui est assez strict dans sa tolérance à la taille excessive des salles, un emploi du temps est produit avec 132 cours non programmés. Lorsque le limiteur de taille est réglé sur des valeurs plus tolérantes, tous les cours sont programmés et le temps d'exécution est quelque peu réduit. Dans ce dernier cas, 16 767 heures-étudiants ont été programmées avec succès.
+
+Les valeurs d'utilisation moyenne des sièges et d'utilisation moyenne des salles sont d'environ 80 % et 60 %, respectivement. Avec le système manuel actuel, les valeurs correspondantes sont d'environ 70 % et 50 %. Ainsi, l'efficacité de l'utilisation des ressources a été améliorée.
+
+Cependant, ces chiffres ne tiennent pas compte des contraintes non numériques qui sont maintenant satisfaites pour la première fois. L'exigence de non-conflit des cours recommandés offre une plus grande sélection de cours optionnels pour les étudiants. De plus, l'exigence géographique définie par le département d'accueil signifie qu'il y a moins de déplacements à travers le campus. Les enseignants peuvent spécifier les périodes pendant lesquelles ils ne souhaitent pas rencontrer des classes et peuvent choisir le type de salle de classe qu'ils souhaitent utiliser.
+
+Il s'est avéré impossible de comparer les résultats de cet algorithme avec des résultats similaires dérivés d'autres méthodes informatiques car nous n'avons pas pu trouver d'autres systèmes informatiques comparables qui créent l'emploi du temps complet. Là où nous avons des résultats numériques comparables entre ce système et les méthodes manuelles actuelles, les résultats informatiques sont invariablement meilleurs.
+
+
+
+
+### 7. Conclusions
+
+Des tests approfondis de l'algorithme ont montré qu'il a atteint tous ses objectifs. Toutes les contraintes de premier ordre et un nombre variable de contraintes de second ordre ont été satisfaites pour résoudre un grand problème de satisfaction de contraintes avec une application réelle dans de grandes institutions. Soit des solutions totalement faisables sont trouvées, soit certains cours sont jugés non programmables dans l'ensemble des contraintes. Dans ce dernier cas, les cours non programmables sont retirés et un emploi du temps est trouvé pour les cours restants. Les cours non programmables sont ensuite programmés manuellement. Pour les données historiques réelles, une solution faisable pour tous les cours a été trouvée. Cela a été réalisé sans consommer des quantités excessives de puissance informatique, environ 24 minutes de temps d'exécution sur un Amdahl 5880.
+
+L'expérience acquise dans la construction du système a confirmé l'importance de pouvoir changer facilement le nombre et le type de contraintes. Il a été constaté qu'une forme étendue de logique des clauses de Horn permettait d'exprimer des contraintes complexes de manière modérément facile et de les traduire facilement en WPROLOG.
+
+Enfin, le concept de renversement équivalent s'est révélé utile pour réduire le temps d'exécution du programme.

@@ -1,0 +1,294 @@
+La construction d'un emploi du temps pour une université, satisfaisant toutes les contraintes opérationnelles et les exigences de cette institution, est d'une grande importance mais très difficile pour le personnel de l'institution. Dans la plupart des institutions, cette tâche est déléguée à la gestion du département et la procédure consiste à reprendre l'emploi du temps du semestre précédent avec quelques modifications mineures afin de ne pas déranger le personnel avec une nouvelle planification. Cependant, ces dernières années, le problème de la planification des emplois du temps a attiré de nombreux chercheurs et divers modèles ont été proposés pour faire face à sa complexité, en fonction des limitations du système éducatif du pays des chercheurs. Gunawan et al. (2012) ont décrit un problème de planification des cours en considérant un emploi du temps des cours de master dans les universités. Lach et Lubbecke (2012) se sont également concentrés sur la planification des conférences hebdomadaires où aucun des deux cours ne doit se dérouler dans la même salle en même temps. Pour saisir les applications du monde réel, Bonutti et al. (2012) ont développé un ensemble de formulations pour la planification des cours basée sur le curriculum, accompagné d'une application web qui maintient toutes les infrastructures nécessaires pour les benchmarks.
+
+En général, la planification des cours se réfère à un problème dans lequel on doit programmer les cours d'une école/université à des périodes spécifiques, pour un groupe d'étudiants spécifique, dans une salle de classe déterminée avec des professeurs spécifiques. Dans la plupart des travaux précédents, l'objectif de cette planification était de minimiser la fonction objective traditionnelle, c'est-à-dire les coûts d'attribution. Notamment, une planification peut être efficace et plus efficiente en considérant les caractéristiques suivantes : faisabilité et possibilité d'être comprise par la plupart du personnel éducatif.
+
+Compte tenu de ces hypothèses, la planification des cours avec cette définition est classée comme un problème combinatoire NP-difficile. Autrement dit, si la satisfaction de toutes les contraintes a une grande importance, le temps de calcul pour résoudre le modèle peut augmenter de manière exponentielle avec l'augmentation de la dimension du problème.
+
+Étant donné que la modélisation mathématique de ce problème est très complexe, des algorithmes heuristiques et méta-heuristiques sont principalement utilisés comme approches de solution. Une large gamme de journaux ont été publiés sur ce sujet et parmi eux, le nombre d'articles tentant de résoudre le problème avec des méthodes exactes est très faible par rapport à ceux utilisant des méthodes inexactes pour trouver un optimum local. Lewis (2012) a proposé un algorithme en trois étapes pour résoudre le problème de planification des cours post-inscription. De plus, Bellio et al. (2011) ont développé un algorithme de recherche locale hybride pour la solution du problème de la planification des cours basée sur le curriculum en utilisant de nouvelles approches statistiques pour la conception et l'analyse des expériences.
+
+Parmi tous les auteurs ayant développé des modèles mathématiques pour le problème de la planification des emplois du temps, Daskalaki et al. (2004) ont proposé un modèle de programmation linéaire mixte (MIP) en utilisant des contraintes spéciales pour vérifier la validité du modèle. Dans leur modèle, la variable de décision a six index sur le cours, la salle de classe, le professeur, le jour, la période dans la journée et les groupes d'étudiants. La planification des cours avec ces nombreux index est classée comme un problème NP-complet. Cette complexité pousse les chercheurs à chercher uniquement une solution réalisable plutôt que la meilleure solution ou la solution optimale. L'autre aspect de la complexité du problème est que chaque université ou institution a ses propres utilités et contraintes, il y a donc peu de propriétés communes entre elles.
+
+Pour surmonter ces complexités, il y a quelques propositions :
+1. Réduire le nombre d'index en éliminant la salle de classe ou les groupes de cours : la plus facile.
+2. Éliminer un index en le remplaçant par quelques variables de décision supplémentaires. Cette solution rend la dimension du problème inchangée et facile à comprendre.
+
+Dans les travaux précédents, seul le coût de la planification était considéré dans la définition de la fonction objective. Dans ce projet, un modèle multi-objectifs basé à la fois sur la minimisation des coûts et la maximisation de l'utilité des composants du système est proposé. Une autre contribution de ce travail est que les procédures de résolution sont dynamiques, c'est-à-dire qu'au début, nous supposons que chaque cours peut être présenté dans un seul groupe et résolvons le problème avec GAMS. Ensuite, le calcul du nombre de groupes de cours est délégué au logiciel en ajustant la fonction objective sur une valeur prédéterminée. Le reste du rapport est structuré comme suit :
+
+Dans la section 2, la littérature du problème et les modèles proposés sont passés en revue. Dans la section 3, le problème est d'abord défini puis, en fonction des hypothèses décrites dans la "définition du problème", le modèle mathématique est présenté. Dans la section 4, les résultats expérimentaux sont discutés et enfin, dans la section 5, les conclusions et les orientations pour les recherches futures sont présentées.
+
+
+### 2. Revue de la Littérature
+
+
+Werra (1985) a décrit certains problèmes fondamentaux de la planification des emplois du temps qui se produisent dans la plupart des cas réels, tels que le modèle classe-professeur et la planification des cours. Pour les deux types de problèmes de planification, il s'est principalement concentré sur des modèles basés sur les graphes et les réseaux. La principale motivation pour utiliser la théorie des graphes est que les problèmes de réseau sont résolus efficacement, même lorsque leur taille est grande.
+
+Daskalaki et al. (2004) ont présenté une nouvelle formulation en programmation linéaire en nombres entiers 0-1 pour le problème de planification des emplois du temps universitaires. Le modèle fournit des contraintes pour un grand nombre de règles et de exigences opérationnelles trouvées dans la plupart des institutions académiques. Traité comme un problème d'optimisation, l'objectif est de minimiser une fonction de coût linéaire. En prenant ce critère en compte, il est possible de considérer la satisfaction des préférences exprimées concernant les périodes d'enseignement ou les jours de la semaine, voire les salles de classe pour des cours spécifiés. De plus, avec une définition appropriée des coefficients de coût dans la fonction objective, il est possible de réduire l'espace de solution et de rendre le problème traitable. Le modèle est solvable par les outils logiciels existants avec des solveurs IP, même pour les grands départements. Le cas d'un département d'ingénierie de cinq ans avec un grand nombre de cours et de professeurs est présenté avec sa solution résultant de la formulation IP présentée.
+
+Azimi (2005) a appliqué quatre techniques, le recuit simulé (SA), la recherche tabou (TS), l'algorithme génétique (GA) et le système de colonie de fourmis (ACS), ainsi que trois nouvelles combinaisons hybrides de ces algorithmes à un problème classique de planification des examens (ETP), un problème NP-complet. Les nouveaux algorithmes hybrides comprennent un TS-ACS séquentiel, un hybride ACS/TS et un ACS-TS séquentiel. Ces diverses combinaisons hybrides ont ensuite été testées sur dix scénarios différents du ETP classique. Une analyse comparative statistique a conclu que toutes les trois techniques nouvelles proposées étaient significativement meilleures que chacune de leurs concurrents non hybrides, et de plus, l'ACS-TS séquentiel fournit la meilleure solution de toutes.
+
+Daskalaki et Birbas (2005) ont présenté une procédure de relaxation en deux étapes qui résout efficacement la formulation en programmation linéaire en nombres entiers d'un problème de planification des emplois du temps universitaires. La relaxation est effectuée lors de la première étape et concerne les contraintes qui garantissent la consécutivité des sessions multi-périodes de certains cours. Ces contraintes, qui sont plus lourdes en termes de calcul que les autres, sont récupérées lors de la deuxième étape et un certain nombre de sous-problèmes, un pour chaque jour de la semaine, sont résolus pour des optima locaux. Comparé à une approche de solution qui résout le problème en une seule étape, le temps de calcul est réduit de manière significative sans aucune perte de qualité pour les emplois du temps résultants. La nouvelle approche de solution donne une chance pour des améliorations supplémentaires dans les emplois du temps finaux, ainsi qu'un certain degré d'interaction avec les utilisateurs lors de la construction des emplois du temps.
+
+Al-Yakoob et Sherali (2007) ont examiné le problème de la planification des cours et des emplois du temps auquel est confrontée l'Université du Koweït (KU). L'objectif principal est de concevoir des modèles de cours efficaces tout en tenant compte des nouvelles politiques de genre imposées. Ils formulent un modèle de programmation mathématique qui attribue les cours proposés aux créneaux horaires et aborde les questions de genre en définissant des contraintes de substitution appropriées ainsi que des termes de pénalité objective. Le modèle vise à améliorer les approches manuelles existantes de planification et d'emploi du temps souvent accompagnées de tâches combinatoires ardues telles que la résolution des conflits de cours, la gestion des parkings et de la congestion du trafic, et l'assurance d'une utilisation efficace des ressources matérielles et humaines. Cette approche de modélisation met l'accent sur la génération d'emplois du temps flexibles pour les étudiants et l'utilisation efficace des ressources disponibles. Les résultats informatiques basés sur un certain nombre d'études de cas liées à l'Université du Koweït révèlent que cette approche donne des emplois du temps améliorés en termes de modèles de cours proposés et de conflits de cours.
+
+L'objectif principal de l'article de Bakır et Aksop (2008) est de résoudre un problème existant de planification des cours. L'organisation des cours et des conférences en fonction des périodes et de la disponibilité des salles de classe est un problème de planification des cours difficile, qu'ils rencontraient actuellement au sein du Département de Statistiques de l'Université de Gazi. Ils ont donc formulé le problème comme un modèle de programmation linéaire en nombres entiers 0-1. L'objectif de leur modèle est de minimiser l'insatisfaction des étudiants et des enseignants tout en appliquant des règles soumises à un ensemble de contraintes. Le modèle produit est flexible en termes d'intégration de nouvelles règles et/ou critères.
+
+Burke et al. (2010) étudient une approche des problèmes, qui peut être considérée comme une exploitation multiphase de sous-modèles multi-objectifs/à valeur restreinte. Dans cette approche, seul un composant du problème, difficile en termes de calcul, et le sous-ensemble d'objectifs associés sont d'abord pris en compte. En utilisant la programmation linéaire en nombres entiers, il est alors facile de mettre en œuvre des heuristiques produisant des solutions avec des limites sur leur qualité. Leur étude est réalisée sur un problème de planification des cours universitaires utilisé dans la Compétition Internationale de Planification des Emplois du Temps (ITC) de 2007, également connu sous le nom de problème de planification des cours d'Udine. L'objectif est de trouver une attribution des événements aux périodes et aux salles de manière à ce que l'attribution des événements aux périodes soit une coloration bornée faisable d'un graphe de conflit associé et que la combinaison linéaire des nombres de violations de quatre contraintes souples soit minimisée. Dans l'heuristique proposée, un générateur de voisinage restreint par les objectifs produit des attributions de périodes aux événements, avec des nombres décroissants de violations de deux contraintes souples liées aux périodes. Celles-ci sont relâchées en attributions d'événements aux jours, qui définissent des voisinages plus faciles à explorer par rapport aux quatre contraintes souples. Des formulations en programmation linéaire en nombres entiers pour tous les sous-problèmes sont données et évaluées en utilisant ILOG CPLEX 11. L'applicabilité plus large de cette approche est analysée et discutée.
+
+Kahar et Kendall (2010) présentent un problème réel de planification des examens avec des capacités limitées à l'Université Malaysia Pahang (UMP), Malaisie. Le problème comporte des contraintes qui n'ont jamais été modélisées auparavant, à savoir la distance entre les salles d'examen et la répartition des examens dans plusieurs salles. Ces contraintes fournissent des défis supplémentaires pour définir un modèle approprié et développer une heuristique constructive. Une des contributions de cet article est de définir formellement ce problème réel. Une autre contribution est l'heuristique constructive qui est capable de produire des solutions de bonne qualité pour le problème, supérieures aux solutions produites par le logiciel actuel de l'université. De plus, leur méthode respecte toutes les contraintes strictes que les systèmes actuels ne respectent pas.
+
+Özcan et al. (2012) ont proposé un nouvel algorithme constructif hybride mémétique pour résoudre un problème réel de planification des cours qui est d'un intérêt particulier car il a une structure hautement hiérarchique découlant de diverses exigences organisationnelles. Une variété d'approches pour résoudre le problème de planification des cours post-inscription a été abordée par Cambazard et al. (2012). Ils ont abordé le problème en utilisant des techniques de recherche locale et de programmation par contraintes. Geiger (2012) a présenté une étude des algorithmes de recherche locale pour les problèmes de planification. La procédure heuristique de recherche locale était basée sur les principes d'acceptation seuil, surmontant les optima locaux par une acceptation déterministe des solutions inférieures tout au long des parcours de recherche. Un voisinage stochastique est proposé et mis en œuvre, supprimant et réaffectant aléatoirement des événements de la solution actuelle. Jat et Yang (2011) ont également développé une méthode hybride GA et recherche tabou pour le problème de planification des cours post-inscription. Cette GA guidée intègre une stratégie de recherche guidée et quelques techniques de recherche locale, où la stratégie de recherche guidée utilise une structure de données qui stocke des informations utiles extraites des bons individus précédents pour guider la génération de descendants dans la population et les techniques de recherche locale sont utilisées pour améliorer la qualité des individus. Al-Milli (2011) a présenté une approche intégrée basée sur GA et SA pour traiter l'affectation des événements de conférence à un ensemble limité de créneaux horaires et de salles spécifiques, soumis à une variété de contraintes strictes et souples. Lü et al. (2011) ont proposé une analyse approfondie des relations de voisinage pour les algorith
+
+mes de recherche locale. En utilisant un problème de planification des cours basé sur le curriculum comme étude de cas, l'auteur examine la capacité de recherche de quatre voisinages basés sur trois critères d'évaluation : pourcentage de voisins améliorants, force d'amélioration et étapes de recherche. Aladag et al. (2009) ont employé une structure de voisinage dans un cadre de recherche tabou pour résoudre le problème de planification des cours du semestre d'automne du Département de Statistiques de l'Université de Hacettepe en utilisant quatre structures de voisinage. Ils ont également présenté la comparaison des résultats obtenus à partir de ces structures. D'autres études traitant de la planification des cours peuvent être trouvées dans (Socha et al., 2002, 2003; Chiarandini et al., 2006; Carter et Laporte, 1998; Abdennadher et Marte, 2000).
+
+Bien que toutes les recherches étudiées dans ce domaine présentent des avantages en fonction de leurs auteurs, dans ce projet, nous prenons en compte certains des aspects les plus importants du problème de la planification des emplois du temps qui n'ont jamais été considérés auparavant. Parmi eux, on trouve la considération de l'utilité des professeurs et des étudiants dans la planification des cours ainsi que la résolution du problème en mode dynamique pour déterminer le nombre de groupes pour chaque cours.
+
+
+
+### 3. Modèle Proposé
+
+#### 3.1 Définition du Problème
+
+Le problème considéré ici est la planification des cours pour une université en Iran. Il possède donc ses propres caractéristiques et contraintes. L'avantage le plus important de ce travail par rapport au modèle précédent est que, dans notre modèle, les étudiants et les professeurs ont un impact important sur le résultat. Cela signifie que l'utilité des composants du système (professeurs et étudiants) est l'entrée la plus importante du modèle, et que la sortie est très sensible à ce type de données d'entrée. Le modèle décrit ci-après est un modèle mathématique multi-objectifs basé sur cette explication. Les objectifs de notre modélisation peuvent être classés en quatre catégories :
+
+1. **Minimisation des interférences entre les cours** : Il s'agit de programmer deux cours à la même période du même jour. Ces deux cours sont choisis parmi ceux qui ont les interférences les plus faibles. Notez qu'il est supposé que seules les interférences à deux dimensions sont prises en compte. Le tableau des interférences est un tableau comme le Tableau 1. Il signifie qu'il y a un nombre 'a' d'étudiants qui souhaitent suivre à la fois le cours #2 et le cours #3. Si dans la planification, cela est minimisé, nous pouvons prouver que notre modèle tente de maximiser l'utilité des étudiants.
+
+2. **Maximisation de la présentation de cours spécifiques par les professeurs** : cela signifie que si un cours est programmé pour être présenté dans la sortie, son professeur est sélectionné parmi ceux qui ont une forte tendance à le présenter. Cela peut être pris en compte par le Tableau 2, qui montre combien chaque professeur est disposé à présenter un cours.
+
+   **Tableau 2 : Disposition des professeurs à présenter un cours spécifique**
+
+   | Description                                          | Valeur dans le modèle |
+   |------------------------------------------------------|-----------------------|
+   | Le professeur ne veut pas le présenter               | 0                     |
+   | Le professeur a une très faible tendance à le présenter | 1                     |
+   | Le professeur a une faible tendance à le présenter    | 2                     |
+   | Le professeur a une tendance moyenne à le présenter   | 3                     |
+   | Le professeur a une forte tendance à le présenter     | 4                     |
+   | Le professeur a une très forte tendance à le présenter | 5                     |
+
+3. **Maximisation de l'utilité du temps pour les professeurs** : il est possible qu'un professeur ne soit pas disponible à certaines périodes de certains jours. Le modèle ne doit donc pas attribuer de cours à ce professeur pendant ces périodes. Cela est pris en compte dans notre modèle par le Tableau 3, qui montre pour chaque professeur quelles périodes de quels jours ils ont une plus grande tendance à présenter un cours.
+
+   **Tableau 3 : Préférences horaires des professeurs**
+
+   | Description                                                        | Valeur dans le modèle |
+   |--------------------------------------------------------------------|-----------------------|
+   | Le professeur n'est pas accessible                                 | 0                     |
+   | Le professeur a une très faible tendance à être en classe à cette période | 1                     |
+   | Le professeur a une faible tendance à être en classe à cette période    | 2                     |
+   | Le professeur a une tendance moyenne à être en classe à cette période   | 3                     |
+   | Le professeur a une forte tendance à être en classe à cette période     | 4                     |
+   | Le professeur a une très forte tendance à être en classe à cette période | 5                     |
+
+4. **Minimisation des coûts** : ici, l'objectif est de minimiser le coût total de la planification des cours. Cela inclut le coût horaire des professeurs, la dépréciation de l'équipement et d'autres coûts tels que les coûts administratifs et autres coûts officiels.
+
+
+### 3.2 Hypothèses
+
+Les hypothèses de notre approche de modélisation sont les suivantes :
+
+1. La première et la plus importante est la suivante : il est supposé qu'il n'y a que des cours de 2 et 3 unités. Cette hypothèse à elle seule entraîne une réduction considérable des dimensions du problème.
+
+2. Pour évaluer les interférences dans la fonction objective, seules les interférences à deux dimensions sont prises en compte.
+
+3. Une des variables dans le problème de planification des cours est les groupes de cours. Cette valeur dépasse un groupe uniquement lorsque le nombre d'étudiants souhaitant le suivre est supérieur à la capacité de notre plus grande salle de classe. La question est de savoir comment déterminer la capacité de chaque groupe dans ce cas ? En pratique, cela doit être déterminé par le modèle de manière à ce que :
+   - La capacité de chaque groupe soit inférieure à celle de notre plus grande salle de classe.
+   - Le nombre minimum de groupes soit déterminé pour ces cours afin de minimiser les coûts d'attribution.
+
+   Pour traiter ce problème, nous supposons d'abord que chaque cours a un groupe et nous résolvons le problème. Ensuite, nous ajustons la fonction objective en fonction de la valeur précédente et de l'opinion de la direction et exécutons une programmation dynamique pour déterminer le meilleur nombre de groupes pour chaque cours.
+
+4. Dans le modèle, les périodes de la journée sont supposées être de 30 minutes chacune. Cela signifie que si nous avons des cours de 08:00 à 16:30 et une pause déjeuner entre 12:30 et 13:30, nous avons 15 périodes par jour pour y programmer des cours.
+
+### 3.3 Notations
+
+#### 3.3.1 Index
+
+- \( i \) : Jours de la semaine
+- \( j \) : Périodes de la journée
+- \( l \) : Index des professeurs
+- \( q \) : Un ensemble comme \( l \)
+- \( m \) : Index des cours
+- \( p \) : Un ensemble comme \( m \)
+- \( n \) : Index des salles de classe
+- \( s \) : Un ensemble comme \( n \)
+- \( k \) : Nombre de groupes
+
+Les valeurs possibles pour ces indices sont :
+- \( i = 1, 2, 3, 4, 5 \)
+- \( j = 1, ..., 15 \)
+- \( l = \{#1, #2, ..., #L\} \)
+- \( m = \{#1, #2, ..., #M\} \)
+- \( n = \{#1, #2, ..., #N\} \)
+- \( k = \{1, 2, ..., K\} \)
+
+#### 3.3.2 Paramètres
+
+- \( Z1 \) : Poids de la minimisation des coûts dans la fonction objective (numéro 4 dans la définition du problème).
+
+
+### 3.3.2 Paramètres
+
+- \( Z2 \) : Poids de la minimisation des interférences entre les cours dans la fonction objective (numéro 1 dans la définition du problème)
+- \( Z3 \) : Poids de la maximisation de l'utilité des professeurs d'être à l'institut dans la fonction objective (numéro 3 dans la définition du problème)
+- \( dn \) : Nombre d'étudiants souhaitant suivre à la fois les cours \( m \) et \( p \)
+- \( ei \) : L'utilité pour le professeur \( l \) d'être à l'institut pendant la période \( j \) du jour \( i \)
+- \( c_{ijlmkn} \) : Coût total de présentation du cours \( m \) par le professeur \( l \) pour le groupe \( k \) dans la salle de classe \( n \) pendant la période \( j \) du jour \( i \)
+- \( M \) : Cours que le professeur \( l \) ne souhaite pas présenter
+- \( N \) : Salles de classe ne pouvant pas accueillir le cours \( m \)
+- \( ls \) : Nombre minimum d'étudiants devant s'inscrire au cours \( m \) pour forcer le modèle à le présenter
+- \( M \) : Une grande valeur positive
+- \( nk \) : Nombre d'étudiants du groupe \( k \) du cours \( m \)
+- \( capk \) : Capacité maximale du groupe \( k \) du cours \( m \)
+- \( h \) : Nombre d'unités du cours \( m \)
+- \( g \) : Périodes consécutives nécessaires pour une session du cours \( m \) (ici, pour un cours de 2 unités = 4 et pour un cours de 3 unités = 3)
+
+#### 3.3.3 Variables de Décision
+
+- \( x_{ijlmkn} \) : Variable binaire qui vaut 1 si le cours \( m \) est programmé pour être présenté par le professeur \( l \) pour le groupe \( k \) dans la salle de classe \( n \) pendant la période \( j \) du jour \( i \)
+- \( y_{ilmkn} \) : Variable binaire qui vaut 1 si le cours \( m \) est programmé pour être présenté par le professeur \( l \) pour le groupe \( k \) dans la salle de classe \( n \) le jour \( i \)
+- \( v \) : Variable binaire utilisée dans le modèle comme variable auxiliaire pour satisfaire une clause si. Elle vaut 1 si le nombre d'étudiants inscrits au cours \( m \) est inférieur à \( ls \)
+
+### 3.4 Modélisation Mathématique
+
+Dans notre modèle, la fonction objective se compose de trois composantes :
+1. Minimisation des coûts
+2. Minimisation des interférences entre les cours
+3. Maximisation de l'utilité du temps pour les professeurs
+
+Nous décidons donc de formuler la fonction objective dans une direction de minimisation et de considérer la troisième avec un signe négatif. Étant donné que le problème est multi-objectifs, chaque déclaration figure dans le modèle avec un poids qui montre l'importance de cette déclaration. La fonction objective est la suivante :
+
+\[ \text{Min } Z = z_1 \sum_{i \in I} \sum_{j \in J} \sum_{l \in L} \sum_{m \in M} \sum_{k \in K_m} \sum_{n \in N} c_{ijlmkn} x_{ijlmkn} + z_2 \sum_{(m,p) \in M \times M} \sum_{i \in I} \sum_{j \in J} \sum_{(l,q) \in L \times L} \sum_{(k_m,k_p) \in K_m \times K_p} \sum_{(n,s) \in N} d_{mp} \min(x_{ijlmkn}, x_{ijqps}) - z_3 \sum_{i \in I} \sum_{j \in J} \sum_{l \in L} \sum_{m \in M} \sum_{k \in K_m} \sum_{n \in N} e_{ijl} x_{ijlmkn} \]
+
+Les contraintes mathématiques et leur définition sont les suivantes :
+
+1. Chaque professeur, à chaque période de la journée, ne peut présenter au maximum qu'un seul cours spécifique pour un groupe spécifique d'étudiants dans une salle de classe spécifique.
+
+---
+
+Les autres contraintes spécifiques et leurs équations précises peuvent être définies en détail selon les exigences et les règles de l'université ainsi que les conditions opérationnelles du problème de planification.
+
+\[ \sum_{i \in I} \sum_{j \in J} \sum_{l \in L} \sum_{m \in M} \sum_{k \in K_m} \sum_{n \in N} x_{ijlmkn} \leq 1 \quad \forall i \in I, \forall j \in J, \forall l \in L \]
+(3)
+
+Dans chaque salle de classe et à chaque période, au maximum un cours spécifique pour un groupe spécifique d'étudiants peut être présenté par un professeur spécifique.
+
+\[ \sum_{i \in I} \sum_{j \in J} \sum_{l \in L} \sum_{m \in M} \sum_{k \in K_m} \sum_{n \in N} x_{ijlmkn} \leq 1 \quad \forall i \in I, \forall j \in J, \forall n \in N \]
+(4)
+
+À chaque période, au maximum une salle de classe spécifique et un professeur spécifique peuvent être assignés à chaque groupe d'étudiants.
+
+\[ \sum_{l \in L} \sum_{n \in N} x_{ijlmkn} \leq 1 \quad \forall i \in I, \forall j \in J, \forall m \in M, \forall k_m \in K_m \]
+(5)
+
+Supposons que, pendant une période spécifique, un professeur ne soit pas accessible pour donner un cours. Il doit donc être restreint de lui attribuer un cours par un ensemble de contraintes. Ces contraintes sont les suivantes :
+
+\[ \sum_{i \in I} \sum_{j \in J} \sum_{l \in L} \sum_{m \in M} \sum_{k \in K_m} \sum_{n \in N} x_{ijlmkn} \leq e_{ijl} \quad \forall i \in I, \forall j \in J, \forall l \in L \]
+(6)
+
+Supposons qu'un professeur, pour diverses raisons, ne puisse pas présenter certains cours spécifiques. Il doit donc être restreint d'attribuer ces cours à ce professeur par un ensemble de contraintes. Ces contraintes sont les suivantes :
+
+\[ \sum_{i} \sum_{j} \sum_{m \in M} \sum_{l} \sum_{k_m} \sum_{n} x_{ijlmkn} = 0 \quad \forall l \]
+(7)
+
+Dans cette formulation, nous supposons que toutes les salles de classe ne conviennent pas à chaque cours. Par exemple, un cours spécifique peut nécessiter certains équipements qui ne se trouvent pas dans chaque salle de classe. Il doit donc être restreint d'attribuer ce cours à ces salles de classe par un ensemble de contraintes. Ces contraintes sont les suivantes :
+
+\[ \sum_{i} \sum_{j} \sum_{l} \sum_{k_m} \sum_{n \in N_m} x_{ijlmkn} = 0 \quad \forall m \]
+(8)
+
+L'une des contraintes importantes de notre modélisation est que, si les étudiants inscrits à un cours spécifique sont moins nombreux que la capacité minimale de celui-ci, alors le modèle doit être contraint de ne pas présenter ce cours au semestre suivant. En revanche, si elle est satisfaite, le cours doit être présenté pour chaque groupe de celui-ci. En d'autres termes, soit ce cours spécifique n'est pas présenté, soit le cours est présenté pour le nombre de groupes de sa réplication. Cette contrainte comprend un ensemble de trois contraintes.
+
+\[ l_s^m - d_{mm} \leq u_m M \]
+\[ \sum_{i} \sum_{j} \sum_{l} \sum_{k_m} \sum_{n} x_{ijlmkn} \leq (1 - u_m) M \quad \forall m \]
+(9)
+(10)
+
+\[ \sum_{i} \sum_{j} \sum_{l} \sum_{n} x_{ijlmkn} \geq 1 - u_m \quad \forall m, \forall k_m \]
+(11)
+
+Contraintes sur la capacité des salles de classe : dans cette contrainte, il est vérifié que si une salle de classe spécifique a une capacité inférieure au nombre d'étudiants inscrits à un cours spécifique, alors cette salle de classe n'est pas adaptée à ce cours, et donc ce cours ne doit pas être attribué à cette salle de classe.
+
+\[ n_{km} x_{ijlmkn} \leq f_n \quad \forall i, \forall j, \forall l, \forall m, \forall k_m, \forall n \]
+(12)
+
+Pour former chaque session de chaque cours, certaines périodes sont nécessaires. Par exemple, OR2 est un cours de trois unités, comme expliqué dans les paramètres, ce cours doit être présenté en trois sessions consécutives en un jour spécifique. De plus, chaque cours doit être présenté pendant un nombre de périodes égal à deux fois le nombre de ses unités chaque semaine. Par exemple, OR2 avec trois unités doit être présenté pendant 2 * 3 = 6 périodes chaque semaine. En résumé, chaque session d'OR2 doit être présentée en trois périodes consécutives et OR2 doit être présenté pendant six périodes chaque semaine. Supposons maintenant que les six périodes d'OR2 soient programmées pour être présentées en un jour. C'est un état indésirable qui peut se produire, donc une contrainte est que chaque cours de trois unités doit être présenté exactement en deux jours. L'ensemble de deux contraintes pour satisfaire cela est le suivant :
+
+\[ \sum_{j} x_{ijlmkn} = g_m y_{ilmkn} \quad \forall i, \forall l, \forall m, \forall k_m, \forall n \]
+(13)
+
+\[ \sum_{i} y_{ijlmkn} = 2h_m \quad \forall l, \forall m, \forall k_m, \forall n \]
+(14)
+
+L'équation (13) indique que si le cours \( m \) est programmé pour être présenté à la période \( j \) du jour \( i \) par le professeur \( l \) pour le groupe \( k \) dans la salle de classe \( n \), il doit être répété pour \( s \) périodes dans cette salle de classe avec ce professeur pour ce groupe. L'équation (14) indique que si le cours \( m \) est programmé pour être présenté, il doit être présenté pendant deux jours chaque semaine pour les cours de trois unités et un jour chaque semaine pour les cours de deux unités.
+
+Les contraintes les plus importantes dans chaque problème de planification des cours sont celles qui obligent le modèle à présenter un cours spécifique en une journée spécifique pendant des périodes consécutives. Cela est satisfait par la contrainte suivante :
+
+\[ x_{ijlmkn} - x_{ij+t,lmkn} \leq (1 - x_{ijlmkn} + x_{ij-1,lmkn}) \quad \forall i, \forall j, \forall l, \forall m, \forall n, \forall k_m, \forall n, \forall t \in \{1, 2, ..., g_m - 1\}, t \in M \]
+(15)
+
+Pour \( j = 0 \) : \( x_{ijlmkn} = \)
+(16)
+
+### 4. Résultats Expérimentaux
+
+Les résultats sont catégorisés en phases, qui sont des exécutions statiques et dynamiques. Cela est expliqué dans les deux sous-sections suivantes.
+
+#### 4.1 Phase 1 : Exécutions Statiques
+
+Les données d'entrée sont produites et consistent en deux fichiers : un fichier EXCEL qui inclut la matrice des interférences et un fichier ACCESS qui inclut les horaires des professeurs et l'utilité des cours pour les professeurs. Ces fichiers sont joints au fichier zip. Supposons que le problème soit de programmer six cours dans six salles de classe avec six professeurs. Au début, nous supposons que chaque cours a un groupe et que le but est de trouver le meilleur emploi du temps avec une valeur minimale pour la fonction objective. Les données d'entrée et de sortie sont les suivantes :
+
+**Tableau 4 : Interférences des cours**
+
+|                              | Engineering Economy | OR1 | OR2 | Inventory 1 | Inventory 2 |
+|------------------------------|---------------------|-----|-----|-------------|-------------|
+| CIE (A)                      | 40                  | 2   | 4   | 1           | 2           |
+| Engineering Economy (B)      | 2                   | 30  | 30  | 30          | 20          |
+| OR1 (C)                      | 4                   | 30  | 11  | 10          | 10          |
+| OR2 (D)                      | 1                   | 30  | 10  | 50          | 10          |
+| Inventory 1 (E)              | 2                   | 20  | 10  | 10          | 40          |
+| Inventory 2 (F)              | 3                   | 30  | 40  | 20          | 10          |
+
+Par exemple, le Tableau 4 montre que 40 étudiants sont inscrits au cours de CIE et que 30 étudiants sont également inscrits à la fois en économie d'ingénierie et en OR1. Comme cela prend beaucoup de place ici, ils sont présentés dans des fichiers joints séparément
+
+. Après la mise en œuvre du modèle pour les données dans GAMS 23.5.1, les sorties sont les suivantes :
+
+**Tableau 5 : Sortie de GAMS**
+
+| Jour      | 8:00–9:30 | 9:30–11:00 | 11:00–12:30 | 13:30–15:00 | 15:00–16:30 |
+|-----------|------------|------------|-------------|-------------|-------------|
+| Samedi    | F – #1 – #3 | D – #3 – #3 | -           | -           | -           |
+| Dimanche  | F – #1 – #3 | E – #1 – #3 | -           | -           | -           |
+| Lundi     | -          | D – #3 – #3 | -           | -           | -           |
+| Mardi     | -          | -          | E – #1 – #3  | -           | -           |
+| Mercredi  | -          | -          | -           | C – #4 – #1  | C – #4 – #1  |
+| Jeudi     | -          | -          | -           | B – #5 – #2  | A – #5 – #2  |
+
+Cette sortie satisfait toutes les contraintes et montre la praticabilité du modèle proposé. La valeur de la fonction objective est maintenant de 8 961,5 unités.
+
+#### 4.2 Phase 2 : Exécutions Dynamiques
+
+Dans cette étape, il est supposé que le nombre de groupes pour chaque cours est variable et doit être déterminé par le modèle. Pour ce faire, une approche appropriée consiste à utiliser les codes précédents avec quelques modifications. Les étapes de cette méthode sont les suivantes :
+1. Déterminer la valeur objective acceptable par les décideurs ou d'autres contraintes strictes dans le système (à cette étape, on peut utiliser la valeur de l'exécution statique comme base pour déterminer la plus désirable).
+2. Ajuster la valeur objective dans le modèle en définissant un paramètre scalaire.
+3. Définir un sous-ensemble dans l'ensemble et le rendre indépendant de \( k \).
+4. Trouver le meilleur \( k \) pour chaque cours qui satisfait au mieux la valeur ajustée de la fonction objective.
+5. Le programme s'arrêtera si, avec une combinaison de \( k \), la valeur objective dépasse la valeur ajustée.
+
+Dans cet exemple imaginaire, nous supposons que la valeur ajustée pour la fonction objective est de 8 000 unités. En exécutant le modèle dynamique, la sortie est comme indiqué dans le Tableau 6. De plus, la planification des cours est comme indiqué précédemment.
+
+**Tableau 6 : Sortie de l'exécution dynamique**
+
+| Variable    | Fonction Objective |
+|-------------|--------------------|
+| Valeur      | 8 961,5            |
+| -           | 5                  |
+
+La valeur de la fonction objective est maintenant de 8 000 unités après ajustement dynamique.
+
+
+### Conclusions et Directions de Recherche Futures
+
+Dans la plupart des universités, la planification des cours pour le semestre en cours est un enjeu complexe pour la gestion. Dans cet article, nous proposons un modèle de programmation en nombres entiers pour résoudre ce type de problème d'optimisation combinatoire NP-difficile.
+
+Bien que tous les travaux de recherche pertinents dans la littérature présentent certains avantages, ce projet aborde des questions critiques dans le problème de planification des emplois du temps qui n'ont jamais été prises en compte auparavant. Parmi elles, on trouve l'utilité des professeurs et des étudiants dans la planification des cours et la résolution du problème dans un cadre dynamique pour déterminer le nombre de groupes pour chaque cours. L'objectif le plus important du modèle proposé est de minimiser les interférences pour les étudiants. En d'autres termes, dans notre modèle, l'utilité des étudiants à suivre un cours d'une part et l'utilité des professeurs à présenter un cours d'autre part sont toutes deux combinées dans la fonction objective et l'utilité de tous les composants du système est prise en compte ici. Dans ce modèle, il est supposé qu'il n'y a que des cours de 2 et 3 unités. Au début, nous supposons que chaque cours peut être présenté dans un groupe et nous résolvons le problème avec GAMS. Ensuite, le calcul du nombre de groupes de cours est délégué au logiciel en ajustant la fonction objective sur une valeur prédéterminée. Les résultats informatiques montrent que, dans notre problème, la meilleure valeur pour chaque groupe de cours est encore un.
+
+La principale limitation de notre étude actuelle est la résolution du problème avec de grandes instances de test en utilisant cette méthode et la comparaison des résultats avec les solutions heuristiques actuellement mises en œuvre par les universités iraniennes. De plus, il convient de noter certaines autres contraintes au modèle proposé dans cette étude.
+
+Les pistes de recherche futures possibles sont de planifier les cours et les examens simultanément, car cela n'a pas été pris en compte auparavant, et de considérer certaines autres méthodes pour la phase dynamique et de déterminer un ensemble de \( k \) pour chaque cours séparément et non pour tous les cours avec un seul indice comme \( k \). (si cela se produit, il peut être possible d'avoir certains cours avec \( k = 1 \) et d'autres avec \( k = 2 \) et ainsi de suite).

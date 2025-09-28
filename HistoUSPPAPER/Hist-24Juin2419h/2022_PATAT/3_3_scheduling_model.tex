@@ -1,0 +1,129 @@
+%------------------------------------------------------------
+%------------------------------------------------------------
+\subsection{Session Scheduling and Resource Allocation}
+\label{sec:model-scheduling}
+
+Session scheduling and resource allocation involve positioning, sequencing, non-overlapping and capacity constraints. 
+Constraint~(\ref{ctr:allowedslots}) defines the allowed slots per session
+and 
+%Constraint~(\ref{ctr:sessionend}) session end slot.
+Constraint~(\ref{ctr:nopreemption}) ensures sessions do not span over two days.
+Constraint~(\ref{ctr:classsequencing}) sequences sessions if they are ranked consecutively in  a class.
+Constraint~(\ref{ctr:multiroomscheduling}) models multi-room class sessions and enforces exclusive access to their rooms. 
+This constraint is formulated using auxiliary predicate $\disjointroom{w}{S_1}{S_2}$ (\ref{ctr:disjointconditional})
+which ensures no session of $S_1$ overlaps with a session of $S_2$ if both are assigned to resource $w$. 
+We provide a naive decomposition of this predicate using Predicate (\ref{ctr:disjointsessions}).
+%Alternative implementations will be discussed in Section~\ref{sec:implementation}.
+Constraints~(\ref{ctr:cumulativeroomcapacity}) and (\ref{ctr:multiroomcapacity}) model room utilization and capacity limits and use auxiliary variables $\roomuse{r}{k}{s}{h}$.
+$\roomuse{r}{k}{s}{h}$ models the number of students attending session $s$ of class $k$ in room $r$ at time $h$  and is defined using auxiliary constraint~(\ref{ctr:roomuse}).
+Constraint~(\ref{ctr:cumulativeroomcapacity}) is the default cumulative constraint which applies to non-virtual rooms when allocated to single-room sessions.
+Constraint~(\ref{ctr:multiroomcapacity})
+handles the specific case of multi-room sessions and ensures the cumulated capacity of the rooms used by a multi-room session exceeds the number of students attending the session.
+Note that the constraint is purely quantitative and allows each individual group to be distributed over different rooms.
+
+
+\begin{flalign}
+&\forall s\in\SESSION:
+&\var{\SESSION}{\SLOT}{s}\in{\partallowedslots{s}}
+&\label{ctr:allowedslots}
+\\
+%&\forall s\in\SESSION:
+%&\sessionend{s}=\var{\SESSION}{\SLOT}{s} + \sessionduration{s}
+%&\label{ctr:sessionend}
+%\\
+&\forall s\in\SESSION:
+&\var{\SESSION}{\SLOT}{s} / {\DAILYSLOT} = (\var{\SESSION}{\SLOT}{s} + \sessionduration{s}) / {\DAILYSLOT}
+%&\var{\SESSION}{\SLOT}{s} \div{\DAILYSLOT} = \sessionend{s} \div{\DAILYSLOT}
+&\label{ctr:nopreemption}
+\\
+%
+&\forall (s,s')\in\sessionranked:
+&\var{\SESSION}{\SLOT}{s} + \sessionduration{s}\leq\var{\SESSION}{\SLOT}{s'}
+%&\sessionend{s}\leq\var{\SESSION}{\SLOT}{s'}
+&\label{ctr:classsequencing}
+%\\
+\end{flalign}
+\begin{flalign}
+%
+%&\forall p\in\multiroomparts,k\in\map{\PART}{\CLASS}{p},r\in\map{\PART}{\ROOM}{p}:
+%&\forall k\in\mape{\PART}{\CLASS}{\multiroomparts},r\in\map{\CLASS}{\ROOM}{k}:
+&\forall k\in\mape{\PART}{\CLASS}{\multiroomparts}:
+&
+\bigwedge_{\substack{r\in\map{\CLASS}{\ROOM}{k}}}
+\disjointroom{r}{\map{\CLASS}{\SESSION}{k}}{\map{\ROOM}{\SESSION}{r}\setminus\map{\CLASS}{\SESSION}{k}}
+&\label{ctr:multiroomscheduling}
+\\
+%%\end{flalign}
+%%
+%%\begin{flalign}
+%&\forall r\in\ROOM,\roomdisjunctive{r}:
+%%s\neq s'\in\map{\ROOM}{\SESSION}{r}:
+%%r\in\var{\SESSION}{\ROOM}{s}\cap\var{\SESSION}{\ROOM}{s'}
+%%\rightarrow
+%\NOOVERLAP(r,\map{\ROOM}{\SESSION}{r})
+%&\label{ctr:disjunctiveroomscheduling}
+%\end{flalign}
+%
+&\forall r\in\ROOM\setminus\virtualrooms:
+&
+\bigwedge_{\substack{h\in\SLOT}}
+\roomcapacity{r}
+\geq
+\sum_{\substack{p\in\map{\ROOM}{\PART}{r}\setminus\multiroomparts\\k\in\map{\PART}{\CLASS}{p}\\s\in\map{\CLASS}{\SESSION}{k}}}
+{%(r\in\var{\SESSION}{\ROOM}{s})
+%.
+\roomuse{r}{k}{s}{h}}
+&\label{ctr:cumulativeroomcapacity}
+\\
+%
+&\forall p\in\multiroomparts:
+&
+\bigwedge_{\substack{h\in\SLOT\\k\in\map{\PART}{\CLASS}{p}\\s\in\map{\CLASS}{\SESSION}{k}}}
+{\sum\limits_{r\in\map{\PART}{\ROOM}{p}}}
+{(r\in\var{\SESSION}{\ROOM}{s})
+.\roomcapacity{r}}
+\geq
+\max\limits_{r\in\map{\PART}{\ROOM}{p}}{\roomuse{r}{k}{s}{h}}
+&\label{ctr:multiroomcapacity}
+\end{flalign}
+
+
+{\noindent}Let $W\in\myset{\ROOM,\TEACHER,\STUDENT},w\in W,S_1,S_2\subseteq\SESSION:$
+\begin{flalign}
+\disjointroom{w}{S_1}{S_2}
+\leftrightarrow
+\bigwedge_{\substack{s_1\in S_1,s_2\in S_2\\s_1\neq s_2}}
+(w\in\var{\SESSION}{W}{s_1}\cap\var{\SESSION}{W}{s_2}
+\rightarrow
+\disjoint{s_1}{s_2})
+\label{ctr:disjointconditional}
+\end{flalign}
+
+{\noindent}Let $s,s'\in\SESSION:$
+\begin{flalign}
+\disjoint{s}{s'}
+\leftrightarrow
+(\var{\SESSION}{\SLOT}{s} + \sessionduration{s}\leq\var{\SESSION}{\SLOT}{s'}
+\vee
+\var{\SESSION}{\SLOT}{s'} + \sessionduration{s'}\leq\var{\SESSION}{\SLOT}{s})
+%(\sessionend{s}\leq\var{\SESSION}{\SLOT}{s'})
+%\vee
+%(\sessionend{s'}\leq\var{\SESSION}{\SLOT}{s})
+\label{ctr:disjointsessions}
+\end{flalign}
+
+{\noindent}Let $r\in\ROOM,k\in\CLASS,s\in\SESSION,h\in\SLOT:$
+\begin{equation}
+\begin{split}
+\roomuse{r}{k}{s}{h}
+=
+(r\in\var{\SESSION}{\ROOM}{s})
+%*(\var{\SESSION}{\SLOT}{s}\leq h\wedge h\leq\sessionend{s})
+&.(\var{\SESSION}{\SLOT}{s}\leq h\wedge h\leq\var{\SESSION}{\SLOT}{s} + \sessionduration{s})
+\\
+&.\sum_{\substack{g\in\GROUP}}\mycard{\var{\GROUP}{\STUDENT}{g}}
+.(g\in\var{\CLASS}{\GROUP}{k})
+\label{ctr:roomuse}
+\end{split}
+\end{equation}
+

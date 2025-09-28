@@ -1,0 +1,57 @@
+\section{The UTP Schema}
+\label{sec:schema}
+The \UTP{} schema %is used to model instances of educational timetabling problems.
+%It
+combines a schema to model timetabling entities and solutions, 
+and a rule language.
+% The \UTP{} schema enforces 
+% a structured model to represent the entities of a problem instance, 
+% and includes a rule language to express instance-specific constraints
+% and a solution model to represent timetabling decisions.
+The entity schema %enforces a structure
+models the entities of a \UTP{} instance
+- scheduling horizon, resources, and course elements including course sessions -,
+their properties and relationships.
+%The schema also includes a
+The rule language is user-oriented
+and serves to concisely express constraints
+over any set of entities
+on the different facets of a problem (e.g., session scheduling, capacity planning, resource allocation).
+Rules are %user-oriented and 
+formulated
+using a catalog of timetabling constraint predicates
+and a query language to select, filter and bind entities to sessions. 
+
+A rule-based \UTP{} instance is ultimately 
+converted
+to a constraint-based instance
+that is readily processable by solvers.
+The conversion 
+translates the entity schema as decision variables and core constraints, and then flattens rules as additional constraints.
+Solving a \UTP{} instance involves scheduling sessions
+and assigning them resources 
+so that the core constraints and the rule constraints are satisfied.
+\UTP{} instances are effectively cast as hard constraint satisfaction problems. The solution schema allows to represent
+any timetabling solution computed for an instance,
+be it incomplete or inconsistent.
+
+This section introduces
+the components of the schema.
+The abstract syntax of the entity schema
+is given in Table~\ref{table:entity-model},
+its constraint-based modeling in
+Table~\ref{table:core-variables} and
+Table~\ref{table:core-constraints}
+(Appendix~\ref{appendix:core-model}),
+and the syntax of the rule language
+and constraint predicates in
+Table~\ref{tab:rule-language},
+Table~\ref{tab:predicate_catalog} and
+Table~\ref{tab:constraintformel}
+(Appendix~\ref{appendix:constraintcatalog}).
+
+
+\input{2-1-entity-schema}
+\input{2-2-solutions}
+\input{2-3-predicates-constraints-rules}
+% \input{2-4-rules-flattening}

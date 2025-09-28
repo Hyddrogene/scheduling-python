@@ -1,0 +1,28 @@
+%------------------------------------------------------------
+%------------------------------------------------------------
+\section{Constraint Programming Implementation}
+\label{sec:cp-model}
+
+\setcounter{equation}{0}
+%Nous présentons dans cette section deux modèles d'instances {\UTP} développés en \MINIZINC{} et \CHR{}.
+%Ces modèles mettent en jeu des contraintes relatives
+%au partitionnement des étudiants en groupes et à l'attribution des groupes aux classes,
+%à la distribution des ressources sur les séances,
+%à l'ordonnancement des séances,
+%et à l'allocation de leurs ressources.
+%Nous présentons tout d'abord les données d'instance
+%ainsi que les variables de décision qui sont communes aux deux modèles.
+%%La table~\ref{table:cp-core-sets} liste les plages d'entiers identifiant les différents ensembles d'objets manipulés.
+%%(p. ex., ensemble des séancesset of compatible sessions for rooms) and metric properties (e.g., room capacity). 
+%La table~\ref{table:cp-instance-data} liste les plages d'entiers identifiant les différents ensembles d'objets manipulés et définit les structures utilisées pour représenter les données d'instance.
+%
+In this section, we present two constraint-based models for \UTP{} instances developed in \MINIZINC{} and \CHR{}.
+%The two models handle constraints relative to student sectioning and group assignment to classes, resource distribution over the sessions, session scheduling, and resource allocation.
+%Table~\ref{table:cp-instance-data} lists the instance data shared by the two models.
+%In the following, we first introduce the \MINIZINC{} model, then the \CHR{} model.
+%\marc{ajouter un texte qui donne un exemple pour chacune des trois structures (part\_sessions faire le lien avec DPS) - supprimer la table}
+The two models use the same arrays, functions and constants for representing input data. We do not list them here but they are easily understandable such as \texttt{part\_sessions} which gives the set of sessions constitutive of a part, \texttt{session\_rooms} which gives the set of allowed rooms for a session, \texttt{week} which gives the week of a slot, and \texttt{nr\_weekly\_slots} which is the number of slots in a week.
+
+%\input{2022_PATAT/4_0_common_model}
+\input{2022_PATAT/4_1_mzn_model}
+\input{2022_PATAT/4_2_chr_model}

@@ -1,0 +1,34 @@
+contrainte particulière pour les cours ayant un prof en début de semestre et ensuite une autre ne fin de semestre
+
+Faire des règles plus génériques pour itc
+
+générer des étudiants-> nombre d'étudiants
+générer les profs -> anonymisations
+générer les groupes + find le nombre de groupes
+
+les accents et faire gaffe au label
+faire attention au prime et aux accents -> sur les étages
+
+NOM Prénom
+
+CTD pas CM-TD
+
+ajouter contrainte multimedia -> ajouter des labels sur les salles
+
+gére les doublons dans le parser  -> comportemant autorisant ou fusionner
+multiple-> consomationn adaptable
+
+maxHeadCount à -1
+
+sectionnement des équipes de jour et nuit KHE
+
+groupe virutel -> robuste -> cas 4 groupes mais il y'en a que 3 car les autres ne sont pas réellement inscrit*
+
+sortir sequenced
+same days -> un groupe avant l'autre
+
+(class,{1,2,4}) filters="(class[id="coucou"] && )|"
+
+heuristique
+
+proposer différente solution de réparation

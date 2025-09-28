@@ -1,0 +1,170 @@
+**Expliquant la contrainte cumulative**
+
+L'utilisateur souhaite comprendre la contrainte cumulative de Choco-solver, avec un focus particulier sur le *SweepCumulFilter* en Java. Ce mécanisme utilise une approche algorithmique de type *sweep line* sur un profil de charge. Il gère l'ordonnancement des événements (PRU, SCP, ECP) et opère par des boucles de fixation (*fixpoint loops*) pour effectuer des *prunings*. Chaque cas est traité pour ajuster progressivement la solution au problème à travers des étapes successives. Je vais détailler les fonctionnalités, les cases d'événements et l'approche de pruning.
+
+
+Réflexion durant 13 secondes
+
+
+## Contexte général : la contrainte **cumulative**
+
+Dans un problème « cumulative », on modélise l’occupation d’une ressource unique et limitée (capacité `capa`) par plusieurs tâches :
+
+| Variable | Sens                                    |
+| -------- | --------------------------------------- |
+| `s[i]`   | début de la tâche *i*                   |
+| `d[i]`   | durée minimale/variable de la tâche     |
+| `e[i]`   | fin (`e[i] = s[i] + d[i]`)              |
+| `h[i]`   | consommation (hauteur) sur la ressource |
+
+L’invariant à respecter : **à tout instant, la somme des hauteurs des tâches actives ≤ capacité**.
+
+Pour propager cette contrainte, *Choco-solver* propose plusieurs filtres ; `SweepCumulFilter` implémente une **Time-Table basée sur un balayage (sweep)** : on parcourt la ligne du temps, on maintient la consommation minimale garantie et on coupe les domaines qui provoqueraient un dépassement.
+
+---
+
+## 1. Structure interne de `SweepCumulFilter`
+
+| Champ        | Rôle principal                                                           |
+| ------------ | ------------------------------------------------------------------------ |
+| `slb / sub`  | copies locales des bornes inf./sup. de `s` (*Start Lower/Upper Bound*)   |
+| `elb / eub`  | copies des bornes inf./sup. de `e` (*End Lower/Upper Bound*)             |
+| `dlb`        | bornes inférieures des durées                                            |
+| `hlb`        | bornes inférieures des hauteurs                                          |
+| `events`     | tableau d’**évènements** (max 3 × nbT)                                   |
+| `PRU`        | *Prune* : instant où la tâche **pourrait** commencer plus tôt            |
+| `SCP`        | *Start Compulsory Part* : début de la partie **obligatoire** d’une tâche |
+| `ECP`        | *End Compulsory Part* : fin de cette partie obligatoire                  |
+| `tprune`     | liste des tâches candidates à une coupe sur `s`                          |
+| `tasksToUSe` | sous-ensemble d’indices dont `d[i].LB > 0` (on ignore les durées nulles) |
+
+> *Copier les bornes dans des tableaux primitifs évite les appels objets et accélère le balayage.*
+
+---
+
+## 2. Cycle de filtrage global (`filter(...)`)
+
+1. **Pré-filtrage** : on conserve uniquement les tâches dont la durée minimale est > 0.
+2. **Boucle fix-point** (tant que quelque chose bouge) :
+
+   1. **Balayage “avant”** :
+
+      * on travaille sur les vraies dates, on tente de **remonter** les bornes inf. de `s`.
+   2. **Pruning des `s`** (`pruneMin`) : toute borne coupée est répercutée sur les `IntVar`.
+   3. **Balayage “arrière”** (symétrique) :
+
+      * on reflète la chronologie (`t ↦ -t+1`) pour raisonner sur les fins et **rabaisser** les bornes sup. de `e`.
+   4. **Pruning des `e`** (`pruneMax`).
+
+Le processus est répété si `FIXPOINT` vaut `true` et qu’au moins une coupe a été faite.
+
+---
+
+## 3. Génération des évènements (`generateMinEvents`)
+
+Pour chaque tâche *i* :
+
+| Condition         | Évènements ajoutés                                                                          |
+| ----------------- | ------------------------------------------------------------------------------------------- |
+| `slb[i] < sub[i]` | `PRU(sl b[i])` → la tâche *pourrait* démarrer plus tôt que sa borne sup. actuelle           |
+| `sub[i] < elb[i]` | `SCP(sub[i])` + `ECP(elb[i])` → la **partie obligatoire** (intervalle certain d’occupation) |
+
+Un même instant peut porter plusieurs évènements ; on les trie ensuite par :
+
+1. **Date croissante**.
+2. À date égale : `ECP` (3) avant `SCP` (2) avant `PRU` (1). L’idée est de libérer l’ancienne conso avant d’ajouter la nouvelle.
+
+Complexité : `O(nbT log nbT)` pour le tri, puis `O(nbEvents)` pour le balayage.
+
+---
+
+## 4. Balayage principal (`sweep(...)`)
+
+Variables de travail :
+
+* `currentDate` / `nextDate` : borne de l’intervalle courant.
+* `currentConso` : consommation minimale **déjà garantie** (somme des `hlb` des tâches dont la partie obligatoire couvre `currentDate`).
+* `capa` : capacité max actuelle (`capa.getUB()`).
+
+Étapes pour chaque segment `]currentDate, nextDate[` :
+
+1. **Évaluation du dépassement**
+   Pour chaque tâche *i* dans `tprune` (celles qui peuvent encore démarrer dans l’intervalle) :
+
+   * Si elle **doit** chevaucher `currentDate` et que
+     `currentConso + hlb[i] > capa`
+     → on *force* `s[i].LB` à `nextDate` (elle ne peut plus démarrer avant).
+   * Sinon, si elle reste potentiellement active après `nextDate`, on la garde dans `tprune`.
+
+2. **Traitement de l’évènement `event`** (à `currentDate`) :
+
+   * `SCP` : on **ajoute** `hlb[index]` à `currentConso` et on peut relever la *borne inf.* du `capa` (consommation certaine).
+   * `ECP` : on **retire** la hauteur.
+   * `PRU` : la tâche entre dans `tprune` (elle pourrait encore être coupée plus loin).
+
+3. Passage au prochain évènement.
+
+4. La méthode retourne `true` si au moins une coupe a été effectuée, ce qui déclenche une itération supplémentaire du fix-point.
+
+---
+
+## 5. Balayage symétrique pour les fins
+
+Pour couper les **bornes supérieures** d’`e`, on applique exactement la même logique… mais en changeant de repère :
+
+```
+t'   = -e[i].UB + 1   (slb fictif)
+s'lb = -e[i].UB + 1
+s'ub = -e[i].LB + 1
+e'lb = -s[i].UB + 1
+e'ub = -s[i].LB + 1
+```
+
+Dans ce repère, remonter `s'` revient à rabaisser `e`. Les coupes sont ensuite réinterprétées dans le repère normal par `e[i].updateUpperBound(1 - slb[i])`.
+
+---
+
+## 6. Pourquoi ça marche ?
+
+* **Parties obligatoires** : si `s[i].UB < e[i].LB`, il existe une portion de la tâche qui ne peut être évitée ; on la tient pour acquise dans `currentConso`.
+* **Liste `tprune`** : stocke seulement les tâches *capables* de commencer dans l’intervalle courant.
+* Quand un dépassement est détecté, on sait que toute solution **doit** reporter le début au moins à `nextDate`, d’où la coupe.
+* En réitérant jusqu’au fix-point, on exploite totalement la **raisonnement Time-Table** (sans recourir à la propagation énergétique plus coûteuse).
+
+---
+
+## 7. Exemple visuel simplifié
+
+```
+Capacité = 4
+                t
+      0 1 2 3 4 5 6 7 8
+Tâche A h=3 [s∈[0..1], d=4]
+Tâche B h=2 [s∈[2..3], d=3]
+
+Évènements
+0 : PRU(A)
+1 : SCP(A)
+2 : SCP(B)
+5 : ECP(A)
+6 : ECP(B)
+
+Balayage :
+- ]0,1[  conso=0  → rien
+- @1    +3 (A)
+- ]1,2[ conso=3, tprune={A}
+        3+2>4 ⇒ s[B]≥2  (déjà)
+- @2    +2 (B)  conso=5 ⇒ capa.LB←5
+- ...   plus de coupes possibles
+```
+
+---
+
+## 8. Points clés à retenir
+
+* **Balayage / Sweep** : complexité quasi-linéaire, très efficace sur de grands jeux de tâches.
+* **Propagation forte (Time-Table)** : taille des domaines réduite sans recourir aux *nogoods*.
+* **Symétrie avant / arrière** : coupe sur débuts **et** fins.
+* **Consommation certaine ⇒ mise à jour de `capa.LB`** : le filtre tire aussi parti de la variable capacité.
+
+En résumé, `SweepCumulFilter` met en œuvre l’algorithme classique *“Time-Table + Sweep”* : il identifie les parties obligatoires, construit un profil minimal de charge et pousse les débuts / fins dès qu’un dépassement devient inévitable, tout en garantissant la complétion à fix-point pour une propagation maximale — le tout en *O(n log n)*.

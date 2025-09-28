@@ -1,0 +1,19 @@
+money = 183701;
+
+nr_item = 27;
+
+item_gain = [25,35,20,10,5,30,100,10,400,20,10,20,150,25,65,40,200,30,50,10,20,160,100,250,1000,400,50];
+
+item_priceD =[800,1000,600,250,100,1000,15000,200,500000,700,250,600,5000,800,2000,1200,250000,1000,2000,350,650,5500,10000,25000,1000000,100000,5000];
+item_max = [30,25,30,35,40,30,5,35,3,35,35,35,35,35,30,35,3,30,35,35,30,15,15,10,3,5,20];
+item_numberD = [28,25,30,35,
+                38,29,5,35,3,
+                27,33,30,28,29,30,30,
+                3,27,26,27,29,15,
+                15,10,3,5,16];
+
+item_name = ["bathrooms","billboard","furniture","paint",
+             "flowers","lights","mural","ornaments","statue",
+             "advertiser","apprentice","cook","executive","greeter","head","sous",
+             "blimp","email","internet","newspaper","radio","tv",
+             "assistant","driver","engine","kitchen","register"] ;

@@ -1,0 +1,293 @@
+The timetable construction problem is a combinatorial optimisation problem
+that consists of four finite sets: (i) a set of meetings, (ii) a set of available
+resources (e.g. rooms, staff, students), (iii) a set of available time–slots, and (iv )
+a set of constraints. The problem is to assign resources and time slots to each
+given meeting, while maintaining constraints satisfied to the highest possible
+extent. The University Course Timetabling Problem (UCTP) is a timetabling
+problem where the given data consists of a set of students and sets of courses that
+each of the students needs to attend. A course is a set of events that need to take
+place in the timetable. The main characteristic that distinguishes the university
+course timetabling problem from other types of timetabling problems is the fact
+that students are generally allowed to choose the courses in which they wish
+to enrol [9]. A set of constraints is usually divided into hard constraints whose
+violation makes the timetable suggestion infeasible, and soft constraints, rules
+that improve the quality of timetables, but are allowed to be violated.
+The above description of the UCTP defines a broad range of problems, whose
+complexity significantly depends on the specific constraints defined. Particular
+timetabling applications are usually focused on a more strictly defined subset
+of the problems, as the constraints and dimensions of the problem vary among
+institutions. We use the same approach, giving a detailed formal description of
+the problems for which our application is designed.
+
+2.2 Definition of Laboratory Exercise Timetabling Problem
+The laboratory exercise timetabling problem is defined as a six–tuple:
+LETP = (T, L, R, E, S, C) ,
+where T is a set of time–quanta in which the scheduling is possible, L is a set of
+limited assets present at the university, R is a set of rooms, E is a set of events
+that need to be scheduled, S is a set of attending students, and C is a set of
+constraints. We assume that the durations of all the events can be quantified as
+multiples of a fixed value of time that we call a time–quantum. A time–slot is
+defined as one or more consecutive time–quanta in the timetable. The duration
+of the quantum reflects a trade–off between the precision of scheduling and the
+size of the search space.
+The set of limited assets (resources) shared among the different exercises is
+denoted L. For each resource l ∈ L, a fixed number of workplaces can use the
+resource concurrently.
+Each room is defined as a set of workplaces, atomic room resources varying
+from room to room, such as seats in ordinary classrooms, computers in computer
+classrooms, etc. For each room r ∈ R, the number of workplaces, denoted sizer ∈
+N is defined. For each of the events, the desired number of students per workplace
+is defined. Since some rooms may not be available all the time, a set of time
+quanta Tr ⊆ T in which the room is available is defined for each room.
+Events have the following set of properties:
+– Each event e has a duration, denoted dur e ∈ N, a multiple of a time quantum.
+– Each event e has an acceptable room set Re ⊆ R.
+– Each event e has a suitable time quanta set, denoted Te ⊆ T .
+– The set of limited assets used by the event is denoted Le ⊆ L.
+
+ The number of staff available for each event and the number of staff needed
+for event e when held in the room r are given. Because each of the de-
+partments at our institution produces staff timetables independently of our
+system, staff is not defined as a separate entity of the LETP.
+– An ordering relation, denoted d can be defined for a pair of events. The
+relation e2 d e1 is true if and only if e2 needs to be scheduled at least d
+days after e1.
+– The maximum number of rooms to be used concurrently for the event e can
+be defined.
+– An event timespan can be defined to ensure that all of the time–quanta in
+which the event is scheduled are within a specified time interval.
+– For each event e, the number of students per workplace is denoted spwe ∈ N.
+The set S is the set of students that are to be scheduled. Each student s ∈ S
+has the following set of properties: (i) a set of time quanta Ts ⊆ T when each
+student s is free, and (ii) a non–empty set of events he or she needs to attend,
+denoted Es ⊆ E.
+The requirements of the courses are represented by a set of constraints C.
+The constraints are divided into hard constraints Ch, which are essential for the
+courses, and soft constraints Cs, which may require some manual intervention if
+they are not met. Hard constraints Ch are defined as follows:
+– All of the properties of limited assets, rooms, events and students need to
+be satisfied in the timetable.
+– Each room can only be occupied by one event at a time.
+– Students can attend only one event at a time.
+– Each event e occupies dur e consecutive quanta of the room.
+– At most sizer · spw e students can be placed in room r used for the event e.
+– Enough teaching staff must be available to attend each event.
+The set of soft constraints Cs contains one element: the students must attend
+all the events they are enrolled in. Defining this constraint as soft may seem
+irrational, but the reasoning behind this is as follows: ’hard’ constraints are
+simply those that are satisfied at all times in any solution suggestion in our
+implementation, whereas for the ’soft’ constraints this may not be the case. ’Soft’
+constraints are defined as such because it was not known in advance whether
+there even exists a solution that satisfies all the constraints (given the complex
+requirements). In other words, our approach tries to find the best solution within
+the imposed constraints and possibly to give a feedback to the course organisers
+if some are still severely violated. In the remainder of the text, the term ’feasible
+solution’ denotes a solution that satisfies at least the hard constraints as defined
+above.
+3 Solving LETP Using Ant Colony Optimisation
+3.1 Construction Graph
+The main issue in applying ACO to a problem is to find an appropriate representa-
+is called the construction graph. To ensure that the problem representation is suit-
+able for large instances of LETP, memory–efficiency is the main design goal. The
+construction graph we devised can be seen in figure 1. Semantically, each of the
+nodes represents one of the following: a student, an event or a dock node. A dock is
+an ordered pair of the room and beginning time in which an event can be scheduled,
+e.g., (ComputerLab-2, (2010-09-08, 10:00)).
+An edge connecting a dock node and an event node means that the event
+can be scheduled in that time and place. This means that the dock represents
+the room and time that are suitable for that event. Dock nodes are connected
+to student nodes as well. Student nodes are only connected to docks under the
+following conditions: (i) the dock is connected to at least one of the events
+the student needs to attend and (ii) the student is free from pre–assignments
+in time–quanta represented by the dock and the dures consecutive time quanta.
+The event es is the shortest event enrolled by the student that can be held in the
+aforementioned dock, and its duration is denoted dures . To each of the graph’s
+edges, a pheromone concentration value τij and a heuristic information value
+ηij are assigned. The LETP solution is a timetable with all of the events and
+students scheduled into the appropriate docks. A candidate solution (timetable)
+is represented as a subset of edges of the construction graph, connecting the
+timetable building blocks into a specific timetable.
+For larger problem instances, the size of the construction graph can be con-
+siderable, and the efficiency of the search procedure strongly depends on the size
+of the graph. To reduce the size of the search space, an additional preprocessing
+step is performed. During that step, edges representing solution components of
+poor quality are removed. More precisely, an edge is removed if the number of
+students who can attend the corresponding event is less than 80% of the room
+capacity. Note that this value may vary in different problem instances. In the
+final step, all isolated docks are removed.
+Hard constraints are included in the construction procedure through the con-
+straint fence layer. This layer dynamically masks the edges of the construction
+graph that lead to infeasible solutions, based on each incomplete solution (par-
+tial tour) of the ants. Thus, ants moving through the graph are producing only
+feasible timetables. The construction graph is a very large structure, while the
+constraint fence is a small and expandable one. Ants access the graph exclusively
+through the constraint fence. They may move only on paths that are allowed
+by the constraint fence, and they behave as if the edges that are not allowed by
+the constraint fence did not exist at all. While the construction graph remains
+constant throughout the execution time, each ant that is moving through the
+graph is given its own instance of the constraint fence. The constraint fence
+evaluates each edge based on the desired set of timetable constraints. Each of
+the constraints from our library is implemented as an independent module. This
+makes it easy to update the constraints and to add new ones if needed. The com-
+putational cost of the constraint fence depends on the set of constraints used. If
+used with our current library, its computational complexity is O(|R|), where R
+is the set of rooms in the LETP instance
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+4 Results
+The system described here was successfully applied to the laboratory exercises
+timetabling problem at the authors’ institution. The performance of the algo-
+rithm on several datasets is presented in Table 2. These problem instances have
+different durations and widely varying numbers of events and attending stu-
+dents. Two values, Se,s and Ts are given as measures of the problem instance
+complexity. The student event sum, denoted Se,s, is defined as the aggregate
+number of events that each of the students needs to attend. More formally,
+Ss,e = ∑
+s∈S |Es|, where Es is the set of events that student s needs to at-
+tend. The timespan of the problem instance, denoted Ts, is defined as the
+number of days on which the events need to be scheduled. For each dataset,
+30 independent runs were performed, and each run was limited to one hour.
+For the purpose of comparison, the maximum run–time limit is added to the
+usual stop criteria described in Section 3.4. Note that these datasets are in-
+stances of real–world timetabling problems that had appeared at our faculty.
+Anonymised version of these datasets is publicly available for download at
+http://morgoth.zemris.fer.hr/jagenda. To illustrate the effectiveness of our
+approach, the results are compared with a GRASP technique (Table 2). The
+tested GRASP technique uses a construction search (different from the search
+procedure defined for our ants) to build solutions satisfying hard constraints, af-
+ter which a local search that optimises the schedule of students is performed. We
+used the Mann–Whitney test to check the H0 hypothesis that the distribution
+functions of the algorithm performances were the same for the results of both the
+ACO and GRASP techniques. For each of the datasets, the p values were well
+below 0.05. On each problem instance, with very high statistical significance, we
+conclude that the ACO technique performs better than the GRASP technique.
+Note that although the Genetic algorithm has also been applied to the LETP
+problem as a part of a sister project at our institution [2], the performance of
+these approaches cannot be directly compared since different quality measures
+and optimised variables are used in these approaches.
+In some problem instances, a solution where all students are scheduled could
+not be found. This was usually caused by a constellation of conflicting events,
+or events with infeasible requirements posed by the course organisers. In such
+instances, the system is used as a tool for identifying the problematic events. In
+practice, the process of scheduling is usually an iterative process of querying the
+system for the best results, interpreting those results, and allowing the staff to
+make informed decisions.
+
+
+5 Conclusion
+Thisa pper presents a case study of applying ACO metaheuristic for solving a com-
+plex large–scale timetabling problem at our institution. Our solution uses a rela-
+tively general problem representation, suitable for different types of institutions.
+We present an innovative, memory–efficient problem representation that is appro-
+priate for large problem instances. Moreover, the modular design of the constraint
+library facilitates the addition of new constraints. It makes the system manage-
+able, which is extremely important for practical timetabling applications. The ex-
+act problem we are solving is formulated as the laboratory exercise timetabling
+problem, a subset of the university course timetabling problem.
+This work arose out of the specific timetabling needs of one institution. How-
+ever, the approach described here is not limited to LETP, since it shares many
+commonalities with other UCTP instances. Thus, it is likely that the challenges
+we faced, such as reducing the memory footprint of the construction graph or
+ensuring the ease of adaptation to problem modifications, will also be faced by
+other researchers. Other authors may use our approach without modifying the
+problem representation. The only necessary adaptation may be the implemen-
+tation of additional constraints that are not supported by our current library.
+Furthermore, since prior work on ant colony optimisation mainly considered
+artificially generated UCTP instances, our work proves that ACO can be highly
+successful in solving real–world timetabling problems. It is an effort to help
+bridge the gap between theoretical research and practical adaptation of meta-
+heuristic techniques that is currently so prevalent in the area of automated
+timetabling. Our work can also be viewed as an additional confirmation that
+ACO is not only an interesting academic research topic, but also a manageable
+and efficient approach able to solve highly complex real–world problems.
+
+
+
+
+
+Le problème de construction des emplois du temps est un problème d'optimisation combinatoire qui se compose de quatre ensembles finis : (i) un ensemble de cours, (ii) un ensemble de ressources disponibles (par exemple, salles, personnel, étudiants), (iii) un ensemble de créneaux horaires disponibles et (iv) un ensemble de contraintes. Le problème consiste à attribuer des ressources et des créneaux horaires à chaque cours donnée, tout en respectant les contraintes au maximum. Le problème de planification des cours universitaires (UCTP) est un problème de planification où les données fournies se composent d'un ensemble d'étudiants et de groupes de cours que chaque étudiant doit suivre. Un cours est un ensemble d'événements qui doivent avoir lieu dans l'emploi du temps. La principale caractéristique qui distingue le problème de planification des cours universitaires des autres types de problèmes de planification est le fait que les étudiants sont généralement autorisés à choisir les cours auxquels ils souhaitent s'inscrire [9]. Un ensemble de contraintes est généralement divisé en contraintes strictes dont la violation rend la proposition d'emploi du temps irréalisable, et des contraintes souples, des règles qui améliorent la qualité des emplois du temps mais dont la violation est permise.
+
+La description ci-dessus de l'UCTP définit une vaste gamme de problèmes, dont la complexité dépend significativement des contraintes spécifiques définies. Les applications de planification particulières se concentrent généralement sur un sous-ensemble plus strictement défini des problèmes, car les contraintes et les dimensions du problème varient selon les institutions. Nous utilisons la même approche, en fournissant une description formelle détaillée des problèmes pour lesquels notre application est conçue.
+
+### 2.2 Définition du problème de planification des exercices de laboratoire
+
+Le problème de planification des exercices de laboratoire est défini comme un sextuplet :
+\[ \text{LETP} = (T, L, R, E, S, C) \]
+où \( T \) est un ensemble de quanta de temps dans lesquels la planification est possible, \( L \) est un ensemble de ressources limitées présentes à l'université, \( R \) est un ensemble de salles, \( E \) est un ensemble d'événements qui doivent être planifiés, \( S \) est un ensemble d'étudiants participants, et \( C \) est un ensemble de contraintes. Nous supposons que la durée de tous les événements peut être quantifiée comme des multiples d'une valeur fixe de temps que nous appelons un quantum de temps. Un créneau horaire est défini comme un ou plusieurs quanta de temps consécutifs dans l'emploi du temps. La durée du quantum reflète un compromis entre la précision de la planification et la taille de l'espace de recherche.
+
+L'ensemble des ressources limitées (ressources) partagées entre les différents exercices est noté \( L \). Pour chaque ressource \( l \in L \), un nombre fixe de postes de travail peut utiliser la ressource simultanément.
+Chaque salle est définie comme un ensemble de postes de travail, des ressources de salle atomiques variant d'une salle à l'autre, telles que des sièges dans des salles de classe ordinaires, des ordinateurs dans des salles informatiques, etc. Pour chaque salle \( r \in R \), le nombre de postes de travail, noté \( \text{size}_r \in \mathbb{N} \) est défini. Pour chaque événement, le nombre souhaité d'étudiants par poste de travail est défini. Étant donné que certaines salles peuvent ne pas être disponibles tout le temps, un ensemble de quanta de temps \( T_r \subseteq T \) dans lequel la salle est disponible est défini pour chaque salle.
+
+Les événements ont les propriétés suivantes :
+- Chaque événement \( e \) a une durée, notée \( \text{dur}_e \in \mathbb{N} \), un multiple d'un quantum de temps.
+- Chaque événement \( e \) a un ensemble de salles acceptables \( R_e \subseteq R \).
+- Chaque événement \( e \) a un ensemble de quanta de temps appropriés, noté \( T_e \subseteq T \).
+- L'ensemble des ressources limitées utilisées par l'événement est noté \( L_e \subseteq L \).
+
+Le nombre de personnel disponible pour chaque événement et le nombre de personnel nécessaire pour l'événement \( e \) lorsqu'il a lieu dans la salle \( r \) sont donnés. Étant donné que chaque département de notre institution établit indépendamment les emplois du temps du personnel, le personnel n'est pas défini comme une entité distincte du LETP.
+- Une relation d'ordre, notée \( \preceq_d \), peut être définie pour une paire d'événements. La relation \( e_2 \preceq_d e_1 \) est vraie si et seulement si \( e_2 \) doit être planifié au moins \( d \) jours après \( e_1 \).
+- Le nombre maximum de salles à utiliser simultanément pour l'événement \( e \) peut être défini.
+- Une durée d'événement peut être définie pour garantir que tous les quanta de temps dans lesquels l'événement est planifié sont compris dans un intervalle de temps spécifié.
+- Pour chaque événement \( e \), le nombre d'étudiants par poste de travail est noté \( \text{spw}_e \in \mathbb{N} \).
+
+L'ensemble \( S \) est l'ensemble des étudiants à planifier. Chaque étudiant \( s \in S \) a les propriétés suivantes : (i) un ensemble de quanta de temps \( T_s \subseteq T \) pendant lesquels chaque étudiant \( s \) est libre, et (ii) un ensemble non vide d'événements auxquels il ou elle doit assister, noté \( E_s \subseteq E \).
+
+Les exigences des cours sont représentées par un ensemble de contraintes \( C \). Les contraintes sont divisées en contraintes strictes \( C_h \), qui sont essentielles pour les cours, et des contraintes souples \( C_s \), qui peuvent nécessiter une intervention manuelle si elles ne sont pas satisfaites. Les contraintes strictes \( C_h \) sont définies comme suit :
+- Toutes les propriétés des ressources limitées, des salles, des événements et des étudiants doivent être satisfaites dans l'emploi du temps.
+- Chaque salle ne peut être occupée que par un seul événement à la fois.
+- Les étudiants ne peuvent assister qu'à un seul événement à la fois.
+- Chaque événement \( e \) occupe \( \text{dur}_e \) quanta consécutifs de la salle.
+- Au plus \( \text{size}_r \cdot \text{spw}_e \) étudiants peuvent être placés dans la salle \( r \) utilisée pour l'événement \( e \).
+- Il doit y avoir suffisamment de personnel enseignant disponible pour chaque événement.
+
+L'ensemble des contraintes souples \( C_s \) contient un élément : les étudiants doivent assister à tous les événements auxquels ils sont inscrits. Définir cette contrainte comme souple peut sembler irrationnel, mais la raison en est la suivante : les contraintes "strictes" sont simplement celles qui sont satisfaites en tout temps dans toute proposition de solution dans notre implémentation, alors que pour les contraintes "souples", cela peut ne pas être le cas. Les contraintes "souples" sont définies comme telles parce qu'il n'était pas connu à l'avance s'il existait même une solution satisfaisant toutes les contraintes (étant donné les exigences complexes). En d'autres termes, notre approche essaie de trouver la meilleure solution dans les contraintes imposées et éventuellement de donner un retour aux organisateurs de cours si certaines sont encore sévèrement violées. Dans le reste du texte, le terme "solution réalisable" désigne une solution qui satisfait au moins les contraintes strictes telles que définies ci-dessus.
+
+
+
+### 3 Résolution du LETP en utilisant l'optimisation par colonies de fourmis
+
+#### 3.1 Graph de construction
+
+Le principal défi dans l'application de l'ACO à un problème est de trouver une représentation appropriée, appelée graph de construction. Pour garantir que la représentation du problème soit adaptée aux grandes instances de LETP, l'efficacité mémoire est l'objectif principal de conception. Le graph de construction que nous avons conçu peut être vu à la figure 1. Sémantiquement, chacun des nœuds représente l'un des éléments suivants : un étudiant, un événement ou un nœud de dock. Un dock est une paire ordonnée de la salle et du moment où un événement peut être planifié, par exemple, (ComputerLab-2, (2010-09-08, 10:00)).
+
+Une arête reliant un nœud de dock et un nœud d'événement signifie que l'événement peut être planifié à ce moment et à cet endroit. Cela signifie que le dock représente la salle et le moment qui conviennent pour cet événement. Les nœuds de dock sont également connectés aux nœuds d'étudiants. Les nœuds d'étudiants ne sont connectés aux docks que sous les conditions suivantes : (i) le dock est connecté à au moins un des événements que l'étudiant doit suivre et (ii) l'étudiant est libre de toute pré-affectation pendant les quanta de temps représentés par le dock et les quanta de temps consécutifs. L'événement \( e_s \) est le plus court événement auquel l'étudiant est inscrit et qui peut se tenir dans le dock mentionné, et sa durée est notée \( \text{dures} \). À chacune des arêtes du graph, une valeur de concentration de phéromone \( \tau_{ij} \) et une valeur d'information heuristique \( \eta_{ij} \) sont assignées. La solution LETP est un emploi du temps avec tous les événements et étudiants planifiés dans les docks appropriés. Une solution candidate (emploi du temps) est représentée comme un sous-ensemble des arêtes du graph de construction, reliant les blocs de construction de l'emploi du temps en un emploi du temps spécifique.
+
+Pour des instances de problèmes plus grandes, la taille du graph de construction peut être considérable, et l'efficacité de la procédure de recherche dépend fortement de la taille du graph. Pour réduire la taille de l'espace de recherche, une étape de prétraitement supplémentaire est effectuée. Pendant cette étape, les arêtes représentant des composants de solution de mauvaise qualité sont supprimées. Plus précisément, une arête est supprimée si le nombre d'étudiants pouvant assister à l'événement correspondant est inférieur à 80 % de la capacité de la salle. Notez que cette valeur peut varier selon les instances de problèmes. Dans la dernière étape, tous les docks isolés sont supprimés.
+
+Les contraintes strictes sont incluses dans la procédure de construction par le biais de la couche de barrière de contraintes. Cette couche masque dynamiquement les arêtes du graph de construction qui conduisent à des solutions non réalisables, en fonction de chaque solution incomplète (tour partiel) des fourmis. Ainsi, les fourmis se déplaçant dans le graph ne produisent que des emplois du temps réalisables. Le graph de construction est une structure très large, tandis que la barrière de contraintes est petite et extensible. Les fourmis accèdent au graph exclusivement par la barrière de contraintes. Elles peuvent se déplacer uniquement sur des chemins autorisés par la barrière de contraintes, et elles se comportent comme si les arêtes non autorisées par la barrière de contraintes n'existaient pas du tout. Alors que le graph de construction reste constant pendant toute la durée d'exécution, chaque fourmi se déplaçant dans le graph dispose de sa propre instance de la barrière de contraintes. La barrière de contraintes évalue chaque arête en fonction de l'ensemble des contraintes d'emploi du temps souhaitées. Chacune des contraintes de notre bibliothèque est implémentée comme un module indépendant. Cela facilite la mise à jour des contraintes et l'ajout de nouvelles si nécessaire. Le coût computationnel de la barrière de contraintes dépend de l'ensemble des contraintes utilisées. Si elle est utilisée avec notre bibliothèque actuelle, sa complexité computationnelle est de \( O(|R|) \), où \( R \) est l'ensemble des salles dans l'instance LETP.
+
+
+
+
+### 4 Résultats
+
+Le système décrit ici a été appliqué avec succès au problème de l'emploi du temps des travaux pratiques de laboratoire à l'institution des auteurs. Les performances de l'algorithme sur plusieurs ensembles de données sont présentées dans le Tableau 2. Ces instances de problèmes ont des durées différentes et un nombre d'événements et d'étudiants participants très variés. Deux valeurs, \( S_{e,s} \) et \( T_s \), sont fournies comme mesures de la complexité de l'instance du problème. La somme des événements étudiants, notée \( S_{e,s} \), est définie comme le nombre total d'événements auxquels chaque étudiant doit assister. Plus formellement, \( S_{s,e} = \sum_{s \in S} |E_s| \), où \( E_s \) est l'ensemble des événements auxquels l'étudiant \( s \) doit assister. La durée de l'instance du problème, notée \( T_s \), est définie comme le nombre de jours sur lesquels les événements doivent être planifiés. Pour chaque ensemble de données, 30 exécutions indépendantes ont été effectuées, et chaque exécution a été limitée à une heure. Pour des raisons de comparaison, la limite maximale de temps d'exécution est ajoutée aux critères d'arrêt habituels décrits dans la Section 3.4. Notez que ces ensembles de données sont des instances de problèmes d'emploi du temps du monde réel qui sont apparus dans notre faculté. Une version anonymisée de ces ensembles de données est disponible en téléchargement sur [http://morgoth.zemris.fer.hr/jagenda](http://morgoth.zemris.fer.hr/jagenda).
+
+Pour illustrer l'efficacité de notre approche, les résultats sont comparés avec une technique GRASP (Tableau 2). La technique GRASP testée utilise une recherche de construction (différente de la procédure de recherche définie pour nos fourmis) pour créer des solutions satisfaisant les contraintes strictes, après quoi une recherche locale optimisant l'emploi du temps des étudiants est effectuée. Nous avons utilisé le test de Mann-Whitney pour vérifier l'hypothèse \( H_0 \) selon laquelle les fonctions de distribution des performances de l'algorithme étaient les mêmes pour les résultats des techniques ACO et GRASP. Pour chaque ensemble de données, les valeurs de p étaient bien inférieures à 0,05. Sur chaque instance de problème, avec une très grande signification statistique, nous concluons que la technique ACO est plus performante que la technique GRASP.
+
+Notez que bien que l'algorithme génétique ait également été appliqué au problème LETP dans le cadre d'un projet parallèle à notre institution [2], les performances de ces approches ne peuvent pas être comparées directement car des mesures de qualité et des variables optimisées différentes sont utilisées dans ces approches.
+
+Dans certaines instances de problèmes, une solution où tous les étudiants sont planifiés n'a pas pu être trouvée. Cela était généralement causé par une constellation d'événements conflictuels ou des événements avec des exigences irréalisables posées par les organisateurs de cours. Dans de tels cas, le système est utilisé comme un outil pour identifier les événements problématiques. En pratique, le processus de planification est généralement un processus itératif consistant à interroger le système pour obtenir les meilleurs résultats, à interpréter ces résultats et à permettre au personnel de prendre des décisions éclairées.
+tion that can be used by the artificial ants to build solutions [3]. This representation
+
+
+
+### 5 Conclusion
+
+Cet article présente une étude de cas sur l'application de la métaheuristique ACO pour résoudre un problème complexe de grande envergure de planification des emplois du temps dans notre institution. Notre solution utilise une représentation du problème relativement générale, adaptée à différents types d'institutions. Nous présentons une représentation innovante et efficace en termes de mémoire, appropriée pour des instances de problèmes de grande taille. De plus, la conception modulaire de la bibliothèque de contraintes facilite l'ajout de nouvelles contraintes, rendant le système gérable, ce qui est extrêmement important pour les applications pratiques de planification des emplois du temps. Le problème exact que nous résolvons est formulé comme le problème de planification des exercices de laboratoire, un sous-ensemble du problème de planification des cours universitaires.
+
+Ce travail est né des besoins spécifiques de planification d'une institution. Cependant, l'approche décrite ici ne se limite pas au LETP, car elle partage de nombreuses similarités avec d'autres instances de l'UCTP. Ainsi, il est probable que les défis auxquels nous avons été confrontés, tels que la réduction de l'empreinte mémoire du graphe de construction ou l'assurance de la facilité d'adaptation aux modifications du problème, seront également rencontrés par d'autres chercheurs. D'autres auteurs peuvent utiliser notre approche sans modifier la représentation du problème. La seule adaptation nécessaire pourrait être la mise en œuvre de contraintes supplémentaires qui ne sont pas prises en charge par notre bibliothèque actuelle.
+
+De plus, étant donné que les travaux antérieurs sur l'optimisation par colonie de fourmis considéraient principalement des instances de l'UCTP générées artificiellement, notre travail prouve que l'ACO peut être très efficace pour résoudre des problèmes de planification du monde réel. C'est un effort pour aider à combler le fossé entre la recherche théorique et l'adaptation pratique des techniques métaheuristiques qui est actuellement si répandue dans le domaine de la planification automatisée des emplois du temps. Notre travail peut également être considéré comme une confirmation supplémentaire que l'ACO n'est pas seulement un sujet de recherche académique intéressant, mais aussi une approche gérable et efficace capable de résoudre des problèmes du monde réel hautement complexes.

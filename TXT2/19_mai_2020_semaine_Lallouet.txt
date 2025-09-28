@@ -1,0 +1,67 @@
+hicp -> main camboui bcp heristique (boite outil) 45 contrainte (routing ?) table
+micro kernel -> loop propagation action-> traduire en action (action scripté)
+1millions heurstique pas recherche
+extensible customisable contriante plusieurs propagateurs
+paralle rsearch ?
+backjump
+combinateur 
+recherche concurent
+
+
+cp sat -> hycp apprendre echec -> traduire contrainte en clause assuré par le cp pour clause
+all differnt sum element aritmetic constraint logical constraint table constraint
+
+localité cohérence de cache -> aspect sat
+minspore ?
+
+i
+p1
+->VLIW processeur (plein unité de calcul plusieurs instructions en 1cout) 1une unoté sur chaque unité processuer 
+asic 
+info registre | cylc calcul | registre || calcul scalire 
+scheduling instruction minimize latence
+indépedance instructions
+allouer temporaire registre physique -> quel cycle scheduling quelle unoté quelle instruction et enfin allouer registre temporaire 
+
+software piepling
+kk
+scheduling cylcique 
+
+interfacé gcc
+-> json export rtl
+traitement -> assembly
+
+temps compilation limit
+contrainte relaxé -> si recherche non fonctionnel
+(heuristic dédié en compilation swing ordre examiner variable)
+
+cloud -> binpaking -> repacking
+bin server objet vm
+multiciplcity bin paking
+(ovjets similaire multiple) -> polynomial
+vector -> bin packing
+(convertit en virtual cpu)
+bin packing heterogne
+
+temporal bin packing || en focntion du temps
+
+lower bound -> 
+upper bound -> tmax heursitic
+change ordre arrivé vm
+endroit + chargé -> liste en fonction histo
+header heursitic -> première ligne puis complete
+
+ford fulkerson
+
+
+heursitic pour sat -> vsids
+-> travaile restrat petit arbre cloture recherche
+
+expreient buffer 
+quantization
+carrée latin -> bcp recherche
+
+programme mip
+gnn -> jfpc  
+
+sat et log -> via le 

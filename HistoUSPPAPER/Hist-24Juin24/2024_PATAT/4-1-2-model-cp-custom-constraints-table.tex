@@ -1,0 +1,68 @@
+%\newcolumntype{N}{>{\refstepcounter{rowcntr}\therowcntr}r}
+\newcounter{rowcntr}[table]
+\renewcommand{\therowcntr}{(\arabic{rowcntr})}
+\setcounter{rowcntr}{0}
+
+
+\begin{table*}[!ht]
+\framebox[\textwidth][c]{%
+\small
+\begin{tabularx}{\textwidth}{>{\hsize=0.01\hsize\linewidth=\hsize}X>{\hsize=1.89\hsize\linewidth=\hsize}X>{\raggedleft\arraybackslash\hsize=.09\hsize\linewidth=\hsize}X}
+%\begin{math}\STUDENT = \funcmzn{array\_union}(\xgroup) \end{math} & 
+%partition\_set(\xgroup,\begin{math}\STUDENT\end{math}) & \refstepcounter{rowcntr} \therowcntr \label{cp:grouppartition}\\
+%
+%
+%&$\forall(p \in \PART,k1,k2 \in \arraymzn{part\_classes}[p] \wmzn k1\gqmzn k2)$&\\
+%
+%\hspace{2cm}all_disjoint
+%&\hspace*{2,8em}$(\xgroup[k1] \intermzn \xgroup[k2]=\{\})$& \refstepcounter{rowcntr} \therowcntr \label{cp:exclusiveclass}\\
+%
+%
+%&$\forall(k1 \in \CLASS, k2 \in \funcmzn{class\_parents}(k1))(\xgroup[k1] \subseteq \xgroup[k2])$ &  \refstepcounter{rowcntr} \therowcntr \label{cp:parent}\\
+%
+%&$\forall(k \in \CLASS)(\arraymzn{maxsize}[k] \geqmzn \summzn(g \in \GROUP)$&\\
+%&\hspace*{2,8em}$(\funcmzn{bool2int}(g \in \xgroup[k])*\summzn(u \in \STUDENT)(\funcmzn{bool2int}(\xstudent[u]=g)))$ &  \refstepcounter{rowcntr} \therowcntr \label{cp:classcapacity}\\
+% 
+%
+%\hline
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%&Overlap sameDuration synchronous&\\
+&no\_overlap($\SESSION'$)=  &\\
+&\hspace*{2,8em}all\_different\_except0($\{\forall s \in \SESSION' \mid \var{\SESSION}{\SLOT}{s} * (e \in \var{\SESSION}{\ENTITY}{s})\} $)& \refstepcounter{rowcntr} \therowcntr \label{cp:allowedrooms-relaxed}\\
+%
+% 
+%&cumulativeRoom($\SESSION'$)= $\forall r \in \ROOM,$&\\
+&$\forall r \in \ROOM,$&\\
+&\hspace*{2,8em}$\;$binPacking($\{0..|\SESSION|\}\cup\{\forall h \in \SLOT \mid 0..\roomcapacity{r}\},$&\\
+&\hspace*{5em}$\{ \forall s \in \SESSION \mid(r \in \var{\SESSION}{\ROOM}{s})*\var{\SESSION}{\SLOT}{s}\},\{\forall s \in \SESSION \mid \classcapacity{\map{\SESSION}{\CLASS}{s}}\}	$)&   \refstepcounter{rowcntr} \therowcntr \label{cp:allowedteachers-relaxed} \\
+%
+%
+%$\forall(k \in \CLASS)(((\arraymzn{part\_room\_use}[\funcmzn{class\_part}(k)]=\text{none}) \Longleftrightarrow (\xroom[k] = \{\})) $&\\
+%&Group same size&\\
+&$\forall h \in \SLOT,\;   $&\\
+&\hspace*{2,8em}gcc($  \{\forall s \in\SESSION\mid \var{\SESSION}{\ROOM}{s} * (\var{\SESSION}{\SLOT}{s} = h)\},\{0\}\cup\{\forall r \in \ROOM \mid r\},\{nrCapacity\} $)
+& \refstepcounter{rowcntr} \therowcntr \label{cp:multiroom-relaxed}\\
+%
+%&Group same size&\\
+%&$\forall r \in \ROOM,\;   $&\\
+%&\hspace*{2,8em}gcc($  \{\forall s \in\SESSION\mid \var{\SESSION}{\SLOT}{s} * (\var{\SESSION}{\ROOM}{s} = r)\},\{0\}\cup\{\forall h \in \SLOT \mid h\},\{nrCapacity\} $)
+%& \refstepcounter{rowcntr} \therowcntr \label{cp:multiteacher-relaxed}\\
+%
+%
+%& Cumulative by room type&\\
+&$\forall l \in \LABEL' ,\;  Soit \SESSION'\subseteq\map{\LABEL}{\SESSION}{l} $&\\
+&\hspace*{2,8em}cumulative($  \{\forall s \in\SESSION'\mid \var{\SESSION}{\SLOT}{s}\},\{\forall s \in \SESSION' \mid |\var{\SESSION}{\ROOM}{s}|\},|\{\forall r \in \ROOM \land l \in \map{\ROOM}{\LABEL}{r} \mid r\}| $)
+& \refstepcounter{rowcntr} \therowcntr \label{cp:cumulativebytype}\\
+%
+%
+\end{tabularx}%
+}%
+%}
+\caption{
+%Contraintes et prédicats du modèle \MINIZINC{}
+Constraints and predicates relaxed for the \CP{} model.
+}
+\label{table:cp-contraintes-relaxed}
+\end{table*}

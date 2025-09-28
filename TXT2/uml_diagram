@@ -1,0 +1,55 @@
+digraph {
+	student [label=student height=0.75 shape=rectangle style=rounded width=1.5]
+	room [label="room
+capacity
+virtual" height=0.75 shape=rectangle style=rounded width=1.5]
+	lecturer [label=lecturer height=0.75 shape=rectangle style=rounded width=1.5]
+	course [label=course height=0.75 shape=rectangle style=rounded width=1.5]
+	part [label="part
+nrSessionsPerClass
+sessionDuration
+nrRoomsPerSession
+nrTeachersPerSession" height=0.75 shape=rectangle style=rounded width=1.5]
+	class [label="class
+parent" height=0.75 shape=rectangle style=rounded width=1.5]
+	session [label=session height=0.75 shape=rectangle style=rounded width=1.5]
+	week [label="week
+1  2" height=0.75 shape=box width=1.5]
+	weekday [label="weekday
+1 2 3 4 5 1 2 3" height=0.75 shape=box width=1.5]
+	daily_slot [label="daily slot" height=0.75 shape=box width=1.5]
+	allowed [label="is allowed for
+mandatory" height=0.75 shape=ellipse width=1.5]
+	teaches [label="teaches
+nrSessionsPerPart" height=0.75 shape=ellipse width=1.5]
+	Invisible1 [style=invis]
+	Invisible2 [style=invis]
+	course -> Invisible1
+	course -> Invisible2
+	{
+		rank=same
+		Invisible1
+		Invisible2
+	}
+	{
+		rank=same
+		room
+		allowed
+		part
+	}
+	{
+		rank=same
+		course
+		student
+	}
+	student -> course [label="registers to"]
+	room -> allowed
+	allowed -> part
+	lecturer -> teaches
+	teaches -> part
+	course -> part
+	part -> class [label="can occur"]
+	class -> session
+	week -> weekday
+	weekday -> daily_slot
+}

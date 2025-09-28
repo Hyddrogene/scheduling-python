@@ -1,0 +1,217 @@
+%------------------------------------------------------------
+%------------------------------------------------------------
+\subsection{Session Scheduling and Resource Allocation}
+\label{sec:model-scheduling}
+
+Session scheduling and resource allocation involve positioning, sequencing, non-overlapping and capacity constraints. 
+La programmation des séances et l'allocation des ressources impliquent des contraintes de positionnement, séquencement, non-chevauchement et capacité. 
+%Constraint~\ref{ctr:allowedslots} defines the allowed slots per session
+%and 
+la contrainte~\ref{ctr:allowedslots} définis les créneaux possibles pour chaque session
+et
+%Constraint~\ref{ctr:sessionend} session end slot.
+%Constraint~\ref{ctr:nopreemption} ensures sessions do not span over two days.
+La contrainte~\ref{ctr:nopreemption} garantie que les sessions ne s'étendent pas sur 2 jours. 
+%Constraint~\ref{ctr:classsequencing} sequences sessions if they are ranked consecutively in  a class.
+Cette contrainte~\ref{ctr:classsequencing} séquence les sessions en fonction de leurs rangs au sein de leurs classes respectives.
+%Constraint~\ref{ctr:multiroomscheduling} models multi-room class sessions and enforces exclusive access to their resources. 
+La contrainte~\ref{ctr:multiroomscheduling} modélise les séances qui sont multi-salles et l'accès exclusif à leurs ressources.
+%The constraint relies on built-in constraint predicate $\disjointroom{w}{S_1}{S_2}$ which ensures no session of $S_1$ overlaps with a session of $S_2$ if both are assigned to resource $w$. 
+La contrainte repose sur le prédicat de contrainte fournit $\disjointroom{w}{S_1}{S_2}$ qui assure qu'aucune session de $S_1$ ne chevauche une session de $S_2$ si elles sont assignées à une ressource $w$.
+We provide here a naive decomposition of this predicate (predicates \ref{ctr:disjointconditional} and \ref{ctr:disjointsessions}).
+Nous fournissons
+une décomposition naïve de ces prédicats (le prédicat \ref{ctr:disjointconditional} et \ref{ctr:disjointsessions}).
+%Alternative implementations will be discussed in Section~\ref{sec:implementation}.
+%Constraints~\ref{ctr:cumulativeroomcapacity} and \ref{ctr:multiroomcapacity} model room utilization and capacity limits. 
+Les contraintes~\ref{ctr:cumulativeroomcapacity} et \ref{ctr:multiroomcapacity} modélisent l'utilisation des salles et leurs limites de capacité. 
+%Both constraints use auxiliary variables $\roomuse{r}{k}{s}{h}$
+Les 2 contraintes utilisent les variables auxiliaires $\roomuse{r}{k}{s}{h}$ 
+%which model the number of students attending session $s$ of class $k$ in room $r$ at time $h$  as defined by constraint predicate~\ref{ctr:roomuse}.
+qui modélise le nombre d'étudiant assistant à la séance $s$ d'une classe $k$ dans la salle $r$ au créneau $h$ comme le défini le prédicat de la contrainte~\ref{ctr:roomuse}. 
+%Constraint~\ref{ctr:cumulativeroomcapacity} is the default cumulative constraint which applies to all sessions assignable to a resource except multi-room sessions.
+La contrainte~\ref{ctr:cumulativeroomcapacity} est la contrainte cumulative par défaut qui s'applique à toutes les sérances pouvant être assignées à une ressource excepté les sessions multi-salles.
+%The specific case of multi-room sessions is modeled by Constraint~\ref{ctr:multiroomcapacity}
+%which ensures the cumulated capacity of the rooms used by a multi-room session exceeds the number of students attending the session.
+Le cas spécifique des séances multi-salles est modélisé par la contrainte~\ref{ctr:multiroomcapacity}
+qui assure que le nombre d'étudiants attendue pour cette séance n'excède pas la capacité cumulée des salles utilisées par la séance multi-salles.
+%Note that the constraint is purely quantitative and allows each individual group to be split over different rooms.
+Il faut noter que cette contrainte est purement quantitative et permet à chaque groupe individuellement d'être sur plusieurs  salles.
+
+
+% \begin{multline}
+% \forallmzn(k \inmzn \CLASS)(\xroom[k] \subsetmzn \arraymzn{part\_rooms}[\funcmzn{class\_part}(k))
+% %\forall s\in\SESSION:
+% %\var{\SESSION}{\SLOT}{s}\in{\partallowedslots{s}}
+% \label{ctr:allowedsrooms}
+% \\
+% \end{multline}
+% \begin{multline}
+% \forallmzn(s \inmzn \SESSION)(\xteacher[s] \subsetmzn \arraymzn{part\_teachers}[\funcmzn{session\_part}(s)])
+% %\forall s\in\SESSION:
+% %\var{\SESSION}{\SLOT}{s}\in{\partallowedslots{s}}
+% \label{ctr:allowedsteacher}
+% \\
+% \end{multline}
+
+% \begin{multline}
+% \forallmzn(p \inmzn \PART)(\forallmzn(s \inmzn \funcmzn{part\_sessions}(p))(\\
+%     (\funcmzn{slot\_week}(\xslot[s]) \inmzn \arraymzn{part\_weeks}[p]) \land\\
+%     (\funcmzn{slot\_weekday}(\xslot[s]) \inmzn \arraymzn{part\_days}[p]) \land\\
+%     (\funcmzn{slot\_dayslot}(\xslot[s]) \inmzn \arraymzn{part\_dailyslots}[p])))
+% %\forall s\in\SESSION:
+% %\var{\SESSION}{\SLOT}{s}\in{\partallowedslots{s}}
+% \label{ctr:allowedsslot}
+% \\
+% \end{multline}
+
+%\forall s\in\SESSION:
+%\sessionend{s}=\var{\SESSION}{\SLOT}{s} + \sessionduration{s}
+%\label{ctr:sessionend}
+%\\
+% \begin{multline}
+% \forallmzn(s \inmzn \SESSION)(
+%   (\xslot[s] - 1) \divmzn nr\_slots\_per\_day = (\xslot[s] + \funcmzn{session\_length}(s) - 1) \divmzn nr\_slots\_per\_day
+% )
+% %\forall s\in\SESSION:
+% %\var{\SESSION}{\SLOT}{s} \div{\DAILYSLOT} = (\var{\SESSION}{\SLOT}{s} + \sessionduration{s}) \div{\DAILYSLOT}
+% %\var{\SESSION}{\SLOT}{s} \div{\DAILYSLOT} = \sessionend{s} \div{\DAILYSLOT}
+% \label{ctr:nopreemption}
+% \\
+% \end{multline}
+%
+% \begin{multline}
+% \forallmzn(s,s' \inmzn \SESSION \wmzn \funcmzn{rank}(s)<\funcmzn{rank}(s') )(\\
+%     \xslot[s]+\funcmzn{session\_length}(s) \leq \xslot[x']
+% )
+% %\forall %k\in\CLASS,
+% %(s,s')\in\rankedsessions:%map{\PART}{\SESSION}{k}\ s.t.\ \sessionrank{s}=1+\sessionrank{s'}:
+% %\var{\SESSION}{\SLOT}{s} + \sessionduration{s}\leq\var{\SESSION}{\SLOT}{s'}
+% %\sessionend{s}\leq\var{\SESSION}{\SLOT}{s'}
+% \label{ctr:classsequencing}
+% \\
+% \end{multline}
+% %
+% \begin{multline}
+% \forallmzn( k \inmzn \CLASS \wmzn \funcmzn{is\_multi\_room\_class}(k))
+% )(\\
+%     \forallmzn(r \inmzn \funcmzn{class\_rooms}(k))(\\
+%     \funcmzn{dijunctive}(\\
+%     [\xslot[s] | s \inmzn \funcmzn{room\_sessions}(r)],\\
+%     [\funcmzn{bool2int}(r \inmzn \xroom[s])* \funcmzn{session\_length}(s) | s \inmzn \funcmzn{room\_sessions}(r)  ]
+%     )
+% )
+% )
+% %\forall k\in\map{\ROOM}{\CLASS}{\multiroomparts},r\in\map{\PART}{\ROOM}{p}:
+% %\\
+% %\disjointroom{r}{\map{\CLASS}{\SESSION}{k}}{\map{\ROOM}{\SESSION}{r}\setminus\map{\CLASS}{\SESSION}{k}}
+% \label{ctr:multiroomscheduling}
+% \\
+% \end{multline}
+%%\end{flalign}
+%%
+%%\begin{flalign}
+%\forall r\in\ROOM,\roomdisjunctive{r}:
+%%s\neq s'\in\map{\ROOM}{\SESSION}{r}:
+%%r\in\var{\SESSION}{\ROOM}{s}\cap\var{\SESSION}{\ROOM}{s'}
+%%\rightarrow
+%\NOOVERLAP(r,\map{\ROOM}{\SESSION}{r})
+%\label{ctr:disjunctiveroomscheduling}
+%\end{flalign}
+%
+% \begin{multline}
+% %
+% \forallmzn(s \inmzn \SESSION)(\\
+%     \forallmzn(r \inmzn \funcmzn{session\_rooms}(s) \wmzn \funcmzn{bool2int}(r \inmzn \xroom[s]))(\\
+%         \arraymzn{room\_capacity}[r] \geq sum(g \inmzn \funcmzn{session\_group}(s))( \funcmzn{card}(\arraymzn{group\_students}[g]))
+%     )
+% )
+%\forall r\in\ROOM:%\setminus\disjunctiverooms:
+%\bigwedge_{\substack{h\in\SLOT}}
+%\roomcapacity{r}
+%\geq
+%\sum_{\substack{p\in\map{\ROOM}{\PART}{r}\setminus\multiroomparts\\k\in\map{\PART}{\CLASS}{p}\\s\in\map{\CLASS}{\SESSION}{k}}}
+%{\roomuse{r}{k}{s}{h}}
+% \label{ctr:cumulativeroomcapacity}
+% \\
+% \end{multline}
+% %
+% \corentin{J'ai rajouter la contrainte de mandatory sur les salles}
+% \begin{multline}
+% %
+% \forallmzn(k \inmzn \CLASS \wmzn \funcmzn{is\_class\_mandatory\_room}(k))(\\
+%     \xroom[k] \intermzn \funcmzn{class\_mandatory}[k] != \{\}
+% )
+% %
+% \label{ctr:cumulativeroomcapacity}
+% \\
+% \end{multline}
+% %
+% \begin{multline}
+% %
+% \forallmzn(k \inmzn \CLASS \wmzn \funcmzn{is\_multi\_room\_class}(k))(\\
+%     \summzn(r \inmzn \arraymzn{class\_room}[k])(\\
+%     \funcmzn{bool2int}(r \subsetmzn \xroom[k]) * \arraymzn{room\_capacity}[r]) \geq\\ \summzn(g \inmzn \arraymzn{class\_group}[k])(\funcmzn{card}(\arraymzn{group\_students}[g])
+% )
+% %
+%\forall p\in\multiroomparts:
+%\bigwedge_{\substack{h\in\SLOT\\k\in\map{\PART}{\CLASS}{p}\\s\in\map{\CLASS}{\SESSION}{k}}}
+%{\sum\limits_{r\in\map{\PART}{\ROOM}{p}}}
+%{(r\in\var{\SESSION}{\ROOM}{s})
+%*\roomcapacity{r}}
+%\geq
+%{\roomuse{r}{k}{s}{h}}
+% \label{ctr:multiroomcapacity}
+% \end{multline}
+
+% \corentin{Cumulative de base ?}
+% \begin{multline}
+% \forallmzn(r \inmzn \ROOM)(\\
+%     \funcmzn{cumulative}(\\
+%     [\xslot[s] | s \inmzn \funcmzn{room\_sessions}(r)],\\
+%     [\funcmzn{bool2int}(r \inmzn \xroom[s])* \funcmzn{session\_length}(s) | s \inmzn \funcmzn{room\_sessions}(r)  ],\\
+%   [1| s \inmzn \funcmzn{room\_session}(r)],\\
+%   room\_max\_use[r]
+%     )
+% )
+% )
+% %\forall k\in\map{\ROOM}{\CLASS}{\multiroomparts},r\in\map{\PART}{\ROOM}{p}:
+% %\\
+% %\disjointroom{r}{\map{\CLASS}{\SESSION}{k}}{\map{\ROOM}{\SESSION}{r}\setminus\map{\CLASS}{\SESSION}{k}}
+% \label{ctr:roomuse}
+% \\
+% \end{multline}
+
+
+% \begin{multline}
+% \forallmzn(t \inmzn \TEACHER)(\\
+%     \funcmzn{cumulative}(\\
+%     [\xslot[s] | s \inmzn \funcmzn{teacher\_sessions}(t)],\\
+%     [\funcmzn{bool2int}(t \subsetmzn \xteacher[s])* \funcmzn{session\_length}(s) | s \inmzn \funcmzn{teacher\_sessions}(t)  ],\\
+%   [1| s \inmzn \funcmzn{teacher\_sessions}(t)],\\
+%   teacher\_max\_use[t]
+%     )
+% )
+% )
+% %\forall k\in\map{\ROOM}{\CLASS}{\multiroomparts},r\in\map{\PART}{\ROOM}{p}:
+% %\\
+% %\disjointroom{r}{\map{\CLASS}{\SESSION}{k}}{\map{\ROOM}{\SESSION}{r}\setminus\map{\CLASS}{\SESSION}{k}}
+% \label{ctr:teacheruse}
+% \\
+% \end{multline}
+
+% \begin{multline}
+% \forallmzn(g \inmzn \GROUP)(\\
+%     \funcmzn{cumulative}(\\
+%     [\xslot[s] | s \inmzn \funcmzn{group\_sessions}(g)],\\
+%     [\funcmzn{session\_length}(s) | s \inmzn \funcmzn{group\_sessions}(g)],\\
+%   [1| s \inmzn \funcmzn{group\_sessions}(g)],\\
+%   group\_max\_use[g]
+%     )
+% )
+% )
+% %\forall k\in\map{\ROOM}{\CLASS}{\multiroomparts},r\in\map{\PART}{\ROOM}{p}:
+% %\\
+% %\disjointroom{r}{\map{\CLASS}{\SESSION}{k}}{\map{\ROOM}{\SESSION}{r}\setminus\map{\CLASS}{\SESSION}{k}}
+% \label{ctr:groupuse}
+% \\
+% \end{multline}

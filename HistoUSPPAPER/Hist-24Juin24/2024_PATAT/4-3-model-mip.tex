@@ -1,0 +1,73 @@
+
+%\subsection{MIP}~\label{sec:MIP}
+%Dans l'état de l'art, les modèles de programmation linéaire mixte (\MIP{}) sont largement utilisés pour résoudre les problèmes d'emploi du temps (\EDT{}). Dans la littérature , les modèles \MIP{} sont présentés de manière pseudo-booléenne, où le temps est représenté de manière time-indexed. Cela implique que le temps est discrétisé en intervalles de 0 à 1 pour chaque créneau horaire.
+%
+In the state of the art~\cite{2014_sorensen_cor,2014_sorensen_JOS}, mixed-integer linear programming (\MIP{}) models are usually used to solve timetable scheduling problems. 
+In the literature, \MIP{} models are presented in a pseudo-Boolean format, where time is represented in a time-indexed representation. 
+This implies that time is discretized into intervals from 0 to 1 for each time slot. 
+%Dans le cas du problème \UTP{}, où l'horizon temporel est étendu, les représentations classiques ne sont pas très efficaces. En effet les représentations time-indexed ont une croissance exponentielle. Dans d'autres problèmes d'ordonnancement tels que le \RCPCSP{}, les représentations peuvent être time-indexed, ou tel qu'en \CP{} en créneau continu (valeur entière), ou encore une approche basée sur les événements.
+%
+For the \UTP{} problem, where the time horizon is extended, classical representations are not very efficient. 
+Indeed, time-indexed representations exhibit exponential growth. 
+In other scheduling problems such as \RCPCSP{}, representations can be time-indexed, or as in \CP{} in continuous time slots (integer value), or even an event-based approach. 
+%Les variables en temps continues en \MIP{} offrent des avantages en termes d'économie de variables, mais elles nécessitent des techniques telles que le big-M pour exprimer les disjonctions. Pour optimiser davantage le modèle, il serait intéressant d'explorer une réécriture en approche basée sur les événements.
+%
+Continuous time variables in \MIP{} offer advantages in terms of variable economy, but they require techniques such as big-M to express disjunctions. % To further optimize the model, it would be interesting to explore a rewrite based on the event-driven approach. 
+%Dans certains articles~\cite{2011_kone_COR}, il est démontré que les approches basées sur les événements sont plus efficaces que les approches continues ou times-indexed pour des horizons temporels étendus. D'autres pistes d'optimisation pourraient inclure des relaxations du problème ou des décompositions, telles que la méthode de Dantzig-Wolf~\cite{2014_sorensen_EJOR}.
+%
+In some articles~\cite{2011_kone_COR}, it has been demonstrated that event-driven approaches are more effective than continuous or time-indexed approaches for extended time horizons. %
+%Other optimization avenues could include problem relaxations or decompositions, such as the Dantzig-Wolf method~\cite{2014_sorensen_EJOR}. %
+Here, we present a \MIP{} program for \UTP{}. 
+The program will be used in our experimental study at Section~\ref{sec:experiments}(see Appendix~\ref{appendix:MIP} for the full program). 
+% \begin{itemize}
+%     \item $\forall s \in\SESSION,\; \var{\SESSION}{\SLOT}{s} \in H$
+%     \item $\forall s \in\SESSION ,\;\forall r\in \ROOM,\;\varquad{\SESSION}{\ROOM}{s}{r} \in \{0,1\}$
+%     \item $ \forall s \in\SESSION ,\;\forall t\in \TEACHER,\; \varquad{\SESSION}{\TEACHER}{s}{t} \in\{0,1\}$
+% \end{itemize}
+
+%Pour les variables,nous utilisons 2 représentations.
+%Plus précisément, nous utilisons une représentation booléenne pour les ressources, où chaque ressource est discrétisée à une valeur de 0 ou 1, indiquant sa disponibilité ou son indisponibilité pour une séance donnée. Cette représentation nous permet de modéliser efficacement les contraintes de disponibilité des ressources.
+%
+%For variables, we employ two representations. Specifically, we use a Boolean representation for resources, where each resource is discretized to a value of 0 or 1, indicating its availability or unavailability for a given session. This representation enables us to effectively model resource availability constraints. 
+%
+%En ce qui concerne les créneaux horaires, nous adoptons une approche différente en les définissant sous forme entière. Nous attribuons des valeurs entières aux créneaux horaires, permettant ainsi une représentation plus flexible et détaillée du temps. Cette représentation nous offre la possibilité de modéliser des contraintes temporelles de manière linéaire. Cependant pour l'expression d'autres contraintes nous sommes obligés de poser pour des variables auxiliaires en grandes quantités. % et de prendre en compte des aspects tels que la durée des séances et les intervalles de temps entre celles-ci.
+%
+%Concerning time slots, our approach differs as we define them using integer values. Integer values are attributed to time slots, facilitating a more adaptable and detailed representation of time. This approach allows for the linear modeling of temporal constraints. Nevertheless, the representation of additional constraints requires the introduction of numerous auxiliary variables.
+%%%%%%%%%%%%%%%%%%%%%
+%\input{4-3-1-model-mip}
+%Domain constraints are handled externally to the \MIP{} model. They are employed during variable construction to prevent the proliferation of unnecessary variables.
+%les contraintes de domaine %~\ref{ctr:allowedrooms}~\ref{ctr:allowedteachers} 
+%sont traitées de manière externe au modèle \MIP{}. Elles sont utilisées pendant la construction des variables pour éviter d'avoir un nombre excessif de  variables inutiles.% Si l'on souhaite évite ce prétraitement, les contraintes~\ref{mip:allowedrooms} et ~\ref{mip:allowedteachers} sont utilisées.
+%Les contraintes de cardinalité sur les ressources ~\ref{ctr:cardinalmultiroom}~\ref{ctr:cardinalmultiteacher} sont encodées par les contraintes~\ref{mip:multiroom} et ~\ref{mip:multiteacher} qui viennent sommer le nombre de ressources (salles ou enseignants) choisis par séance.
+
+%La contrainte de capacité ~\ref{ctr:cumulativeroomcapacity} est exprimée de manière plus classique par une somme réifiée en fonction des salles choisies par séance ~\ref{mip:classcapacity}.
+
+%La contrainte coeur de rapport entre les variables auxiliaires et principales ~\ref{ctr:coresumvariables} est similaire à son expression \MIP{}~\ref{mip:coresumvariables}.
+
+%The disjoint rooms constraint is encoded by ensuring that the pairwise sum of variables does not exceed 1. For the forbidden\_slots constraint, a big-M approach is utilized to ensure that a session does not occur within a specified time interval. Given the temporal representation, we utilize the big-M technique to create a disjunction without imposing a specific ordering. Finally, the no\_overlap constraint exists in two versions, one reified and one non-reified, both based on an alternative big-M. The reified version verifies that a course session belongs to the resource targeted by the constraint, in addition to checking the scheduling between the two sessions.
+
+
+%La contrainte %~\ref{mip:differentrooms}
+%disjoint rooms est encodée %~\ref{formal:differentrooms} 
+%en vérifiant que la somme 2 à 2 des variables ne dépasse pas 1 .
+
+%Pour la contraintes forbidden\_slots %~\ref{formal:forbiddenslots}
+%une contrainte big-M est employée vérifiant qu'une séance ne soit pas dans un intervalle de temps donné.% Nous posons dans ce cas une disjonction.
+%En effet au vu de la représentation temporelle nous utilisons la technique big-M qui permet de créer une disjonction sans pour autant forcé un ordonnancement.
+%Enfin, la contrainte no\_overlap %~\ref{formal:nooverlap} 
+%existe en 2 version, l'une réifiée %~\ref{mip:nooverlaproom} 
+%et non réifiée, toutes deux basées sur un big-M alternatif.
+%La version réifiée vérifie qu'une séance de cours appartient bien à la ressource visée par la contrainte en plus de vérifier l'ordonnancement entre les 2 séances.
+%Pour les contraintes forbidden\_rooms et forbidden\_teachers ~\ref{formal:forbiddenrooms}~\ref{formal:forbiddenteachers} sont exprimées en mettant à 0 les variables de salles et d'enseignant de la séance~\ref{mip:forbiddenrooms}.
+
+%Les contraintes de nature same\_\{ressources,créneaux horaires\} sont assurées par des variables auxiliaires et les variables classiques via des contraintes linéaires~\ref{mip:samerooms}~\ref{mip:sameslot}~\ref{mip:sameweekday}.
+
+%Les contraintes~\ref{formal:assignrooms}~\ref{formal:assignteachers}~\ref{formal:assignslot} sont exprimées comme la contrainte~\ref{mip:assignrooms} qui affecte toutes les salles et enseignants choisis à 1 et les autres à 0, tandis que pour le créneau temporel, la valeur choisie est directement affectée.
+
+
+
+%La contrainte periodic~\ref{mip:periodic} et sequenced~\ref{mip:sequenced}  sont des expressions linéaires des séances données en entrée vérifiant la logique énoncée dans ~\ref{formal:periodic} et~\ref{formal:sequenced}.
+
+%La contrainte \ref{mip:requiredteachers} vérifie qu'un enseignant n'effectue pas un service plus important que celui donné en entrée du problème.
+
+

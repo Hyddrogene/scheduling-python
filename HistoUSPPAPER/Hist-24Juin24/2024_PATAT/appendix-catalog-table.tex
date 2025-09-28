@@ -1,0 +1,80 @@
+\begin{table}[H]
+\resizebox{\textwidth}{!}{%
+\centering
+
+\begin{tabular}{|l|l|}
+%\begin{tabular}{ll}
+\hline
+\textbf{Predicate}               & \textbf{Description}\\ \hline
+
+\grayrow{\ADJACENTROOMS}            & Sessions must be adjacent in the given room(s)\\ \hline
+
+\ALLOWEDGRIDS{}  & Sessions may only start in the given time grid(s)\\ \hline
+\grayrow\ALLOWEDROOMS{} & Sessions may only be hosted in the given room(s) \\ \hline
+\ALLOWEDSLOTS{} & Sessions may only run in the given time slots\\ \hline
+\grayrow\ALLOWEDTEACHERS{} & Sessions may only be taught by the given teacher(s)  \\ \hline
+\ASSIGNROOMS{} & Sessions are hosted in the given room(s) \\ \hline
+\grayrow\ASSIGNSLOT{} & Sessions start at the given time \\ \hline
+\ASSIGNTEACHERS{} & Sessions are taught by the given teacher(s) \\ \hline
+\grayrow\COMPACTNESS{} & The sessions makespan is bounded  \\ \hline
+\DIFFERENTDAILYSLOT{} & Sessions start on different daily slots \\ \hline
+\grayrow\DIFFERENTDAY{}  & Sessions start on different days \\ \hline
+\DIFFERENTROOMS{} & Sessions are hosted in different rooms \\ \hline
+\grayrow\DIFFERENTSLOT{} & Sessions start at different times \\ \hline
+\DIFFERENTTEACHERS{} & Sessions are taught by different teachers \\ \hline
+\grayrow\DIFFERENTWEEK{} & Sessions start on different week \\ \hline
+\DIFFERENTWEEKDAY{}& Sessions start on different weekday \\ \hline
+\grayrow\DIFFERENTWEEKLYSLOT{} & Sessions start on different weekly time points \\ \hline
+\FORBIDDENROOMS{}         & Sessions cannot be hosted in the given room(s)\\ \hline
+\grayrow\FORBIDDENSLOTS{} & Sessions cannot run in the given time slots \\ \hline
+\FORBIDDENTEACHERS{}         & Sessions cannot be taught by the given teacher(s)\\ \hline
+
+\GAP{}  &\cellcolor[gray]{.9}Gaps between sessions are bounded\\ \hline
+
+\NOOVERLAP{}                & Sessions in the given set cannot overlap\\ \hline
+\grayrow\PAIRWISENOOVERLAP{}     & Sessions cannot overlap if in different sets\\ \hline
+\PERIODIC{}                & Sessions are periodic \\ \hline
+
+\grayrow\REQUIREDROOMS{}   & Sessions must be hosted in the given room(s) \\ \hline
+
+\REQUIREDTEACHERS{}     & Sessions must be taught by the given teacher(s) \\ \hline
+
+\grayrow{\SAMEDAILYSLOT}   & Sessions start on the same daily slot\\ \hline
+{\SAMEDAY}                  & Sessions start on the same day\\ \hline
+
+\grayrow{\SAMEROOMS}                & Sessions are hosted in the same room(s)\\ \hline
+{\SAMESLOT}                 & Sessions start at the same time\\ \hline
+\grayrow{\SAMETEACHERS}             & Sessions are taught by the same teacher(s)\\ \hline
+
+{\SAMEWEEKDAY}              & Sessions start on the same weekday\\ \hline
+\grayrow{\SAMEWEEKLYSLOT}           & Sessions start on the same weekly time point\\ \hline
+{\SAMEWEEK}                 & Sessions start on the same week\\ \hline
+
+\grayrow\SEQUENCED{}                & Sessions run sequentially\\\hline
+
+\WORKLOAD{sessions}       & The number of sessions per time frame is bounded\\ \hline
+
+\WORKLOAD{times}      & The total duration of sessions per time frame is bounded\\ \hline
+
+
+
+%{\FORBIDDENPERIOD}         & Sessions cannot start in the given time period\\ \hline
+%{\ATMOSTDAILY}             & The number of sessions scheduled in the daily period is upper-bounded\\ \hline
+%{\ATMOSTWEEKLY}            & The number of sessions scheduled in the weekly period is upper-bounded\\ \hline
+%implicit\_sequenced\_sessions & 1 & \multicolumn{4}{|c|}{no} & All sessions in classes are sequenced\\ \hline
+%{\SEQUENCED}                & $\geq2$   & no    & Sessions are sequenced\\ \hline
+%{\WEEKLY}                   & Sessions are weekly \\ \hline
+
+% \hline
+%{\TRAVEL}                  & Travel time is factored in if sessions hosted in the given rooms\\ \hline
+
+
+
+
+%{\TEACHERDISTRIBUTION}       & Distributes lecturer workload over classes\\ \hline
+
+\end{tabular}
+}
+\caption{Catalog of {\UTP} constraint predicates.}
+\label{tab:predicate_catalog}
+\end{table}

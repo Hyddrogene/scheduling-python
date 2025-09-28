@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Roue de la Fortune</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1 class="main-title">Roue de la fortune </h1>
+
+
+  <div class="container">
+    <div class="indicator" id="indicator"></div> <!-- Indicateur visuel -->
+    <div class="wheel" id="wheel">
+      <div class="segment"><div>1</div></div>
+      <div class="segment"><div>1</div></div>
+      <div class="segment"><div>2</div></div>
+      <div class="segment"><div>2</div></div>
+      <div class="segment"><div>3</div></div>
+      <div class="segment"><div>3</div></div>
+      <div class="segment"><div>4</div></div>
+      <div class="segment"><div>4</div></div>
+    </div>
+    <button id="spinButton">Tourner la roue</button>
+  </div>
+
+
+  <div class="controls">
+    <label for="segmentTitle">Changer le titre des segments :</label>
+    <select id="segmentSelector">
+      <option value="0">1</option>
+      <option value="1">2</option>
+      <option value="2">3</option>
+      <option value="3">4</option>
+    </select>
+    <input type="text" id="newTitle" placeholder="Nouveau titre" />
+    <button id="changeTitleButton">Changer le titre</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

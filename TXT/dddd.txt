@@ -1,0 +1,39 @@
+peut de times
+
+des times multi-form
+
+Maître du temps sous BEAMER - Les fiches de Bébert
+
+
+<rule>
+<selector generator = (class,{3}) filter="part[id='lec']"/>
+<selector generator = (class,{1}) filter="part[id='lab']"/>
+<constraint name="sequenced" type="hard" />
+</rule>
+
+
+<rule>
+<selector generator = (class,{3}) filter="part[id='lec']"/>
+<constraint name="sequenced" type="hard" />
+<parameters>
+<parameter> </parameter>
+<parameter> </parameter>
+<parameter> </parameter>
+</parameters>
+</constraint>
+</rule>
+
+
+forbidenPeriod
+<period =semaine jour > non present horizon(absolue)
+
+<allowedPeriod>
+    <firstSolot>1
+    <lastSlot>1441 -> inclut
+    <period = day>
+<allowedPeriod>
+
+c'est le CM 2 -> 
+ let classes_p =  courses.querySelector('[id="' + session_class + '"]').parentNode;
+      let _class = courses.querySelector('[id="' + session_class + '"]'); //On recupere la balise class dont l'id est egal à l'attribut class de la balise session
+      let capacite_accueil = classes_p["attributes"]["maxHeadCount"].value; //_class["attributes"]["maxHeadCount"].value; //On recupere la capacité d'accueil du cours

@@ -1,0 +1,110 @@
+Prsssnetation sujet de thèse
+
+avantage inconvénient
+
+combiner méthode resolution excate
+asp cp -> casp
+
+ASP -> regle logique 
+logique non montoone -> raisonne par manque d'informations -> représentation de haut niveau (bio informatique) ontologie
+x est oiseua il peut voler p8
+oiso vole si pas otruche
+si il est une autruche  plsu rajote de coniassance moins de fait 
+résoudre 
+ASP -> grouding -> résolution
+grouding -< remplace par des constantes (des nombres etc. plus de variables)
+quel regle declencher et ne pas declancher -> devient un programme SAT
+gringo grounder puis CLASP (battu certain solveur sur du sat)
+on enleve les variables -> plus de variables et règles grounding bottelneck
+grounding infinis -> pas calculer solution
+grounding inutiles (règles intuiles) et on perd du temps 
+asp pas d'arithèmtiques éviter le grounding
+solver cp gérer cette partie la
+CP -> un ensemble de vairable, domainen et contraintes
+arc constance
+
+exemple des n reines -> filtrages efficace
+
+
+CASP ? lié les 2 
+très déclaratifs -> asp moéliser des nouvelles règles
+modèliser prédicat et de contraintes
+utiliser des contraintes globales
+-> utiliser le filtrages
+trouver des problèmes CASP ni cp ni asp 
+
+
+
+lié des règles 
+crée des varaibles avec des domaines -> sucre syntaxiues
+exemple lampe
+reègle de choix -> 1 prédicat ctime correpsond à un time 
+
+casp -> symbole CP
+simplifications écriture -> traiter solveur CP
+CASP grouding -> on énumére pas
+3 facon de le résoudre -> asp et cp séparement -> injecter solution l'un dans l'autre -> différent tous les deux ?
+CASP en SMT ?
+résoudre les 2 en même temps
+domaine récent
+symbole très différent pas simple communiquer 
+
+SMT symbole propositielle -> on a des téhoeries
+théories liée au contraintes -> solveur sat et solveur théoriesthéorie lié au réel ->
+On garde le groundeur classique -> on enleve les variables CP -> alléger le grounding p24
+communication entre 2 solveurs
+résultat intéressant sur des problèmes ASP qu'on arrivait pas
+Scheduling sur les trains ? 
+bof :
+2langages en 1
+données vraiment idfféetnes
+ASP symbole, CP variables
+
+ASP modulo théorie
+
+
+trouver une solution SAP et CP combiner les 2 -> résultats étranges (contradictoires)
+Approches ASP -> énumérations de tous les cas ?
+génére qu'une partie  ? et rajoute itérativement -> ASPERIX -> on calcule la solution fut et à mesure , instanciations à la volée
+logique classique corps de la règles est vrai ? on gérére la tête ?
+stratégie séléctionner le plus pertienent -> règles + influences
+AS au même endroit ? 
+ASP logique de base -> et des petits rajouts, arithmétiques n'existe pas 
+construit sémantiques de base -> ressemble à rpolog -> syntaxte ressemble
+CLP -> modeliser -> ASP ? ASP en CHR pas d'équivalences strict 
+minsolver CHR-> fonction lié à CSP
+
+
+CHR -> pas d'équivalences comparé CASP clincon ? et votre traitement instances comparables
+remettre à plat qui lie les 2
+aspérix ajouter des contraintes
+benchmark libre -> tous les autrs exemples -> solver asp la jungle -> pas de bench long
+Modélisation problème clair et concit 
+efficaicté à la résolution -> système évolutif  tellement de composantes en même temps -> peu d'arithmètiques dans leur travaux 
+partie d'abstraint dans l'évaluation
+application dans le réel ? scheduling
+améliore asp ? comparaison ASP et CP
+qu'elle cas pratique tester le modèle 
+
+
+problème d'ordo -> contraintes bizaroide PLNE et PPC
+expert entre les 2choses -> du coup moins délcaratif
+pas de bonne ou mauvaise modèlisation
+rcspcplanifiactions -> une réalisable
+
+nouveau outils de modèlisation ?
+traiter des contraintes globales via un réécriture en ASP ? 
+
+sortir boite noire -> en faisant des ajours à SAT ? comment els 2 intéragissent entre eux smt -> se passe des réponses intermédiaires
+une théorie sur les entiersles 2 sont liés
+calcul parrelale ? 
+pas envisagé pour le moement ? on calcul des modèles stables
+interprétation abstraite -> model checking (treillis) solution prolbème -> opérateur déplacement 
+loop formulas ? et ça explose
+
+comment tu exprimes contraintes en asp ? -> similaire asp ? 
+algorithme de aspérix ? 
+SMT ? 
+CP Ou CLP ?
+modéliser ASP ou CP ? 
+Bornes constance?

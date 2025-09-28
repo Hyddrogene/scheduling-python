@@ -1,0 +1,15 @@
+
+        for k in j :
+            print("k=",k)
+            if t_heure[t.index(k[0])] == []:
+                t_heure[t.index(k[0])].append(k[1])
+                t_heureCount[t.index(k[0])].append(1)
+            else :
+                print(k)
+                print("k1 ",k[1])
+                if k[1] in t_heure[t.index(k[0])]:
+                    p = t_heure[t.index(k[0])].index(k[1])
+                    t_heureCount[t.index(k[0])][p] += 1
+                else : 
+                    t_heure[t.index(k[0])].append(k[1])
+                    t_heureCount[t.index(k[0])].append(1)

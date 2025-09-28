@@ -1,0 +1,481 @@
+% \begin{table}[H]
+  %  \centering
+\newcounter{rowcntrformal}[table]
+\renewcommand{\therowcntrformal}{(\arabic{rowcntrformal})}
+\setcounter{rowcntrformal}{0}
+\begin{longtable}{|lr|}
+%\begin{longtable}{lr}
+
+    \hline%======================
+        \textbf{Predicate} & \textbf{Parameters} \\ 
+        \multicolumn{2}{|l|}{\textbf{Semantics}} \\
+    \hline%======================
+   \grayrow\textbf{\ADJACENTROOMS}(\SESSION',K$_1$,$\dots$,K$_n$) & $ K_i \subseteq \ROOM, i : 1..n $ \\
+  \grayrow\multicolumn{2}{|l|}{  $\forall s_1, s_2 \in \SESSION', \var{\SESSION}{\SLOT}{s_1} = \var{\SESSION}{\SLOT}{s_2} $
+    $\forall i \in  \{1..n\} : C_i =\{ \var{\SESSION}{\ROOM}{s} \mid s \in \SESSION' , \var{\SESSION}{\ROOM}{s} \in K_i \} \land$}\\
+     \grayrow\multicolumn{2}{|l|}{ 
+   $ \forall r,r' \in C_i : \exists path(r,r') \land |\{C_i \mid C_i \ne \emptyset , i = 1..n \}| \leq \sigma $}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:adjacentrooms}\\
+   %\multicolumn{2}{|l|}{
+    %$ \forall s1,s2 \in \SESSION', s_1 +1 = s_2, \var{\SESSION}{\ROOM}{s_1} \subseteq CR, \var{\SESSION}{\ROOM}{s_2} \subseteq CR,$}\\
+    %\multicolumn{2}{|l|}{$
+    %(\pi \circ \var{\SESSION}{\ROOM}{s_1}+1 = \pi \circ \var{\SESSION}{\ROOM}{s_2}) \vee (\pi \circ \var{\SESSION}{\ROOM}{s_1} = \pi \circ \var{\SESSION}{\ROOM}{s_2}+1)$}
+
+
+    
+   % Il n'existe pas de chemin entre deux composantes connexes de la solution.
+    %Le nombre de composantes connexes doit être inférieur ou égale à la valeur du paramètre.
+    %Paramètres : graphe de connexité des salles + nombre max de composantes connexes
+    \hline%======================
+   \textbf{\ALLOWEDGRIDS}(\SESSION',G)   & $G \in (W'\times D' \times M')^n, n \in \mathbb{N}^*, $ \\
+    &$ S'\subseteq\SESSION, W'\subseteq \WEEK, D'\subseteq\WEEKDAY, M'\subseteq\DAILYSLOT$ \\
+    \multicolumn{2}{|l|}{
+    $\forall s\in S', \exists k \in \{1..n\}: \var{\SESSION}{\WEEK}{s}\in W'_k \wedge   \var{\SESSION}{\WEEKDAY}{s}\in D'_k \wedge  \var{\SESSION}{\DAILYSLOT}{s}\in M'_k$ }\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:allowedgrids}    \\[-0.75em]
+    \multicolumn{2}{|c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+    %\hdashline%======================
+    \grayrow\textbf{\ALLOWEDROOMS}($\SESSION'$,$\ROOM'$) & $ S' \subseteq \SESSION, \ROOM' \subseteq \ROOM $ 
+    \\
+    \grayrow\multicolumn{2}{|l|}{
+    $\forall s \in \SESSION'$, $\var{\SESSION}{\ROOM}{s} \subseteq \ROOM'$}
+    \refstepcounter{rowcntrformal} \therowcntrformal\label{formal:allowedrooms}
+        \\[-0.75em]
+    \multicolumn{2}{|c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+    %\hdashline%======================
+    \textbf{\ALLOWEDSLOTS}($\SESSION'$,$\SLOT'$)&  $\SLOT' \subseteq \SLOT,  $
+    \\
+    \multicolumn{2}{|l|}{
+      $\forall s \in S' [\var{\SESSION}{\SLOT}{s},\var{\SESSION}{\SLOT}{s}+\sessionduration{s}] \subseteq \SLOT'$}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:allowedslots}\\[-0.75em]
+    \multicolumn{2}{|c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+    %\hdashline%======================
+     \grayrow\textbf{\ALLOWEDTEACHERS}((e,$\TEACHER'$),$\ROOM'$) &  $ S' \subseteq \SESSION, \TEACHER' \subseteq \TEACHER  $ \\
+     \grayrow\multicolumn{2}{|l|}{
+     $\forall s \in \SESSION'$, $\var{\SESSION}{\TEACHER}{s} \subseteq \TEACHER'$}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:allowedteachers}\\
+    \hline%======================
+    \textbf{\ASSIGNROOMS}($\SESSION'$,$\ROOM'$) & $ \ROOM' \subseteq \ROOM	$
+    \\
+    \multicolumn{2}{|l|}{
+    $  \forall s \in \SESSION'$, $\var{\SESSION}{\ROOM}{s} = \ROOM' $}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:assignrooms}    
+    \\[-0.75em]
+    \multicolumn{2}{|c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+    %\hdashline%==========samegroup============
+    \grayrow\textbf{\ASSIGNSLOT}($\SESSION'$,$\SLOT'$) & $ h \in \SLOT	$ 
+    \\
+    \grayrow\multicolumn{2}{|l|}{
+    $  \forall s \in \SESSION'$, $\var{\SESSION}{\SLOT}{s} = h $}
+    \refstepcounter{rowcntrformal} \therowcntrformal\label{formal:assignslot}
+        \\[-0.75em]
+    \multicolumn{2}{|c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+    %\hdashline%==========samegroup============
+    \textbf{\ASSIGNTEACHERS} $\SESSION'$,$\TEACHER'$) 
+    &
+    $ \TEACHER' \subseteq \TEACHER$ 
+    \\
+    \multicolumn{2}{|l|}{
+    $  \forall s \in \SESSION'$, $\var{\SESSION}{\TEACHER}{s} = \TEACHER' $
+    }\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:assignteachers}\\
+    \hline%======================
+   \grayrow\textbf{\COMPACTNESS}($\SESSION'$,$\sigma$)
+    &
+    $\sigma\in 0..|\SLOT'|$
+    \\
+    \grayrow\multicolumn{2}{|l|}{
+     $ \forall d \in \WEEKDAY : \exists \SESSION'' = \{s \in \SESSION' : \var{\SESSION}{\WEEKDAY}{s}\} \land$ 
+        }\\
+     \grayrow\multicolumn{2}{|l|}{
+    $ ((\max\limits_{s \in \SESSION''}(\var{\SESSION}{\SLOT}{s}+\sessionduration{s})-\min\limits_{s \in \SESSION'}(\var{\SESSION}{\SLOT}{s}))-\sum_{s \in \SESSION''}\sessionduration{s} )) / (|S''|-1)\leq \sigma$
+    }
+    \refstepcounter{rowcntrformal} \therowcntrformal\label{formal:compactness}\\
+    \hline%======================
+    \textbf{\DIFFERENTDAILYSLOT}($\SESSION'$) 
+    &
+    \\
+    \multicolumn{2}{|l|}{
+    $\forall s_1, s_2 \in \SESSION'$, $\var{\SESSION}{\DAILYSLOT}{s_1}  \ne \var{\SESSION}{\DAILYSLOT}{s_2}$
+    }\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:differentdailyslot}
+    \\[-0.75em]
+    \multicolumn{2}{|c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+    %\hdashline%==========samegroup============
+    \grayrow\textbf{\DIFFERENTDAY}($\SESSION'$) & 
+    \\
+    \grayrow\multicolumn{2}{|l|}{
+    $\forall s_1, s_2 \in \SESSION',\var{\SESSION}{\WEEKDAY}{s_1}  \ne \var{\SESSION}{\WEEKDAY}{s_2} \vee \var{\SESSION}{\WEEK}{s_1}  \ne \var{\SESSION}{\WEEK}{s_2} $
+    }\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:differentday}
+        \\[-0.75em]
+    \multicolumn{2}{|c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+    %\hdashline%==========samegroup============
+    \textbf{\DIFFERENTROOMS}($\SESSION'$) 
+    &
+    \\
+    \multicolumn{2}{|l|}{
+    $\forall s_1, s_2 \in \SESSION'$, $\var{\SESSION}{\ROOM}{s_1}  \cap \var{\SESSION}{\ROOM}{s_2} = \emptyset	$}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:differentrooms}
+        \\[-0.75em]
+    \multicolumn{2}{|c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+    %\hdashline%==========samegroup============ 
+    \grayrow\textbf{\DIFFERENTSLOT}($\SESSION'$)
+    &
+    \\
+    \grayrow\multicolumn{2}{|l|}{
+    $\forall s_1, s_2 \in \SESSION'$, $\var{\SESSION}{\SLOT}{s_1}   \ne \var{\SESSION}{\SLOT}{s_2}$}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:differentslot}
+    \\[-0.75em]
+    \multicolumn{2}{|c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+    %\hdashline%==========samegroup============
+    \textbf{\DIFFERENTTEACHERS}($\SESSION'$) 
+    &
+    \\
+    \multicolumn{2}{|l|}{
+    $\forall s_1, s_2 \in \SESSION'$, $\var{\SESSION}{\TEACHER}{s_1}  \cap \var{\SESSION}{\TEACHER}{s_2} = \emptyset	$}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:differentteachers}%\\
+    \\[-0.75em]
+    \multicolumn{2}{|c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+    %\hdashline%==========samegroup============
+    \grayrow\textbf{\DIFFERENTWEEK }($\SESSION'$)
+    &
+    \\
+    \grayrow\multicolumn{2}{|l|}{
+    $\forall s_1, s_2 \in \SESSION'$, $\var{\SESSION}{\WEEK}{s_1}  \ne \var{\SESSION}{\WEEK}{s_2}$}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:differentweek}%\\
+        \\[-0.75em]
+    \multicolumn{2}{|c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+    %\hdashline%==========samegroup============
+    \textbf{\DIFFERENTWEEKDAY}($\SESSION'$)
+    &
+    \\
+    \multicolumn{2}{|l|}{
+    $\forall s_1, s_2 \in \SESSION',\var{\SESSION}{\WEEKDAY}{s_1}  \ne \var{\SESSION}{\WEEKDAY}{s_2} $}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:differentweekday}\\%$\forall s_1, s_2 \in \SESSION \times \SESSION$, $(1+((\var{\SESSION}{\SLOT}{s_1}-1) / \WEEKDAY   )) \ne (1+((\var{\SESSION}{\SLOT}{s_2}-1) / \WEEKDAY   ))$
+    \\[-0.75em]
+    \multicolumn{2}{|c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+    %\hdashline%==========samegroup============ 
+    \grayrow\textbf{\DIFFERENTWEEKLYSLOT}($\SESSION'$)
+    &
+    \\
+    \grayrow\multicolumn{2}{|l|}{
+    $\forall s_1, s_2 \in \SESSION'$, $\var{\SESSION}{\DAILYSLOT}{s_1}  \ne \var{\SESSION}{\DAILYSLOT}{s_2} \vee \var{\SESSION}{\WEEKDAY}{s_1}  \ne \var{\SESSION}{\WEEKDAY}{s_2} $}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:differentweeklyslot}\\% $\forall s_1, s_2 \in \SESSION \times \SESSION$, $(1+((\var{\SESSION}{\SLOT}{s_1}-1) / \WEEKDAY   )) \ne (1+((\var{\SESSION}{\SLOT}{s_2}-1) / \WEEKDAY   ))$
+      
+    \hline%======================
+    \textbf{\FORBIDDENROOMS}($\SESSION'$,$\ROOM'$)
+    &  
+    $\ROOM' \subseteq \ROOM $ 
+    \\
+    \multicolumn{2}{|l|}{
+    $\forall s \in \SESSION'$, $\var{\SESSION}{\ROOM}{s} \subseteq \ROOM\setminus\ROOM'$}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:forbiddenrooms}
+    \\[-0.75em]
+    \multicolumn{2}{|c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+    
+    %\hdashline%==========samegroup============
+    \grayrow\textbf{\FORBIDDENSLOTS}($\SESSION'$,$\SLOT'$) 
+    &
+    $\SLOT' \subseteq \SLOT  $
+    \\
+    \grayrow\multicolumn{2}{|l|}{
+    $\forall s \in S'  [\var{\SESSION}{\SLOT}{s},\var{\SESSION}{\SLOT}{s}+\sessionduration{s}[ \cap \SLOT' = \emptyset$}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:forbiddenslots}
+    
+    \\[-0.75em]
+    \multicolumn{2}{|c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+    %\hdashline%==========samegroup============
+    &\\
+    \textbf{\FORBIDDENTEACHERS}($\SESSION'$,$\TEACHER'$)
+    &
+    $\TEACHER' \subseteq \TEACHER  $ 
+    \\
+    \multicolumn{2}{|l|}{
+    $\forall s \in \SESSION'$, $\var{\SESSION}{\TEACHER}{s} \subseteq \TEACHER\setminus\TEACHER'$}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:forbiddenteachers}\\
+      
+     %\GAP & $N_{min},N_{max} \in \SLOT\cup\{0\} , $ $\forall s_1,s_2 \in \SESSION', $ $ (N_{min} \geq \var{\SESSION}{\SLOT}{s_2} - (\var{\SESSION}{\SLOT}{s_1} +\sessionduration{s_1})) \land  ((\var{\SESSION}{\SLOT}{s_2} +\sessionduration{s_2})-\var{\SESSION}{\SLOT}{1} \leq N_{max})$
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+     
+    \hline%============== NEW GAP  ==============
+    \grayrow\textbf{\GAPARG{min\_slot}}($\SESSION'$,$\sigma_{min}$)
+    & 
+    $\sigma_{min}\in 0..|\SLOT| , $ 
+ \\%\\\hdashline
+ \grayrow\multicolumn{2}{|l|}{
+    %$ \NOOVERLAPARG{\SESSION'} \land$
+    $\exists!\pi:\SESSION'\to[[\SESSION']] : \var{\SESSION}{\SLOT}{\piinv{i}} < \var{\SESSION}{\SLOT}{\piinv{j}}   $ \raisebox{0.2ex}{$\scriptscriptstyle(1\leq i < j \leq |\SESSION'|)$}}
+    \\
+    \grayrow\multicolumn{2}{|l|}{
+    $\forall i \in 1..|\SESSION'|-1,$
+    $\var{\SESSION}{\SLOT}{\piinv{i+1}} - (\var{\SESSION}{\SLOT}{\piinv{i}} + \sessionduration{\piinv{i}})\geq \sigma_{min}$}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:gapminslot}
+
+    \\[-0.75em]
+    \multicolumn{2}{|c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+%\hdashline%==========samegroup=============
+    \textbf{\GAPARG{min\_day}}($\SESSION'$,$\sigma_{min}$)
+    & 
+    $\sigma_{min}\in 0..|\WEEKDAY|*|\WEEK| , $ 
+    \\%\\\hdashline
+    \multicolumn{2}{|l|}{
+    %$ \NOOVERLAPARG{\SESSION'} \land$
+    $\exists!\pi:\SESSION'\to[[\SESSION']] : \var{\SESSION}{\SLOT}{\piinv{i}} < \var{\SESSION}{\SLOT}{\piinv{j}}   $ \raisebox{0.2ex}{$\scriptscriptstyle(1\leq i < j \leq |\SESSION'|)$}
+    }
+    \\
+    \multicolumn{2}{|l|}{
+    $\land \forall i \in 1..|\SESSION'|-1,\var{\SESSION}{\WEEKDAY}{\piinv{i+1}} - (\var{\SESSION}{\WEEKDAY}{\piinv{i}}) \geq \sigma_{min}$}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:gapminday}
+
+    \\[-0.75em]
+    \multicolumn{2}{|c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+    %\hdashline%==========samegroup============
+   \grayrow \textbf{\GAPARG{min\_week}}($\SESSION'$,$\sigma_{min}$)
+    & 
+    $\sigma_{min}\in 0..|\WEEK| , $ 
+    \\%\\\hdashline
+    \grayrow\multicolumn{2}{|l|}{
+    %$ \NOOVERLAPARG{\SESSION'} \land$
+    $\exists!\pi:\SESSION'\to[[\SESSION']] : \var{\SESSION}{\SLOT}{\piinv{i}} < \var{\SESSION}{\SLOT}{\piinv{j}}   $ \raisebox{0.2ex}{$\scriptscriptstyle(1\leq i < j \leq |\SESSION'|)$}
+    }
+    \\
+    \grayrow\multicolumn{2}{|l|}{
+    $\land \forall i \in 1..|\SESSION'|-1,\var{\SESSION}{\WEEK}{\piinv{i+1}} - (\var{\SESSION}{\WEEK}{\piinv{i}})\geq \sigma_{min}$}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:gapminweek}\\
+\hline%======================
+    \textbf{\GAPARG{max\_slot}}($\SESSION'$,$\sigma_{max}$)
+    & 
+    $\sigma_{max}\in 0..|\SLOT| , $ 
+    \\%\\\hdashline
+    \multicolumn{2}{|l|}{
+    $s_1 = \min\limits_{s \in \SESSION'}(\var{\SESSION}{\SLOT}{s}), s_2 = \max\limits_{s \in \SESSION'}(\var{\SESSION}{\SLOT}{s}+\sessionduration{s}),$
+    $\var{\SESSION}{\SLOT}{s_2} - (\var{\SESSION}{\SLOT}{s_1}+\sessionduration{s}) \leq \sigma_{max}$}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:gapmaxslot}
+    \\[-0.75em]
+    \multicolumn{2}{|c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+%\hdashline%==========samegroup============
+   \grayrow \textbf{\GAPARG{max\_day}}($\SESSION'$,$\sigma_{max}$)  
+    & 
+    $\sigma_{max}\in 0..|\WEEKDAY|*|\WEEK| , $ 
+    \\%\\\hdashline
+    \grayrow\multicolumn{2}{|l|}{
+    $s_1 = \min\limits_{s \in \SESSION'}(\var{\SESSION}{\SLOT}{s}), s_2 = \max\limits_{s \in \SESSION'}(\var{\SESSION}{\SLOT}{s}),$
+    $\var{\SESSION}{\WEEKDAY}{s_2} - \var{\SESSION}{\WEEKDAY}{s_1} \leq \sigma_{max}$}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:gapmaxday}
+    \\[-0.75em]
+    \multicolumn{2}{|c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+%\hdashline%==========samegroup============
+
+    \textbf{\GAPARG{max\_week}}($\SESSION'$,$\sigma_{max}$)
+    & 
+    $\sigma_{max}\in 0..|\WEEK| , $ 
+    \\%\\\hdashline
+    \multicolumn{2}{|l|}{$s_1 = \min\limits_{s \in \SESSION'}(\var{\SESSION}{\SLOT}{s}), s_2 = \max\limits_{s \in \SESSION'}(\var{\SESSION}{\SLOT}{s}),$
+    $\var{\SESSION}{\WEEK}{s_2} - \var{\SESSION}{\WEEK}{s_1} \leq \sigma_{max}$}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:gapmaxweek}\\
+\hline%======================
+
+   \grayrow \textbf{\GAPARG{last\_first\_slot}}($\SESSION_1'$$\dots$,$\SESSION_n'$,$\sigma_{min}$,$\sigma_{max}$)  
+    & 
+    $\sigma_{min},\sigma_{max}\in 0..|\SLOT| , $ 
+    \\%\\\hdashline
+    %\multicolumn{2}{|l|}{$\SEQUENCED(\SESSION_1,...,\SESSION_n) \land $}\\
+   \grayrow \multicolumn{2}{|l|}{$
+    \forall i \in 1..n-1 ,\; s_i = \max\limits_{s \in \SESSION_i }(\var{\SESSION}{\SLOT}{s}+\sessionduration{s}),\; 
+    s_{i+1} = \min\limits_{s \in \SESSION_{i+1}} (\var{\SESSION}{\SLOT}{s})$
+    }
+    \\
+   \grayrow \multicolumn{2}{|l|}{
+    $ \sigma_{min} \leq s_{i+1} - s_i \leq \sigma_{max} $ } \refstepcounter{rowcntrformal} \therowcntrformal\label{formal:gaplastfirstslot}
+    \\[-0.75em]
+    \multicolumn{2}{|c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+    %\hdashline%==========samegroup============
+    \textbf{\GAPARG{last\_first\_day}}($\SESSION_1'$$\dots$,$\SESSION_n'$,$\sigma_{min}$,$\sigma_{max}$)   
+    & 
+    $\sigma_{min},\sigma_{max}\in 0..|\SLOT| , $ 
+    \\%\\\hdashline
+    %\multicolumn{2}{|l|}{$\SEQUENCED(\SESSION_1,...,\SESSION_n) \land $}\\
+    \multicolumn{2}{|l|}{$
+    \forall i \in 1..n-1 ,\; s_i = \max\limits_{s \in \SESSION_i }(\var{\SESSION}{\WEEKDAY}{s}),\;
+    s_{i+1} = \min\limits_{s \in \SESSION_{i+1}} (\var{\SESSION}{\WEEKDAY}{s})$
+    }
+    \\
+    \multicolumn{2}{|l|}{
+    $ \sigma_{min} \leq s_{i+1} - s_i \leq \sigma_{max} $ } \refstepcounter{rowcntrformal} \therowcntrformal\label{formal:gaplastfirstday}
+
+    \\[-0.75em]
+    \multicolumn{2}{|c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+    %\hdashline%==========samegroup============
+   \grayrow \textbf{\GAPARG{last\_first\_week}}($\SESSION_1'$$\dots$,$\SESSION_n'$,$\sigma_{min}$,$\sigma_{max}$)  
+    & 
+    $\sigma_{min},\sigma_{max}\in 0..|\SLOT| , $ 
+    \\%\\\hdashline
+   \grayrow \multicolumn{2}{|l|}{$
+    \forall i \in 1..n-1 ,\; s_i = \max\limits_{s \in \SESSION_i }(\var{\SESSION}{\WEEK}{s}),\;
+    s_{i+1} = \min\limits_{s \in \SESSION_{i+1}} (\var{\SESSION}{\WEEK}{s})$
+    }
+    \\
+    \grayrow\multicolumn{2}{|l|}{
+    $ \sigma_{min} \leq s_{i+1} - s_i \leq \sigma_{max} $ } \refstepcounter{rowcntrformal} \therowcntrformal\label{formal:gaplastfirstweek}\\
+\hline%======================
+    \textbf{\GAPARG{first\_last\_slot}}($\SESSION_1'$$\dots$,$\SESSION_n'$,$\sigma_{min}$,$\sigma_{max}$)  
+    & 
+    $\sigma_{min},\sigma_{max}\in 0..|\SLOT| , $ 
+    \\%\\\hdashline
+    %\multicolumn{2}{|l|}{$\SEQUENCED(\SESSION_1,...,\SESSION_n) \land $}\\
+    \multicolumn{2}{|l|}{$
+    \forall i \in 1..n-1 ,\; s_i = \min\limits_{s \in \SESSION_i }(\var{\SESSION}{\SLOT}{s}+\sessionduration{s}),\; 
+    s_{i+1} = \max\limits_{s \in \SESSION_{i+1}} (\var{\SESSION}{\SLOT}{s})$
+    }
+    \\
+    \multicolumn{2}{|l|}{
+    $ \sigma_{min} \leq s_{i+1} - s_i \leq \sigma_{max} $ } \refstepcounter{rowcntrformal} \therowcntrformal\label{formal:gapfirstlastslot}
+
+    \\[-0.75em]
+    \multicolumn{2}{|c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+   %\hdashline%==========samegroup============
+   \grayrow\textbf{\GAPARG{first\_last\_day}}($\SESSION_1'$$\dots$,$\SESSION_n'$,$\sigma_{min}$,$\sigma_{max}$)  
+    & 
+    $\sigma_{min},\sigma_{max}\in 0..|\SLOT| , $ 
+    \\%\\\hdashline
+    %\multicolumn{2}{|l|}{$\SEQUENCED(\SESSION_1,...,\SESSION_n) \land $}\\
+   \grayrow \multicolumn{2}{|l|}{$
+    \forall i \in 1..n-1 ,\; s_i = \min\limits_{s \in \SESSION_i }(\var{\SESSION}{\WEEKDAY}{s}),\;
+    s_{i+1} = \max\limits_{s \in \SESSION_{i+1}} (\var{\SESSION}{\WEEKDAY}{s})$
+    }
+    \\
+    \grayrow\multicolumn{2}{|l|}{
+    $ \sigma_{min} \leq s_{i+1} - s_i \leq \sigma_{max} $ }\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:gapfirstlastday} 
+
+    \\[-0.75em]
+    \multicolumn{2}{|c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+    %\hdashline%==========samegroup============
+    \textbf{\GAPARG{first\_last\_week}}($\SESSION_1'$$\dots$,$\SESSION_n'$,$\sigma_{min}$,$\sigma_{max}$)  
+    & 
+    $\sigma_{min},\sigma_{max}\in 0..|\SLOT| , $ 
+    \\%\\\hdashline
+    \multicolumn{2}{|l|}{$
+    \forall i \in 1..n-1 ,\; s_i = \min\limits_{s \in \SESSION_i }(\var{\SESSION}{\WEEK}{s}),\;
+    s_{i+1} = \max\limits_{s \in \SESSION_{i+1}} (\var{\SESSION}{\WEEK}{s})$
+    }
+    \\
+    \multicolumn{2}{|l|}{
+    $ \sigma_{min} \leq s_{i+1} - s_i \leq \sigma_{max} $ } \refstepcounter{rowcntrformal} \therowcntrformal\label{formal:gapfirstlastweek}\\
+    %\GAP LF naire 
+    %&
+    %$N_{min},N_{max} \in \SLOT\cup\{0\} , $
+    %\\%\\\hdashline
+   % \multicolumn{2}{|l|}{$ \forall i,j \in \mathbb{N}, j = i+1 \forall s_1 \in \SESSION_j , s_2 \in \SESSION_i , $ $ s.t.  \var{\SESSION}{\SLOT}{s_1} \leq  \var{\SESSION}{\SLOT}{s_2}, \var{\SESSION}{\SLOT}{s_2} -\var{\SESSION}{\SLOT}{s_1} +\sessionduration{s_1} \in [N_{min},N_{max}]  \wedge  \var{\SESSION}{\SLOT}{s_1} \ne  \var{\SESSION}{\SLOT}{s_2} $
+    %$Si = argmin_{s \in Si} xs , Si+1  = argmax xs + len xs$}\\
+    \hline%======================
+   \grayrow \textbf{\NOOVERLAP}($\SESSION'$)  
+    & \\%\\\hdashline
+    \multicolumn{2}{|l|}{\cellcolor[gray]{0.9}
+    $\bigwedge\limits_{\substack{s_1,s_2\in \SESSION'\\s_1\neq s_2}}(\var{\SESSION}{\SLOT}{s_1} + \sessionduration{s_1} \leq \var{\SESSION}{\SLOT}{s_2})\vee(\var{\SESSION}{\SLOT}{s_2} + \sessionduration{s_2} \leq \var{\SESSION}{\SLOT}{s_1})$}
+    \refstepcounter{rowcntrformal} \therowcntrformal\label{formal:nooverlap}\\
+
+    \hline%======================
+    \textbf{\PAIRWISENOOVERLAP}($\SESSION_1'$,$\SESSION_2'$)    
+    & \\%\\\hdashline
+     \multicolumn{2}{|l|}{
+    $\bigwedge\limits_{\substack{s_1\in \SESSION'_1, s_2\in \SESSION'_2\\s_1\neq s_2}}
+    (\var{\SESSION}{\SLOT}{s_1} + \sessionduration{s_1}\leq\var{\SESSION}{\SLOT}{s_2})
+    \vee
+    (\var{\SESSION}{\SLOT}{s_2} + \sessionduration{s_2}\leq\var{\SESSION}{\SLOT}{s_1})$}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:pairwisenooverlap}\\
+    
+    \hline%======================
+    \grayrow\textbf{\PERIODIC}($\SESSION'$,$n$)   
+    &
+    $n \in \mathbb{N}$ \\%\\\hdashline
+
+    \grayrow\multicolumn{2}{|l|}{
+    $ \exists\pi : \SESSION' \rightarrow 1..|\SESSION'|,  \forall i \in 1..|\SESSION'|-1,\var{\SESSION}{\SLOT}{{\pi^{-1}(i)}} +n = \var{\SESSION}{\SLOT}{{\pi^{-1}(i+1)}}
+    %s-2 s_2 \in \SESSION' s.t. s_1 \ne s_2, $ $ |\var{\SESSION}{\SLOT}{s_1}-\var{\SESSION}{\SLOT}{s_2}|=n 
+    $}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:periodic}\\
+      
+    \hline%======================
+    \textbf{\REQUIREDROOMS}($\SESSION'$,$\ROOM'$)  
+    &
+    $ \ROOM' \subseteq \ROOM $\\%\\\hdashline
+     \multicolumn{2}{|l|}{
+    $\forall s \in \SESSION' $, $\ROOM' \subseteq \var{\SESSION}{\ROOM}{s}	$}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:requiredrooms}
+
+    \\[-0.75em]
+    \multicolumn{2}{|c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+    %\hdashline%==========samegroup============
+    \grayrow\textbf{\REQUIREDTEACHERS}($\SESSION'$,$\TEACHER'$,$\Delta$*) 
+    &
+   $  \TEACHER' \subseteq \TEACHER, \Delta = \{\forall t \in \TEACHER'\mid\delta_{1,t},\delta_{2,t}\}$, \\%\\\hdashline
+   \grayrow& $\forall t \in \TEACHER',\forall i \in \{1,2\},\;\delta_{i,t}\in\mathbb{N}$\\
+     \grayrow\multicolumn{2}{|l|}{
+     $ \forall s \in \SESSION',\;( \var{\SESSION}{\TEACHER}{s} \subseteq \TEACHER'  \land \forall t \in\TEACHER',\;\delta_{1,t} \leq\sum\limits_{s \in \SESSION'} (t \in \var{\SESSION}{\TEACHER}{s})\leq \delta_{2,t} )$}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:requiredteachers}\\
+    \hline%======================
+    \textbf{\SAMEDAILYSLOT} ($\SESSION'$) 
+    & \\%\\\hdashline
+     \multicolumn{2}{|l|}{
+    $\forall s_1, s_2 \in \SESSION'$,
+    $\var{\SESSION}{\DAILYSLOT}{s_1}  = \var{\SESSION}{\DAILYSLOT}{s_2}$}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:samedailyslot}
+
+    \\[-0.75em]
+    \multicolumn{2}{|c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+    %\hdashline%==========samegroup============
+    \grayrow\textbf{\SAMEDAY}($\SESSION'$) 
+    & \\%\\\hdashline
+     \grayrow\multicolumn{2}{|l|}{
+    $\forall s_1, s_2 \in \SESSION',\var{\SESSION}{\WEEKDAY}{s_1}  = \var{\SESSION}{\WEEKDAY}{s_2} \wedge \var{\SESSION}{\WEEK}{s_1}  = \var{\SESSION}{\WEEK}{s_2} $}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:sameday}
+
+    \\[-0.75em]
+    \multicolumn{2}{|c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+      %
+    %\hdashline%==========samegroup============
+    \textbf{\SAMEROOMS}($\SESSION'$) 
+    & \\%\\\hdashline
+     \multicolumn{2}{|l|}{
+    $\forall s_1, s_2 \in \SESSION'$, 
+    $\var{\SESSION}{\ROOM}{s_1}  = \var{\SESSION}{\ROOM}{s_2}	$}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:samerooms}
+      %
+      \\[-0.75em]
+    \multicolumn{2}{|c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+    %\hdashline%==========samegroup============
+    \grayrow\textbf{\SAMESLOT}($\SESSION'$) 
+    & \\%\\\hdashline
+     \grayrow\multicolumn{2}{|l|}{
+    $\forall s_1, s_2 \in \SESSION'$, 
+    $\var{\SESSION}{\SLOT}{s_1}  = \var{\SESSION}{\SLOT}{s_2}	$}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:sameslot}
+    
+      %
+      \\[-0.75em]
+    \multicolumn{2}{|c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+    %\hdashline%==========samegroup============
+    \textbf{\SAMETEACHERS}($\SESSION'$)   
+    & \\%\\\hdashline
+     \multicolumn{2}{|l|}{
+    $\forall s_1, s_2 \in \SESSION'$, 
+    $\var{\SESSION}{\TEACHER}{s_1}  = \var{\SESSION}{\TEACHER}{s_2}	$}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:sameteachers}
+      %
+      \\[-0.75em]
+    \multicolumn{2}{|c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+    %\hdashline%==========samegroup============
+    \grayrow\textbf{\SAMEWEEK}($\SESSION'$) 
+    & \\%\\\hdashline
+    \grayrow \multicolumn{2}{|l|}{
+    $\forall s_1, s_2 \in \SESSION'$, 
+    $\var{\SESSION}{\WEEK}{s_1} = \var{\SESSION}{\WEEK}{s_2}$}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:sameweek}
+    \\[-0.75em]
+    \multicolumn{2}{|c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+    %\hdashline%==========samegroup============
+    \textbf{\SAMEWEEKDAY}($\SESSION'$) 
+    & \\%\\\hdashline
+     \multicolumn{2}{|l|}{
+    $\forall s_1, s_2 \in \SESSION',$  $\var{\SESSION}{\WEEKDAY}{s_1} = \var{\SESSION}{\WEEKDAY}{s_2}$}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:sameweekday}
+
+    \\[-0.75em]
+    \multicolumn{2}{|c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+    
+    %\hdashline%==========samegroup============
+    \grayrow\textbf{\SAMEWEEKLYSLOT}($\SESSION'$) 
+    & \\%\\\hdashline
+     \grayrow\multicolumn{2}{|l|}{
+    $\forall s_1, s_2 \in \SESSION'$, $\var{\SESSION}{\DAILYSLOT}{s_1}  = \var{\SESSION}{\DAILYSLOT}{s_2} \wedge \var{\SESSION}{\WEEKDAY}{s_1}  = \var{\SESSION}{\WEEKDAY}{s_2} $}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:sameweeklyslot}\\
+    
+    \hline%======================
+    \textbf{\SEQUENCED}($\SESSION'_1$$\dots$,$\SESSION'_n$) 
+    & \\%\\\hdashline
+     \multicolumn{2}{|l|}{
+    $%\forall i \in \mathbb{N}, 
+    \forall s_i \in \SESSION'_i,\forall s_{i+1} \in \SESSION'_{i+1},\; \var{\SESSION}{\SLOT}{s_{i+1}} \geq \var{\SESSION}{\SLOT}{s_{i}} + \sessionduration{s_i}	$}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:sequenced}\\
+    \hline%======================
+    \grayrow\textbf{\text{\WORKLOAD{time}}}($\SESSION'$,$w_1,w_2$) 
+    &
+    $ w_1,w_2 \in \SLOT \cup \{0\} $ \\%\\\hdashline
+    \grayrow\multicolumn{2}{|l|}{$\forall d \in \WEEKDAY,\;  w_1 \leq \sum\limits_{s\in\SESSION'}\sessionduration{s} \times (\var{\SESSION}{\WEEKDAY}{s} = d) \leq w_2 $}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:timeworkload}
+
+    \\[-0.75em]
+    \multicolumn{2}{|c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+    %\hdashline%==========samegroup============
+    \textbf{\text{\WORKLOAD{session}}}($\SESSION'$,$w_1,w_2$)   & $ w_1,w_2 \in 0..|\SESSION|$\\%\\\hdashline
+     \multicolumn{2}{|l|}{$\forall d \in \WEEKDAY,\;  w_1 \leq |\{ s\in\SESSION' : \var{\SESSION}{\WEEKDAY}{s} = d \}| \leq w_2 $}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:sessionworkload}\\
+     \hline%======================
+    \caption{Semantics of \UTP{}  constraint predicates}
+    \label{tab:constraintformel}
+    \end{longtable}
+ %   
+% \end{table}

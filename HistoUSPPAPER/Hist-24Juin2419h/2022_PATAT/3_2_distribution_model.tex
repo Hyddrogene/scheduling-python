@@ -1,0 +1,62 @@
+%------------------------------------------------------------
+%------------------------------------------------------------
+\subsection{Resource Distribution}
+\label{sec:model-distribution}
+
+Resource distribution involves domain, cardinality and basic summation constraints.
+Constraint~(\ref{ctr:allowedresources}) defines the allowed rooms and allowed lecturers per session.
+%Constraint~\ref{ctr:allowedrooms} allowed rooms per session.
+%Constraint~\ref{ctr:allowedteachers} allowed teachers per session.
+%Constraint~\ref{ctr:compatiblesessionsperresource} compatible sessions per room or teacher.
+%Constraint~\ref{ctr:compatiblesessionsperroom} compatible sessions per room.
+%Constraint~\ref{ctr:compatiblesessionsperteacher} compatible sessions per teacher.
+%
+Constraint~(\ref{ctr:multiroom}) models single-room sessions
+and Constraint~(\ref{ctr:mandatoryroom}) models mandatory rooms of course parts.
+Constraint~(\ref{ctr:multiteacher}) ensures sessions get assigned the right number of lecturers (possibly none) as defined in each course part 
+and Constraint~(\ref{ctr:partteacherservice}) ensures each lecturer is assigned the expected number of sessions.
+%Constraint~\ref{ctr:classsize} class size
+
+\begin{flalign}
+&\forall W\in\myset{\ROOM,\TEACHER},s\in\SESSION:
+&\var{\SESSION}{W}{s}\subseteq{\map{\SESSION}{W}{s}}
+&\label{ctr:allowedresources}
+\\
+%%
+%&\forall s\in\SESSION:
+%\var{\SESSION}{\ROOM}{s}\subseteq{\map{\SESSION}{\ROOM}{s}}
+%&\label{ctr:allowedrooms}
+%\\
+%%
+%&\forall s\in\SESSION:
+%\var{\SESSION}{\TEACHER}{s}\subseteq{\map{\SESSION}{\TEACHER}{s}}
+%&\label{ctr:allowedteachers}
+%\\
+%
+%\begin{flalign}
+&\forall p\in\PART\setminus\multiroomparts,s\in\map{\PART}{\SESSION}{p}:
+%&\forall p\in\PART,\neg\multiroompart{p},s\in\map{\PART}{\SESSION}{p}:
+&\mycard{\var{\SESSION}{\ROOM}{s}}=1
+&\label{ctr:multiroom}
+\\
+&\forall p\in\PART,s\in\map{\PART}{\SESSION}{p}:
+%&\forall p\in\PART,\neg\multiroompart{p},s\in\map{\PART}{\SESSION}{p}:
+&\mandatoryrooms{p}\subseteq{\var{\SESSION}{\ROOM}{s}}
+&\label{ctr:mandatoryroom}
+\\
+%
+&\forall p\in\PART,s\in\map{\PART}{\SESSION}{p}:
+&\partteachermultiplicity{p}
+=\mycard{\var{\SESSION}{\TEACHER}{s}}
+&\label{ctr:multiteacher}
+\\
+%\end{flalign}
+%
+%\begin{flalign}
+&\forall l\in\TEACHER,p\in\PART:
+&\partteacherservice{l,p}
+=\sum_{s\in\map{\PART}{\SESSION}{p}}{(l\in\var{\SESSION}{\TEACHER}{s})}
+&\label{ctr:partteacherservice}
+\end{flalign}
+
+

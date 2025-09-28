@@ -1,0 +1,195 @@
+Dans cet article, nous proposons une méthode pour résoudre un problème réel de planification des cours à l'Académie Mandarine. La principale motivation de ce travail est de fournir un outil automatisé de planification des cours professionnels pour remplacer la tâche chronophage de création manuelle d'emplois du temps, souvent incorrects. Après une revue de la littérature scientifique et des exigences de l'entreprise, un modèle mathématique du problème est proposé, incluant 18 contraintes (dures et souples) et cinq objectifs, dont deux sont en compétition.
+
+Nous testons une poignée d'algorithmes évolutionnaires multi-objectifs (MOEA) en commençant par l'algorithme génétique de tri non dominé (NSGA II et NSGA III), l'algorithme évolutionnaire multi-objectifs basé sur la décomposition (MOEA/D), l'algorithme évolutionnaire basé sur des indicateurs et enfin l'algorithme évolutionnaire de Pareto fort. Deux opérateurs génétiques personnalisés (mutation et croisement) sont proposés et comparés aux opérateurs conventionnels (PMX et mutation par permutation). Pour obtenir des configurations élites, une phase de réglage impliquant tous les algorithmes mentionnés est effectuée.
+
+Les expériences ont été divisées par taille de problème, avec trois à cinq objectifs testés. Les expériences incluent l'utilisation de données réelles du catalogue de l'entreprise. Cet ensemble de données a été mis à disposition de la communauté scientifique pour servir de terrain d'essai pour la planification des cours professionnels, un domaine de la planification sous-exploité. Nous discutons des résultats, y compris une comparaison des performances de chaque algorithme à l'aide de diverses métriques, ainsi que des graphes de convergence et de l'évolution des populations.
+
+
+
+
+
+### 1. Introduction
+
+Dans des environnements de travail en rapide évolution, il est crucial de maintenir les connaissances des employés à jour. C'est ici que l'utilisation des technologies numériques en milieu de travail devient essentielle pour le succès d'une entreprise. L'apprentissage numérique offre des cours rentables, des matériaux faciles d'accès et un environnement d'apprentissage flexible pour tous les employés. Un programme de formation en entreprise qui combine l'apprentissage numérique avec l'apprentissage formel est souvent la meilleure option, avec certains cours dispensés en ligne et d'autres en présentiel dans des lieux spécifiques avec des formateurs compétents.
+
+Les programmes de formation suivent un plan ou un "emploi du temps" spécifique pour garantir que chaque événement se déroule dans la salle appropriée et au moment approprié. Cela est lié aux problèmes de planification des cours académiques, qui consistent à programmer des cours dans un nombre limité de salles/horaires tout en respectant les restrictions de ressources (Lewis, 2008). Le problème de la planification des cours a de nombreuses variantes (examens, cours, classes universitaires) et il a une grande variété d'applications (transport : Caprara et al., 2002 ; dos Santos et Borenstein, 2022, soins de santé : Burke et al., 2002 ; fabrication : Zhu et Li, 2011, etc.). Le problème de la planification universitaire a reçu beaucoup d'attention dans toutes ces catégories au cours des dernières décennies.
+
+Étant donné que la planification des cours et la gestion des horaires du personnel sont des problèmes NP-complets (Christofides, 1979), de nombreuses techniques pour les résoudre ont été proposées (Burke et al., 2007). Des méthodes métaheuristiques, telles que les algorithmes génétiques (AG) (Derigs et Jenal, 2005), le recuit simulé (Bellio et al., 2016), la recherche tabou (Burke et al., 2003), et d'autres approches inspirées par un phénomène naturel (Eley, 2006 ; Hoos et al., 2022) ont été utilisées dans divers travaux. Les métaheuristiques sont des techniques indépendantes du problème qui peuvent être appliquées à une large gamme de problèmes et pas seulement à la planification.
+
+Le problème traité dans cet article relève de la catégorie de la planification des cours professionnels, qui présente des caractéristiques similaires à la planification académique (Haase et al., 1998) :
+- **Objectifs** : Ce travail traite cinq objectifs en concurrence, qui peuvent être étendus avec d'autres objectifs.
+- **Fenêtre de planification** : Ce travail traite de fenêtres de planification longues (de mois à années). Certains exemples académiques similaires, tels que la International Timetabling Competition 2019, se concentrent sur une durée prolongée (semestre).
+- **Faisabilité** : Les événements peuvent rester non planifiés en raison de diverses circonstances (par exemple, manque de ressources disponibles, vacances, etc.).
+- **Lieux** : Une autre caractéristique de ce travail est la prise en compte des ressources situées dans d'autres lieux (nationaux/internationaux).
+
+À notre connaissance, aucun autre travail ne présente des caractéristiques similaires au problème discuté dans cet article. Il existe quelques travaux qui entrent dans cette catégorie de problèmes de planification : Derigs et Jenal (2005) ont utilisé un algorithme génétique multi-objectifs pour réduire les coûts et augmenter le nombre d'événements planifiés à l'organisation de service de Ford. Les auteurs ont créé un système de support décisionnel basé sur le web permettant aux planificateurs de générer, analyser et comparer les emplois du temps suggérés par le système. Leur problème implique la planification des cours et des formateurs sur 3 mois avec huit contraintes dures et une contrainte souple. La première étape de leur approche consiste à utiliser une heuristique de construction qui commence par un emploi du temps vide et une liste de cours ordonnés. L'algorithme commence par déterminer l'heure de début/fin d'une salle appropriée, puis vérifie la disponibilité du formateur, et enfin l'équipement. Si tout est disponible, un emploi du temps est créé. Tout cours non faisable reste non planifié. La deuxième étape implique les AG, où un emploi du temps est encodé par deux chromosomes (informations sur les cours et ressources). Les auteurs ont utilisé des mutations aléatoires et par permutation, ainsi que le croisement partiellement mappé (PMX), le croisement par cycle (CX), et le croisement par ordre (OX-OX2). Pour tester leur approche, des données historiques ont été utilisées mais manquent de ressources disponibles (petit nombre de formateurs et de salles).
+
+En combinant des modèles basés sur la programmation en nombres entiers avec une recherche à grand voisinage, Czibula et al. (2017) ont résolu un problème de planification de cours professionnels chez le fournisseur d'électricité australien "Ausgrid". Leur travail vise à minimiser deux objectifs (le nombre d'étudiants non accommodés et le nombre de changements de salle) et à maximiser un objectif (les revenus locatifs des salles de classe). Malgré la difficulté de traiter un grand problème avec des méthodes exactes, les auteurs ont commencé par le décomposer en plusieurs sous-problèmes, un pour la planification des cours et un pour la gestion des formateurs. Les données d'Ausgrid ont été utilisées pour évaluer leur approche, mais, comme dans les travaux précédents (Derigs et Jenal, 2005), leur instance de test était petite (faible nombre de cours, salles et périodes).
+
+Pour maximiser la marge bénéficiaire des emplois du temps des cours au Centre de Formation Technique de Lufthansa, Haase et al. (1998) ont combiné une heuristique de construction avec une recherche tabou. Leur fonction objective était de maximiser la marge bénéficiaire induite par un emploi du temps, en dehors de cet objectif, neuf autres objectifs étaient considérés mais non utilisés dans leur prototype. Leur approche commence par l'une des multiples stratégies disponibles pour sélectionner les cours et les formateurs. La recherche tabou est ensuite utilisée pour construire plusieurs solutions jusqu'à ce qu'une solution faisable soit trouvée. Pour la phase de test, l'horizon de planification était limité à 6 mois, ce qui est une période plus longue par rapport aux travaux précédents.
+
+Cet article étudie et résout un problème de planification professionnelle multi-objectifs réel à l'Académie Mandarine. Après avoir effectué une revue de la littérature et recueilli différentes contraintes auprès des décideurs, une heuristique de construction initiale a été conçue et mise en œuvre pour offrir des solutions valides rapides. Ces solutions sont améliorées en utilisant une multitude d'algorithmes évolutionnaires en commençant par l'algorithme génétique de tri non dominé (NSGAII et NSGAIII), l'algorithme évolutionnaire multi-objectifs basé sur la décomposition (MOEA/D), l'algorithme évolutionnaire basé sur les indicateurs (IBEA), et enfin l'algorithme évolutionnaire de Pareto fort (SPEA2). Nous avons proposé l'opérateur de croisement MAPTco et l'opérateur de mutation MAPTmo pour l'Académie Mandarine comme deux opérateurs génétiques personnalisés à comparer avec le croisement partiellement mappé PMX et la mutation par permutation Swap. Ces deux opérateurs classiques sont largement utilisés dans les problèmes de planification/permutation. Les configurations élites de chaque algorithme ont été trouvées en utilisant le package i-race. Les expériences utilisant les données historiques de l'Académie Mandarine sont discutées où nous mettons en évidence les différences entre les algorithmes et sélectionnons les plus performants.
+
+Ce travail est une extension d'un travail précédemment publié (Hafsa et al., 2021), les principales différences et contributions supplémentaires sont les suivantes :
+- modélisation mathématique complète du problème,
+- implémentation et comparaison d'algorithmes supplémentaires (SPEA 2, IBEA et MOEA/D) par rapport à ceux déjà étudiés (NSGA II et NSGA III),
+- proposition et étude d'objectifs supplémentaires et de nouveaux critères d'arrêt correspondant à des scénarios réels,
+- réalisation d'une analyse de performance détaillée de chaque approche sur différents ensembles de données, et
+- proposition d'un nouvel ensemble de données de planification (Hafsa, 2022) pour la communauté de recherche avec les meilleurs résultats.
+
+
+
+
+
+### 2. Description du problème et modèle mathématique
+
+#### 2.1. Académie Mandarine : Problème de planification
+
+L'Académie Mandarine est une entreprise Ed-tech qui contribue à la numérisation des lieux de travail en rendant les nouvelles technologies plus accessibles et utilisables pour tous les employés. L'entreprise investit dans l'innovation pour améliorer l'efficacité des formations en termes de compétences, de temps et de budget. La combinaison de plateformes numériques comme les cours en ligne ouverts massifs et le support personnalisé améliore l'accès à une meilleure expérience d'apprentissage. Récemment, l'Académie Mandarine a introduit DiLeap Logistic, un système de support à la décision partagé qui permet aux planificateurs de gérer entièrement les emplois du temps. Chaque partenaire utilisant la plateforme a accès à son catalogue de cours, à ses objectifs et à ses contraintes. Avant DiLeap Logistic, la construction des emplois du temps se faisait manuellement et prenait en moyenne de 3 à 6 semaines (30 travailleurs) pour produire un emploi du temps initial couvrant une année de programmes de formation. DiLeap Logistic optimise cette tâche en utilisant un algorithme glouton qui prend une liste d'événements à planifier, avec leurs dates de début/fin et leurs emplacements, et génère automatiquement un emploi du temps. L'automatisation du processus de planification facilite la location de salles, la notification des enseignants et des employés des sessions à venir, et la gestion des ressources de l'entreprise. Comme le planificateur peut confirmer les propositions du logiciel, les cours ne seront planifiés qu'après approbation du décideur. Des alertes concernant les conflits ou la non-conformité aux contraintes sont également affichées pour donner au planificateur une idée de ce qui s'est passé pendant le processus de planification.
+
+Malgré ses avantages, l'outil de planification automatique actuellement utilisé dans DiLeap Logistic présente plusieurs limites : (1) il ne suit pas les restrictions définies par le propriétaire (il peut mobiliser des ressources indisponibles ou au mauvais endroit) et (2) il ne gère pas les multi-objectifs (un seul objectif, maximiser le nombre de sessions de formation planifiées). Dans la section suivante, nous fournissons une description mathématique des contraintes et des objectifs.
+
+#### 2.2. Modélisation mathématique
+
+Dans cette section, nous donnons une brève description des problèmes d'optimisation combinatoire multi-objectifs (MOCOPs), puis nous décrivons les caractéristiques de chaque entité impliquée dans le processus de planification et définissons ce qu'est une solution valide pour notre cas. Enfin, nous énumérons les contraintes (dures/souples) et les fonctions d'objectif.
+
+Les MOCOPs peuvent être définis comme l'optimisation de \( F(x) = (f_1(x), f_2(x), \ldots, f_n(x)) \), où \( x \in F_{sol} \), \( n \) est le nombre d'objectifs (\( n \geq 2 \)), \( x \) est un vecteur de variables de décision, \( F_{sol} \) est un ensemble de solutions faisables, et \( f_i(x) \) représente les objectifs que nous voulons minimiser/maximiser (Coello et al., 2010). Contrairement à l'optimisation mono-objectif, les résultats ne sont pas une solution unique mais un ensemble de Pareto (Fonseca, 1999) de solutions optimales où aucune amélioration ne peut être faite pour un objectif sans sacrifier un autre objectif.
+
+##### 2.2.1. Entités
+
+Les caractéristiques de chaque entité sont décrites en détail ainsi que leurs relations avec les autres entités.
+
+- **Formateurs** : Ensemble \( T \) des formateurs (enseignants) qui peuvent être une personne ou un institut de formation. Pour chaque événement \( e \), un \( overload\_factor_t \in \mathbb{Z} \) est assigné pour indiquer le nombre d'événements simultanés qu'un formateur peut prendre en charge. Pour chaque formateur \( t \in T \), un type doit être défini (interne, externe, etc.) en utilisant \( type_t \in TT \), où \( TT \) est un ensemble de types de formateurs. Un formateur \( t \) peut être assigné à un périmètre minimal (secteur de l'entreprise) \( PT_t \subseteq P \), où \( P \) est un ensemble de périmètres. Un formateur \( t \) peut avoir un ensemble de compétences individuelles \( SK_t \subseteq SK \), où \( SK \) est un ensemble de compétences.
+
+- **Salles** : Ensemble \( R \) des salles, chaque salle \( r \in R \) ayant une capacité minimale et maximale désignées respectivement par \( min\_cap_r \) et \( max\_cap_r \in \mathbb{N} \). \( min\_cap_r \) indique le nombre minimal de places allouées pour attribuer la salle \( r \). \( max\_cap_r \) désigne le nombre maximal de places que \( r \) peut supporter. \( PR_r \subseteq P \) indique un périmètre de salle \( r \) (secteur de l'entreprise). Une salle \( r \) doit avoir un type (salle informatique, laboratoire, etc.) désigné par \( type_r \in RT \), où \( RT \) est un ensemble de types de salles. Une salle \( r \) peut avoir une configuration personnalisée (par exemple, fournit des sièges spéciaux pour bébés) désignée par \( config_r \in RC \), où \( RC \) est un ensemble de configurations de salles. À l'instar des formateurs, une salle \( r \) peut avoir un \( overload\_factor_r \in \mathbb{Z} \), qui désigne le nombre d'événements simultanés qu'elle peut accueillir.
+
+- **Équipements** : Ensemble \( EQ \) des équipements (ordinateur, pointeur laser, etc.). Chaque équipement \( eq \in EQ \) a un type \( type_{eq} \in EQT \), où \( EQT \) est un ensemble de tous les types d'équipements. Comme les autres ressources, un équipement \( eq \) peut avoir un facteur de surcharge \( overload\_factor_{eq} \in \mathbb{Z} \), qui indique le nombre maximal d'événements simultanés auxquels il peut être utilisé.
+
+Chacune des ressources suivantes (formateurs, équipements ou salles) a une liste d'indisponibilités désignée par \( U_x \), où \( x \) est une ressource.
+
+\[ U_x = \{(d_1, st_1, et_1), \ldots, (d_n, st_n, et_n)\} \]
+
+où \( d \in D \) et \( st, et \in TS \). Ici, \( d \) désigne une date, \( D \) est un ensemble de dates, et \( TS \) est un ensemble de créneaux horaires avec une différence de 15 minutes. \( st \) et \( et \) désignent respectivement l'heure de début et de fin.
+
+- **Formations** : Ensemble \( E \) des cours (formations ou événements) où chaque événement \( e \in E \) a un des deux types (tenu dans une salle réelle ou en ligne) désigné par \( type_e \in ET \), où \( ET \) est un ensemble de types de salles. \( PE_e \subseteq P \) indique le périmètre du cours (secteur de l'entreprise). Une formation peut avoir des types de ressources préférées (pour les formateurs \( trainer_type_e \in TT \), pour les équipements \( eqt_e \subseteq EQT \) et pour les salles \( room_type_e \in RT \) ou configuration de salle \( room_config_e \in RC \), où \( TT \) est un ensemble de types de formateurs, \( EQT \) est un ensemble de types d'équipements, \( RT \) est un ensemble de types de salles, et \( RC \) un ensemble de configurations de salles.
+
+Une localisation \( e \in L \) indique où l'événement \( e \) doit avoir lieu, et \( L \) est un ensemble de toutes les localisations. Des heures de début et de fin \( st_e \) et \( et_e \in TS \) ont été définies pour l'événement \( e \) ainsi qu'une durée (en jours ou en heures) \( duration_e \in \mathbb{R} \) est définie pour chaque cours \( e \).
+
+La formation peut indiquer des dates ou des jours préférés \( SD_e \subseteq D \) (pour éviter les interruptions par les week-ends ou les vacances) ou indiquer des jours imposés \( ID_e \subseteq D \) (ex : planifiés uniquement les mercredis). Une capacité minimale et maximale de places est définie par formation \( min_cap_e \in \mathbb{Z} \), \( max_cap_e \in \mathbb{Z} \). Si défini, \( min_cap_e \) indique le nombre minimal de participants inscrits pour considérer la formation \( e \) dans le processus de planification. Si défini, \( max_cap_e \) indique le nombre maximal de participants que la formation \( e \) peut accueillir.
+
+La formation peut parfois nécessiter des formateurs avancés, un ensemble de formateurs qualifiés associés à l'événement \( e \) est fourni
+
+ \( ST_e \subseteq T \). En cas d'indisponibilité des formateurs qualifiés associés, des formateurs avec des compétences spécifiques peuvent être considérés. Ces compétences spécifiques de l'événement \( e \) sont désignées \( SK_e \subseteq SK \), où \( SK \) est un ensemble de compétences.
+
+Les ressources peuvent être associées à un événement \( e \). Nous désignons les équipements associés à l'événement \( e \) par \( AEQ_e \subseteq EQ \), pour les salles nous utilisons \( AR_e \subseteq R \) et pour les formateurs \( AT_e \subseteq T \).
+
+Pour chaque formation \( e \in E \), des séquences peuvent être associées et sont indiquées par \( SEQ_e \subseteq SEQ \). Les séquences sont considérées comme des sous-événements et sont définies dans l'ensemble \( SEQ \). Par exemple, une formation ("Apprendre les compétences interpersonnelles") peut avoir deux séquences ("Débutant" et "Avancé"), et chacune doit être planifiée dans l'ordre.
+
+Le planificateur fournit un \( session_number_e \) qui indique le nombre de sessions à planifier pour cet événement \( e \) et son emplacement \( location_e \).
+
+
+### 2.2.2. Contraintes
+
+En général, les contraintes sont classées en deux types : dures et souples. Les contraintes dures sont des règles qui doivent être respectées pour garantir la faisabilité/la validité d'un emploi du temps. Les contraintes souples, en revanche, sont orientées vers les objectifs commerciaux/efficacité, et sont donc responsables de la qualité d'un emploi du temps. Ci-dessous, nous énumérons les contraintes dures considérées dans ce travail :
+
+- **[H1]** Les événements ne peuvent avoir lieu que dans des salles ayant le même type \(type_r\) que le type de salle de l'événement \(room\_type_e\).
+- **[H2]** Les événements doivent se dérouler dans des salles ayant la même localisation \(location_r\) que la localisation de l'événement \(location_e\).
+- **[H3]** Seules les salles avec une capacité suffisante peuvent accueillir la formation. \(min\_cap_r \geq min\_cap_e\) et \(max\_cap_r \geq max\_cap_e\).
+- **[H4]** Les types de dispositifs doivent correspondre à ceux indiqués par l'événement.
+- **[H5]** Les ressources indisponibles (formateurs, salles et dispositifs) ne peuvent pas être incluses dans l'emploi du temps.
+- **[H6]** Un formateur ne peut pas être sélectionné pour une formation nécessitant des compétences individuelles (\(SK_t \notin SK_e\)) ou des formateurs qualifiés (\(t \notin ST_e\)).
+- **[H7]** Chaque formation doit être planifiée dans le délai spécifié par le planificateur.
+- **[H8]** Les jours imposés par le personnel organisateur d'un événement doivent être respectés.
+- **[H9]** Les événements doivent commencer l'un de leurs jours de début (si spécifié).
+- **[H10]** Aucune ressource (formateur, salles, et dispositifs) ne peut être placée dans des événements se chevauchant plus que leur facteur de surcharge spécifié.
+- **[H11]** Les heures de début/fin sont indiquées pour chaque événement et doivent être respectées.
+- **[H12]** Les séquences sont soit planifiées dans leur intégralité (dans un ordre spécifique) soit pas du tout. Pour chaque événement \(e\) ayant un ensemble non vide de séquences \(SEQ_e \subseteq SEQ\), où \(SEQ_e = \{seq1, seq2\}\) et \(seq2\) suit \(seq1\) si et seulement si \(seq2\) est programmé après \(seq1\).
+- **[H13]** Seules les ressources partageant le même périmètre que l'événement peuvent être sélectionnées.
+- **[H14]** Le nombre de sessions programmées pour l'événement \(e\) ne peut pas dépasser \(session\_number_e\).
+
+Dans ce travail, un emploi du temps qui ne viole aucune contrainte dure est considéré comme valide. Les contraintes souples suivantes sont prises en compte :
+
+- **[S1]** Une formation peut indiquer une configuration spécifique de salle.
+- **[S2]** Une formation peut indiquer un type spécifique de formateur (interne, externe, associé, etc.).
+- **[S3]** Les ressources associées à une formation \(e\) sont préférables à celles non associées.
+- **[S4]** Les formations d'une durée supérieure à un jour ne doivent pas être interrompues par les week-ends ou de longues périodes.
+- **[S5]** Une répartition bien équilibrée des événements est préférable ; pour y parvenir, chaque formation doit adhérer à une liste de jours préférés. La distance d'édition (Sörensen, 2007) est utilisée pour déterminer à quel point une solution est proche de son état équilibré. Elle est exprimée par le nombre d'opérations nécessaires pour convertir une chaîne en une autre.
+
+### 2.2.3. Objectifs
+
+Comme DiLeap Logistic appartient à plusieurs partenaires, certains souhaitent que les charges de travail des formateurs soient réparties équitablement, tandis que d'autres veulent maximiser la charge de travail des ressources. Pour offrir une meilleure flexibilité, chaque planificateur peut spécifier les objectifs à considérer avant de lancer le processus de planification.
+
+- **(O1) Objectif 1 : Maximiser le nombre d'événements planifiés** :
+  
+  \[
+  \max f(x) = \sum_{i=1}^{n} Nbs_{e_i}
+  \]
+  
+  où \(Nbs_e\) est le nombre total de sessions programmées avec succès de l'événement \(e\) et \(n\) est le nombre d'événements.
+
+- **(O2) Objectif 2 : Minimiser le nombre de violations de contraintes souples** :
+  
+  \[
+  \min g(x) = \sum_{i=1}^{n} (NbConf_{n_{e_i}} + NbTr_{tn_{e_i}} + NbAR_{n_{e_i}} + NbDist_{n_{e_i}} + NbBd_{n_e})
+  \]
+  
+  où \(n\) est le nombre d'événements, \(NbConf_{n_{e_i}}\) est le nombre total normalisé de salles allouées n'ayant pas la même configuration que celle requise par \(room_type_e\), \(Nbtr_{tn_{e_i}}\) montre le nombre total normalisé de formateurs alloués n'ayant pas le même type que celui requis par \(trainer_type_e\), \(NbAR_{n_{e_i}}\) présente le nombre total normalisé de ressources allouées (formateurs, salles, et équipements) qui ne sont pas fortement associées à l'événement \(e\), où les ressources allouées \(\notin AT_e, AR_e, AEQ_e\), \(NbDist_{n_{e_i}}\) contient le nombre total normalisé de jours (distance) entre chaque instance dans chaque session de l'événement \(e\), \(NbBd_{n_e}\) est la distance d'édition normalisée entre l'emploi du temps de l'événement \(e\) et l'emploi du temps bien équilibré préféré \(e'\).
+
+- **(O3) Objectif 3 : Minimiser le nombre de formateurs externes**. Cela maximise indirectement la charge de travail des formateurs internes.
+  
+  \[
+  \min h(x) = \sum_{i=1}^{n} NbuT_{e_i}
+  \]
+  
+  où \(NbuTe\) est le nombre total de formateurs externes uniques dans toutes les sessions programmées de l'événement \(e\), \(n\) est le nombre d'événements, et \(i\) est l'indice d'un événement spécifique \(e\). Cet objectif ne peut pas être pleinement réalisé si l'entreprise utilisant la plateforme dépend entièrement de travailleurs externes. Les propriétés à considérer lors de l'activation de cet objectif sont expliquées aux planificateurs utilisant la plateforme.
+
+- **(O4) Objectif 4 : Minimiser les écarts de charge de travail entre les formateurs internes**. Pour atteindre une répartition équitable de la charge de travail, nous cherchons à minimiser l'écart-type. \(i\) désigne l'indice de l'événement \(e\)
+  
+  \[
+  \min \sigma = \sqrt{\frac{\sum_{i=1}^{n} (workload_{t_i} - mw)}{n - 1}}
+  \]
+  
+  où \(workload_t\) est le nombre total d'heures d'enseignement du formateur \(t\) ayant le type \(type_t = Internal \in TT\), \(n\) est le nombre total de formateurs internes uniques, et \(mw\) est la charge de travail moyenne de tous les formateurs internes et peut être décrite comme suit :
+  
+  \[
+  mw = \frac{\sum_{j=1}^{n} (workload_{t_j})}{n}
+  \]
+  
+  Notez ici que \(O3\) est en concurrence avec cet objectif.
+
+- **(O5) Objectif 5 : Minimiser le nombre de salles**. L'objectif de cet objectif est de réduire les salles utilisées, maximisant ainsi leur utilisation et réduisant leur coût global (location et maintenance).
+  
+  \[
+  \min k(x) = \sum_{i=1}^{n} NbuR_{e_i}
+  \]
+  
+  où \(NbuRe\) est le nombre total de salles uniques dans les sessions programmées de l'événement \(e\), \(n\) est le nombre d'événements, et \(i\) désigne l'indice de l'événement \(e\).
+
+
+
+
+### 3. Approche évolutionnaire multi-objectifs pour la planification des cours professionnels
+
+Les métaheuristiques représentent une famille de stratégies d'optimisation approximatives qui offrent des solutions acceptables à des problèmes complexes et difficiles en un temps raisonnable. Contrairement aux algorithmes d'optimisation exacte, les métaheuristiques ne garantissent pas que les résultats sont optimaux (Hertz et Widmer, 2003).
+
+Parmi les métaheuristiques les plus connues, on trouve les algorithmes évolutionnaires basés sur la population qui traitent un grand nombre de solutions candidates en même temps. Parmi ces techniques, les algorithmes génétiques (GA) sont largement utilisés pour résoudre des problèmes d'optimisation car ils sont naturellement plus orientés vers l'exploration en raison de la grande diversité des populations initiales. Ils ont été développés par Holland (1973) pour imiter les processus adaptatifs des systèmes naturels. Les GA commencent par la sélection de l'encodage du chromosome du problème (représentation de la solution). Les solutions les plus adaptées sont choisies pour l'itération suivante après qu'une population initiale a été générée pour évaluation (Sarhani et al., 2022). Nous utiliserons plusieurs algorithmes populaires trouvés dans la littérature en raison de leur efficacité prouvée pour traiter à la fois des problèmes de planification complexes et non planifiés (Ishibuchi et al., 2016).
+
+#### 3.1. NSGA-II (algorithme génétique de tri non dominé II)
+
+NSGA-II (Deb et al., 2000) est basé sur la conception originale de NSGA (Srinivas et Deb, 1994). Il consiste à classer et trier une population parentale et à générer des descendants à l'aide d'opérateurs génétiques (croisement, mutation, sélection). Ce processus est répété à chaque génération en utilisant à la fois le rang et la distance de foule pour sélectionner les meilleures solutions.
+
+#### 3.2. NSGA-III (algorithme génétique de tri non dominé III)
+
+NSGA-III a été conçu pour traiter de nombreux objectifs (plus de deux) en même temps (Deb et Jain, 2013). L'algorithme est basé sur des points de référence (directions) qui doivent être fournis lors de la phase d'initialisation. NSGA II et III ont de nombreuses similitudes en ce qui concerne le classement et le tri avec l'utilisation d'opérateurs génétiques. Cependant, NSGA III utilise un mécanisme de sélection différent qui repose sur l'association des solutions aux points de référence avant d'appliquer une opération de préservation de niche.
+
+#### 3.3. MOEA/D (algorithmes évolutionnaires multi-objectifs par décomposition)
+
+MOEA/D (Zhang et Li, 2007) est un algorithme d'optimisation multi-objectifs, basé sur l'idée de décomposer la fonction multi-objectifs en plusieurs fonctions scalaires par le biais de fonctions d'agrégation et d'optimiser chaque objectif en parallèle avec des algorithmes évolutionnaires efficaces. La diversité de la population est contrôlée par le vecteur de poids, qui indique l'importance de chaque objectif.
+
+#### 3.4. IBEA (algorithme évolutionnaire basé sur des indicateurs)
+
+IBEA a été initialement proposé par Zitzler et Künzli (2004), où la sélection environnementale est conçue sur la base d'un indicateur binaire prédéfini. Leur travail inclut des résultats qui montrent la supériorité de performance de l'IBEA par rapport à NSGA-II et SPEA2 en utilisant plusieurs problèmes bi/tri-objectifs.
+
+#### 3.5. SPEA-2 (algorithme évolutionnaire de Pareto fort)
+
+SPEA2 (Zitzler et al., 2001) est un algorithme évolutionnaire multi-objectifs élitiste qui fonctionne avec une population de taille fixe, à partir de laquelle des candidats prometteurs sont sélectionnés comme parents de la génération suivante. Les descendants résultants rivalisent ensuite avec les anciens pour être inclus dans la population. Les divers composants utilisés dans notre approche pour les algorithmes évolutionnaires sélectionnés sont listés dans la sous-section suivante.

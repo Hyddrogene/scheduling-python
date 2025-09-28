@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tableau Kanban</title>
+    <style>
+        .kanban-board {
+            display: flex;
+            justify-content: space-between;
+        }
+        .column {
+            flex: 1;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin: 10px;
+            background-color: #f9f9f9;
+        }
+        .idea, .task {
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+        .green { background-color: lightgreen; }
+        .blue { background-color: lightblue; }
+        .gray { background-color: lightgray; }
+        .red { background-color: lightcoral; }
+    </style>
+</head>
+<body>
+
+<div class="kanban-board">
+    <div class="column" id="ideasColumn">
+        <h3>Idees</h3>
+        <button onclick="addIdea()">+</button>
+    </div>
+    <div class="column" id="taskColumn">
+        <h3>Taches</h3>
+        <button onclick="addTask()">+</button>
+    </div>
+    <div class="column" id="inProgressColumn">
+        <h3>En Cours</h3>
+    </div>
+    <div class="column" id="doneColumn">
+        <h3>Termine</h3>
+        <button onclick="makeTasksGreen()">Rendre tout vert</button>
+        <button onclick="saveData()">Sauvegarder</button>
+        <button onclick="loadData()">Charger</button>
+    </div>
+</div>
+
+<script>
+    let ideaCount = 1;
+
+    // Charge les idées depuis le stockage local
+    const storedIdeas = localStorage.getItem('ideas');
+    if (storedIdeas) {
+        document.getElementById('ideasColumn').innerHTML += storedIdeas;
+        ideaCount = document.querySelectorAll('#ideasColumn .idea').length + 1;
+    }
+
+    function addIdea() {
+        const ideasColumn = document.getElementById("ideasColumn");
+        const ideaDiv = document.createElement("div");
+        const ideaColor = getRandomColor();
+        ideaDiv.innerHTML = `<p><b>Idee ${ideaCount}</b><br>
+                            <textarea id="ideaDesc${ideaCount}" placeholder="Entrez la description de l'idee"></textarea>
+                            <input type="color" value="${ideaColor}" id="ideaColor${ideaCount}">
+                            <button onclick="removeIdea(this)">x</button></p>`;
+        ideaDiv.className = "idea";
+        ideasColumn.appendChild(ideaDiv);
+
+        ideaCount++;
+        updateTaskOptions();
+    }
+
+    function updateTaskOptions() {
+        const taskSelects = document.querySelectorAll('#taskColumn select');
+        taskSelects.forEach(select => {
+            select.innerHTML = getTaskOptions();
+        });
+    }
+
+    function addTask() {
+        const taskColumn = document.getElementById("taskColumn");
+        const taskDiv = document.createElement("div");
+        const taskOptions = getTaskOptions();
+        taskDiv.innerHTML = `<select>${taskOptions}</select><br>
+                            <textarea placeholder="Entrez la description de la tache"></textarea><br>
+                            <button onclick="moveTask(this, -1)">&#60;-</button>
+                            <button onclick="moveTask(this, 1)">&#62;</button>
+                            <button onclick="setColor(this)">Bleu</button>
+                            <button onclick="removeTask(this)">x</button>`;
+        taskDiv.className = "task";
+        taskColumn.appendChild(taskDiv);
+    }
+
+    function getTaskOptions() {
+        let options = "";
+        for (let i = 1; i <= ideaCount; i++) {
+            options += `<option value="${i}">Idee ${i}</option>`;
+        }
+        return options;
+    }
+
+    function moveTask(button, direction) {
+        const taskDiv = button.parentNode;
+        const currentColumn = taskDiv.parentNode;
+        const targetColumn = direction === -1 ? currentColumn.previousElementSibling : currentColumn.nextElementSibling;
+
+        if (targetColumn) {
+            targetColumn.appendChild(taskDiv);
+        }
+    }
+
+    function setColor(button) {
+        const taskDiv = button.parentNode;
+        const ideaSelect = taskDiv.querySelector('select');
+        const selectedIdeaNumber = ideaSelect.value;
+        const selectedIdeaColor = document.getElementById(`ideaColor${selectedIdeaNumber}`).value;
+        taskDiv.className = `task ${selectedIdeaColor}`;
+    }
+
+    function removeIdea(button) {
+        const ideaDiv = button.parentNode.parentNode;
+        ideaDiv.remove();
+        updateTaskOptions();
+    }
+
+    function removeTask(button) {
+        const taskDiv = button.parentNode;
+        taskDiv.remove();
+    }
+
+    function makeTasksGreen() {
+        const taskDivs = document.querySelectorAll('#doneColumn .task');
+        taskDivs.forEach(taskDiv => {
+            taskDiv.className = "task green";
+        });
+    }
+
+    function getRandomColor() {
+        const colors = ['blue', 'gray', 'red'];
+        return colors[Math.floor(Math.random() * colors.length)];
+    }
+
+    function saveData() {
+        const ideasColumn = document.getElementById('ideasColumn').innerHTML;
+        const taskColumn = document.getElementById('taskColumn').innerHTML;
+        const inProgressColumn = document.getElementById('inProgressColumn').innerHTML;
+        const doneColumn = document.getElementById('doneColumn').innerHTML;
+
+        localStorage.setItem('ideas', ideasColumn);
+
+        const taskDescs = [];
+
+        const taskTextareas = document.querySelectorAll('.task textarea');
+        taskTextareas.forEach(textarea => {
+            taskDescs.push(textarea.value);
+        });
+
+        const dataToSave = {
+            tasks: taskColumn,
+            inProgress: inProgressColumn,
+            done: doneColumn,
+            taskDescs: taskDescs
+        };
+
+        localStorage.setItem('kanbanData', JSON.stringify(dataToSave));
+    }
+
+    function loadData() {
+        const storedData = localStorage.getItem('kanbanData');
+        if (storedData) {
+            const data = JSON.parse(storedData);
+
+            document.getElementById('taskColumn').innerHTML = data.tasks;
+            document.getElementById('inProgressColumn').innerHTML = data.inProgress;
+            document.getElementById('doneColumn').innerHTML = data.done;
+
+            const taskDescs = data.taskDescs;
+
+            const taskTextareas = document.querySelectorAll('.task textarea');
+            taskTextareas.forEach((textarea, index) => {
+                textarea.value = taskDescs[index];
+            });
+
+            updateTaskOptions();
+        }
+    }
+</script>
+
+</body>
+</html>

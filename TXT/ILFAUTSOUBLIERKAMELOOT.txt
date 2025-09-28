@@ -1,0 +1,48 @@
+
+
+Enseignement 2023/2024
+        Développement Web 1 -P3 au niveau Licence 1 avec 36.00h de TP de HTML+CSS,
+        Développement Web 2 -P8 au niveau Licence 2 avec 9.34h de TP de PHP+HTML,
+        Développement Web 2 -P9 au niveau Licence 2 avec 9.33h de TP de JS,
+        Développement Web 2 -P10 au niveau Licence 2 avec 9.33h de TP de JS +PHP + PDO.
+Enseignement 2022/2023,
+        Développement Web 1 -P3 au niveau Licence 1 avec 20.00h de TP de HTML+CSS,
+        Développement Web 2 -P8 au niveau Licence 2 avec 9.34h de TP de PHP+HTML,
+        Développement Web 2 -P9 au niveau Licence 2 avec 9.33h de TP de JS,
+        Développement Web 2 -P10 au niveau Licence 2 avec 9.33h de TP de JS +PHP + PDO,
+        Développement Python -P4 au niveau Licence 1 avec 16.00h de TP d'Algorithmique + bibliothèque + pyCSP3
+Enseignement 2021/2022,
+        XML au niveau Licence 2 avec 8.00h de TP de XML + DTD + XSD,
+        Culture numérique au niveau Licence 2 avec 12.00h de TP de bureautique (excel...),
+        Algorithmique -P2 au niveau Licence 1 avec 12.00h de TP de C++ en algorithmique,
+        Développement Web 1 -P3 au niveau Licence 1 avec 20.00h de TP de HTM+CSS,
+        Base de donnée 1 -P3P4 au niveau Licence 1 avec 8.00h de TP DE SQL,
+        Culture numérique(PIX) -P5 au niveau Licence 1 avec 4.00h de TP de bureautique (excel...).
+
+
+
+Élue commission Recherche, élue commission VDH (violence, discrimination & harcèlement) et organisation des séminaire doctorant au LERIA
+
+
+ Approches par contraintes pour la modélisation et la résolution de problèmes d'emplois du temps universitaire, résolution de problème d'EDT à l'université d'Angers. Schéma et représentation pour la déclaration du problème d'EDT. Mise au point de Catalogue de contrainte. Génération d'instances pseudo aléatoire pour tester. Résolution en utilisant des méthodes exacte comme la programation par contrainte (Chocosolver et MiniZinc), résolution en utilisant MIP (gurobi PyMIP),résolution via logique ASP (clingo), CASP (constraint answer set programming) (clingcon).
+
+
+Approche par contraintes pour une classe d'emplois du temps universitaires, Barichard Vincent, Behuet Corentin, Genest David, Legeay Marc and Lesaint David, Journées Francophones de Programmation par Contraintes 2022, Saint-Etienne, France.
+
+A Constraint Language For University Timetabling Problems, Barichard Vincent, Behuet Corentin, Genest David, Legeay Marc and Lesaint David, 13th International Conference on the Practice and Theory of Automated (PATAT) 2022, Louvain, Belgium.
+
+
+
+============================
+la personne qui m'a répondue :
+
+Sorry for the lack of metadata -- it's easier for me to cut-and-paste, and the metadata doesn't come with it.  But mostly, I've been  using Dreamshaper Turbo, although, that last one was Dreamshaper Lightning.  (The first of the 4 is Dreamshaper Turbo.)  On #1, and #4, I didn't use any Loras; I rarely use any Lora except for the "offset" Lora.  I usually use simple prompts, and give some artists names.  Like, anime artists, for anime. You can get all of my artist "modifiers" from my Github page (organized for use with Easy Diffusion). 
+
+ To get the higher resolution and more detail, I repeatedly run ScaleUp.  I just enhanced it to a batch-mode where it'll scale up 3 times with one click.  When it scales-up, it also sharpens the image, which helps it a lot more than I expected.  Myself and others have noticed that sometimes the image degrades a bit as you use img2img to scale up.   The additional processing counteracts that, but in addition, I feel like the AI also adds more detail.
+
+et c'est sympa car il utilise pas de Lora pour les images qu'il génére x) (de manière usuelle pour gagner du temps de lors du calcul tu embarques des loras qui aide pas mal)
+
+==============================
+
+Votre numéro de candidat : 409157
+cuij49CB59!1997

@@ -1,0 +1,280 @@
+Cet article présente un modèle éducatif complet qui prend en compte le partage de ressources entre plusieurs départements, limité par des contraintes éducatives, afin d'optimiser la consommation d'énergie. Le modèle thermique calcule la charge en fonction de la température ambiante pour minimiser la connaissance par l'utilisateur du modèle thermique du bâtiment. Il détermine le pourcentage de réduction de la charge de chauffage du bâtiment en cas de changement de la température des pièces, de la date de début d'un trimestre et de la mutualisation des cours par rapport aux programmes standard. Il utilise une optimisation booléenne linéaire. La planification des cours est réalisée en tenant compte de la minimisation de l'utilisation de l'énergie, des préférences des étudiants, des graphiques, des contraintes éducatives, des horaires des professeurs, du nombre de cours et des ressources partagées.
+
+L'influence de l'optimisation des emplois du temps sur la charge de chauffage pour le complexe du deuxième bâtiment d'ingénierie de l'Université de Shiraz est analysée, utilisé par les départements de génie mécanique et informatique, ainsi que l'auditorium. Les effets de trois scénarios et de deux situations sur la consommation d'énergie sont quantifiés. Les résultats indiquent que le meilleur programme n'est pas affecté par les scénarios. Un début de trimestre avancé de deux semaines et une température de 23°C pour les cours réduisent la consommation d'énergie de plus de 50%. En déployant l'optimisation des emplois du temps, le potentiel de réduction de la consommation d'énergie de chauffage est d'environ 12% par rapport à un emploi du temps conventionnel. Le partage des ressources ne conduit pas toujours à une diminution de l'utilisation de l'énergie, mais cette activité peut la réduire de 2,5%. Ces résultats sont alignés avec ceux des logiciels commerciaux.
+
+Pour surmonter l'obstacle de la charge de calcul, une réduction des dimensions de la matrice est mise en œuvre. Elle réduit le nombre de variables de décision, ainsi que les contraintes inégales et égales de 90,8%, 99,97% et 57,81%, respectivement.
+
+De nos jours, le monde est au bord des impacts environnementaux de la consommation de combustibles fossiles. Les concentrations de gaz à effet de serre dans l'atmosphère ne diminueront pas à moins que la consommation de combustibles fossiles ne diminue [1]. Avec la consommation d'énergie comme facteur significatif dans le développement des pays, l'utilisation de l'énergie augmente sur tous les continents, poussant davantage l'économie. À la lumière de vastes analyses de données et d'études prédictives, il n'est désormais plus mystérieux que non seulement la tendance à la consommation d'énergie ne diminue pas, mais qu'elle continuera d'augmenter (Agence internationale de l'énergie (AIE), [2–4]. Pour faire face à cette demande croissante et maintenir les capacités d'approvisionnement en équilibre, il est nécessaire de détecter les secteurs les plus énergivores. Le secteur du bâtiment, étant le plus gros consommateur d'énergie, est responsable d'environ 40% de l'utilisation finale de l'énergie [5]. Les installations éducatives, telles que les bâtiments universitaires et scolaires, représentent environ 12% de la demande énergétique du secteur commercial [6–8]. En raison des responsabilités limitées des occupants des bâtiments éducatifs, ceux-ci sont largement marginalisés en termes de mesures de réduction et d'économie d'énergie [9].
+
+Les mesures d'économie d'énergie dans ce type de bâtiments peuvent être divisées en deux approches : les améliorations opérationnelles et techniques [10,11]. La première concerne les aspects opérationnels d'un bâtiment, tels que l'amélioration des systèmes de contrôle CVC ou la modification du comportement des occupants, comme leur emploi du temps [12–15]. La seconde méthode est liée aux caractéristiques techniques, comme le remplacement des systèmes de climatisation énergivores par des substituts plus efficaces. Dans le jargon de l'économie d'énergie dans les bâtiments, la première approche est généralement privilégiée par rapport à la seconde car elle est moins coûteuse et plus pragmatique à mettre en œuvre dans la vie réelle [16]. L'une des méthodes les plus pratiques pour réformer l'utilisation de l'énergie dans les bâtiments éducatifs est d'optimiser leur emploi du temps, ce qui correspond directement à un emploi du temps favorable à l'énergie dans le contexte des bâtiments académiques. La planification des horaires consiste à allouer de manière optimale les ressources disponibles, comme le temps et l'espace, du point de vue de l'économie d'énergie [17]. La planification des emplois du temps d'un bâtiment éducatif pose un certain nombre de cours à un certain nombre de créneaux horaires et de salles de classe [18,19]. L'un des problèmes les plus difficiles concernant la planification des horaires est la nature NP-difficile du problème, ce qui fait que le temps de résolution augmente de manière exponentielle en fonction de la taille des contraintes [20]. De nombreuses études ont abordé la complication de la planification des horaires dans un environnement académique. Cependant, peu d'entre elles ont examiné le problème complexe du point de vue de l'efficacité énergétique et de l'allocation des ressources partagées simultanément.
+
+Malgré la littérature abondante sur la planification des horaires, cette étude examine celles qui ont pris en compte les mesures d'économie d'énergie. Lindahl et al. [21] ont présenté une méthode métaheuristique qui guiderait le solveur MIP pour trouver plus rapidement les solutions réalisables pour la première fois. La technique proposée a amélioré les performances des solveurs de programmation en nombres entiers mixtes dans un environnement pragmatique. La métaheuristique suggérée, dans les cas où le MIP est utilisé pour rechercher une partie de l'espace de solution à chaque itération, a agi comme un explorateur de grands voisinages. Leur méthode a permis de créer des problèmes plus petits pour le solveur que le problème de grande taille en fixant plusieurs variables en fonction des connaissances spécifiques au problème, ce qui a amélioré la solution de manière itérative. En tirant parti de ces facultés, leur méthode proposée pourrait bien fonctionner sur des problèmes de grande envergure rapidement. Dans une autre étude, Lindahl et al. [22] ont formulé trois modèles mixtes à objectifs multiples pour formuler la planification des cours basée sur le programme et le jeu de données de la deuxième compétition internationale de planification des horaires (ITC 2007). Les trois objectifs qu'ils ont pris en compte étaient les salles disponibles, les créneaux horaires d'enseignement et la qualité. Ils ont conçu un algorithme basé sur la méthode ϵ-contrainte. L'algorithme proposé pourrait être déployé pour évaluer l'impact de diverses ressources disponibles sur le problème de la planification des horaires. Ils ont également examiné comment ces trois objectifs s'influençaient mutuellement. Lindahl et al. [23] ont étudié les perturbations exercées sur le problème de la planification des horaires dans un environnement dynamique et les méthodes pour développer un nouvel emploi du temps ressemblant à l'ancien, avec le moins d'impact possible sur les occupants. Ils ont défini ce problème comme un problème de perturbation dans lequel l'objectif était de trouver une solution avec seulement une légère modification. Un inconvénient de ce schéma était un emploi du temps de faible qualité avec des caractéristiques défavorables pouvant affecter le confort des occupants. La méthode a rendu l'emploi du temps facile à mettre en œuvre. Le plan proposé a été formulé comme un modèle bi-objectif résolu par programmation en nombres entiers mixtes. Ils ont pris en compte différentes perturbations et ont introduit plusieurs solutions. Enfin, l'utilisateur pouvait choisir parmi les solutions en ayant simplement un compromis entre le nombre de perturbations et la qualité de l'emploi du temps.
+
+Song et al. [24] ont présenté un algorithme de planification des cours qui pouvait tenir compte des mesures d'économie d'énergie. La méthodologie de cette étude a pratiquement montré un potentiel d'économie prometteur de 4% dans les bâtiments universitaires uniquement en mettant en œuvre un emploi du temps optimisé. Ils ont en outre illustré en respectant les contraintes strictes du problème de la planification des horaires qu'une économie d'énergie plus importante pourrait également être réalisée. Bien que les résultats soient assez considérables en matière d'économie d'énergie, la méthode concernait principalement l'allocation spatiale des cours, et le moment où ils se déroulaient n'était pas examiné. Kim et al. [25] ont réalisé une étude dans laquelle le comportement optimal des occupants a été abordé pour obtenir des économies d'énergie tout en maintenant un confort thermique intérieur dans les bâtiments éducatifs. La méthode proposée était basée sur des outils de simulation et d'optimisation de l'énergie. La seule lacune est que la méthodologie ne faisait que raffiner le comportement des occupants et ne fournissait pas un emploi du temps économe en énergie. Jafarinejad et al. [9] ont proposé une stratégie d'optimisation des horaires en deux niveaux économe en énergie, puis ont évalué ses résultats sur un modèle de bâtiment universitaire utilisant un contrôleur prédictif. Leur schéma d'optimisation des horaires a d'abord fourni un profil de présence optimal en nombre réel au premier niveau. Ensuite, au deuxième niveau, il a attribué tous les cours disponibles au profil de présence des premiers niveaux avec le moins de divergence possible tout en respectant un ensemble de contraintes souples et strictes. L'emploi du temps proposé a pu réduire la consommation d'énergie du bâtiment éducatif de 1,3%, et après l'avoir mis en œuvre dans un contrôleur prédictif, le potentiel d'économie d'énergie a augmenté de 
+
+11,65% à 19%.
+
+Certaines des études examinées ont abordé la planification des cours de manière économe en énergie, mais de manière superficielle. Pour mener une planification approfondie des horaires, un modèle précis doit être intégré à la méthodologie. Une question se pose cependant ici : jusqu'à quel point le modèle doit-il être détaillé ? Les modèles de déploiement des études de recherche précédentes étaient principalement non linéaires et complexes, ce qui entraînait une charge de calcul inutile. Par conséquent, un compromis peut sembler crucial entre la précision du modèle et le temps de calcul impliqué. De plus, un autre problème à résoudre dans les universités est le partage des salles de classe entre différents départements. Ce problème est susceptible d'imposer des contraintes difficiles à gérer sur un problème d'optimisation déjà complexe. Une telle condition consiste à offrir les mêmes cours dispensés par divers professeurs dans les mêmes créneaux horaires afin que l'étudiant puisse choisir son cours en fonction du mérite du professeur et non en fonction des préférences d'horaire. L'autre contrainte exigeante et difficile est de prendre en compte les cours co-requis/prérequis lors de la résolution du problème des horaires.
+
+Bien qu'il existe une large gamme de stratégies accessibles pour réduire la consommation d'énergie dans les bâtiments, qui pourraient être mises en œuvre dans les universités, peu de recherches en matière de planification des horaires ont été réalisées. Cette rareté provient de la perception erronée de la simplicité de la planification des cours et de l'absence d'investigations sur la relation entre la planification des horaires et la consommation d'énergie. Il est intéressant de noter que la tenue des cours lorsque la différence entre la température extérieure et intérieure est faible conduit à une consommation d'énergie de chauffage ou de refroidissement minimale. Les circonstances entraînant une charge de chauffage ou de refroidissement excessive sont les limitations des programmes, telles que les prérequis ou les horaires des cours. Souvent, chaque département a ses cours, qui pourraient être partagés avec d'autres pour réduire les coûts initiaux et opérationnels, malgré la complication de la gestion des ressources partagées.
+
+Les structures proposées dans les études antérieures n'ont pas pu attirer pratiquement les départements à utiliser les stratégies pour planifier leurs programmes en raison de l'utilisation de modèles de bâtiments spécifiques à leurs propres études de cas, de la non-considération des ressources des autres départements et de certaines limitations sur les programmes. Dans cet article, un modèle simplifié priorise divers créneaux horaires éducatifs, facile à mettre en œuvre dans tous les départements. Bien que cela puisse affecter la précision de la réduction de l'énergie, c'est toujours la meilleure option du point de vue énergétique. L'autre point notable de cette étude est la diminution de la charge de calcul. La méthode pour ce faire permet de réduire considérablement les dimensions de la matrice des coefficients techniques, ce qui permet à des ordinateurs ordinaires d'effectuer les calculs.
+
+L'objectif principal de cette étude est d'établir un modèle qui prend en compte les limitations des programmes standard et offre une opportunité exceptionnelle pour les cours partagés pour une planification plus efficace. Dans cette situation, chaque département a sa part de cours à chaque heure de la journée, introduisant une possibilité de partage des ressources. Les classes vides représentent les restrictions des programmes. L'autre objectif de ce modèle est de déterminer l'échange de ressources entre les départements. Le modèle peut analyser l'influence de la température réglée sur la consommation d'énergie, le nombre de classes et la date de début d'un semestre.
+
+
+
+### 2. Modélisation
+
+Le modèle proposé s'applique à la planification des emplois du temps des cours partagés sur un campus universitaire. Cette planification est effectuée dans le but de minimiser la consommation d'énergie tout en respectant les contraintes des installations éducatives, en gérant les relations entre différents départements. Un autre avantage est qu'il peut obtenir le meilleur point possible de l'opération de planification et prioriser d'autres sujets du point de vue de la consommation d'énergie. De plus, il calcule les effets des variations de la date de début d'un semestre, du calendrier des cours et de la température des salles de classe.
+
+Les défis et limitations de la planification des emplois du temps pour une université sont les suivants :
+
+**Première contrainte : les horaires des réunions et des activités auxquelles les professeurs doivent participer.**
+Les membres du corps professoral doivent participer aux réunions hebdomadaires de l'université ainsi qu'à leurs activités éducatives et sociales, il est donc impossible de tenir des cours à chaque créneau horaire.
+
+**Deuxième contrainte : tenir des cours similaires au même moment.**
+Il a été observé à l'École de génie mécanique de l'université de Shiraz que si deux ou plusieurs professeurs dispensent un cours au même créneau horaire, la qualité de l'enseignement s'améliore. Cette amélioration se produit parce que les étudiants préfèrent choisir les meilleurs enseignants plutôt que le meilleur horaire.
+
+**Troisième contrainte : opportunité de suivre un cours.**
+L'organisation des cours est régulièrement basée sur le programme standard de chaque département. Par conséquent, empêcher l'absence de cours pour les étudiants qui ne consultent pas le programme devrait être l'une des contraintes du modèle.
+
+**Quatrième contrainte : ne pas organiser deux cours distincts dans une même salle.**
+Il est impossible d'organiser deux cours dans une même salle de classe.
+
+**Cinquième contrainte : éviter de donner deux cours à un même professeur au même moment.**
+Un professeur ne peut pas participer à deux cours différents au même créneau horaire.
+
+Un département dispose d'un nombre limité de salles accessibles, qui ne peut être dépassé.
+
+Les restrictions mentionnées ci-dessus pour les cours partagés culminent dans le fait que le fonctionnement optimal de ce système n'est pas pratique à moins que les départements ne coopèrent sur cette question.
+
+Ce modèle calcule les coefficients de coût pour chaque cours. Dans la section suivante, qui est la première programmation mathématique, l'emploi du temps des cours est déterminé. La répétition du cercle développé est nécessaire pour obtenir les bonnes priorités. La deuxième programmation mathématique introduit la planification des cours en tenant compte des relations entre les départements.
+
+### 2.1. Première section : modèle de la demande
+
+La planification des emplois du temps nécessite que la charge de chauffage/refroidissement soit calculée. Utiliser des modèles complexes pour accomplir cette tâche n'est pas pratique pour trois raisons principales :
+
+1. La planification des cours pour chaque semestre comporte des incertitudes, telles que le nombre d'étudiants, le comportement imprévisible des occupants, la température et l'intensité du rayonnement.
+2. Ce type de planification est compliqué et chronophage en raison des contraintes des programmes.
+3. Le principal objectif de ces modèles n'est pas d'étudier la demande de chauffage/refroidissement mais d'organiser l'emploi du temps des cours.
+
+Le modèle souhaité doit donc non seulement avoir une charge computationnelle insignifiante, mais également ne pas nécessiter d'informations détaillées en entrée. Des modèles tels que [26,27], PRISM et Analyze GRAphique Mensuelle des consommations (ANAGRAM) [28] sont utilisés. Parmi eux, ANAGRAM est choisi car il nécessite moins de données et a une charge computationnelle plus faible. Bien que les modèles complexes demandent généralement plus de données en entrée, ce qui signifie plus d'incertitudes, ils n'augmentent pas la précision. Considérer plus de phénomènes pourrait augmenter la précision au début, mais certains événements sont présumés stochastiques, que les fonctions mathématiques usuelles ne peuvent décrire. Cela se produit parce que leur nature n'est pas complètement reconnue, entraînant des inexactitudes. Les exemples incluent Alburg [29] et Hay et al. [30] sur le four à arc électrique.
+
+Le modèle ANAGRAM est classé comme méthode de modélisation inversée. Ce modèle considère la consommation d'énergie de chauffage d'un bâtiment en fonction des conditions météorologiques. La simplicité et le fait de ne pas nécessiter de données sur le bâtiment sont les principaux avantages de ce modèle [28]. Mais il ne peut pas quantifier les effets de l'occupation et de la masse thermique sur l'utilisation de l'énergie ni diviser la consommation d'énergie des différentes sections [31,32]. Le modèle ANAGRAM suppose une fonction linéaire entre le chauffage et la température ambiante si la température extérieure est inférieure à l'intérieur en saisons froides. Sinon, l'énergie de chauffage serait nulle.
+
+Les exigences pour utiliser ce modèle sont justifiées par l'étude de cas puisqu'il n'est pas pratique de stocker de l'énergie dans le bâtiment. Les étudiants utilisent l'espace extérieur entre les cours, et les portes et fenêtres sont principalement ouvertes pendant cette période.
+
+Dans cette section, le coefficient de coût énergétique et la demande de chauffage/refroidissement des salles de classe pour les créneaux horaires sont évalués. ANAGRAM est principalement utilisé pour analyser la charge de chauffage mensuelle [28]. Ses hypothèses sont appliquées dans cette étude pour la demande horaire. Les présomptions de ce calcul sont les suivantes :
+
+1. La charge dépend d'une fonction linéaire de la différence de température et du point optimal. Pour obtenir une précision maximale, la différence de temps la plus courte entre ces deux variables doit être appliquée. Cette période est donc supposée être d'une demi-heure.
+2. La possibilité d'utiliser des équipements de refroidissement en saisons chaudes ou vice versa n'est pas crédible. Par conséquent, si la température ambiante en saisons de chauffage (saisons de refroidissement) augmente (diminue) au-dessus de la température de confort, l'énergie n'est pas consommée pour ajuster la température intérieure.
+3. Le taux de consommation d'énergie est une fonction linéaire de la charge de chauffage/refroidissement. La position de la salle et le nombre d'étudiants, influençant les charges, ne sont pas impliqués dans les calculs de la demande de chauffage/refroidissement.
+4. Toutes les salles sont bien équipées et ont un accès suffisant pour les personnes handicapées.
+5. En raison de l'estimation compliquée de la température à une heure spécifique et de l'objectif sous-jacent de réduire les calculs computationnels, le coût de l'énergie pour tenir un cours à une heure particulière est supposé être distinct de celui d'un jour spécifique.
+6. Chaque cours contient deux créneaux horaires en jours alternés, et les mêmes cours avec différents professeurs sont organisés à la même heure.
+7. Ces créneaux horaires de chaque cours sont persistants les jours éducatifs.
+
+Les trois premières hypothèses proviennent du modèle ANAGRAM [28,31,32]. Les quatrième à septième concernent le bâtiment des salles de cours et les programmes des départements. Il n'est pas obligatoire d'appliquer ces hypothèses au bâtiment. À l'Université de Shiraz, il est courant de tenir des cours sur deux ensembles de jours, qui sont samedi-lundi et dimanche-mardi. Les dimensions, équipements et accessibilité des salles du bâtiment sont égaux, ne donnant aucune priorité pour choisir une classe plutôt qu'une autre.
+
+Les hypothèses 4 à 7 influencent les équations 3 et 5 du modèle d'optimisation développé, et les hypothèses 1 à 3 affectent le modèle de sélection pour estimer la charge de chauffage/refroidissement. 
+
+La charge de chauffage/refroidissement dépend des matériaux, de la conception, de l'emplacement, de la géographie, de l'utilisation, de l'équipement, des personnes et d'autres facteurs du bâtiment.
+
+Dans l'étude de cas, le nombre limité de cours à option et l'organisation des mêmes cours sur des créneaux horaires égaux, qui changent l'heure des cours, ne peuvent pas affecter le nombre de participants. Les cours sont fréquemment tenus en journée, et les appareils électriques, tels que les ordinateurs portables, ne sont pas réguliers. La charge de chauffage/refroidissement dépend donc fortement du créneau horaire auquel le cours est organisé.
+
+En fait, le modèle proposé quantifie le pourcentage de réduction de la charge pour les bâtiments compatibles avec les hypothèses. Mais il est imaginable que de nombreuses installations ne soutiennent pas ces hypothèses. Bien que le taux de réduction d'énergie ne soit pas très fiable dans ces circonstances, les stratégies suggérées de gestion des programmes sont les meilleures options pour réduire la charge.
+
+En fonction des hypothèses, le coefficient de coût énergétique pour organiser un cours à un moment précis est calculé selon l'équation (1). Les hypothèses 6 et 7 établissent que le nombre d'éléments du vecteur est égal aux différents créneaux horaires des cours (K). La première moitié est similaire à la seconde ; l'hypothèse 5 la décrit. L'équation (2) montre que le coût calculé est divisé par la norme infinie ou norme maximale.
+
+\[C = \frac{C}{\|C\|_{\infty}}\]
+
+Où, dans l'équation (1), \(C_{i-j}\) est le coût énergétique des services de refroidissement/chauffage pour tenir un cours pendant la période entre \(i\) et \(j\), \(T_t\) est
+
+ la température ambiante en \(t\), \(CT\) est la température de confort, \(n\) est le nombre de températures mesurées pendant \(i\) à \(j\), et enfin, \(st\) et \(en\) sont respectivement le premier et le dernier jour d'un semestre. Si la température moyenne de chaque demi-heure est disponible et que la durée des cours est de 90 minutes, \(n\) sera de 3.
+
+Dans l'équation (2), \(C\) est un vecteur de coefficient du coût énergétique de fourniture de la charge de refroidissement/chauffage pour organiser un cours en rapport avec chaque professeur sur des créneaux horaires. Les cours ont lieu le samedi-lundi ou le dimanche-mardi à la même heure. Le coefficient est une fonction des créneaux horaires, indépendamment des jours. En raison de ces deux derniers facteurs, le nombre d'éléments est pair, et la première moitié du vecteur est équivalente aux intervalles de ces deux ensembles de jours. \(\|C\|_{\infty}\) est la norme infinie et \(C\) est le vecteur normalisé de coût énergétique. Le nombre d'éléments du vecteur représente le nombre de créneaux horaires pendant lesquels le cours est suivi. Dans l'étude de cas, la longueur du vecteur est de 14. Le coefficient de coût d'optimisation pour chaque département (d), qui est un vecteur, est formé de la répétition de \(C\), \(I_d \times J_d\) fois.
+
+### 2.2. Deuxième section : première programmation mathématique
+
+La première étape pour évaluer les effets de la meilleure planification des emplois du temps sur la consommation d'énergie consiste à considérer les départements sans liens entre eux. Cette stratégie peut être appliquée puisque les ressources de tous les départements sont séparées.
+
+Le problème d'optimisation est défini de manière à être une programmation linéaire en nombres entiers binaire. Les variables de décision (\(x_{id, jd, kd}\)) spécifient la non-tenue (valeur de zéro) ou la tenue (valeur de un) d'un cours (\(id\)) par un professeur (\(jd\)) à un moment précis (\(k\)) et dans un département (\(d\)). Le nombre de variables de décision de chaque département est calculé en multipliant le nombre de professeurs du département (\(I_d\)), le nombre de cours (\(J_d\)) et le nombre d'intervalles dans une semaine (\(K\)).
+
+L'organisation des cours repose sur la minimisation du coût énergétique pour une année. Ce coût énergétique dépend uniquement de l'heure d'un cours.
+
+
+
+
+
+### Equation (3) présente le problème d'optimisation proposé.
+
+\[ \text{Min } Z_d = \sum_{k} \sum_{j_d} \sum_{i_d} C_k x_{i_d j_d k_d} \tag{3} \]
+
+#### Contraintes :
+
+**Const1_1** :  
+\[ x_{i_d j_d k_d} \lambda_d = 0 \quad \forall \lambda \in \Lambda, \Lambda \subset K \]
+
+**Const1_2** :  
+\[ x_{i_d j_d k_d} = 0 \quad \forall j_d' \in j_d', j_d' \subset J_d \quad \forall k' \in k', k' \subset K \]
+
+**Const2** :  
+\[ x_{\alpha j_d k_d} = x_{\alpha j_d' k_d} \quad \forall j_d \& j_d' \in J_d \quad \forall \alpha \in I_d \quad \forall k \in K \]
+
+**Const3** :  
+\[ x_{i_d j_d k_d} + x_{i_d' j_d' k_d} \leq \tau_{jj'} \quad \tau \in \{1, 2\} \quad \forall i_d \& i_d' \in I_d \quad \forall j_d \& j_d' \in J_d \]
+
+**Const4** :  
+\[ \sum_{i_d=1}^{I_d} \sum_{j_d=1}^{J_d} x_{i_d j_d k_d} \leq N_{k_d} \quad \forall k \in K \]
+
+**Const5** :  
+\[ \sum_{j_d=1}^{J_d} x_{i_d j_d k_d} \leq 1 \quad \forall k \in K \quad \forall i_d \in I_d \]
+
+**Borne inférieure et supérieure** :  
+\[ x_{i_d j_d k_d} : \text{Boolean} \]
+
+La première partie du premier ensemble de contraintes, l'Équation (3), implique l'impossibilité de tenir des cours à un moment particulier en raison de plusieurs facteurs tels que les réunions, les pauses ou la faible efficacité du cours du département. \(\lambda\) est un sous-ensemble des intervalles conventionnels.
+
+La deuxième partie de cet ensemble marque les restrictions temporelles sur la disponibilité des professeurs. Le deuxième ensemble de contraintes est responsable de la notion de tenir un cours similaire au même créneau horaire.
+
+Le troisième ensemble garantit la planification des cours dans lesquels chaque étudiant peut s'inscrire à son cours requis, en respectant le programme standard. Il va sans dire que cette planification doit considérer une autre situation où il n'est pas possible pour chaque élève de s'en tenir au programme ; par conséquent, les cours doivent être disponibles pour eux. Si deux cours, par exemple j et j', se déroulent simultanément, \(\tau\) est 2. Cette mesure signifie que les étudiants ne peuvent pas participer aux deux cours ; peut-être que l'un d'eux est un prérequis de l'autre. Sinon, \(\tau\) sera 1, démontrant qu'ils peuvent participer aux deux.
+
+Il est clair qu'une classe est attribuée à un seul cours à un créneau horaire précis. Le quatrième ensemble de contraintes réalise cette tâche. \(N_{k_d}\) montre le nombre de classes attribuées à un département (d) à un créneau horaire (k).
+
+Enfin, le cinquième ensemble introduit le fait qu'un professeur ne peut pas donner deux cours simultanément.
+
+L'équation (5) établit la formation standard de l'optimisation en relation avec la séquence des variables de décision. Dans l'équation (5), \(x(n)\) correspond à \(x_{i_d j_d k_d}\) et n peut être trouvé par l'équation (4).
+
+Il y a une possibilité que ces limitations conduisent à ne pas exister d'espace de recherche. Par conséquent, dans ces circonstances, le coût de tenir un cours est considéré comme infini.
+
+### 2.3. Troisième section : deuxième programmation mathématique
+
+La planification des emplois du temps de tous les départements, qui prend en compte les relations entre eux, est révisée par une programmation linéaire en nombres entiers binaire.
+
+
+
+### 2. Logique de la considération
+
+L'idée derrière l'échange de cours entre départements n'est pas d'augmenter les coûts énergétiques par rapport à la phase précédente. L'équation (3) est utilisée pour un département. Par conséquent, l'équation (3) peut être modifiée en équation (5) pour tous les départements avec des cours partagés.
+
+\[ \text{Min } Z = \begin{bmatrix} C1 & \cdots & CD \end{bmatrix} \begin{bmatrix} X1 \\ \vdots \\ XD \end{bmatrix} \]
+
+\[ \begin{bmatrix} A1 & O & \cdots & 0 \\ 0 & A2 & \cdots & 0 \\ \vdots & \vdots & \ddots & \vdots \\ 0 & 0 & \cdots & AD \end{bmatrix} \begin{bmatrix} X1 \\ X2 \\ \vdots \\ XD \end{bmatrix} \leq \begin{bmatrix} b1 \\ b2 \\ \vdots \\ bD \end{bmatrix} \]
+
+\[ \begin{bmatrix} Aeq1 & O & \cdots & 0 \\ 0 & Aeq2 & \cdots & 0 \\ \vdots & \vdots & \ddots & \vdots \\ 0 & 0 & \cdots & AeqD \end{bmatrix} \begin{bmatrix} X1 \\ X2 \\ \vdots \\ XD \end{bmatrix} = \begin{bmatrix} beq1 \\ beq2 \\ \vdots \\ beqD \end{bmatrix} \]
+
+\[ \begin{bmatrix} C1 & O & \cdots & 0 \\ 0 & C2 & \cdots & 0 \\ \vdots & \vdots & \ddots & \vdots \\ 0 & 0 & \cdots & CD \end{bmatrix} \begin{bmatrix} X1 \\ X2 \\ \vdots \\ XD \end{bmatrix} \leq \begin{bmatrix} Zopt1 \\ Zopt2 \\ \vdots \\ ZoptD \end{bmatrix} \]
+
+Dans l'équation (5), l'indice indique le département, \( X_d \) est le vecteur des variables de décision des professeurs de classes, \( C_d \) est le coefficient de coût des services énergétiques pour tenir un cours, \( A_d \) est le coefficient technique des contraintes inégales, \( b_d \) sont les ressources des contraintes inégales, \( Aeq_d \) est le coefficient technique des contraintes égales, \( beq_d \) sont les ressources des contraintes égales et \( Zopt_d \) est le coût des services énergétiques du département (d) sans cours partagés.
+
+### Tableau 1 : Informations générales
+
+| Départements               | Génie mécanique | Génie informatique | Auditorium |
+|----------------------------|-----------------|--------------------|------------|
+| Nombre de professeurs      | 25              | 21                 | 17         |
+| Nombre de cours            | 43              | 40                 | 22         |
+| Nombre de groupes de cours | 51              | 43                 | 22         |
+
+|                            | Samedi          | Dimanche           | Samedi     | Dimanche | Samedi | Dimanche |
+|----------------------------|-----------------|--------------------|-----------|----------|--------|----------|
+| **Première situation**     |                 |                    |           |          |        |          |
+| 7:30–9:00                  | 14              | 11                 | 1         | 4        | 1      | 1        |
+| 9:00–10:30                 | 10              | 9                  | 5         | 6        | 1      | 1        |
+| 10:30–12:00                | 7               | 10                 | 5         | 5        | 4      | 1        |
+| 12:30–14:00                | 1               | 2                  | 0         | 0        | 0      | 0        |
+| 14:00–15:30                | 0               | 0                  | 8         | 6        | 4      | 4        |
+| 16:00–17:30                | 7               | 6                  | 6         | 6        | 3      | 4        |
+| 18:00–19:30                | 3               | 3                  | 2         | 2        | 3      | 3        |
+| **Deuxième situation**     |                 |                    |           |          |        |          |
+| 7:30–9:00                  | 14              | 11                 | 1         | 4        | 1      | 1        |
+| 9:00–10:30                 | 10              | 9                  | 5         | 6        | 1      | 1        |
+| 10:30–12:00                | 7               | 10                 | 5         | 3        | 4      | 3        |
+| 12:30–14:00                | 1               | 2                  | 0         | 0        | 0      | 0        |
+| 14:00–15:30                | 0               | 0                  | 8         | 8        | 8      | 8        |
+| 16:00–17:30                | 7               | 6                  | 6         | 6        | 3      | 4        |
+| 18:00–19:30                | 3               | 3                  | 2         | 2        | 3      | 3        |
+
+Il existe plusieurs méthodes pour résoudre le modèle d'optimisation présenté, telles que la méthode du branch-and-bound, la méthode du plan de coupe, l'algorithme génétique, et bien d'autres. La fonction `intlinprog` a été choisie pour cette étude.
+
+### 2.4. Approches pour réduire les calculs
+
+L'une des questions difficiles de la planification des emplois du temps à des fins académiques est la dimension des matrices inégales et égales. Le faible ratio entre le nombre moyen de cours qu'un professeur présente et le nombre total de cours d'un département entraîne une part significative de variables de décision à zéro. Par conséquent, l'approche proposée pour diminuer la charge de calcul est d'éliminer ces variables de décision avec une valeur donnée. Cette élimination, qui est liée aux cours non présentés par un professeur, n'affecte pas la planification optimale des emplois du temps en raison de leur valeur zéro à une heure et un jour particuliers.
+
+Le ratio entre les cours des professeurs et les cours totaux est négligeable. Par exemple, dans les départements de génie mécanique, de génie informatique et l'auditorium de l'Université de Shiraz, ce ratio est respectivement de 0,047, 0,051 et 0,059. Cela indique que, comme il n'y a pas beaucoup de cours donnés par un professeur, de nombreuses variables de décision sont nulles. Être nul signifie qu'il n'y a pas de cours d'un professeur à une plage horaire spécifique. En raison de ce raisonnement, l'idée est mise en œuvre, et ces variables de décision nulles sont exclues de l'optimisation. Le défi est de réduire le problème et de le ramener aux conditions initiales pour présenter les résultats.
+
+
+
+### 3. Résultats
+
+Le modèle développé dans cette étude a été mis en œuvre dans les classes du complexe du deuxième bâtiment d'ingénierie de l'Université de Shiraz. Ce complexe est dédié à des cours spécialisés en génie mécanique, en génie informatique et à des cours généraux d'autres départements, appelés Auditorium. Les règlements de l'université suggèrent que tous les cours doivent se tenir à des jours différents mais aux mêmes plages horaires.
+
+Pour montrer qu'il n'y a pas toujours d'échange entre départements, deux situations sont définies. La première n'affecte pas la planification des horaires basée sur la modélisation et la deuxième, contenant des cours partagés, entraîne une réduction des coûts pour tous les départements. Comme il peut y avoir une différence marquée entre la solution optimale générale et les suivantes en programmation booléenne entière, la variation de l'énergie due aux choix suivants est évaluée. Les suggestions et les priorités démontrent la position des solutions dans la programmation.
+
+Le tableau 1 montre les informations générales sur les professeurs, les cours et les classes dédiées à chaque département. Des informations détaillées sont fournies dans les données de recherche. Le nombre de groupes de cours est supérieur aux cours car il peut y en avoir plusieurs, dispensés par différents professeurs.
+
+Dans cette section, la planification optimale de l'emploi du temps du semestre d'automne 2019 est calculée, et elle adhère aux conditions existantes de ce moment. L'effet de la température ajustée des classes, de la date de début du semestre et de l'élimination des restrictions actuelles sur les classes sont étudiés dans deux situations. Dans la première, l'allocation des classes est planifiée, où l'échange des ressources n'est pas une option, et cet échange entraîne une réduction de la consommation d'énergie dans la deuxième situation.
+
+Il est conclu qu'un changement de la température ajustée et un début anticipé du semestre académique n'affectent pas les programmes, comme le montre la figure 1. La figure montre les coefficients du coût normalisé pour la tenue des cours dans différents scénarios à chaque plage horaire. La priorité de suivre les cours est déterminée sur cette figure, et elle est égale dans tous les scénarios en fonction de la réduction du coût énergétique.
+
+Ces coefficients indiquent que réduire la température ajustée et commencer le semestre plus tôt peuvent diminuer la consommation d'énergie dans le secteur du chauffage des bâtiments. Un début anticipé de plus de deux semaines n'est pas suggéré car la charge de refroidissement doit être satisfaite.
+
+En raison de l'hypothèse selon laquelle les jours de la semaine n'ont aucune influence sur le coût énergétique de refroidissement ou de chauffage à une période spécifique, le modèle peut avoir plusieurs réponses optimales. Dans chaque scénario, le nombre total de classes attribuées aux départements à la même plage horaire soit les samedis-lundis, soit les dimanches-mardis est égal. La figure 2 présente ce nombre total pour quatre priorités pour le coût énergétique minimum de la première situation.
+
+Pour le département de génie mécanique, deux programmes avec un coût égal dans le secteur du chauffage sont projetés. Comme le montre la figure 3, ces deux plans sont pour la solution optimale dans les première et deuxième situations d'allocation des classes pour les priorités de une à quatre. Deux programmes sont validés pour deux situations définies puisque, dans les deux cas, le nombre de classes attribuées à l'École de génie mécanique est égal. Les figures 4 et 5 montrent respectivement l'effet de l'échange de classes et du choix des priorités de une à quatre sur la consommation d'énergie.
+
+Ces deux figures montrent que la perspective d'échanger des classes entre départements ne réduit pas toujours l'utilisation de l'énergie. Dans la figure 5, la raison des variations de l'effet de l'échange sur la consommation d'énergie de chauffage est la manière dont le modèle fonctionne. En se basant sur l'équation (5), la planification des programmes dépend des coûts énergétiques globaux de chaque département et de la diminution du coût de l'énergie de chauffage. Comme le problème présenté dans cette recherche a plusieurs solutions optimales, il peut donner différentes réponses et consommations d'énergie des départements. Cependant, le nombre total de classes attribuées aux départements dans les deux ensembles de jours de la semaine restera constant. Ce nombre total est spécifié dans le tableau 2.
+
+### 3.1. Élimination des restrictions sur les classes
+
+Si les limites sur les classes sont supprimées, 22 cours se tiendront dans l'Auditorium entre 14h et 15h30 en raison de l'absence de limitations de ce département sur les professeurs et les programmes. Le département de génie informatique a des restrictions sur les professeurs qui ne peuvent pas enseigner un cours simultanément, et par conséquent, 35 et 8 classes sont tenues respectivement aux périodes de 14h à 15h30 et de 10h30 à 12h. La restriction des programmes explique pourquoi il n'y a pas de cours dans la deuxième priorité (12h30 à 14h). Les limitations plus importantes du département de génie mécanique créent trois cours dans la deuxième priorité (12h30 à 14h), 30 dans la troisième (10h30 à 12h), 13 dans la quatrième (16h à 17h30) et cinq dans la cinquième (9h à 10h30). Aucun cours de l'École de génie mécanique n'est tenu dans la première priorité (14h à 15h30) car cette période est réservée pour les réunions. Cependant, un maximum de trois classes dans la deuxième priorité est considéré dans ce scénario.
+
+### 3.2. Influence de chaque scénario sur la consommation d'énergie
+
+Les méthodes conventionnelles pour réduire la consommation d'énergie sont la diminution de la température des classes pendant les saisons de chauffage, le début anticipé du semestre pendant les saisons de chauffage, l'augmentation du nombre de classes et l'utilisation rationnelle de l'énergie. La figure 6 présente l'influence des deux premières stratégies sur la demande énergétique pour le meilleur scénario de chaque département.
+
+Comme le montre la figure 6, un début anticipé de deux semaines du semestre est l'un des moyens les plus efficaces de réduire la consommation d'énergie. La température dans le scénario sans limitation sur les classes est ajustée à 23°C. Cette température et le début anticipé du semestre diminuent la consommation d'énergie. Cette réduction dépend des programmes et du nombre de cours. Bien que ce scénario soit le troisième dans l'Auditorium, où il y a le moins de cours et de restrictions, il est le quatrième dans le département de génie informatique.
+
+Les effets de la planification optimale sur la consommation d'énergie seront évalués. La figure 7 illustre qu'un pourcentage plus élevé de réduction d'énergie est dû soit à une diminution de la température des classes, soit à un début anticipé.
+
+TRNSYS a été utilisé pour valider les résultats du modèle pour l'étude de cas. La charge de chauffage dans les programmes standard et optimal du scénario de température de pièce à 23°C a été analysée pour plusieurs situations. Ces situations comprenaient la portion et le temps d'ouverture des fenêtres, le nombre d'étudiants, le contrôle de température par hystérésis et le changement des ensembles samedi-lundi et dimanche-mardi. Ces facteurs peuvent affecter le calcul de la charge d'environ 0,03 à 1,5%. La réduction de charge dans les programmes optimaux par rapport au programme standard varierait entre cinq et 20%. Si le taux de variations est considéré comme l'étude de cas, la précision du modèle est de ±3%.
+
+Cette étude poursuit l'étude précédente, qui était l'influence des programmes optimaux sur le département de génie énergétique de l'Université Sharif de Technologie [9]. Au début, le modèle du bâtiment a été simulé sur un logiciel commercial. Il a été révélé que ses résultats étaient considérablement différents de ceux d'un système de surveillance en ligne installé à ce moment-là. Le comportement irrégulier des étudiants concernant l'ouverture et la fermeture des fenêtres a causé cette divergence.
+
+Ces trois scénarios proposent des stratégies pour réduire la consommation d'énergie par la manière dont le programme est organisé. Ils sont les suivants :
+
+1. Un changement de température et la date de début du semestre académique ne peuvent pas affecter les programmes.
+2. Le début anticipé du semestre d'automne a l'influence la plus marquée sur la réduction de la consommation d'énergie dans le secteur du chauffage parmi tous les scénarios définis. Composée d'un début anticipé de deux semaines et d'une température de 23°C, cette activité peut réduire la consommation d'énergie de plus de 50% par rapport au début conventionnel et à 26°C.
+3. Au début conventionnel du semestre d'automne, l'utilisation de la planification optimale des emplois du temps réduira la consommation d'énergie de chauffage dans les classes d'environ 12%.
+4. Le partage des ressources diminue ce type de consommation d'énergie de 2,5% par rapport à l'absence de partage.
+5. Un plus grand nombre de classes disponibles conduit à une réduction de la consommation d'énergie en raison de la tenue de ces classes à des heures avec les coûts énergétiques les plus bas. Cependant, en réalité, cela n'est pas possible en raison des raisons suivantes :
+   a) Aucune interférence de temps entre les cours requis par le programme standard : les cours doivent être organisés de manière à ce que tous les étudiants, même ceux qui ne les suivent pas selon le programme, puissent s'y inscrire.
+   b) Contraintes des programmes : par exemple, si deux ou plusieurs professeurs tiennent un cours spécifique,
+
+ leur plage horaire doit être la même.
+   c) Ne pas tenir de cours à certaines heures : cette limitation existe car il y a des réunions et d'autres responsabilités auxquelles les individus doivent assister et remplir.
+6. Bien que les ressources partagées ne puissent parfois pas réduire la consommation d'énergie, il est prévu que cet exercice dans l'étude de cas entraînera une réduction de 2,5%.
+7. Les deux problèmes de cette recherche, qui sont la planification des emplois du temps des classes avec et sans ressources partagées, ont généralement plusieurs réponses optimales. Dans la situation de partage, ces solutions peuvent avoir des effets différents sur la réduction de la consommation d'énergie des départements, mais la consommation totale de chaque département sera égale.
+
+De plus, les tactiques qui ont considérablement réduit la charge de calcul aboutissent à un nombre réduit d'éléments de \(A\) (les bornes inférieures et supérieures ne sont pas incluses) et de \(Aeq\), passant de 13,392,260*33,516 (environ 52,25 Go) et 3759*33,516 (environ 15,02 Mo) à 35,945*3094 (13,26 Mo) et 1586*3094 (0,585 Mo). Ce phénomène découle du faible ratio des cours d'un professeur par rapport aux cours totaux.
+
+En résumé, le fait de ne pas nécessiter de données étendues et de connaissances spéciales pour analyser la charge de chauffage/refroidissement, ainsi que les caractéristiques suivantes, conduit au cadre proposé pour diminuer l'utilisation de l'énergie dans les bâtiments universitaires.
+
+1. Considération d'un large éventail de contraintes éducatives, comme la tenue de cours similaires à des plages horaires égales ou des prérequis
+2. Planification appropriée des cours avec la possibilité pour les étudiants de les choisir soit en fonction du programme standard, soit non
+3. Limitation de la présence des professeurs
+4. Nombre de classes
+5. Programmes de ressources partagées entre les départements
+6. Perspective de partage des classes entre les départements
+7. Très faible charge de calcul
+
+
+### 4. Conclusion
+
+Cette étude présente un modèle novateur visant à réduire la charge de chauffage/refroidissement des bâtiments académiques grâce à la planification des programmes. Ce modèle tient compte non seulement des limitations et des infrastructures éducatives, mais également du partage des ressources, ce qui améliore l'utilité des bénéficiaires. Le point de défi de ce modèle d'optimisation pour atteindre la meilleure planification réside dans la charge computationnelle considérable du problème. Cela est dû aux restrictions académiques, au modèle thermique exclusif des bâtiments et à la technique de définition des relations entre les départements. Pour résoudre ce problème, les variables de décision avec des valeurs connues sont éliminées de l'optimisation. Un modèle thermique dépendant de la température ambiante est utilisé pour calculer la charge de tous les bâtiments. Ainsi, les utilisateurs ordinaires, sans connaissance particulière de ce type de modélisation, peuvent l'exploiter. Le partage des classes est envisagé lorsque les dépenses de cette action ne dépassent pas celles d'une situation sans partage.
+
+Ce modèle a été utilisé pour organiser les emplois du temps de trois départements, à savoir le génie mécanique, le génie informatique et l'auditorium. Ces trois départements tiennent leurs cours dans le complexe du deuxième bâtiment d'ingénierie de l'Université de Shiraz. Cette étude montre que modifier la température des classes et commencer un semestre plus tôt n'affecte pas les programmes optimaux. Parmi les scénarios, l'influence maximale sur la réduction de la consommation d'énergie provient du début anticipé du semestre d'automne. Si le semestre commence deux semaines plus tôt et que la température est de 23 °C, la consommation d'énergie pour le chauffage diminuera de plus de moitié par rapport au début conventionnel du semestre d'automne et à une température intérieure de 26 °C. En comparant la condition actuelle avec celle optimale, le potentiel de réduction d'énergie est de 11 %, 15 % et 9 % pour les départements de génie mécanique, de génie informatique et l'auditorium, respectivement. Le potentiel global est d'environ 12 %. Ces résultats sont alignés avec ceux des logiciels commerciaux.
+
+Le partage des ressources n'a pas toujours les résultats escomptés, et les stratégies d'allocation des classes peuvent entraîner plusieurs réponses optimales. Dans ces circonstances, les solutions optimales peuvent avoir différentes valeurs pour les départements. La consommation totale d'énergie pour le chauffage de ces départements, en revanche, restera la même.
+
+L'obstacle le plus notable de l'organisation des classes à l'aide de la programmation mathématique est sa charge computationnelle. La méthode suggérée pour relever ce défi réduit considérablement le nombre de variables de décision, l'espace requis, et la taille de la matrice pour les contraintes inégales et égales d'environ 33,516, 13,392,260 et 3759 à 3094, 35,945 et 1586, respectivement. Ces modifications représentent une réduction d'environ 90,8 %, 99,97 % et 96,11 % pour chacune, séparément. Les contraintes inégales sont sans bornes supérieure et inférieure.

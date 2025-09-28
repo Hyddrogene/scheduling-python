@@ -1,0 +1,2657 @@
+\documentclass[runningheads]{llncs}
+
+
+\usepackage[T1]{fontenc}
+\def\doi#1{\href{https://doi.org/\detokenize{#1}}{\url{https://doi.org/\detokenize{#1}}}}
+\usepackage{graphicx}
+\usepackage{listings}
+\lstset{language=Pascal}
+\usepackage[utf8]{inputenc}
+\usepackage{fancyvrb} \usepackage{tikz}\usepackage{enumitem}\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{stmaryrd}\usepackage{mathtools}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage[table]{xcolor}
+\usepackage{multirow}
+
+\usepackage{comment} 
+\usepackage[french,onelanguage,ruled,vlined]{algorithm2e}\usepackage{colortbl}
+\usepackage{tikz-3dplot}
+\usetikzlibrary{3d}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true
+}
+\usepackage{array}
+
+\usepackage{booktabs} \usepackage{longtable} 
+
+\usepackage{tabularx}
+
+\usepackage{transparent}
+\usepackage{float}
+\usepackage{subcaption}\usepackage[justification=centering]{caption}
+\usepackage{todonotes}
+\newcommand{\cdashline}[1]{ \arrayrulecolor{red}\hline \arrayrulecolor{black}}
+\newcommand{\hdashline}[1]{ \arrayrulecolor{red}\hline \arrayrulecolor{black}}
+
+\newcommand{\nfois}[2]{\\[-0.75em]\foreach \i in {1,...,#1}{&}\multicolumn{#2}{c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]}
+
+
+\usepackage{array}
+\usepackage{diagbox}
+
+\usepackage{lscape}
+
+\usepackage{rotating}
+
+\newlist{constraintenum}{enumerate}{2}
+\setlist[constraintenum,1]{label=C\arabic* :,leftmargin=1.5cm}
+\setlist[constraintenum,2]{label= \arabic*)}
+
+\newcommand{\coco}[1]{\todo[inline,color=orange!40]{#1 -- Corentin}}
+\newcommand{\davidg}[1]{\todo[inline,color=green!40]{#1 -- David.G}}
+\newcommand{\davidl}[1]{\todo[inline,color=blue!40]{#1 -- David.L}}
+\newcommand{\vincent}[1]{\todo[inline,color=red!40]{#1 -- Vincent}}
+\newcommand{\marc}[1]{\todo[inline,color=yellow!40]{#1 -- Marc}}
+
+\lstdefinestyle{PrologStyle}{
+    language=Prolog,
+    basicstyle=\small\ttfamily,
+    keywordstyle=\bfseries\color{blue},
+commentstyle=\itshape\color{gray},
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    stepnumber=1,
+    numbersep=5pt,
+    backgroundcolor=\color{white},
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=4,
+    captionpos=b,
+    breaklines=true,
+    breakatwhitespace=true,
+    escapeinside={(*@}{@*)},
+}
+
+
+\usepackage[style=numeric,sorting=none]{biblatex}
+\addbibresource{references.bib}
+\date{\today}
+
+
+
+
+
+\begin{document}
+\clearpage{}
+
+\newcommand{\timepoint}{time point}
+\newcommand{\timepoints}{time points}
+
+\newcommand{\acronym}[1]{{\texttt{#1}}}
+
+\newcommand{\CHR}{\acronym{CHR}}
+\newcommand{\C}{\acronym{C}}
+\newcommand{\CPP}{\acronym{C++}}
+\newcommand{\CSS}{\acronym{CSS}}
+\newcommand{\DZN}{\acronym{DZN}}
+\newcommand{\FLATZINC}{\acronym{Flatzinc}}
+\newcommand{\GECODE}{\acronym{Gecode}}
+\newcommand{\JSON}{\acronym{JSON}}
+\newcommand{\JAVA}{\acronym{Java}}
+\newcommand{\LISP}{\acronym{Lisp}}
+\newcommand{\MINIZINC}{\acronym{MiniZinc}}
+\newcommand{\PROLOG}{\acronym{Prolog}}
+\newcommand{\XML}{\acronym{XML}}
+\newcommand{\CHRPP}{\acronym{CHR++}}
+\newcommand{\CHOCO}{\acronym{CHOCO}}
+
+\newcommand{\ASP}{\acronym{ASP}}
+\newcommand{\BACP}{\acronym{BACP}}
+\newcommand{\CASP}{\acronym{CASP}}
+\newcommand{\CBTT}{\acronym{CB-TT}}
+\newcommand{\CP}{\acronym{CP}}
+\newcommand{\COP}{\acronym{COP}}
+\newcommand{\CSP}{\acronym{CSP}}
+\newcommand{\DSL}{\acronym{DSL}}
+\newcommand{\DTD}{\acronym{DTD}}
+\newcommand{\ETT}{\acronym{ETT}}
+\newcommand{\HTT}{\acronym{HTT}}
+\newcommand{\ITC}{\acronym{ITC}}
+\newcommand{\MIP}{\acronym{MIP}}
+\newcommand{\NP}{\acronym{NP}}
+\newcommand{\PETT}{\acronym{PE-TT}}
+\newcommand{\RCPCSP}{\acronym{RCPCSP}}
+\newcommand{\SAT}{\acronym{SAT}}
+\newcommand{\UTP}{\acronym{UTP}}
+\newcommand{\TAP}{\acronym{TAP}}
+\newcommand{\XHSTT}{\acronym{XHSTT}}
+\newcommand{\XSD}{\acronym{XSD}}
+
+
+\newcommand{\SLOT}{H}
+
+\newcommand{\COURSES}{\Gamma}\newcommand{\COURSE}{C}
+\newcommand{\PART}{P}
+\newcommand{\CLASS}{K}
+\newcommand{\SESSION}{S}
+
+\newcommand{\STUDENT}{U}
+\newcommand{\GROUP}{G}
+\newcommand{\TEACHER}{T}
+\newcommand{\ROOM}{R}
+
+\newcommand{\TYPE}{\mathcal{E}}
+\newcommand{\ENTITY}{E}
+\newcommand{\EMAP}{F}
+
+\newcommand{\LABEL}{\mathcal{L}}
+\newcommand{\RANK}{\mathcal{O}}
+\newcommand{\SELECTOR}{Q}
+
+
+\newcommand{\proptype}[2]{#1^{#2}}
+\newcommand{\prop}[3]{\proptype{#1}{#2}_{#3}}
+
+\newcommand{\week}{w}
+\newcommand{\weekday}{d}
+\newcommand{\dailyslot}{m}
+\newcommand{\WEEK}{W}
+\newcommand{\WEEKDAY}{D}
+\newcommand{\DAILYSLOT}{M}
+
+\newcommand{\SESSIONEX}{\SESSION^{(e)}}
+\newcommand{\SESSIONINC}{\SESSION^{(i)}}
+
+
+\newcommand{\PARTALLOWEDSLOT}{d}
+\newcommand{\SESSIONDURATION}{length}
+\newcommand{\SESSIONRANK}{rank}
+\newcommand{\SESSIONSRANKED}{O}
+\newcommand{\CLASSPARENTS}{parents}
+\newcommand{\CLASSCAPACITY}{size}
+\newcommand{\ROOMCAPACITY}{capacity}
+\newcommand{\ROOMMANDATORY}{mandatory}
+\newcommand{\ROOMVIRTUAL}{virtual}
+\newcommand{\ROOMSVIRTUAL}{V}
+\newcommand{\ROOMDISJUNCTIVE}{disjunct}
+\newcommand{\PARTMULTIROOM}{multi}
+\newcommand{\PARTSMULTIROOM}{M}
+\newcommand{\PARTSMULTITEACHER}{W}
+
+\newcommand{\PARTREQUIREDROOM}{K^+}
+
+
+\newcommand{\PARTTEACHERDEMAND}{team}
+\newcommand{\PARTTEACHERDEMANDMIN}{min\_lecturer}
+\newcommand{\PARTTEACHERDEMANDMAX}{max\_lecturer}
+
+\newcommand{\PARTMULTIROOMMIN}{min\_rooms}
+\newcommand{\PARTMULTIROOMMAX}{max\_rooms}
+
+\newcommand{\PARTTEACHERSESSIONS}{service}
+
+\newcommand{\partallowedslots}[1]{\prop{\PARTALLOWEDSLOT}{\SESSION,\SLOT}{#1}}
+\newcommand{\sessionduration}[1]{\prop{\SESSIONDURATION}{\SESSION}{#1}}
+\newcommand{\sessionrank}[1]{\prop{\SESSIONRANK}{\SESSION}{#1}}
+\newcommand{\sessionranked}{\prop{\SESSIONSRANKED}{}{}}
+\newcommand{\classparents}[1]{\prop{\CLASSPARENTS}{\CLASS,\CLASS}{#1}}
+\newcommand{\classcapacity}[1]{\prop{\CLASSCAPACITY}{\CLASS}{#1}}
+\newcommand{\roomcapacity}[1]{\prop{\ROOMCAPACITY}{\ROOM}{#1}}
+\newcommand{\mandatoryrooms}[1]{\prop{\ROOMMANDATORY}{\PART}{#1}}
+\newcommand{\virtualroom}[1]{\prop{\ROOMVIRTUAL}{\ROOM}{#1}}
+\newcommand{\virtualrooms}{\ROOMSVIRTUAL}
+\newcommand{\roomdisjunctive}[1]{\prop{\ROOMDISJUNCTIVE}{\ROOM}{#1}}
+\newcommand{\disjunctiverooms}{D}\newcommand{\multiroompart}[1]{\prop{\PARTMULTIROOM}{\PART}{#1}}
+\newcommand{\multiroomparts}{\PARTSMULTIROOM}
+\newcommand{\partteachermultiplicity}[1]{\prop{\PARTTEACHERDEMAND}{\PART}{#1}}
+\newcommand{\partteacherservice}[1]{\prop{\PARTTEACHERSESSIONS}{{\TEACHER}\times{\PART}}{#1}}
+
+
+\newcommand{\partteachermultiplicitymin}[1]{\prop{\PARTTEACHERDEMANDMIN}{\PART}{#1}}
+\newcommand{\partteachermultiplicitymax}[1]{\prop{\PARTTEACHERDEMANDMAX}{\PART}{#1}}
+\newcommand{\multiteacherparts}{\PARTSMULTITEACHER}
+
+\newcommand{\multiroompartmin}[1]{\prop{\PARTMULTIROOMMIN}{\PART}{#1}}
+\newcommand{\multiroompartmax}[1]{\prop{\PARTMULTIROOMMAX}{\PART}{#1}}
+
+\newcommand{\SIZE}{size}
+
+\newcommand{\headcount}[1]{\prop{\SIZE}{\GROUP}{#1}}
+
+\newcommand{\maptype}[2]{d^{#1,#2}}
+\newcommand{\dmaptype}[2]{\underline{d}^{#1,#2}}
+\newcommand{\umaptype}[2]{\overline{d}^{#1,#2}}
+
+\newcommand{\map}[3]{\maptype{#1}{#2}_{#3}}
+
+\newcommand{\umap}[3]{\umaptype{#1}{#2}_{#3}}
+\newcommand{\dmap}[3]{\dmaptype{#1}{#2}_{#3}}
+
+\newcommand{\mape}[3]{\maptype{#1}{#2}[#3]}
+
+
+
+\newcommand{\ATMOSTDAILY}{at\_most\_daily}\newcommand{\ATMOSTWEEKLY}{at\_most\_weekly}\newcommand{\TRAVEL}{travel}\newcommand{\FORBIDDENPERIOD}{forbidden\_period}\newcommand{\TEACHERDISTRIBUTION}{teacher\_distribution}\newcommand{\WEEKLY}{weekly}
+
+\newcommand{\ADJACENTROOMS}{adjacent\_rooms}
+\newcommand{\ALLOWEDGRIDS}{allowed\_grids}
+\newcommand{\ALLOWEDROOMS}{allowed\_rooms}
+\newcommand{\ALLOWEDSLOTS}{allowed\_slots}
+\newcommand{\ALLOWEDTEACHERS}{allowed\_teachers}
+\newcommand{\ASSIGNROOMS}{assign\_rooms}
+\newcommand{\ASSIGNSLOT}{assign\_start}
+\newcommand{\ASSIGNTEACHERS}{assign\_teachers}
+\newcommand{\COMPACTNESS}{compactness}
+\newcommand{\DIFFERENTDAILYSLOT}{different\_daily\_start}
+
+\newcommand{\DIFFERENTDAY}{different\_day}
+\newcommand{\DIFFERENTROOMS}{different\_rooms}
+\newcommand{\DIFFERENTSLOT}{different\_starts}
+\newcommand{\DIFFERENTTEACHERS}{different\_teachers}
+\newcommand{\DIFFERENTWEEK}{different\_week}
+\newcommand{\DIFFERENTWEEKDAY}{different\_weekday}
+\newcommand{\DIFFERENTWEEKLYSLOT}{different\_weekly\_start}
+\newcommand{\FORBIDDENROOMS}{forbidden\_rooms}
+\newcommand{\FORBIDDENSLOTS}{forbidden\_slots}
+\newcommand{\FORBIDDENTEACHERS}{forbidden\_teachers}
+\newcommand{\GAP}{gap}
+\newcommand{\GAPARG}[1]{#1\_\GAP{}}
+
+\newcommand{\NOOVERLAP}{no\_overlap}
+\newcommand{\NOOVERLAPARG}[1]{\NOOVERLAP(#1)}
+\newcommand{\PAIRWISENOOVERLAP}{pairwise\_no\_overlap}
+\newcommand{\PERIODIC}{periodic}
+\newcommand{\REQUIREDROOMS}{required\_rooms}
+\newcommand{\REQUIREDTEACHERS}{required\_teachers}
+\newcommand{\SAMEDAILYSLOT}{same\_daily\_start}
+\newcommand{\SAMEDAY}{same\_day}
+\newcommand{\SAMEROOMS}{same\_rooms}
+\newcommand{\SAMESLOT}{same\_start}
+
+\newcommand{\SAMESTUDENTS}{same\_students}
+\newcommand{\SAMETEACHERS}{same\_teachers}
+\newcommand{\SAMEWEEKDAY}{same\_weekday}
+\newcommand{\SAMEWEEKLYSLOT}{same\_weekly\_start}
+
+\newcommand{\SAMEWEEK}{same\_week}
+\newcommand{\SEQUENCED}{sequenced}
+\newcommand{\WORKLOAD}[1]{#1\_workload}
+
+\newcommand{\predicatName}{\mathit{constraint}}
+
+
+
+
+
+
+
+\newcommand{\vartype}[2]{x^{#1,#2}}
+\newcommand{\var}[3]{\vartype{#1}{#2}_{#3}}
+
+\newcommand{\CLASSSIZE}{size}
+\newcommand{\ROOMUSE}{use}
+
+
+\newcommand{\classsize}[1]{\prop{\CLASSSIZE}{}{}(#1)}\newcommand{\roomuse}[4]{y_{#1,#2,#3,#4}}
+
+
+\newcommand{\DISJOINT}{split}
+\newcommand{\disjoint}[2]{\prop{\DISJOINT}{}{}(#1,#2)}\newcommand{\disjointroom}[3]{\prop{\DISJOINT}{}{}(#1,#2,#3)}
+
+
+\newcommand{\BOOLEAN}{\mathbb{B}}
+\newcommand{\NATURAL}{\mathbb{N}}
+\newcommand{\myset}[1]{\{#1\}}
+\newcommand{\mycard}[1]{|#1|}
+\newcommand{\setunion}[3]{\cup_{#1 \in #2}#3}
+\newcommand{\setintersection}[3]{\cap_{#1 \in #2}#3}
+\newcommand{\setpartition}[3]{\disjunion{#1 \in #2}#3}
+\newcommand{\denote}[1]{\llbracket #1\rrbracket}
+
+
+
+
+
+\newcommand{\forallmzn}{\text{forall}}
+\newcommand{\arrowmzn}{\texttt{ -> }}
+\newcommand{\inmzn}{\text{ in }}
+\newcommand{\wmzn}{\text{ where }}
+\newcommand{\arraymzn}[1]{\text{#1}}
+\newcommand{\funcmzn}[1]{\text{#1}}
+\newcommand{\gconst}[1]{\text{#1}}
+\newcommand{\const}{\text{constraint  }}
+\newcommand{\subsetmzn}{\text{ subset }}
+\newcommand{\summzn}{\text{sum}}
+\newcommand{\divmzn}{\text{ div }}
+\newcommand{\modmzn}{\text{ mod }}
+\newcommand{\intermzn}{\text{ intersect }}
+\newcommand{\equimzn}{\text{<=>}}
+\newcommand{\leqmzn}{\texttt{>=}}
+\newcommand{\gqmzn}{\texttt{<}}
+\newcommand{\lqmzn}{\texttt{>}}
+\newcommand{\geqmzn}{\texttt{<=}}
+\newcommand{\neqmzn}{\texttt{!=}}
+\newcommand{\landmzn}{\text{ /\textbackslash \, }}
+\newcommand{\lormzn}{\text{ \textbackslash /}}
+\newcommand{\existmzn}{\text{exists}}
+\newcommand{\notmzn}{\text{not}}
+
+
+
+
+
+\newcommand{\xgroup}{\text{x\_groups}}
+\newcommand{\xstudent}{\text{x\_group}}
+\newcommand{\xroom}{\text{x\_rooms}}
+\newcommand{\xteacher}{\text{x\_lecturers}}
+\newcommand{\xslot}{\text{x\_slot}}
+
+\newcommand{\xslotstart}{\text{x\_slot\_start}}
+\newcommand{\xslotend}{\text{x\_slot\_end}}
+\newcommand{\arraychr}[1]{\text{#1}}
+\newcommand{\funcchr}[1]{\text{#1}}
+\newcommand{\ctchr}[1]{\texttt{#1}}
+\newcommand{\chrprop}{\Rightarrow}
+\newcommand{\chrsimpl}{\Leftrightarrow}
+
+
+\newcommand{\varmip}[3]{x_{#1,#2,#3}}
+\newcommand{\varsequenced}[2]{ord_{#1,#2}}
+\newcommand{\varquad}[4]{\vartype{#1}{#2}_{#3,#4}}
+
+\newcommand{\inv}[1]{#1\raisebox{1.15ex}{$\scriptscriptstyle-\!1$}}
+
+
+
+
+\newcommand{\piinv}[1]{\inv{\pi}(#1)}
+
+\newcommand{\EDT}{emplois du temps}
+
+
+\makeatletter
+\def\moverlay{\mathpalette\mov@rlay}
+\def\mov@rlay#1#2{\leavevmode\vtop{\baselineskip\z@skip \lineskiplimit-\maxdimen
+   \ialign{\hfil$\m@th#1##$\hfil\cr#2\crcr}}}
+\newcommand{\charfusion}[3][\mathord]{
+    #1{\ifx#1\mathop\vphantom{#2}\fi
+        \mathpalette\mov@rlay{#2\cr#3}
+      }
+    \ifx#1\mathop\expandafter\displaylimits\fi}
+\makeatother
+
+\newcommand{\cupdot}{\charfusion[\mathbin]{\cup}{\cdot}}
+\newcommand{\sqcupdot}{\charfusion[\mathbin]{\sqcup}{\cdot}}
+\newcommand{\bigcupdot}{\charfusion[\mathop]{\bigcup}{\cdot}}
+\newcommand{\sqbigcupdot}{\charfusion[\mathop]{\bigcup}{\sqcupdot}}
+\newcommand{\cupemptysetsq}{\charfusion[\mathop]{\bigcup}{\emptyset}}
+\newcommand{\disjunion}{\cupdot}
+\newcommand{\uexists}{\exists!}
+
+
+
+\newcommand{\grayrow}{\rowcolor[gray]{0.9}}
+
+
+
+\newcommand{\courses}{courses}
+\newcommand{\coursehierarchy}{course-hierarchy}
+\newcommand{\event}{event}
+
+\newcommand{\timing}{timing}
+\newcommand{\fullperiod}{full-period}
+\newcommand{\fullweek}{full-week}
+\newcommand{\singleweek}{single-week}
+
+\newcommand{\scheduling}{scheduling}
+\newcommand{\nooverlap}{no-overlap}
+\newcommand{\sameduration}{same-duration}
+\newcommand{\synchronous}{modular}
+
+\newcommand{\hosting}{hosting}
+\newcommand{\noroom}{no-room}
+\newcommand{\singleroom}{single-room}
+\newcommand{\multiroom}{multi-room}
+\newcommand{\roomcapacityfeat}{room-capacity}
+\newcommand{\noneexclusive}{none-exclusive}
+\newcommand{\allexclusive}{all-exclusive}
+\newcommand{\someexclusive}{some-exclusive}
+
+\newcommand{\teaching}{teaching}
+\newcommand{\noteacher}{no-teacher}
+\newcommand{\singleteacher}{single-teacher}
+\newcommand{\multiteacher}{multi-teacher}
+\newcommand{\teacheroverlap}{session-overlap}
+\newcommand{\service}{service}
+
+\newcommand{\attending}{attending}
+\newcommand{\studentoverlap}{session-overlap}
+\newcommand{\sectioning}{sectioning}
+
+\newcommand{\aspects}{crosscutting}
+\newcommand{\availability}{calendar}
+\newcommand{\periodicity}{regularity}
+\newcommand{\sessiondistribution}{orchestration}
+\newcommand{\travel}{workload}
+\newcommand{\adjacency}{logistics}
+\newcommand{\resourcedistribution}{resourcing}
+
+
+
+
+\newcommand{\medcirc}{\text{\raisebox{0.25ex}{\large$\circ$}}}
+\newcommand{\medbullet}{\text{\raisebox{0.25ex}{\large$\bullet$}}}\clearpage{}
+
+\title{A Rule Language and Feature Model for Educational Timetabling\thanks{Supported by a research grant from Université d'Angers.}}
+\author{
+Corentin Behuet \and
+Vincent Barichard \and
+David Genest \and
+Marc Legeay \and
+David Lesaint
+}
+\authorrunning{C. Behuet et al.}
+\institute{Univ Angers, LERIA, SFR MATHSTIC, F-49000 Angers, France \\
+\email{\{firstname.lastname\}@univ-angers.fr}}
+\maketitle              
+
+\begin{abstract}
+Educational timetabling
+subsumes core problems
+(student sectioning,
+course scheduling, 
+etc.)
+which are challenging from a modeling and computational perspective.
+In this paper, we expand on the 
+University Timetabling Problem
+framework (\UTP{})  designed to address a wide range of university timetabling problems.
+The framework combines a rich data schema with a rule language
+and comes with a tool chain to compile instances 
+into constraint satisfaction problems.
+We present the \UTP{} modeling language
+and a feature model
+to capture the problem classes that are expressible. The feature model provides a simple problem classifier which we use in our literature review. We also present a timetabling instance generator
+and report on experiments carried out 
+with Constraint Programming, 
+Answer-Set Programming and 
+Mixed Integer Linear Programming solvers. 
+
+\keywords{Timetabling \and Domain-Specific Modeling Language \and Feature Model \and Exact Methods \and Timetable Dataset Generation}
+\end{abstract} \section{Introduction}
+
+
+
+
+
+
+Various problem formulations, data formats and algorithms have been proposed to tackle specific aspects of university timetabling 
+ranging from curriculum balancing \cite{2001_castro_ARXIV,2012_chiarandini_JH,2013_rubio_MPE}, student sectioning \cite{2010_muller_AOR,2019_schindl_AOR}, examination timetabling \cite{1996_carter_JORS,2020_battistutta_CPAIOR,2010_mccollum_INFORMS}, curriculum-based or post-enrollment-based course timetabling \cite{2010_mccollum_INFORMS,2015_bettinelli_TOP,2007_lewis_ITC,2012_cambazard_AOR,2017_goh_EJOR,2021_chen_IEEEA}, tutor allocation \cite{2022_caselli_ESWA}, to minimal timetabling perturbation \cite{2019_lindahl_EJOR,2020_lemos_JS}. 
+Modeling languages have also been developed, notably the {\XHSTT} language~\cite{2012_ahmadi_AOR}, the {\ITC} language used in the 2019 international timetabling competition \cite{2018_muller_PATAT,2019_ITC} and the {\UTP} language introduced in \cite{2022_barichard_PATAT}.
+
+
+{\UTP} is a modeling language for educational timetabling problems
+which is built on a structured domain model coupled with a rules language.
+The model supports sessions requiring a single resource 
+and those needing multiple resources 
+capturing essential limitations related to the timing of sessions and distribution of resources. 
+It operates under the presumption that resources can overlap (i.e. rooms, teachers, and students can be involved in simultaneous sessions), though this approach can be adjusted through specific scheduling rules that prevent such overlaps. 
+Given a \UTP{} instance, the objective is to assign time slots and allocate resources to class sessions so that core constraints and rules are satisfied.
+
+
+We first introduce the {\UTP} schema which has been extended to broaden the range of problems that can be modeled. 
+We then present a feature model to classify educational timetabling problems and compare \UTP{} with other modeling languages. 
+Lastly, we report on experiments carried out with 3 \UTP{} solvers - {\CP}, {\ASP}, {\MIP} -
+on instances created with a custom generator. 
+
+
+
+ \section{The UTP Schema}
+\label{sec:schema}
+The \UTP{} schema combines a schema to model timetabling entities and solutions, 
+and a rule language.
+The entity schema models the entities of a \UTP{} instance
+- scheduling horizon, resources, and course elements including course sessions -,
+their properties and relationships.
+The rule language is user-oriented
+and serves to concisely express constraints
+over any set of entities
+on the different facets of a problem (e.g., session scheduling, capacity planning, resource allocation).
+Rules are formulated
+using a catalog of timetabling constraint predicates
+and a query language to select, filter and bind entities to sessions. 
+ 
+
+A rule-based \UTP{} instance is 
+converted
+to a constraint-based instance
+that is readily processable by solvers.
+The conversion 
+translates the entity schema as decision variables and core constraints, and then flattens rules as additional constraints.
+A \UTP{} instance is thus cast as a hard constraint satisfaction problems.
+Solving an instance involves scheduling sessions
+and assigning them resources 
+so that the core constraints and the rule constraints are satisfied.
+The solution schema allows to represent
+any timetabling solution computed for an instance,
+be it incomplete or inconsistent.
+
+This section introduces
+the components of the schema.
+The abstract syntax of the entity schema
+is given in Table~\ref{table:entity-model},
+its constraint-based modeling in
+Table~\ref{table:core-variables} and
+Table~\ref{table:core-constraints}
+(Appendix~\ref{appendix:core-model}),
+and the syntax of the rule language
+and constraint predicates in
+Table~\ref{tab:rule-language},
+Table~\ref{tab:predicate_catalog} and
+Table~\ref{tab:constraintformel}
+(Appendix~\ref{appendix:constraintcatalog}).
+
+
+\subsection{Entity Schema}
+\label{sec:entity-schema}
+
+
+
+The entity schema 
+of a \UTP{} instance
+combines
+a hierarchy of course elements (i.e., courses, course parts, part classes and class sessions)
+a scheduling horizon over which sessions are to be scheduled,
+and 4 types of resources to which sessions must be allocated to
+(i.e., rooms, teachers, students and student groups).
+The schema encodes the nesting of course elements
+and various properties and constraints 
+concerning 
+session scheduling,
+resource availability, 
+resource eligibility,
+teaching service,
+room capacity,
+and student sectioning. 
+
+The scheduling horizon is a range
+of integers denoting \timepoints{}.
+The \timepoints{} are the start and end times allowed for sessions
+and any duration (i.e., session length, travel time and break time)
+is measured as a number of \timepoints{}. 
+The horizon is
+defined using 3 instance fields: 
+the number of weeks $\week$ dividing the horizon, 
+the number of weekdays $\weekday$ making a week 
+and the number of daily slots $\dailyslot$ making a 24-hour day.
+The \timepoints{} correspond to all possible triplets combining a week, a weekday, and a daily slot. 
+Note that daily slots may have any granularity (e.g., 1 minute, 2 hours)
+and
+the scheduling horizon may be sparse
+(e.g., if weeks $i$ and $i+1$ are not consecutive calendar weeks for some $1\leq i<\week$ 
+or if weekdays are dropped, i.e., $\weekday<7$).
+
+
+Course elements follow a hierarchical structure.
+Each course (e.g., Algorithms) consists of one or more parts (e.g., Lecture and Lab),
+each part is taught to one or more classes (e.g., lecture classes A and B),
+and all classes of a part have the same number of sessions (e.g., sessions 1 to 10 for each lecture class).
+~The schema requires that all sessions in a class have the same duration
+and be chronologically ranked,
+i.e., session of rank $i+1$ in a class must start after session of rank $i-1$ ends in any solution.
+These constraints are paramount to model course plans that rely on clear-cut sessions
+(e.g., starting lab classes after 2 lecture sessions,
+synchronizing the $5^{th}$ sessions of lab classes for a joint examination).
+Besides, the schema allows to restrict the possible time slots for the sessions of a part
+by setting allowed and forbidden ranges using the time format.
+Note that 
+sessions must start and end on the same day, and cannot be interrupted. The schema also specifies a set of possible resources for each session.
+As for students, a sectioning plan
+is assumed and hard-coded together with group-to-class assignments.
+Specifically, 
+students are partitioned into groups,
+and groups aggregated and assigned to classes
+with no group being assigned to more than one class per course part.
+The schema encodes group and class headcounts
+as well as class headcount thresholds used for sectioning.~Other sectioning data and constraints are compiled away.
+The implicit constraint to satisfy is that a group must attend all the sessions of a class it is bound to.
+
+
+Teacher-to-session assignments are not fixed
+but subject to domain and cardinality constraints.
+To meet practical needs, 
+the schema allows multiple teachers per session
+(e.g., joint supervision of a lab session) and teacher-less sessions 
+(e.g., unsupervised project work).
+The number of teachers per session is specific to each course part
+and is lower- and upper-bounded, possibly fixed.
+Each part is also associated with 
+a set of required teachers
+and a superset of allowed teachers.
+Hence two sessions of a class may be allocated different teachers and numbers of teachers.
+A part also sets the fixed number of sessions a teacher is committed to.
+Overall, various demand and capacity requirements relating to teaching service 
+can be addressed on course parts.
+If needed, finer-grained rules may be imposed
+(e.g., requiring the same staff for a class, naming a lecturer for a session).
+
+Similarly, each part sets the required and possible rooms for its sessions and their number.
+This caters for the case of multi-room sessions (e.g., for hybrid teaching)
+and room-less sessions (e.g., field trips). In addition, each part casts its sessions as room-exclusive or room-inclusive
+which entails different allocation constraints.
+A session is room-exclusive if none of the room(s) hosting it may simultaneously host another session.
+Conversely, a room-inclusive session allows for its room(s) to be shared from start to finish.
+While single-room sessions may be cast as exclusive or inclusive,
+multi-room sessions may only be cast as exclusive.
+That is, every session of a part whose room upper-bound is greater than 1 is considered exclusive. 
+The rationale is that multi-room inclusive sessions have arguably little practical interest and they also burden the computational model with decisions to make on the distribution of groups in shared rooms. 
+
+All resources enforce capacity constraints w.r.t. their utilization.
+Students, teachers and rooms are considered cumulative resources in this respect.
+That is, they may attend, teach or host simultaneous sessions.
+A cumulative model is paramount 
+to satisfy flexible attendance requirements
+(e.g., students attending tutoring sessions overlapping with compulsory courses)
+and multi-class events 
+(e.g., an amphitheater hosting a joint conference for different classes).
+Again, rules may be used to impose disjunctive resources 
+or to ban session overlapping.
+No limit is set on the number of parallel sessions teachers and students may attend.
+Session hosting however is subject to capacity constraints
+and the schema encodes the capacity of each room,
+allowing for infinite capacity to handle virtual rooms. As discussed above, 
+at any point in time, 
+an allocated room will
+either 
+co-host a multi-room (exclusive) session
+or host one or more single-room sessions (one only if a session is exclusive).
+The schema hence enforces two kinds of capacity constraints.
+The single-room case involves checking
+if the total headcount of the session(s) falls below the room capacity.
+The multi-room case involves
+ensuring the total capacity of the rooms envisaged for the session exceeds its headcount.
+If so, 
+no restriction is imposed as to the distribution of students in rooms
+and whether it preserves group structure or not.
+
+Lastly, the schema provides users with the ability to define their own classes of entities,
+mixing course elements and resources as needed
+with no limit on classification
+(e.g., a block of rooms, the lecturers of a faculty department).
+This is achieved by labeling entities.
+Labels, built-in entity types and ids
+are the building blocks of the query language
+to forge rules for any group of entities.
+
+
+
+
+
+
+
+
+
+
+
+ Table~\ref{table:entity-model} provides a formal specification of the schema elements.
+Resources and course elements, except sessions, are referred to as \textit{entities}.
+Entities are typed,
+the set of sessions is cast as distinct type, 
+and each type is modeled as a finite set.
+The course element hierarchy
+defines 1-to-many \textit{composition relations} over the pair of types
+$(X,Y)$ corresponding to parent and child types
+in the course element hierarchy. 
+Each relation is modeled by a function ${\maptype{X}{Y}}:X\rightarrow2^{Y}$
+mapping each object $i$ of type $X$
+to the set ${\map{X}{Y}{i}}$ of its constitutive objects of type $Y$.
+For instance, 
+${\maptype{\PART}{\CLASS}}$ 
+models the classes of each part.
+Each \textit{compatibility relation}
+defining the allowed or assigned resources of a course element object
+for a given resource type and course element type
+defines a many-to-many relation
+which we model the same way.
+For instance, 
+${\maptype{\PART}{\ROOM}}$
+models the allowed rooms per part
+and ${\maptype{\CLASS}{\GROUP}}$
+the set of groups assigned to classes.
+
+For notational convenience, 
+the table also defines 
+the maps resulting from 
+the symmetric and transitive closure of the binary relation merging the composition and compatibility maps.
+This includes
+the maps
+computed over the course tree.
+For instance, 
+${\maptype{\CLASS}{\PART}}$ 
+models the (singleton) part of each class,
+and ${\maptype{\COURSE}{\SESSION}}$ 
+the sessions of a course.
+This also includes the 
+inverse compatibility constraints
+and those inherited along the course tree.
+For instance, ${\maptype{\SESSION}{\ROOM}}$ models the rooms allowed for a session
+which results from the composition of ${\maptype{\SESSION}{\CLASS}}$, ${\maptype{\CLASS}{\PART}}$ and ${\maptype{\PART}{\ROOM}}$.
+Lastly, the table defines the constants (e.g., number of weeks),
+scalar properties
+(e.g., room capacity),
+and remaining relations and sets (e.g. required resources, labels).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\begin{table}[!t]
+\begin{center}
+\rowcolors{1}{gray!25}{white}
+\begin{tabular}{|l|l|}
+
+
+
+\hline
+$\week$                                 & number of weeks
+dividing the scheduling horizon
+\\$\weekday$                               & number of weekdays
+making a week \\
+$\dailyslot$                              &  number of daily slots
+making a 24-hour day\\
+$\WEEK =\myset{1,\ldots\week}$
+&  range of weeks 
+\\
+$\WEEKDAY =\myset{1,\ldots\weekday}$
+&  range of weekdays 
+\\
+$\DAILYSLOT =\myset{1,\ldots\dailyslot}$
+&  range of daily slots 
+\\
+$\SLOT=\myset{1,\ldots\week\times\weekday\times\dailyslot}$
+&  range of \timepoints{} (schedule horizon)
+\\\hline
+$\COURSE$&  courses
+\\
+$\PART$&  course parts
+\\
+$\CLASS$&  part classes
+\\
+$\ROOM$&  rooms
+\\
+$\TEACHER$&  teachers
+\\
+$\STUDENT$&  students
+\\
+$\GROUP$&  groups of students
+
+\\\hline
+$\COURSES=\myset{\COURSE}$&  course domain
+\\
+$\TYPE=\myset{\COURSES,\COURSE,\PART,\CLASS,\ROOM,\TEACHER,\STUDENT,\GROUP}
+$                                           &  types of entities
+\\
+${\ENTITY}=\setunion{X}{\TYPE}{X}$          &  set of entities
+\\
+$\map{X}{Y}{i}\subseteq{Y}, X \in \myset{\COURSES,\COURSE,\PART,\CLASS}$
+                                            &  set of entities of type $Y$ tied to entity $i$ of type $X$
+\\
+$\map{X}{Y}{i}\subseteq{Y}, X \in \myset{\ROOM,\TEACHER,\STUDENT,\GROUP}$
+                                            &  set of entities of type $Y$ associated with entity $i$ of type $X$
+\\
+${\LABEL}\subseteq2^{{\ENTITY}}$            &  labels
+\\\hline
+$ \SESSIONEX$&  exclusive class sessions 
+\\
+$ \SESSIONINC$&  inclusive class sessions 
+\\
+$\SESSION=\SESSIONEX\disjunion\SESSIONINC$  &  class sessions
+\\
+$\partallowedslots{s}\subseteq{\SLOT}$      &  start times allowed for session $s$
+\\
+$\map{\SESSION}{X}{s}\subseteq{X}$
+                                            &  set of entities of type $X$ tied to session $s$
+\\
+$\map{X}{\SESSION}{i}\subseteq{\SESSION}$
+                                            &  set of sessions tied to entity $i$ of type $X$
+\\
+$\dmap{X}{\SESSION}{i}\subseteq{\SESSION}$
+                                            &  set of sessions required by resource entity $i$ of type $X$
+\\
+\hline
+$\multiroompartmin{p}\in{\NATURAL}$          &  min number of rooms usable by each session of part $p$
+\\
+$\multiroompartmax{p}\in{\NATURAL}$          &  max number of rooms usable by each session of part $p$
+\\
+$\partteachermultiplicitymin{p}\in{\NATURAL}$  &  min number of lecturers usable by each session of part $p$
+\\
+$\partteachermultiplicitymax{p}\in{\NATURAL}$  &  max number of lecturers usable by each session of part $p$
+\\
+$\headcount{g}\in{\NATURAL}$               &  headcount of group $g$
+\\
+$\classcapacity{k}\in{\NATURAL}$            &  headcount of class $k$
+\\
+$\roomcapacity{r}\in{\NATURAL}$             &  capacity of room $r$
+\\
+$\sessionduration{s}\in{\SLOT}$             &  duration of session $s$
+\\
+$\sessionrank{s}\in{\NATURAL^*}$            &  rank of session $s$ in its class
+\\
+$\partteacherservice{t,p}\in{\NATURAL}$     &  number of sessions required by teacher $t$ in part $p$
+\\\hline
+\end{tabular}
+\caption{Core data model.}
+\label{table:entity-model}
+\end{center}
+\end{table}
+%
+   \subsection{Solutions}
+\label{sec:solution}
+
+The solution schema is used to encode
+any solution pre-computed for an instance.
+Such a solution needs not be complete, nor consistent with the instance constraints.
+An instance may hence be associated with any kind of input solution based on the
+computational task,
+e.g. no solution at all when generating a timetable from scratch, 
+a resource allocation solution to extend into a complete timetable,
+a seed solution to improve, 
+or an inconsistent solution to repair.
+Formally, the solution schema
+supports the representation of
+any decision made for a session
+as to its start time,
+its set of rooms
+and its set of teachers.
+
+
+
+
+
+ \subsection{Predicates, Constraints and Rules}
+\label{sec:schema-predicates-constraints-rules}
+
+The \UTP{} schema comes with a rule language to formulate instance-specific constraints.
+Rule constraints add to the built-in constraints of the schema
+and all must be checked when evaluating a solution.
+The rule language is designed to target groups of entities, or individual entities,
+and constrain the scheduling of their sessions
+from any standpoint
+(e.g., an institutional rule imposing a time structure on curricula,
+a disjunctive scheduling rule applied to student groups,
+a rule modeling the service plan within a faculty department,
+a rule for a lecturer's agenda).
+The schema comes with a catalog of timetabling predicates
+to build rules and compile them into constraints.
+It also includes a query language to select
+entities and sessions on which rules should apply.
+
+
+
+All these components are designed around the concept of \textit{e-map}.
+Formally, an e-map is a pair $(e_i,S_i)$ 
+mapping an entity $e_i$ to a set $S_i$ of sessions.
+The query language is used to forge queries that retrieve sets of e-maps.
+Each query selects, filters and binds entities to sessions from instance data 
+in order to extract one or more sets of e-maps.
+Each rule is bound to a predicate and scoped by a query.
+At flattening time, 
+the query is performed to retrieve a fixed number of sets of e-maps.
+The rule is then compiled into a conjunction of constraints
+by computing the cross-product of the extracted sets and applying the predicate to each tuple of e-maps in the cross-product.
+Constraint e-maps act as guards when checking solutions
+and they also narrow the scope of interpretation.
+The rationale is to discard constraints that are irrelevant
+(e.g., a teacher's constraint forbidding afternoon lectures while the solution only assigns him lab sessions)
+and, more generally, to limit constraint checks to the proposed assignments
+(e.g., checking the above lecturer's constraint on the actual lectures the solution assigns him).
+
+
+As mentioned above, 
+each constraint applies a predicate to a tuple of e-maps.
+\UTP{} predicates either accept a fixed number of e-maps or are variadic.
+Their semantics may be indifferent to the ordering of their arguments or not,
+and some accept parameters.
+Besides, each predicate may be used indistinctly
+with course e-maps or resource e-maps (i.e., e-maps pairing course elements or resources),
+and any n-ary constraint may freely mix the two types
+(e.g., a constraint booking rooms for sessions involving different classes).
+Let ${\EMAP}=\ENTITY\times{2^{\SESSION}}$ denote the domain of e-maps,
+the general form of a constraint is
+$c((e_1,S_1),\ldots,(e_n,S_n),p_1,\ldots,p_m)$ where 
+$c$ is a predicate of arity $n$,
+$(e_1,S_1),\ldots,(e_n,S_n)$ are e-maps ($(e_i,S_i)\in{\EMAP}$ for $i=1\ldots n$) 
+and 
+$p_1,\ldots,p_m$ are values for the parameters of $c$ ($m\geq0$).
+
+The semantics of constraints relies on a join operation between constraint e-maps and solutions.
+Note first that any solution may be cast as a tuple of e-maps 
+by converting the session-to-resource assignments into resource e-maps
+and re-encoding the fixed maps binding course elements to their sessions.
+We say an e-map is \textit{null} if it pairs an entity with an empty set of sessions,
+and, by extension, a tuple of e-maps is null if it includes a null e-map.
+Given a solution and an e-map for some entity,
+we call \textit{joint e-map} the pairing of the entity with the set of sessions
+on which the solution and the e-map agree,
+i.e., the set-intersection of the sessions of the e-map and those assigned/bound to the entity in the solution encoding.
+We say a solution is \textit{inconsistent} with an e-map if their joint e-map is null.
+The join operation extends to tuples by performing the operation component-wise
+and a solution is said to be inconsistent with a tuple of e-maps 
+if its is inconsistent with at least one e-map in the tuple.
+
+The evaluation of a solution against a constraint
+is conditioned by the tuple of e-maps joining those of the solution and the constraint.
+If the joint tuple is null, 
+the constraint is considered satisfied
+(i.e., it is deemed irrelevant and discarded).
+Otherwise, the predicate is evaluated on the joint e-map
+and the result depends on its built-in semantics.
+Specifically, the predicate is assessed on
+the tuple of sets obtained by substituting each set of sessions
+in the joint e-map
+either by the set of their assigned start times,
+or the set of their assigned resources of a given type (rooms, etc).
+Which type (time or resource type) to pick per e-map is fixed and predicate-specific
+(e.g., a temporal predicate will substitute any e-map argument by start times).
+Note that entities play no role in the evaluation once the join and substitution operations are over:
+each predicate is ultimately evaluated on sets made of start times or sets of resources.
+Note also that join operations leave course e-maps unchanged unlike resource e-maps.
+This means constraints applying exclusively to course e-maps are de facto unconditional. 
+
+
+
+The \UTP{} catalog provides predicates to cover the various dimensions of time--tabling problems.
+Some only address scheduling (i.e., start times),
+others room allocation, and so on.
+Table~\ref{tab:predicate_catalog} and Table~\ref{tab:constraintformel} given in Appendix~\ref{appendix:constraintcatalog} describe the predicates of the catalog and provide their semantics.
+Syntactically, each rule binds a predicate to a query
+and denotes the conjunction of constraints obtained 
+by applying the predicate to
+each tuple of e-maps extracted by the query.
+A rule has the form $c\langle{\SELECTOR},p_1,\ldots,p_m\rangle$
+and is interpreted by the formula
+\begin{equation*}
+\forall (e_1,S_1)\in\denote{\SELECTOR_1},\ldots,(e_n,S_n)\in\denote{\SELECTOR_{n}}: c((e_1,S_1),\ldots,(e_n,S_n),p_1,\ldots,p_m)
+\end{equation*}
+where 
+$c$ is a predicate of arity $n$ accepting $m$ parameters ($m\geq0$),
+$\SELECTOR$ is a query sized to extract $n$ sets of e-maps,
+$\denote{\SELECTOR_i}$
+denotes the $i$-th set of e-maps extracted with $\SELECTOR$
+ ($i=1\ldots n$),
+and
+$p_1,\ldots p_m$ are values for the parameters of $c$.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  \section{A Feature Model}
+\label{sec:feature-model}
+This section introduces a feature model
+for educational timetabling problems
+based on the \UTP{} schema.
+The model is not meant to be exhaustive, nor stable,
+but is a first attempt
+to capture the key variability points  (the features)
+in the family of instances
+that can be expressed with the schema.
+Some features are plain flags characterizing the compliance of an instance to the schema (e.g., whether courses are hierarchically structured or not)
+while others are logical assertions on instance data (e.g., whether the number of weeks is set to 1 or not).
+In either case, each feature may be checked against any instance
+and, in turn, instances classified into different classes
+based on the features they satisfy.
+
+The feature model hence decomposes the space of \UTP{} problems
+which serves different purposes.
+One is to quickly assess whether 
+the schema 
+is applicable to a particular setting. Another is to provide a straightforward characterization of problem classes,
+similarly to the way 3-field notation is used in other scheduling domains \cite{1979_graham_ADM,robinX_3field,scheduling_zoo}.The aim is also to facilitate the comparison of \UTP{} with competing schemas, possibly paving the way for formal reductions between problems
+and conversions between schemas.
+Lastly, the feature model can guide the configuration of efficient computational models
+by using features to reformulate or optimize built-in constraints and predicate implementations.
+
+
+
+
+We first recall the basic
+notations 
+and definitions commonly used in feature modeling languages \cite{1990_kang_TR,2002_czarnecki_ECOOP,2019_damir_ACM}.
+A feature model is a tree-like structure connecting features
+and factoring in different feature configurations.
+A configuration is a subset of features
+selected from the model.
+The configuration process is subject to constraints 
+that primarily capture dependencies that 
+exist between a feature and its children (a.k.a., sub-features). 
+These fall into 4 categories:
+\textit{mandatory sub-feature} (it must be selected if the parent is) labeled by $\medbullet$,
+\textit{optional sub-feature} (it may be selected if the parent is) labeled by $\medcirc$,
+\textit{or-feature} (at least one of the sub-features must be selected) labeled by $+$, 
+and \textit{xor-feature} (exactly one sub-feature must be selected) labeled by $1$.
+Finer-grained cardinality constraints may apply
+as well as cross-tree constraints modeling dependencies or incompatibilities 
+between features that sit in different branches.
+
+
+~~
+
+\begin{table}[!ht]
+    \centering
+    \arrayrulecolor{black}
+    \begin{tabular}{|c|c|l|c|l|}
+
+
+        \hline
+\multirow{3}{*}{$\medbullet$}& \multirow{3}*{\rotatebox{90}{\hspace{-2pt}\courses\label{featmodel:courses}}} &\multirow{3}*{$\medcirc$}&  \cellcolor[gray]{.9} &\cellcolor[gray]{.9}\\
+        && &\multirow{-2}*{\cellcolor[gray]{.9}\coursehierarchy~\label{featmodel:hierarchy}} &\multirow{-2}*{\cellcolor[gray]{.9} \textit{courses are decomposed hierarchically into sessions}}\\
+&&& \event~\label{featmodel:event} & ~\textit{events unrelated to courses must be scheduled}\\\hline
+
+\multirow{3}{*}{$\medbullet$}& \multirow{3}*{\rotatebox{90}{\hspace{-2pt}\timing\label{featmodel:timing}}} &\multirow{3}*{$\medcirc$} &\cellcolor[gray]{.9}\fullperiod~\label{featmodel:fullperiod} &\cellcolor[gray]{.9} \textit{weeks are consecutive calendar weeks}\\
+&&& \fullweek~\label{featmodel:fullweek} & $\;d= 7$\\
+        &&& \cellcolor[gray]{.9}\singleweek~\label{featmodel:singleweek} & \cellcolor[gray]{.9}$\;w = 1$\\
+        \hline 
+
+\multirow{5}{*}{$\medbullet$} & \multirow{5}*{\rotatebox{90}{\hspace{-2pt}\scheduling}} &\multirow{5}*{$\medcirc$}&  &
+        $\forall s_i,s_j\in\SESSION,s_i\neq s_j,\forall h_i \in \partallowedslots{s_i},\forall h_j\in\partallowedslots{s_j}\:\  $\\
+        &&& \multirow{-2}*{\nooverlap~\label{featmodel:nooverlap}}&$\;h_i<h_j \land h_i \div \dailyslot = h_j \div \dailyslot:\;h_i+\sessionduration{s_i} \leq h_j$\\
+&&& \cellcolor[gray]{.9}\sameduration~\label{featmodel:sameduration} & \cellcolor[gray]{.9}$\;\forall s_i,s_i \in \SESSION, \sessionduration{s_i} = \sessionduration{s_i}$ \\
+         
+
+
+         &&&&~Let $A=\{h_j-h_i\mid s_i,s_j\in\SESSION,h_i\in\map{\SESSION}{\SLOT}{s_i}, h_j\in\map{\SESSION}{\SLOT}{s_j},$\\
+         
+         &&&\multirow{-2}*{\synchronous}~\label{featmodel:synchronous}&$\; s_i\ne s_j,\;h_i<h_j\}: gcd(A) = \min(A) \land gcd(A)>1$\\ 
+        \hline
+
+\multirow{7}{*}{$\medcirc$}&\multirow{7}*{\rotatebox{90}{\hspace{-2pt}\hosting\label{featmodel:hosting}}}&\multirow{3}*{+}& \cellcolor[gray]{.9}\noroom~\label{featmodel:noroom} & \cellcolor[gray]{.9} $\exists p \in \PART,\;\multiroompartmin{p}=\multiroompartmax{p} = 0 $\\
+         &&& \singleroom~\label{featmodel:singleroom} &$\;\exists p \in \PART,\;\multiroompartmin{p}=\multiroompartmax{p} = 1\;$\\
+       &&& \cellcolor[gray]{.9}\multiroom~\label{featmodel:multiroom} &\cellcolor[gray]{.9} $\exists p \in \PART,\;\multiroompartmin{p}\geq1 \land \multiroompartmax{p} > 1\;$
+         \\[-0.75em]
+         \arrayrulecolor{black}
+              &&\multicolumn{3}{c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+&&$\medcirc$& \roomcapacityfeat~\label{featmodel:roomcapacity} & $\;\forall r \in \ROOM,\; \roomcapacity{r} \neq  \emptyset$
+\\[-0.75em]
+        \arrayrulecolor{black}
+             &&\multicolumn{3}{c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+       & &\multirow{3}*{1} & \cellcolor[gray]{.9}\allexclusive~\label{featmodel:allexclusive}&\cellcolor[gray]{.9} $ \SESSIONEX = \SESSION $
+       \\
+
+      & &  &\noneexclusive~\label{featmodel:noneexclusive}  &$\;\SESSIONINC = \SESSION $ \textit{(Not compatible with ``multi-room'')}\\
+       && &\cellcolor[gray]{.9}\someexclusive~\label{featmodel:someexclusive} & \cellcolor[gray]{.9} $ \SESSIONEX \ne \emptyset \land   \SESSIONINC \ne \emptyset$ \\
+        \hline  
+        \multirow{5}{*}{$\medcirc$} & \multirow{5}*{\rotatebox{90}{\hspace{-2pt}\teaching\label{featmodel:teaching}}} & \multirow{3}*{+}&\noteacher~\label{featmodel:noteacher} &$\;\exists p \in \PART,\;\partteachermultiplicitymin{p}=\partteachermultiplicitymax{p} = 0 $\\
+      &&& \cellcolor[gray]{.9}\singleteacher~\label{featmodel:singleteacher}& \cellcolor[gray]{.9}$\;\exists p \in \PART,\;\partteachermultiplicitymin{p}=\partteachermultiplicitymax{p} = 1 $\\
+       &&& \multiteacher~\label{featmodel:multiteacher} &$\;\exists p \in \PART,\;\partteachermultiplicitymin{p}\geq1\land\partteachermultiplicitymax{p} >1 $\\[-0.75em]
+        \arrayrulecolor{black}
+        &&\multicolumn{3}{c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+
+       &&\multirow{2}*{$\medcirc$}& \cellcolor[gray]{.9}\teacheroverlap~\label{featmodel:teacheroverlap} &\cellcolor[gray]{.9}$\;\forall t \in\TEACHER,\forall s_i,s_j \in \map{\TEACHER}{\SESSION}{t},s_i+\sessionduration{s_i} \leq s_j \vee s_i \geq s_j +\sessionduration{s_j}$ \\
+&&& \service~\label{featmodel:service}&~\textit{service constraints apply to teachers}\\ \hline
+
+        
+       \multirow{4}{*}{$\medbullet$} & \multirow{4}*{\rotatebox{90}{\hspace{-2pt}\attending}}&\multirow{4}*{$\medcirc$}& \cellcolor[gray]{.9}  & \cellcolor[gray]{.9}$\;\forall g \in\GROUP,\forall s_i,s_j \in \map{\GROUP}{\SESSION}{g}, s_i+\sessionduration{s_i} \leq s_j \vee $ \\
+         & &&\cellcolor[gray]{.9}\multirow{-2}*{\studentoverlap~\label{featmodel:groupoverlap}} & \cellcolor[gray]{.9}$\;s_i \geq s_j +\sessionduration{s_j} $ \\
+&&& \multirow{2}*{\sectioning~\label{featmodel:sectioning}} &~\textit{student groups must be fixed and pre-assigned}\\
+         && & &~\textit{to classes}\\
+\hline
+
+
+        \multirow{6}{*}{$\medcirc$}&\multirow{6}*{\rotatebox{90}{\hspace{-2pt}\aspects\label{featmodel:aspects}}}&\multirow{6}*{$\medcirc$} &  \cellcolor[gray]{.9}\availability & \cellcolor[gray]{.9} \textit{\ALLOWEDSLOTS, \FORBIDDENSLOTS, \ALLOWEDGRIDS,\ ...}\\
+
+        &&& \periodicity & ~\textit{\PERIODIC, \ALLOWEDGRIDS,\SAMEROOMS, \DIFFERENTTEACHERS,\ ...} \\
+
+         
+       & & & \cellcolor[gray]{.9}\sessiondistribution & \cellcolor[gray]{.9} \textit{\SAMESLOT, \DIFFERENTDAY, \SEQUENCED, \NOOVERLAP}\\
+        
+      & && \travel & ~\textit{\COMPACTNESS, \GAP,\ ...}\\
+
+     &&& \cellcolor[gray]{.9}\adjacency &\cellcolor[gray]{.9} \textit{\SAMEROOMS, \ADJACENTROOMS, \DIFFERENTTEACHERS,\ ...} \\
+
+       &&& \resourcedistribution&  ~\textit{\ALLOWEDROOMS, \REQUIREDTEACHERS,\ ...} \\
+\hline
+
+    \end{tabular}
+    \caption{A feature model for \UTP{}.}
+    \label{tab:features}
+    
+\end{table} 
+Table~\ref{tab:features} details our feature model.
+The feature-tree (rotated anticlockwise by 90\textdegree) has 3 levels:
+the root node (not shown),
+its sub-features and their labels
+shown respectively on the 2nd and 1st columns 
+and their variants shown on the next 2 columns.
+For instance, selecting feature \hyperref[featmodel:hosting]{\hosting}
+in a configuration requires selecting at least one of
+\hyperref[featmodel:noroom]{\noroom}, 
+\hyperref[featmodel:singleroom]{\singleroom} or
+\hyperref[featmodel:multiroom]{\multiroom}.
+The last column provides the formal or informal characterization of each leaf feature.
+The sub-features of the root 
+characterize core structural elements (course and time structure),
+orthogonal decision layers (scheduling, room allocation, etc.),
+and cross-cutting concerns (session planning, resource availability, etc.).
+The latter is tagged optional
+and so are
+\hyperref[featmodel:hosting]{\hosting} and
+\hyperref[featmodel:teaching]{\teaching}
+as these decision layers may be out of scope in an instance.
+We explain next the variants of these sub-features.
+
+\hyperref[featmodel:hierarchy]{\coursehierarchy} applies to instances whose
+course elements are nested hierarchically.
+\hyperref[featmodel:event]{\event} applies when events unrelated to courses 
+(e.g., staff meetings) must be scheduled too.
+The next 3 features characterize the sparsity and scope of the time horizon.
+\hyperref[featmodel:fullperiod]{\fullperiod} indicates if it is built on consecutive calendar weeks
+and \hyperref[featmodel:fullweek]{\fullweek} if a weekday is missing. 
+\hyperref[featmodel:singleweek]{\singleweek} checks whether the instance is restricted to a single week
+which is typical of timetabling practices in high schools. The next 3 characterize the temporal structure imposed on sessions from ``time grids'' in high-schools
+to free-flow timetables for higher grade curricula.
+\hyperref[featmodel:nooverlap]{\nooverlap} holds true
+if sessions can never overlap if they start at different times,
+\hyperref[featmodel:sameduration]{\sameduration} if all sessions have the same duration,
+and \hyperref[featmodel:synchronous]{\synchronous} if every session length, break time included, breaks down to a unit session length
+(e.g., some sessions are 1h long and any other session is measured in hours).
+
+The next features characterize room utilization.
+\hyperref[featmodel:noroom]{no-room},
+\hyperref[featmodel:singleroom]{\singleroom},
+\hyperref[featmodel:multiroom]{\multiroom},
+hold true if the instance includes a session that demands
+no room, a single room or more than 1 room, respectively.
+Similar features are introduced for the demand on teachers.
+\hyperref[featmodel:allexclusive]{\allexclusive},
+\hyperref[featmodel:noneexclusive]{\noneexclusive},
+\hyperref[featmodel:someexclusive]{\someexclusive},
+indicate if the instance includes only room-exclusive sessions, only inclusive sessions
+or a mix, respectively.
+\hyperref[featmodel:roomcapacity]{\roomcapacityfeat},
+\hyperref[featmodel:service]{service},
+and \hyperref[featmodel:sectioning]{\sectioning} apply
+if resp. room capacity, teaching service and student sectioning are in scope. 
+As for teaching, \hyperref[featmodel:teacheroverlap]{\teacheroverlap} indicates if teachers are cast as disjunctive resources (the counterpart is introduced for students).
+Lastly, the sub-features of \hyperref[featmodel:aspects]{\aspects} capture
+cross-cutting concerns and we simply list examples of constraints taken from the \UTP{ catalog}
+to convey the meaning.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ \section{Related Work}
+\label{sec:state-of-art}
+
+
+The design of timetables is a widely studied problem. Given the multitude of situations encountered, simpler, specialized variants of the general problem have been created in order to produce solutions within an acceptable time frame.
+The best-known variants include \ETT{} (Exam Timetabling)~\cite{2021_bellio_COR,2021_gorgos_SEEDA} which focuses on exams, \PETT{} (Post-Enrolment-based Timetabling)~\cite{ 2018_nagata_COR,2019_goh_JORS} in which students register for the courses they wish to take, \CBTT{} (Curriculum-Based Timetabling)~\cite{2010_hao_EJOR,2012_abdullah_IS,2016_kiefer_AOR}, in which students enroll for a curriculum that includes all the courses they have to take, \TAP{} (Tutor Allocation Problem)~\cite{2022_caselli_ESWA}, which manages the allocation of teachers after the course slots have been set, and \HTT{} (Highschool Timetabling)~\cite{2016_Kingston_AOR, 2018_stuckey_CPAIOR}, which deals with timetables for high schools.
+
+
+
+
+
+
+\begin{table}[!b]
+\centering
+    \begin{tabular}{|c|l|*{5}{c|} }
+\hline
+       \multicolumn{2}{|c|}{Features\diagbox[height=\line,width=2cm]{}{}Problems} & ETT & CB-TT &PE-TT & HTT & TAP \\
+        \hline
+
+
+        \multirow{2}*{\courses} & \cellcolor[gray]{.9}\coursehierarchy & \cellcolor[gray]{.9} & \cellcolor[gray]{.9}\checkmark & \cellcolor[gray]{.9} & \cellcolor[gray]{.9} & \cellcolor[gray]{.9} \\
+        & \event &&\checkmark&&\checkmark& \checkmark\\
+
+        \hline
+\multirow{3}*{\timing}& \cellcolor[gray]{.9}\fullperiod & \cellcolor[gray]{.9}&\cellcolor[gray]{.9}&\cellcolor[gray]{.9}& \cellcolor[gray]{.9}\checkmark &\cellcolor[gray]{.9}\\
+        & \fullweek & \checkmark  & \checkmark & \checkmark &&\\
+        &\cellcolor[gray]{.9}\singleweek & \cellcolor[gray]{.9}\checkmark & \cellcolor[gray]{.9}& \cellcolor[gray]{.9}& \cellcolor[gray]{.9}\checkmark  &\cellcolor[gray]{.9}\\
+        \hline \multirow{3}*{\scheduling}& \nooverlap & \checkmark  & \checkmark  & \checkmark  & \checkmark  &\\
+        & \cellcolor[gray]{.9}\sameduration & \cellcolor[gray]{.9}\checkmark  & \cellcolor[gray]{.9}\checkmark  & \cellcolor[gray]{.9}\checkmark  & \cellcolor[gray]{.9}\checkmark &\cellcolor[gray]{.9}\\
+        & \synchronous & \checkmark   & \checkmark  & \checkmark  & \checkmark &\\
+        
+\hline
+\multirow{7}*{\hosting}& \cellcolor[gray]{.9}\noroom &  \cellcolor[gray]{.9}  &\cellcolor[gray]{.9}  & \cellcolor[gray]{.9} & \cellcolor[gray]{.9} & \cellcolor[gray]{.9}NA \\
+        &\singleroom &  \checkmark & \checkmark & \checkmark & \checkmark & NA \\
+        &\cellcolor[gray]{.9}\multiroom & \cellcolor[gray]{.9}\checkmark  & \cellcolor[gray]{.9}\checkmark & \cellcolor[gray]{.9} & \cellcolor[gray]{.9} & \cellcolor[gray]{.9}NA \\
+        
+        & \roomcapacityfeat& \checkmark & \checkmark & \checkmark &  & NA\\
+        & \cellcolor[gray]{.9}\noneexclusive  & \cellcolor[gray]{.9}\checkmark & \cellcolor[gray]{.9} & \cellcolor[gray]{.9} & \cellcolor[gray]{.9} & \cellcolor[gray]{.9}NA\\
+        & \allexclusive  & \checkmark & \checkmark & \checkmark & \checkmark & NA\\
+        & \cellcolor[gray]{.9}\someexclusive  & \cellcolor[gray]{.9}\checkmark & \cellcolor[gray]{.9}\checkmark & \cellcolor[gray]{.9}\checkmark & \cellcolor[gray]{.9}\checkmark & \cellcolor[gray]{.9}NA\\
+
+
+        \hline
+        
+       \multirow{5}*{\teaching} & \noteacher & & \checkmark & \checkmark &  & \\
+       & \cellcolor[gray]{.9}\singleteacher & \cellcolor[gray]{.9}\checkmark & \cellcolor[gray]{.9}\checkmark & \cellcolor[gray]{.9}\checkmark & \cellcolor[gray]{.9}\checkmark & \cellcolor[gray]{.9}\checkmark\\
+       & \multiteacher &\checkmark  & \checkmark &  &  & \checkmark\\
+        & \cellcolor[gray]{.9}\teacheroverlap &\cellcolor[gray]{.9} & \cellcolor[gray]{.9}\checkmark & \cellcolor[gray]{.9}\checkmark & \cellcolor[gray]{.9}\checkmark & \cellcolor[gray]{.9}\checkmark\\
+       & \service && \checkmark  & \checkmark  &&\\
+        \hline
+        
+       \multirow{2}*{\attending} & \cellcolor[gray]{.9}\studentoverlap  & \cellcolor[gray]{.9}\checkmark & \cellcolor[gray]{.9}\checkmark & \cellcolor[gray]{.9}& \cellcolor[gray]{.9}\checkmark & \cellcolor[gray]{.9}\checkmark\\
+& \sectioning &  & \checkmark &  & \checkmark & \checkmark\\
+
+
+        \hline
+       \multirow{6}*{\aspects} & 
+         \cellcolor[gray]{.9}\availability & \cellcolor[gray]{.9}\checkmark & \cellcolor[gray]{.9}\checkmark & \cellcolor[gray]{.9}  &  \cellcolor[gray]{.9}\checkmark & \cellcolor[gray]{.9}\checkmark \\& \periodicity & \checkmark & \checkmark &  \checkmark &  & \\
+        & \cellcolor[gray]{.9}\sessiondistribution & \cellcolor[gray]{.9}& \cellcolor[gray]{.9}\checkmark & \cellcolor[gray]{.9}\checkmark & \cellcolor[gray]{.9}\checkmark & \cellcolor[gray]{.9} \\
+        
+       &\travel & \checkmark & \checkmark & \checkmark  & \checkmark & \\
+
+       & \cellcolor[gray]{.9}\adjacency & \cellcolor[gray]{.9}\checkmark & \cellcolor[gray]{.9} & \cellcolor[gray]{.9} & \cellcolor[gray]{.9} & \cellcolor[gray]{.9}\checkmark \\
+
+        & \resourcedistribution &  & \checkmark &  \checkmark &\checkmark  & \\\hline
+\end{tabular}
+    \caption{Problem features: a comparison.}
+    \label{tab:featuresproblem}
+\end{table}
+ A timetable design problem is broader than simply scheduling lessons. It depends, for example, on student sectioning~\cite{2017_schindl_AOR,2004_amintoosi_patat} which consists in dividing students into different groups. But it can also be the starting point for other problems such as \BACP{}~\cite{2013_rubio_MPE,2012_chiarandini_JH} which seeks to balance teaching periods. Given the difficulty of finding a solution, these ancillary problems are often solved beforehand. Simplification assumptions and resource management differ from problem to problem.
+Table~\ref{tab:featuresproblem} uses the feature model
+to compare the scope of the different problems, highlighting the common features and differences. 
+
+
+
+Although widely studied, the problem of timetable design is often dealt with on an ad-hoc basis. It is a crucial problem in the management of certain institutions which seek above all to produce a solution to their specific problem. This explains the heterogeneity of approaches, making it difficult to evaluate and compare work in the field.
+The emergence of competitions such as \ITC{} (International Timetabling Competition) has led to the creation of standardized formats, making it easier to compare approaches. \ITC{}-2007, one of the most studied schemas, 
+provides a simplified representation of \ETT{}, \PETT{}, and \CBTT{}.
+In this schema, the aim is to assign one room and one teacher to each session  
+(\hyperref[feat:roommodal]{single-room},\hyperref[feat:teachermodal]{single-teacher}).
+The description of academic courses is carried in \CBTT{} by the curricula which group the courses together, and in \PETT{} by the students 
+(\hyperref[feat:studentsessionoverlap]{session-overlap}).
+The teachers service is assumed to have already been resolved upstream. A teacher assigned to a course does all the sessions of a course, and sessions are otherwise exclusive  
+(\hyperref[feat:teachersessionoverlap]{session-overlap}).
+Time is expressed in terms of relative slots, i.e., there is a standard duration of one lesson between 2 slots 
+(\hyperref[feat:nooverlap]{no-overlap}). 
+Class sessions also all have the same duration 
+(\hyperref[feat:sameduration]{same-duration}) 
+and daily slots are repeated in the same pattern every day 
+(\hyperref[feat:synchronous]{synchronous}).
+
+
+The \XHSTT{}-2014~\cite{2014_demirovic_patat, 2017_demirovic_cor,2014_demirovic_lash} schema, based on the \ITC{} schema, focuses mainly on modeling timetables for secondary schools. Ancillary problems are solved beforehand: generation of groups, breakdown of rooms, teacher services.
+In addition to the usual resources (rooms, teacher, students, etc.), it is possible to represent other types of resource (e.g. equipment, vehicles, etc.).
+However, it is possible to leave out a set of resources on which to make a choice of allocations when solving 
+(\hyperref[feat:roommodal]{single-room},\hyperref[feat:teachermodal]{single-teacher}).
+A pre-fit is carried out upstream of the schema to reduce the set of rooms to those authorized according to the size of the groups of students 
+(\hyperref[feat:roomcapacity]{room-capacity}, \hyperref[feat:group]{group}).
+The schema generally contains a single time grid, but there's nothing to stop having several.
+ With this schema, the objective of the solver is to build a typical week
+ (\hyperref[feat:singleweek]{single-week},\hyperref[feat:periodicity]{periodicity}).
+The model proposes a catalog of constraints: hard constraints are interpreted as core constraints, while soft constraints have a violation score to minimize 
+(\hyperref[feat:sessiondistribution]{session-distribution}).
+Constraints can be imposed on resources 
+(\hyperref[feat:ressourcedistribution]{resource-distribution}).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+The \ITC{}-2019~\cite{2018_muller_PATAT,2019_lindahl_EJOR,2019_jawa_JIM} model focuses specifically on university timetables, more specifically anglo-saxon universities. The \ITC{}-2019 schema addresses scheduling as a combinatorial optimization problem, with a cost function that takes into account 4 criteria. The criteria concern the choice of time slots for sessions, rooms for sessions, violations of soft constraints and the overlap of sessions per student 
+(\hyperref[feat:studentsessionoverlap]{session overlap}).
+This model takes into account a time horizon of several weeks 
+(\hyperref[feat:fullperiod]{full-period},\hyperref[feat:fullweek]{full-week}.
+Timetables are defined as the repetition over a set of weeks 
+(\hyperref[feat:singleweek]{multi-week}) 
+of one or more sessions of the same duration starting on specific days of the week at the same predefined time 
+(\hyperref[feat:periodicity]{periodicity}).
+Each room has a penalty score for a session. This has an impact on the choice of room 
+(\hyperref[feat:roommodal]{single-room}, \hyperref[feat:roommodal]{exclusive-room}).
+The choice has been made not to represent teachers, nor groups of students. A problem expressed in this model comprises a constraint catalog made up of flexible constraints with a penalty score. The catalog of constraints is used to ensure quality and to express the different needs of the timetable 
+(\hyperref[feat:sessiondistribution]{session-distribution}, \hyperref[feat:availability]{availability}).
+
+
+
+
+
+The \UTP{} schema~\cite{2022_barichard_PATAT} has been designed to represent problems in which students enrol on courses. As with the other schemas, simplifications are made. For example, it is assumed that students are divided up into groups beforehand, just like the teachers (the allocation of a teacher to a group and a session is done during the design process). It allows problems to be represented over a modular time horizon and clearly identifies teachers. It also allows resources (rooms, teachers, etc.) to be treated disjunctively or cumulatively according to need. A few changes have been made since~\cite{2022_barichard_PATAT}. In \cite{2022_barichard_PATAT}, the problem of groups sectioning is dealt in conjunction with that of designing the timetable. However, a timetable is often designed on the basis of provisional enrolments, as the definitive enrolments are not yet closed. It is therefore not possible to set up the actual groups at such an early stage. It is interesting to be able to dissociate these two problems and, as with the other schemas, sectioning is considered to have been resolved upstream. The \UTP{} schema takes as input the list of groups formed. In \cite{2022_barichard_PATAT}, the time grid is identical whatever the week. In the current version, this can be adapted for a particular day or set of days in the entire time horizon.
+
+
+
+
+\begin{table}[t]
+    \centering
+
+
+    \begin{tabular}{|c|l|*{5}{c|} }
+\hline
+       \multicolumn{2}{|c|}{Features\diagbox[height=\line,width=2cm]{}{}Schemas} & ITC-2007 & ITC-2019 & XHSTT-14 & UTP  \\
+        \hline
+
+
+        \multirow{2}*{\courses} &  \cellcolor[gray]{.9}\coursehierarchy~\label{feat:coursehierarchie} & \cellcolor[gray]{.9}   &  \cellcolor[gray]{.9} \checkmark &  \cellcolor[gray]{.9}  & \cellcolor[gray]{.9}  \checkmark  \\
+        & \event~\label{feat:event} & \checkmark & & \checkmark & \checkmark\\
+
+        \hline
+\multirow{3}*{\timing}& \cellcolor[gray]{.9}\fullperiod~\label{feat:fullperiod} & \cellcolor[gray]{.9} \checkmark&  \cellcolor[gray]{.9} \checkmark & \cellcolor[gray]{.9} & \cellcolor[gray]{.9}  \checkmark \\
+        & \fullweek~\label{feat:fullweek} &\checkmark& \checkmark & \checkmark & \checkmark\\
+& \cellcolor[gray]{.9}\singleweek~\label{feat:singleweek} & \cellcolor[gray]{.9}\checkmark  & \cellcolor[gray]{.9} & \cellcolor[gray]{.9}\checkmark  & \cellcolor[gray]{.9} \\
+        \hline \multirow{3}*{\scheduling} &  \cellcolor[gray]{.9}\sameduration~\label{feat:sameduration} & \cellcolor[gray]{.9}  \checkmark & \cellcolor[gray]{.9}  \checkmark & \cellcolor[gray]{.9}  \checkmark & \cellcolor[gray]{.9}  \checkmark\\
+        & \nooverlap~\label{feat:nooverlap} & \checkmark & \checkmark& \checkmark & \checkmark \\
+& \cellcolor[gray]{.9}\synchronous~\label{feat:synchronous} & \cellcolor[gray]{.9}  \checkmark &   \cellcolor[gray]{.9} \checkmark& \cellcolor[gray]{.9} \checkmark&  \cellcolor[gray]{.9} \checkmark \\
+        
+\hline
+\multirow{6}*{\hosting}& \noroom & ~\label{feat:roommodal}  &  & \checkmark & \checkmark  \\
+&  \cellcolor[gray]{.9}\singleroom &  \cellcolor[gray]{.9} \checkmark~\label{feat:roommodalsingle}  &  \cellcolor[gray]{.9} \checkmark & \cellcolor[gray]{.9}  \checkmark & \cellcolor[gray]{.9}  \checkmark  \\
+& \multiroom & ~\label{feat:roommodalmulti}  &  &  & \checkmark  \\
+& \cellcolor[gray]{.9}\roomcapacityfeat~\label{feat:roomcapacity}& \cellcolor[gray]{.9}  \checkmark &  \cellcolor[gray]{.9} \checkmark &  \cellcolor[gray]{.9}  &  \cellcolor[gray]{.9}  \checkmark \\
+& \allexclusive~\label{feat:exclusiveroom}  & \checkmark & \checkmark & \checkmark &  \checkmark \\
+& \cellcolor[gray]{.9}\noneexclusive~\label{feat:inclusiveroom}  & \cellcolor[gray]{.9}   &  \cellcolor[gray]{.9}  &  \cellcolor[gray]{.9}  & \cellcolor[gray]{.9}\checkmark \\
+& \someexclusive~\label{feat:someincroom}  &    &    &    & \checkmark \\
+\hline
+        
+       \multirow{5}*{\teaching} & \noteacher~\label{feat:teachermodal} &  & NA & \checkmark & \checkmark \\
+        &  \cellcolor[gray]{.9}\singleteacher~\label{feat:teachermodalsingle} &  \cellcolor[gray]{.9}\checkmark & \cellcolor[gray]{.9}NA & \cellcolor[gray]{.9}\checkmark & \cellcolor[gray]{.9}\checkmark \\
+         & \multiteacher~\label{feat:teachermodalmultiple} &  & NA &  & \checkmark \\
+        & \cellcolor[gray]{.9}\teacheroverlap~\label{feat:teachersessionoverlap} & \cellcolor[gray]{.9} & \cellcolor[gray]{.9}NA & \cellcolor[gray]{.9}\checkmark & \cellcolor[gray]{.9}\checkmark \\
+       & \service~\label{feat:service} &&NA&& \checkmark \\
+        \hline
+        
+       \multirow{2}*{\attending} & \cellcolor[gray]{.9}\studentoverlap~\label{feat:studentsessionoverlap}  & \cellcolor[gray]{.9}& \cellcolor[gray]{.9}\checkmark & \cellcolor[gray]{.9}\checkmark & \cellcolor[gray]{.9}\checkmark \\
+& \sectioning~\label{feat:group} &  &  & \checkmark & \checkmark \\
+
+
+        \hline
+       \multirow{6}*{\aspects} & 
+         \cellcolor[gray]{.9}\availability~\label{feat:availability} & \cellcolor[gray]{.9}\checkmark & \cellcolor[gray]{.9}\checkmark &  \cellcolor[gray]{.9}\checkmark & \cellcolor[gray]{.9}\checkmark  \\
+
+        & \periodicity~\label{feat:periodicity} & \checkmark & \checkmark & \checkmark  &  \checkmark \\
+
+         
+        & \cellcolor[gray]{.9}\sessiondistribution~\label{feat:sessiondistribution} & \cellcolor[gray]{.9}\checkmark & \cellcolor[gray]{.9}\checkmark & \cellcolor[gray]{.9}\checkmark & \cellcolor[gray]{.9}\checkmark  \\
+        
+       &\travel~\label{feat:travel} &  & \checkmark &   &   \\
+
+       & \cellcolor[gray]{.9}\adjacency~\label{feat:adjacency} &\cellcolor[gray]{.9} & \cellcolor[gray]{.9} & \cellcolor[gray]{.9}  &  \cellcolor[gray]{.9}\checkmark \\
+
+        &  \resourcedistribution~\label{feat:ressourcedistribution} &  & \checkmark &  \checkmark & \checkmark  \\
+
+       
+
+
+
+        
+        \hline
+
+
+
+
+
+\end{tabular}
+    \caption{Schema features.}
+    \label{tab:features_schemas}
+\end{table} 
+Most of the schemas presented above stem from a desire to abstract and generalize a real variant of the problem. Thus, certain assumptions and simplifications are made, limiting the expressiveness of the schema, in particular to express other variants orthogonal to the initial assumptions. By analyzing Table~\ref{tab:features_schemas}, we can cite 3 cases where these simplifying assumptions prevent the representation of other variants: the management of the time horizon, the management of teacher services and the management of resources.  
+As far as time horizon management is concerned, only \ITC{}-2019 and \UTP{} can represent a problem with a time horizon longer than a week. Managing the timetable on a weekly basis is incompatible with institutions where each week is different. With the exception of \UTP{}, no schema takes into account the representation of a teacher's service. They consider that teachers are assigned upstream and cannot be exchanged. However, when several groups follow the same course and several teachers are involved, this removes flexibility and prevents certain solutions that could be of high quality from being achieved.
+Finally, the management of resources also differs from one schema to another. \XHSTT{} and \UTP{} allow teachers to be represented as such, whereas the \ITC{} models do not explicitly include them. In addition, whether for rooms or teachers, the various schemas, apart from \UTP{}, do not allow the resource to be shared over several sessions. For example, it is not possible to represent a problem where one teacher supervises several practical sessions. Nor is it possible to represent a problem in which a session must be hosted in several rooms (adjacent or not). Only \UTP{} can represent problems in which the resources are disjunctive or cumulative.
+
+
+
+Competitions are regularly organized~\cite{2019_ITC} and provide an opportunity to make available a set of real or fictitious instances, enabling any new algorithm to be compared with existing approaches.
+Whether for simulation or comparison purposes, it is useful to have a means of generating new instances.
+Only the \ITC{}-2007 schema has an instance generator. Developed in 2008, this generator was improved in 2010 and again in 2022 to produce more realistic instances and better cover the range of possible configurations (available on \cite{2022_dataset}). \section{Instance Generator and Experiments}\label{sec:experiments}
+
+
+This section introduces a generator of pseudo-random \UTP{} instances
+and reports on experiments carried out with three models, namely, \CP{}, \ASP{} and \MIP{}.
+The objective is to assess the scalability of the models
+and their applicability to real-life instances.
+The complete list of instances and the models may be found in Appendix~\ref{appendix:instances} and~\ref{appendix:models}.
+
+
+
+
+
+
+
+\subsection{Instance Generator}
+
+To generate a \UTP{} instance involves generating a course structure,
+groups of students, 
+teacher services, 
+and rules.
+All those generators can be configured thanks to \XML{} files to select the features we want our instance to fit in.
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+In our generator, we define curricula associated with faculty departments.
+Curricula enable us to associate a set of courses with a set of students and a set of teachers.
+Each department is associated with a set of courses, teachers and specific rooms (\emph{i.e.} rooms that can be used only by courses of the department).
+The courses are divided into several parts.
+The number of parts usually varies between 1 (only lectures) and 4 (lectures, tutorials, practices and evaluations).
+
+
+
+
+
+
+
+Student sectioning is the problem of assigning students to groups.
+The \UTP{} schema takes groups, rather than individual students, necessitating that the generator supply groups.
+The input of the generator is the number of students enrolled in a curriculum.
+A \CSP{} model is used by the generator to create groups.
+The different sizes of groups (lecture, tutorial, practice) should be given.
+It is possible to change the size of a specific group for a curriculum (e.g., a specific curriculum with group sizes different from the standard ones).
+The sectioning \CSP{} can create groups with a fixed size, or create courses with a limited number of groups, to fix the total number of hours. 
+Teaching service is a problem where we know how many hours a teacher has to do, how many hours each part of a class lasts, and we want to assign each teacher with a number of classes in each part.
+This will give us all the course parts a teacher has to teach. Note that we just know how many classes a teacher is assigned to, not to which class, which is another problem
+known as the tutor allocation problem.
+The generator uses a \CSP{} model to tackle this problem.
+
+
+
+
+There are various rules, often used together with some being more common. We defined three rule packs: 1) light: some classes have \texttt{\SAMEROOMS{}}, \texttt{\SAMETEACHERS{}}, \texttt{\PERIODIC{}}, and a \texttt{\SEQUENCED{}} rule between two parts of the course; 2) medium: all classes have \texttt{\SAMEROOMS{}} and \texttt{\SAMETEACHERS{}}, with some also having \texttt{\PERIODIC{}} and \texttt{\SEQUENCED{}}; 3) heavy: like medium, but with additional \texttt{\SAMETEACHERS{}} and \texttt{\SAMESLOT{}} rules for classes in the same part.
+
+\subsection{Instances and Results}\label{subsec:experiments}
+
+We carried out experiments on pseudo-random instances built with our generator
+and on a real-life instance from our Computer Sciences department. 
+The pseudo-random instances are listed in Appendix~\ref{appendix:instances}
+and may be downloaded from \cite{2024_UTP}.
+A selected subset is given in Table~\ref{tab:instances}.
+
+
+
+
+The generated instances were built by varying the number of rooms, groups and sessions.
+All are single-room and single-teacher
+and uses the ``medium'' rules pack, meaning that all classes have \texttt{\SAMEROOMS{}} and \texttt{\SAMETEACHERS{}}, and some have \texttt{\PERIODIC{}} and a \texttt{\SEQUENCED{}} constraint between 2 different parts of the same course.
+The real-life instance consists of the 3 years of bachelor and the 2 years of master in Computer Sciences at the University of Angers in 2023.
+The instance is reduced only to courses that occur at the first time period of each curriculum.
+
+\begin{table}[t]
+\begin{tabular}{l lllll rrrr rrrr }
+\hline
+\multirow{2}*{name} & \multirow{2}*{$|\ROOM|$} & \multirow{2}*{$|\TEACHER|$} & \multirow{2}*{$|\STUDENT|$} & \multirow{2}*{$|\SESSION|$} & \multirow{2}{*}{\#ru} & \multicolumn{2}{c}{CP} &  \multicolumn{2}{c}{ASP} &  \multicolumn{2}{c}{CASP} &  \multicolumn{2}{c}{MIP} \\
+ &&&&&& BT & ST & BT & ST & BT & ST & BT & ST \\
+\hline
+ \grayrow   gi8201 & 82 & 4 & 33 & 118 & 23 & 0.86 & 1.86 & 15.71 & 0.08 & 0.30 & 0.23 & 0.17 & 0.26 \\
+    gi5301 & 99 & 96 & 55 & 139 & 33 & 0.85 & 483.59 & 68.70 & 0.36 & 0.40 & 0.12 & 0.22 & 0.49 \\
+   \grayrow gi4389 & 65 & 6 & 174 & 662 & 33 & 1.47 & 4.62 & 693.40 & 210.58 & 14.91 & 4.93 & 7.66 & 10.23 \\
+    gi5567 & 94 & 94 & 1770 & 6180 & 562 & 4.75 & 381.78 &  &  & 122.89 & 3548.58 &  &  \\
+   \grayrow gi2767 & 92 & 21 & 501 & 2003 & 78 & 2.02 & 30.48 &  &  & 128.21 & 57.11 & 130.51 & 7995.32 \\
+    real & 117 & 183 & 768 & 2625 & 520 & 2.21 & 8.71 & & & 219.97 & 411.79 & - & - \\
+    \hline
+\end{tabular}
+\caption{\label{tab:instances}Selected list of instances.
+$|\ROOM|$ is the number of rooms, $|\TEACHER|$ the number of teachers, $|\STUDENT|$ the number of students, $|\SESSION|$ the number of sessions, \#ru the number of rules; BT is the building time (s) and ST the solving time (s).
+}
+\end{table}
+
+%
+ 
+
+
+
+
+
+
+
+The experiments were performed on a computer with a processor Intel-Xeon E7-4850 v4, 2.1 GHz, 40MB of cache.
+The \CP{} solver is Choco-solver~\cite{2022_chocosolver} 4.10.12.
+The \ASP{} solver is Clingo~\cite{2019_clingo} 5.6.2.
+The \CASP{} solver is Clingcon~\cite{2018_casp} 5.2.0.
+The \MIP{} solver is Gurobi Optimizer~\cite{2023_gurobi} 10.0.3.
+The building (BT) and solving (ST) times can be found in Appendix~\ref{appendix:instances}.
+Table~\ref{tab:instances} shows selected instances:
+an instance where all solvers performed well (gi8201) and the worst-case instances in run-time for \CP{} (gi5301), \ASP{} (gi4389), \CASP{} (gi5567) and \MIP{} (gi2767).
+Those instances show the limits of the solvers.
+In particular, the more sessions there are, the more difficult it is for \ASP{} and \MIP{} to solve instances to completion.
+Some instances could not be solved by \ASP{} as it may need more than 80GB when \MIP{} instances use up to 15GB, and \CP{} and \CASP{} only need 8GB.
+Some instances could not be solved by \MIP{} due to time outs with a time limit set to 5 hours.
+
+  \section{Conclusion}
+\label{sec:conclusion}
+
+
+In this article, we focused on a class of timetabling problems (\UTP{}), proposing a framework that can adapt to different types of institutions, whether they operate like high schools or universities, and to account for regular classes, exams, meetings, or special events.
+Our current work addresses several aspects. Firstly, we aim to experiment on larger real-world instances and are developing a set of software applications for this purpose. 
+We are also working on incorporating soft constraints and priorities to propose a solution in cases where there is no solution that satisfies all expressed constraints. 
+Finally, we are working on timetable revisions to accommodate unforeseen events such as teacher absences or room unavailability.
+ 
+\printbibliography
+
+\appendix
+\newpage
+
+\section{Core Computational Model}
+\label{appendix:core-model}
+\UTP{} instances are cast as hard constraint satisfaction problems.
+We present here a formal specification of the constraint-based model for the entity schema.
+This core model only formulates the built-in constraints that apply to any instance,
+leaving out the constraints generated from instance-specific rules.
+
+
+Table~\ref{table:core-variables} lists the core decision variables of the model
+and includes auxiliary variables for notational convenience.
+All, except temporal variables, are cast as set variables. 
+
+\begin{table}[!ht]
+\begin{center}
+
+
+\begin{tabular}{|rl|}
+\hline
+\grayrow
+$\var{\SESSION}{\SLOT}{s}\in{\SLOT}$ & the start time assigned to session $s$\\
+$\var{\SESSION}{\ROOM}{s}\subseteq{\ROOM}$ & the set of rooms assigned to session $s$ \\
+\grayrow
+$\var{\SESSION}{\TEACHER}{s}\subseteq{\TEACHER}$ & the set of lecturers assigned to session $s$ \\[-0.75em]
+        \arrayrulecolor{black}
+        \multicolumn{2}{|c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+$\var{\SESSION}{\WEEK}{s}\in{\WEEK}$ & (auxiliary variable) the week of the start time assigned to session $s$
+\\
+\grayrow
+$\var{\SESSION}{\WEEKDAY}{s}\in{\WEEKDAY}$ & (auxiliary variable) the weekday of the start time assigned to session $s$
+\\
+$\var{\SESSION}{\DAILYSLOT}{s}\in{\DAILYSLOT}$ & (auxiliary variable) the daily slot of the start time assigned to session $s$
+\\
+\hline
+\end{tabular}
+\caption{Core and auxiliary decision variables.}
+\label{table:core-variables}
+\end{center}
+\end{table}
+%
+ 
+
+
+Table~\ref{table:core-constraints} formulates the core constraints of the model.
+Note that some statements reify primitive constraints (e.g., set memberhsip) as implicit pseudo-boolean variables. 
+
+Constraint~\ref{ctr:auxiliary} establishes the relationship between the start time of a session and its start points on the 3 time scales.
+~\ref{ctr:allowedslots} restricts the start time of a session to the allowed start points.
+Constraint ~\ref{ctr:nooverlap2days} ensures that every session starts and ends on the same day.
+Constraint~\ref{ctr:ranksequenced} sequences the sessions of a class based on ranks. 
+~\ref{ctr:allowedrooms} models the sets of possible and required rooms for a session as set inclusion constraints.
+~\ref{ctr:allowedteachers} is the counterpart for teachers.
+~\ref{ctr:cardinalmultiroom} and ~\ref{ctr:cardinalmultiteacher} set the bounds on the number of rooms and teachers per session.  
+\ref{ctr:serviceteacher} models the service constraint for each teacher measured in number of sessions.
+Constraints \ref{ctr:roomuse} and \ref{ctr:cumulativeroomcapacity}
+model the cumulative capacity of rooms
+and address the 3 hosting scenarios discussed in Section~\ref{sec:entity-schema}
+(multi-room exclusive, single-room exclusive and single-room inclusive sessions).
+\ref{ctr:roomuse} ensures any (single- or multi-room) exclusive session allocated to a room
+virtually fulfills the room capacity and hence has exclusive use of it.
+Otherwise, the total headcount of the inclusive session(s) occupying the room at any time must not exceed its capacity. 
+Constraint~\ref{ctr:cumulativeroomcapacity} models the capacity demand of each session, be it single- or multi-rooms, and ensures its allocated room(s) meet the demand.
+
+
+\newcounter{rowconstraint}[table]
+\renewcommand{\therowconstraint}{(\arabic{rowconstraint})}
+\setcounter{rowconstraint}{0}
+\begin{table}[!t]
+    \centering
+\begin{tabular}{|lcr|}
+\hline 
+
+\grayrow$\forall s \in \SESSION$&\multicolumn{1}{c}{$\var{\SESSION}{\SLOT}{s} = \var{\SESSION}{\DAILYSLOT}{s} + \dailyslot*(\var{\SESSION}{\WEEKDAY}{s} - 1) + \dailyslot*\weekday*(\var{\SESSION}{\WEEK}{s} - 1)$}&\refstepcounter{rowconstraint} \therowconstraint\label{ctr:auxiliary}
+\\
+      $\forall s \in \SESSION$  &
+       \multicolumn{1}{c}{$\var{\SESSION}{\SLOT}{s} \in \partallowedslots{s}$ }
+&\refstepcounter{rowconstraint} \therowconstraint\label{ctr:allowedslots}
+
+      \\
+      \grayrow$\forall s \in \SESSION$&
+      \multicolumn{1}{c}{ 
+      $\var{\SESSION}{\WEEKDAY}{s} + (\var{\SESSION}{\WEEK}{s}-1)* \weekday = (\var{\SESSION}{\SLOT}{s}+\sessionduration{s})\div{\dailyslot} $
+      }     &\refstepcounter{rowconstraint} \therowconstraint\label{ctr:nooverlap2days}
+\\
+
+      $\forall c \in \CLASS,\;\forall s_1,s_2\in\map{\CLASS}{\SESSION}{c}$&
+      \multicolumn{1}{c}{ 
+      $ \sessionrank{s_1} < \sessionrank{s_2} \rightarrow (\var{\SESSION}{\SLOT}{s_1} + \sessionduration{s_1}) \leq \var{\SESSION}{\SLOT}{s_2} $
+      }     &\refstepcounter{rowconstraint} \therowconstraint\label{ctr:ranksequenced}
+\\
+      \grayrow$\forall s \in \SESSION$ &\multicolumn{1}{c}{$\dmap{\SESSION}{\ROOM}{s}\subseteq\var{\SESSION}{\ROOM}{s} \subseteq \umap{\SESSION}{\ROOM}{s}$}&\refstepcounter{rowconstraint}\therowconstraint\label{ctr:allowedrooms}
+\\
+      $\forall s \in \SESSION$ &
+      \multicolumn{1}{c}{ $\dmap{\SESSION}{\TEACHER}{s}\subseteq\var{\SESSION}{\TEACHER}{s} \subseteq \umap{\SESSION}{\TEACHER}{s}$}
+      &\refstepcounter{rowconstraint} \therowconstraint\label{ctr:allowedteachers}
+\\
+      \grayrow\multicolumn{1}{|l}{$\forall p \in \PART, \forall s\in\map{\PART}{\SESSION}{p}$}&
+    \multicolumn{1}{c}{$\multiroompartmin{p} \leq \mycard{\var{\SESSION}{\ROOM}{s}} \leq \multiroompartmax{p}$}
+      &\refstepcounter{rowconstraint} \therowconstraint\label{ctr:cardinalmultiroom}
+\\
+      \multicolumn{1}{|l}{ $\forall p \in \PART,\forall s\in\map{\PART}{\SESSION}{p}$}&
+      \multicolumn{1}{c}{ $\partteachermultiplicitymin{p} \leq \mycard{\var{\SESSION}{\TEACHER}{s}} \leq \partteachermultiplicitymax{p}$}
+      &\refstepcounter{rowconstraint} \therowconstraint\label{ctr:cardinalmultiteacher}
+\\
+\grayrow$\forall t\in\TEACHER,\;\forall p\in\PART$
+&$\partteacherservice{l,p}=\sum_{s\in\map{\PART}{\SESSION}{p}}{(l\in\var{\SESSION}{\TEACHER}{s})}$
+&\refstepcounter{rowconstraint} \therowconstraint\label{ctr:serviceteacher}\\
+
+
+$\forall r\in\ROOM, \forall h\in\SLOT$&
+\multicolumn{1}{c}{$ \roomcapacity{r} \geq \sum\limits_{s\in\SESSIONINC}(r\in\var{\SESSION}{\ROOM}{s})*(h = \var{\SESSION}{\SLOT}{s})*(\classcapacity{\map{\SESSION}{\CLASS}{s}})+$}&\\
+&\multicolumn{1}{c}{ $\sum\limits_{s\in\SESSIONEX}(r\in\var{\SESSION}{\ROOM}{s})*(h = \var{\SESSION}{\SLOT}{s})*(\roomcapacity{r})$}& \refstepcounter{rowconstraint} \therowconstraint\label{ctr:roomuse}
+\\
+\grayrow\multicolumn{1}{|l}{$\forall s\in\SESSION, \forall k \in \map{\SESSION}{\CLASS}{s}$}&
+\multicolumn{1}{c}{$\map{\CLASS}{\ROOM}{k} \neq \emptyset \rightarrow$$\classcapacity{k} \leq \sum_{r \in \var{\SESSION}{\ROOM}{s}} \roomcapacity{r}$}&\refstepcounter{rowconstraint} \therowconstraint\label{ctr:cumulativeroomcapacity}
+\\
+\hline
+    \end{tabular}
+    \caption{Core constraints.}
+    \label{table:core-constraints}
+ \end{table}
+  \newpage
+\section{Rules Syntax and Constraint Predicate Catalog}
+\label{appendix:constraintcatalog}
+
+
+Table~\ref{tab:rule-language}
+provides the syntax of the rules language: e-maps, constraints, queries and rules.
+\begin{center}
+\begin{table}[!ht]
+    \centering
+    \begin{tabular}{|ll|}
+\hline
+       \grayrow $(e_i,S_i)$
+        & e-map mapping entity $e_i$ to the set of sessions $S_i$
+        \\
+    \hline
+        ${\EMAP}=\ENTITY\times{2^{\SESSION}}$  
+        & the domain of e-maps
+        \\
+    \hline
+      \grayrow  $c((e_1,S_1),..,(e_n,S_n),p_1,..,p_m)$
+        &  constraint of predicate $c$, arity $n$, parameters $p_1,..,p_m$
+        \\
+    \grayrow    & and e-map arguments $(e_1,S_1),..,(e_n,S_n)\in{\EMAP}^{n}$
+        \\
+    \hline
+    $\RANK$ = $1..\max\limits_{s\in\SESSION} \sessionrank{s}$ & the range of session ranks 
+    \\
+\hline
+    ${\LABEL}^{*}={\LABEL}\cup\myset{\ENTITY}\cup\myset{\myset{e}\ |\ e\in{\ENTITY}}$
+        &
+the set of labels 
+
+    \\\hline
+   \grayrow $
+{\SELECTOR}=\cup_{n\geq1}({\TYPE}\times{\LABEL}^*\times{2^{\RANK}})^{n}
+$& the language of queries
+    \\\hline
+     \grayrow   $c\langle{\SELECTOR},p_1,\ldots,p_m\rangle$
+        & rule of predicate $c$, query $\SELECTOR$ and parameters $p_1,\ldots p_m$
+        \\
+     \grayrow   & - $c$ predicate of arity $n$ and number of parameters $m$
+        \\
+     \grayrow   & - $\SELECTOR$ query sized to extract $n$ sets of e-maps
+        \\
+     \grayrow   & - $p_1,\ldots p_m$ values for the parameters of $c$
+        \\
+    \hline
+    \end{tabular}
+    \caption{Predicates, constraints, queries and rules.}
+    \label{tab:rule-language}
+\end{table}
+\end{center}
+
+
+
+
+ 
+Table~\ref{tab:predicate_catalog}
+lists and describes the predicates of the catalog.
+
+\begin{table}[H]
+\resizebox{\textwidth}{!}{\centering
+
+\begin{tabular}{|l|l|}
+\hline
+\textbf{Predicate}               & \textbf{Description}\\ \hline
+
+\grayrow{\ADJACENTROOMS}            & Sessions must be adjacent in the given room(s)\\ \hline
+
+\ALLOWEDGRIDS{}  & Sessions may only start in the given time grid(s)\\ \hline
+\grayrow\ALLOWEDROOMS{} & Sessions may only be hosted in the given room(s) \\ \hline
+\ALLOWEDSLOTS{} & Sessions may only run in the given time slots\\ \hline
+\grayrow\ALLOWEDTEACHERS{} & Sessions may only be taught by the given teacher(s)  \\ \hline
+\ASSIGNROOMS{} & Sessions are hosted in the given room(s) \\ \hline
+\grayrow\ASSIGNSLOT{} & Sessions start at the given time \\ \hline
+\ASSIGNTEACHERS{} & Sessions are taught by the given teacher(s) \\ \hline
+\grayrow\COMPACTNESS{} & The sessions makespan is bounded  \\ \hline
+\DIFFERENTDAILYSLOT{} & Sessions start on different daily slots \\ \hline
+\grayrow\DIFFERENTDAY{}  & Sessions start on different days \\ \hline
+\DIFFERENTROOMS{} & Sessions are hosted in different rooms \\ \hline
+\grayrow\DIFFERENTSLOT{} & Sessions start at different times \\ \hline
+\DIFFERENTTEACHERS{} & Sessions are taught by different teachers \\ \hline
+\grayrow\DIFFERENTWEEK{} & Sessions start on different week \\ \hline
+\DIFFERENTWEEKDAY{}& Sessions start on different weekday \\ \hline
+\grayrow\DIFFERENTWEEKLYSLOT{} & Sessions start on different weekly time points \\ \hline
+\FORBIDDENROOMS{}         & Sessions cannot be hosted in the given room(s)\\ \hline
+\grayrow\FORBIDDENSLOTS{} & Sessions cannot run in the given time slots \\ \hline
+\FORBIDDENTEACHERS{}         & Sessions cannot be taught by the given teacher(s)\\ \hline
+
+\GAP{}  &\cellcolor[gray]{.9}Gaps between sessions are bounded\\ \hline
+
+\NOOVERLAP{}                & Sessions in the given set cannot overlap\\ \hline
+\grayrow\PAIRWISENOOVERLAP{}     & Sessions cannot overlap if in different sets\\ \hline
+\PERIODIC{}                & Sessions are periodic \\ \hline
+
+\grayrow\REQUIREDROOMS{}   & Sessions must be hosted in the given room(s) \\ \hline
+
+\REQUIREDTEACHERS{}     & Sessions must be taught by the given teacher(s) \\ \hline
+
+\grayrow{\SAMEDAILYSLOT}   & Sessions start on the same daily slot\\ \hline
+{\SAMEDAY}                  & Sessions start on the same day\\ \hline
+
+\grayrow{\SAMEROOMS}                & Sessions are hosted in the same room(s)\\ \hline
+{\SAMESLOT}                 & Sessions start at the same time\\ \hline
+\grayrow{\SAMETEACHERS}             & Sessions are taught by the same teacher(s)\\ \hline
+
+{\SAMEWEEKDAY}              & Sessions start on the same weekday\\ \hline
+\grayrow{\SAMEWEEKLYSLOT}           & Sessions start on the same weekly time point\\ \hline
+{\SAMEWEEK}                 & Sessions start on the same week\\ \hline
+
+\grayrow\SEQUENCED{}                & Sessions run sequentially\\\hline
+
+\WORKLOAD{sessions}       & The number of sessions per time frame is bounded\\ \hline
+
+\WORKLOAD{times}      & The total duration of sessions per time frame is bounded\\ \hline
+
+
+
+
+
+
+
+
+
+
+
+
+\end{tabular}
+}
+\caption{Catalog of {\UTP} constraint predicates.}
+\label{tab:predicate_catalog}
+\end{table} 
+Table~\ref{tab:constraintformel} provides the semantics of each predicate
+once the scope is restricted to a tuple of sets of sessions
+(obtained after joining a solution and a constraint built with the predicate).
+Given
+a $n$-ary predicate $c$ accepting $m$ parameters ($m\geq 0$)
+and given a $n$-uple $(S'_1,\ldots,S'_n)\in{S}^n$,
+we provide the semantics for $c(S'_1,\ldots,S'_n,p_1,\ldots,p_m)$
+which denotes the evaluation of the predicate on the tuple.
+
+
+
+
+
+
+\newcounter{rowcntrformal}[table]
+\renewcommand{\therowcntrformal}{(\arabic{rowcntrformal})}
+\setcounter{rowcntrformal}{0}
+\begin{longtable}{|lr|}
+
+
+    \hline \textbf{Predicate} & \textbf{Parameters} \\ 
+        \multicolumn{2}{|l|}{\textbf{Semantics}} \\
+    \hline \grayrow\textbf{\ADJACENTROOMS}(\SESSION',K$_1$,$\dots$,K$_n$) & $ K_i \subseteq \ROOM, i : 1..n $ \\
+  \grayrow\multicolumn{2}{|l|}{  $\forall s_1, s_2 \in \SESSION', \var{\SESSION}{\SLOT}{s_1} = \var{\SESSION}{\SLOT}{s_2} $
+    $\forall i \in  \{1..n\} : C_i =\{ \var{\SESSION}{\ROOM}{s} \mid s \in \SESSION' , \var{\SESSION}{\ROOM}{s} \in K_i \} \land$}\\
+     \grayrow\multicolumn{2}{|l|}{ 
+   $ \forall r,r' \in C_i : \exists path(r,r') \land |\{C_i \mid C_i \ne \emptyset , i = 1..n \}| \leq \sigma $}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:adjacentrooms}\\
+
+
+
+    
+\hline \textbf{\ALLOWEDGRIDS}(\SESSION',G)   & $G \in (W'\times D' \times M')^n, n \in \mathbb{N}^*, $ \\
+    &$ S'\subseteq\SESSION, W'\subseteq \WEEK, D'\subseteq\WEEKDAY, M'\subseteq\DAILYSLOT$ \\
+    \multicolumn{2}{|l|}{
+    $\forall s\in S', \exists k \in \{1..n\}: \var{\SESSION}{\WEEK}{s}\in W'_k \wedge   \var{\SESSION}{\WEEKDAY}{s}\in D'_k \wedge  \var{\SESSION}{\DAILYSLOT}{s}\in M'_k$ }\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:allowedgrids}    \\[-0.75em]
+    \multicolumn{2}{|c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+\grayrow\textbf{\ALLOWEDROOMS}($\SESSION'$,$\ROOM'$) & $ S' \subseteq \SESSION, \ROOM' \subseteq \ROOM $ 
+    \\
+    \grayrow\multicolumn{2}{|l|}{
+    $\forall s \in \SESSION'$, $\var{\SESSION}{\ROOM}{s} \subseteq \ROOM'$}
+    \refstepcounter{rowcntrformal} \therowcntrformal\label{formal:allowedrooms}
+        \\[-0.75em]
+    \multicolumn{2}{|c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+\textbf{\ALLOWEDSLOTS}($\SESSION'$,$\SLOT'$)&  $\SLOT' \subseteq \SLOT,  $
+    \\
+    \multicolumn{2}{|l|}{
+      $\forall s \in S' [\var{\SESSION}{\SLOT}{s},\var{\SESSION}{\SLOT}{s}+\sessionduration{s}] \subseteq \SLOT'$}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:allowedslots}\\[-0.75em]
+    \multicolumn{2}{|c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+\grayrow\textbf{\ALLOWEDTEACHERS}((e,$\TEACHER'$),$\ROOM'$) &  $ S' \subseteq \SESSION, \TEACHER' \subseteq \TEACHER  $ \\
+     \grayrow\multicolumn{2}{|l|}{
+     $\forall s \in \SESSION'$, $\var{\SESSION}{\TEACHER}{s} \subseteq \TEACHER'$}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:allowedteachers}\\
+    \hline \textbf{\ASSIGNROOMS}($\SESSION'$,$\ROOM'$) & $ \ROOM' \subseteq \ROOM	$
+    \\
+    \multicolumn{2}{|l|}{
+    $  \forall s \in \SESSION'$, $\var{\SESSION}{\ROOM}{s} = \ROOM' $}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:assignrooms}    
+    \\[-0.75em]
+    \multicolumn{2}{|c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+\grayrow\textbf{\ASSIGNSLOT}($\SESSION'$,$\SLOT'$) & $ h \in \SLOT	$ 
+    \\
+    \grayrow\multicolumn{2}{|l|}{
+    $  \forall s \in \SESSION'$, $\var{\SESSION}{\SLOT}{s} = h $}
+    \refstepcounter{rowcntrformal} \therowcntrformal\label{formal:assignslot}
+        \\[-0.75em]
+    \multicolumn{2}{|c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+\textbf{\ASSIGNTEACHERS} $\SESSION'$,$\TEACHER'$) 
+    &
+    $ \TEACHER' \subseteq \TEACHER$ 
+    \\
+    \multicolumn{2}{|l|}{
+    $  \forall s \in \SESSION'$, $\var{\SESSION}{\TEACHER}{s} = \TEACHER' $
+    }\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:assignteachers}\\
+    \hline \grayrow\textbf{\COMPACTNESS}($\SESSION'$,$\sigma$)
+    &
+    $\sigma\in 0..|\SLOT'|$
+    \\
+    \grayrow\multicolumn{2}{|l|}{
+     $ \forall d \in \WEEKDAY : \exists \SESSION'' = \{s \in \SESSION' : \var{\SESSION}{\WEEKDAY}{s}\} \land$ 
+        }\\
+     \grayrow\multicolumn{2}{|l|}{
+    $ ((\max\limits_{s \in \SESSION''}(\var{\SESSION}{\SLOT}{s}+\sessionduration{s})-\min\limits_{s \in \SESSION'}(\var{\SESSION}{\SLOT}{s}))-\sum_{s \in \SESSION''}\sessionduration{s} )) / (|S''|-1)\leq \sigma$
+    }
+    \refstepcounter{rowcntrformal} \therowcntrformal\label{formal:compactness}\\
+    \hline \textbf{\DIFFERENTDAILYSLOT}($\SESSION'$) 
+    &
+    \\
+    \multicolumn{2}{|l|}{
+    $\forall s_1, s_2 \in \SESSION'$, $\var{\SESSION}{\DAILYSLOT}{s_1}  \ne \var{\SESSION}{\DAILYSLOT}{s_2}$
+    }\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:differentdailyslot}
+    \\[-0.75em]
+    \multicolumn{2}{|c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+\grayrow\textbf{\DIFFERENTDAY}($\SESSION'$) & 
+    \\
+    \grayrow\multicolumn{2}{|l|}{
+    $\forall s_1, s_2 \in \SESSION',\var{\SESSION}{\WEEKDAY}{s_1}  \ne \var{\SESSION}{\WEEKDAY}{s_2} \vee \var{\SESSION}{\WEEK}{s_1}  \ne \var{\SESSION}{\WEEK}{s_2} $
+    }\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:differentday}
+        \\[-0.75em]
+    \multicolumn{2}{|c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+\textbf{\DIFFERENTROOMS}($\SESSION'$) 
+    &
+    \\
+    \multicolumn{2}{|l|}{
+    $\forall s_1, s_2 \in \SESSION'$, $\var{\SESSION}{\ROOM}{s_1}  \cap \var{\SESSION}{\ROOM}{s_2} = \emptyset	$}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:differentrooms}
+        \\[-0.75em]
+    \multicolumn{2}{|c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+\grayrow\textbf{\DIFFERENTSLOT}($\SESSION'$)
+    &
+    \\
+    \grayrow\multicolumn{2}{|l|}{
+    $\forall s_1, s_2 \in \SESSION'$, $\var{\SESSION}{\SLOT}{s_1}   \ne \var{\SESSION}{\SLOT}{s_2}$}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:differentslot}
+    \\[-0.75em]
+    \multicolumn{2}{|c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+\textbf{\DIFFERENTTEACHERS}($\SESSION'$) 
+    &
+    \\
+    \multicolumn{2}{|l|}{
+    $\forall s_1, s_2 \in \SESSION'$, $\var{\SESSION}{\TEACHER}{s_1}  \cap \var{\SESSION}{\TEACHER}{s_2} = \emptyset	$}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:differentteachers}\\[-0.75em]
+    \multicolumn{2}{|c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+\grayrow\textbf{\DIFFERENTWEEK }($\SESSION'$)
+    &
+    \\
+    \grayrow\multicolumn{2}{|l|}{
+    $\forall s_1, s_2 \in \SESSION'$, $\var{\SESSION}{\WEEK}{s_1}  \ne \var{\SESSION}{\WEEK}{s_2}$}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:differentweek}\\[-0.75em]
+    \multicolumn{2}{|c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+\textbf{\DIFFERENTWEEKDAY}($\SESSION'$)
+    &
+    \\
+    \multicolumn{2}{|l|}{
+    $\forall s_1, s_2 \in \SESSION',\var{\SESSION}{\WEEKDAY}{s_1}  \ne \var{\SESSION}{\WEEKDAY}{s_2} $}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:differentweekday}\\\\[-0.75em]
+    \multicolumn{2}{|c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+\grayrow\textbf{\DIFFERENTWEEKLYSLOT}($\SESSION'$)
+    &
+    \\
+    \grayrow\multicolumn{2}{|l|}{
+    $\forall s_1, s_2 \in \SESSION'$, $\var{\SESSION}{\DAILYSLOT}{s_1}  \ne \var{\SESSION}{\DAILYSLOT}{s_2} \vee \var{\SESSION}{\WEEKDAY}{s_1}  \ne \var{\SESSION}{\WEEKDAY}{s_2} $}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:differentweeklyslot}\\
+
+    \hline \textbf{\FORBIDDENROOMS}($\SESSION'$,$\ROOM'$)
+    &  
+    $\ROOM' \subseteq \ROOM $ 
+    \\
+    \multicolumn{2}{|l|}{
+    $\forall s \in \SESSION'$, $\var{\SESSION}{\ROOM}{s} \subseteq \ROOM\setminus\ROOM'$}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:forbiddenrooms}
+    \\[-0.75em]
+    \multicolumn{2}{|c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+    
+\grayrow\textbf{\FORBIDDENSLOTS}($\SESSION'$,$\SLOT'$) 
+    &
+    $\SLOT' \subseteq \SLOT  $
+    \\
+    \grayrow\multicolumn{2}{|l|}{
+    $\forall s \in S'  [\var{\SESSION}{\SLOT}{s},\var{\SESSION}{\SLOT}{s}+\sessionduration{s}[ \cap \SLOT' = \emptyset$}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:forbiddenslots}
+    
+    \\[-0.75em]
+    \multicolumn{2}{|c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+&\\
+    \textbf{\FORBIDDENTEACHERS}($\SESSION'$,$\TEACHER'$)
+    &
+    $\TEACHER' \subseteq \TEACHER  $ 
+    \\
+    \multicolumn{2}{|l|}{
+    $\forall s \in \SESSION'$, $\var{\SESSION}{\TEACHER}{s} \subseteq \TEACHER\setminus\TEACHER'$}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:forbiddenteachers}\\
+      
+
+
+     
+    \hline \grayrow\textbf{\GAPARG{min\_slot}}($\SESSION'$,$\sigma_{min}$)
+    & 
+    $\sigma_{min}\in 0..|\SLOT| , $ 
+ \\\grayrow\multicolumn{2}{|l|}{
+$\exists!\pi:\SESSION'\to[[\SESSION']] : \var{\SESSION}{\SLOT}{\piinv{i}} < \var{\SESSION}{\SLOT}{\piinv{j}}   $ \raisebox{0.2ex}{$\scriptscriptstyle(1\leq i < j \leq |\SESSION'|)$}}
+    \\
+    \grayrow\multicolumn{2}{|l|}{
+    $\forall i \in 1..|\SESSION'|-1,$
+    $\var{\SESSION}{\SLOT}{\piinv{i+1}} - (\var{\SESSION}{\SLOT}{\piinv{i}} + \sessionduration{\piinv{i}})\geq \sigma_{min}$}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:gapminslot}
+
+    \\[-0.75em]
+    \multicolumn{2}{|c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+\textbf{\GAPARG{min\_day}}($\SESSION'$,$\sigma_{min}$)
+    & 
+    $\sigma_{min}\in 0..|\WEEKDAY|*|\WEEK| , $ 
+    \\\multicolumn{2}{|l|}{
+$\exists!\pi:\SESSION'\to[[\SESSION']] : \var{\SESSION}{\SLOT}{\piinv{i}} < \var{\SESSION}{\SLOT}{\piinv{j}}   $ \raisebox{0.2ex}{$\scriptscriptstyle(1\leq i < j \leq |\SESSION'|)$}
+    }
+    \\
+    \multicolumn{2}{|l|}{
+    $\land \forall i \in 1..|\SESSION'|-1,\var{\SESSION}{\WEEKDAY}{\piinv{i+1}} - (\var{\SESSION}{\WEEKDAY}{\piinv{i}}) \geq \sigma_{min}$}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:gapminday}
+
+    \\[-0.75em]
+    \multicolumn{2}{|c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+\grayrow \textbf{\GAPARG{min\_week}}($\SESSION'$,$\sigma_{min}$)
+    & 
+    $\sigma_{min}\in 0..|\WEEK| , $ 
+    \\\grayrow\multicolumn{2}{|l|}{
+$\exists!\pi:\SESSION'\to[[\SESSION']] : \var{\SESSION}{\SLOT}{\piinv{i}} < \var{\SESSION}{\SLOT}{\piinv{j}}   $ \raisebox{0.2ex}{$\scriptscriptstyle(1\leq i < j \leq |\SESSION'|)$}
+    }
+    \\
+    \grayrow\multicolumn{2}{|l|}{
+    $\land \forall i \in 1..|\SESSION'|-1,\var{\SESSION}{\WEEK}{\piinv{i+1}} - (\var{\SESSION}{\WEEK}{\piinv{i}})\geq \sigma_{min}$}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:gapminweek}\\
+\hline \textbf{\GAPARG{max\_slot}}($\SESSION'$,$\sigma_{max}$)
+    & 
+    $\sigma_{max}\in 0..|\SLOT| , $ 
+    \\\multicolumn{2}{|l|}{
+    $s_1 = \min\limits_{s \in \SESSION'}(\var{\SESSION}{\SLOT}{s}), s_2 = \max\limits_{s \in \SESSION'}(\var{\SESSION}{\SLOT}{s}+\sessionduration{s}),$
+    $\var{\SESSION}{\SLOT}{s_2} - (\var{\SESSION}{\SLOT}{s_1}+\sessionduration{s}) \leq \sigma_{max}$}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:gapmaxslot}
+    \\[-0.75em]
+    \multicolumn{2}{|c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+\grayrow \textbf{\GAPARG{max\_day}}($\SESSION'$,$\sigma_{max}$)  
+    & 
+    $\sigma_{max}\in 0..|\WEEKDAY|*|\WEEK| , $ 
+    \\\grayrow\multicolumn{2}{|l|}{
+    $s_1 = \min\limits_{s \in \SESSION'}(\var{\SESSION}{\SLOT}{s}), s_2 = \max\limits_{s \in \SESSION'}(\var{\SESSION}{\SLOT}{s}),$
+    $\var{\SESSION}{\WEEKDAY}{s_2} - \var{\SESSION}{\WEEKDAY}{s_1} \leq \sigma_{max}$}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:gapmaxday}
+    \\[-0.75em]
+    \multicolumn{2}{|c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+
+
+    \textbf{\GAPARG{max\_week}}($\SESSION'$,$\sigma_{max}$)
+    & 
+    $\sigma_{max}\in 0..|\WEEK| , $ 
+    \\\multicolumn{2}{|l|}{$s_1 = \min\limits_{s \in \SESSION'}(\var{\SESSION}{\SLOT}{s}), s_2 = \max\limits_{s \in \SESSION'}(\var{\SESSION}{\SLOT}{s}),$
+    $\var{\SESSION}{\WEEK}{s_2} - \var{\SESSION}{\WEEK}{s_1} \leq \sigma_{max}$}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:gapmaxweek}\\
+\hline 
+
+   \grayrow \textbf{\GAPARG{last\_first\_slot}}($\SESSION_1'$$\dots$,$\SESSION_n'$,$\sigma_{min}$,$\sigma_{max}$)  
+    & 
+    $\sigma_{min},\sigma_{max}\in 0..|\SLOT| , $ 
+    \\\grayrow \multicolumn{2}{|l|}{$
+    \forall i \in 1..n-1 ,\; s_i = \max\limits_{s \in \SESSION_i }(\var{\SESSION}{\SLOT}{s}+\sessionduration{s}),\; 
+    s_{i+1} = \min\limits_{s \in \SESSION_{i+1}} (\var{\SESSION}{\SLOT}{s})$
+    }
+    \\
+   \grayrow \multicolumn{2}{|l|}{
+    $ \sigma_{min} \leq s_{i+1} - s_i \leq \sigma_{max} $ } \refstepcounter{rowcntrformal} \therowcntrformal\label{formal:gaplastfirstslot}
+    \\[-0.75em]
+    \multicolumn{2}{|c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+\textbf{\GAPARG{last\_first\_day}}($\SESSION_1'$$\dots$,$\SESSION_n'$,$\sigma_{min}$,$\sigma_{max}$)   
+    & 
+    $\sigma_{min},\sigma_{max}\in 0..|\SLOT| , $ 
+    \\\multicolumn{2}{|l|}{$
+    \forall i \in 1..n-1 ,\; s_i = \max\limits_{s \in \SESSION_i }(\var{\SESSION}{\WEEKDAY}{s}),\;
+    s_{i+1} = \min\limits_{s \in \SESSION_{i+1}} (\var{\SESSION}{\WEEKDAY}{s})$
+    }
+    \\
+    \multicolumn{2}{|l|}{
+    $ \sigma_{min} \leq s_{i+1} - s_i \leq \sigma_{max} $ } \refstepcounter{rowcntrformal} \therowcntrformal\label{formal:gaplastfirstday}
+
+    \\[-0.75em]
+    \multicolumn{2}{|c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+\grayrow \textbf{\GAPARG{last\_first\_week}}($\SESSION_1'$$\dots$,$\SESSION_n'$,$\sigma_{min}$,$\sigma_{max}$)  
+    & 
+    $\sigma_{min},\sigma_{max}\in 0..|\SLOT| , $ 
+    \\\grayrow \multicolumn{2}{|l|}{$
+    \forall i \in 1..n-1 ,\; s_i = \max\limits_{s \in \SESSION_i }(\var{\SESSION}{\WEEK}{s}),\;
+    s_{i+1} = \min\limits_{s \in \SESSION_{i+1}} (\var{\SESSION}{\WEEK}{s})$
+    }
+    \\
+    \grayrow\multicolumn{2}{|l|}{
+    $ \sigma_{min} \leq s_{i+1} - s_i \leq \sigma_{max} $ } \refstepcounter{rowcntrformal} \therowcntrformal\label{formal:gaplastfirstweek}\\
+\hline \textbf{\GAPARG{first\_last\_slot}}($\SESSION_1'$$\dots$,$\SESSION_n'$,$\sigma_{min}$,$\sigma_{max}$)  
+    & 
+    $\sigma_{min},\sigma_{max}\in 0..|\SLOT| , $ 
+    \\\multicolumn{2}{|l|}{$
+    \forall i \in 1..n-1 ,\; s_i = \min\limits_{s \in \SESSION_i }(\var{\SESSION}{\SLOT}{s}+\sessionduration{s}),\; 
+    s_{i+1} = \max\limits_{s \in \SESSION_{i+1}} (\var{\SESSION}{\SLOT}{s})$
+    }
+    \\
+    \multicolumn{2}{|l|}{
+    $ \sigma_{min} \leq s_{i+1} - s_i \leq \sigma_{max} $ } \refstepcounter{rowcntrformal} \therowcntrformal\label{formal:gapfirstlastslot}
+
+    \\[-0.75em]
+    \multicolumn{2}{|c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+\grayrow\textbf{\GAPARG{first\_last\_day}}($\SESSION_1'$$\dots$,$\SESSION_n'$,$\sigma_{min}$,$\sigma_{max}$)  
+    & 
+    $\sigma_{min},\sigma_{max}\in 0..|\SLOT| , $ 
+    \\\grayrow \multicolumn{2}{|l|}{$
+    \forall i \in 1..n-1 ,\; s_i = \min\limits_{s \in \SESSION_i }(\var{\SESSION}{\WEEKDAY}{s}),\;
+    s_{i+1} = \max\limits_{s \in \SESSION_{i+1}} (\var{\SESSION}{\WEEKDAY}{s})$
+    }
+    \\
+    \grayrow\multicolumn{2}{|l|}{
+    $ \sigma_{min} \leq s_{i+1} - s_i \leq \sigma_{max} $ }\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:gapfirstlastday} 
+
+    \\[-0.75em]
+    \multicolumn{2}{|c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+\textbf{\GAPARG{first\_last\_week}}($\SESSION_1'$$\dots$,$\SESSION_n'$,$\sigma_{min}$,$\sigma_{max}$)  
+    & 
+    $\sigma_{min},\sigma_{max}\in 0..|\SLOT| , $ 
+    \\\multicolumn{2}{|l|}{$
+    \forall i \in 1..n-1 ,\; s_i = \min\limits_{s \in \SESSION_i }(\var{\SESSION}{\WEEK}{s}),\;
+    s_{i+1} = \max\limits_{s \in \SESSION_{i+1}} (\var{\SESSION}{\WEEK}{s})$
+    }
+    \\
+    \multicolumn{2}{|l|}{
+    $ \sigma_{min} \leq s_{i+1} - s_i \leq \sigma_{max} $ } \refstepcounter{rowcntrformal} \therowcntrformal\label{formal:gapfirstlastweek}\\
+\hline \grayrow \textbf{\NOOVERLAP}($\SESSION'$)  
+    & \\\multicolumn{2}{|l|}{\cellcolor[gray]{0.9}
+    $\bigwedge\limits_{\substack{s_1,s_2\in \SESSION'\\s_1\neq s_2}}(\var{\SESSION}{\SLOT}{s_1} + \sessionduration{s_1} \leq \var{\SESSION}{\SLOT}{s_2})\vee(\var{\SESSION}{\SLOT}{s_2} + \sessionduration{s_2} \leq \var{\SESSION}{\SLOT}{s_1})$}
+    \refstepcounter{rowcntrformal} \therowcntrformal\label{formal:nooverlap}\\
+
+    \hline \textbf{\PAIRWISENOOVERLAP}($\SESSION_1'$,$\SESSION_2'$)    
+    & \\\multicolumn{2}{|l|}{
+    $\bigwedge\limits_{\substack{s_1\in \SESSION'_1, s_2\in \SESSION'_2\\s_1\neq s_2}}
+    (\var{\SESSION}{\SLOT}{s_1} + \sessionduration{s_1}\leq\var{\SESSION}{\SLOT}{s_2})
+    \vee
+    (\var{\SESSION}{\SLOT}{s_2} + \sessionduration{s_2}\leq\var{\SESSION}{\SLOT}{s_1})$}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:pairwisenooverlap}\\
+    
+    \hline \grayrow\textbf{\PERIODIC}($\SESSION'$,$n$)   
+    &
+    $n \in \mathbb{N}$ \\
+
+    \grayrow\multicolumn{2}{|l|}{
+    $ \exists\pi : \SESSION' \rightarrow 1..|\SESSION'|,  \forall i \in 1..|\SESSION'|-1,\var{\SESSION}{\SLOT}{{\pi^{-1}(i)}} +n = \var{\SESSION}{\SLOT}{{\pi^{-1}(i+1)}}
+$}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:periodic}\\
+      
+    \hline \textbf{\REQUIREDROOMS}($\SESSION'$,$\ROOM'$)  
+    &
+    $ \ROOM' \subseteq \ROOM $\\\multicolumn{2}{|l|}{
+    $\forall s \in \SESSION' $, $\ROOM' \subseteq \var{\SESSION}{\ROOM}{s}	$}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:requiredrooms}
+
+    \\[-0.75em]
+    \multicolumn{2}{|c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+\grayrow\textbf{\REQUIREDTEACHERS}($\SESSION'$,$\TEACHER'$,$\Delta$*) 
+    &
+   $  \TEACHER' \subseteq \TEACHER, \Delta = \{\forall t \in \TEACHER'\mid\delta_{1,t},\delta_{2,t}\}$, \\\grayrow& $\forall t \in \TEACHER',\forall i \in \{1,2\},\;\delta_{i,t}\in\mathbb{N}$\\
+     \grayrow\multicolumn{2}{|l|}{
+     $ \forall s \in \SESSION',\;( \var{\SESSION}{\TEACHER}{s} \subseteq \TEACHER'  \land \forall t \in\TEACHER',\;\delta_{1,t} \leq\sum\limits_{s \in \SESSION'} (t \in \var{\SESSION}{\TEACHER}{s})\leq \delta_{2,t} )$}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:requiredteachers}\\
+    \hline \textbf{\SAMEDAILYSLOT} ($\SESSION'$) 
+    & \\\multicolumn{2}{|l|}{
+    $\forall s_1, s_2 \in \SESSION'$,
+    $\var{\SESSION}{\DAILYSLOT}{s_1}  = \var{\SESSION}{\DAILYSLOT}{s_2}$}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:samedailyslot}
+
+    \\[-0.75em]
+    \multicolumn{2}{|c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+\grayrow\textbf{\SAMEDAY}($\SESSION'$) 
+    & \\\grayrow\multicolumn{2}{|l|}{
+    $\forall s_1, s_2 \in \SESSION',\var{\SESSION}{\WEEKDAY}{s_1}  = \var{\SESSION}{\WEEKDAY}{s_2} \wedge \var{\SESSION}{\WEEK}{s_1}  = \var{\SESSION}{\WEEK}{s_2} $}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:sameday}
+
+    \\[-0.75em]
+    \multicolumn{2}{|c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+\textbf{\SAMEROOMS}($\SESSION'$) 
+    & \\\multicolumn{2}{|l|}{
+    $\forall s_1, s_2 \in \SESSION'$, 
+    $\var{\SESSION}{\ROOM}{s_1}  = \var{\SESSION}{\ROOM}{s_2}	$}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:samerooms}
+\\[-0.75em]
+    \multicolumn{2}{|c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+\grayrow\textbf{\SAMESLOT}($\SESSION'$) 
+    & \\\grayrow\multicolumn{2}{|l|}{
+    $\forall s_1, s_2 \in \SESSION'$, 
+    $\var{\SESSION}{\SLOT}{s_1}  = \var{\SESSION}{\SLOT}{s_2}	$}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:sameslot}
+    
+\\[-0.75em]
+    \multicolumn{2}{|c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+\textbf{\SAMETEACHERS}($\SESSION'$)   
+    & \\\multicolumn{2}{|l|}{
+    $\forall s_1, s_2 \in \SESSION'$, 
+    $\var{\SESSION}{\TEACHER}{s_1}  = \var{\SESSION}{\TEACHER}{s_2}	$}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:sameteachers}
+\\[-0.75em]
+    \multicolumn{2}{|c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+\grayrow\textbf{\SAMEWEEK}($\SESSION'$) 
+    & \\\grayrow \multicolumn{2}{|l|}{
+    $\forall s_1, s_2 \in \SESSION'$, 
+    $\var{\SESSION}{\WEEK}{s_1} = \var{\SESSION}{\WEEK}{s_2}$}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:sameweek}
+    \\[-0.75em]
+    \multicolumn{2}{|c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+\textbf{\SAMEWEEKDAY}($\SESSION'$) 
+    & \\\multicolumn{2}{|l|}{
+    $\forall s_1, s_2 \in \SESSION',$  $\var{\SESSION}{\WEEKDAY}{s_1} = \var{\SESSION}{\WEEKDAY}{s_2}$}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:sameweekday}
+
+    \\[-0.75em]
+    \multicolumn{2}{|c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+    
+\grayrow\textbf{\SAMEWEEKLYSLOT}($\SESSION'$) 
+    & \\\grayrow\multicolumn{2}{|l|}{
+    $\forall s_1, s_2 \in \SESSION'$, $\var{\SESSION}{\DAILYSLOT}{s_1}  = \var{\SESSION}{\DAILYSLOT}{s_2} \wedge \var{\SESSION}{\WEEKDAY}{s_1}  = \var{\SESSION}{\WEEKDAY}{s_2} $}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:sameweeklyslot}\\
+    
+    \hline \textbf{\SEQUENCED}($\SESSION'_1$$\dots$,$\SESSION'_n$) 
+    & \\\multicolumn{2}{|l|}{
+    $\forall s_i \in \SESSION'_i,\forall s_{i+1} \in \SESSION'_{i+1},\; \var{\SESSION}{\SLOT}{s_{i+1}} \geq \var{\SESSION}{\SLOT}{s_{i}} + \sessionduration{s_i}	$}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:sequenced}\\
+    \hline \grayrow\textbf{\text{\WORKLOAD{time}}}($\SESSION'$,$w_1,w_2$) 
+    &
+    $ w_1,w_2 \in \SLOT \cup \{0\} $ \\\grayrow\multicolumn{2}{|l|}{$\forall d \in \WEEKDAY,\;  w_1 \leq \sum\limits_{s\in\SESSION'}\sessionduration{s} \times (\var{\SESSION}{\WEEKDAY}{s} = d) \leq w_2 $}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:timeworkload}
+
+    \\[-0.75em]
+    \multicolumn{2}{|c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+\textbf{\text{\WORKLOAD{session}}}($\SESSION'$,$w_1,w_2$)   & $ w_1,w_2 \in 0..|\SESSION|$\\\multicolumn{2}{|l|}{$\forall d \in \WEEKDAY,\;  w_1 \leq |\{ s\in\SESSION' : \var{\SESSION}{\WEEKDAY}{s} = d \}| \leq w_2 $}\refstepcounter{rowcntrformal} \therowcntrformal\label{formal:sessionworkload}\\
+     \hline \caption{Semantics of \UTP{}  constraint predicates}
+    \label{tab:constraintformel}
+    \end{longtable}
+  \newpage
+
+
+
+
+\section{Models} \label{appendix:models} \label{sec:cp-model}\label{sec:asp}\label{sec:MIP}
+The \CP{} model (see table~\ref{table:cp-contraintes} in appendix~\ref{appendix:CP}) for {\UTP} is based on decisions variables listed in table~\ref{table:core-variables}.
+For the constraint related to teacher service (requiredTeacher), we using the global cardinality constraint (gcc), which enables element counting. It is also feasible to add counting constraints to better distribute the workload or limit the number of hours per day for a room, aiming to achieve more robust solutions. For conditional constraints, we can apply the reification pattern (checking the feasibility and consumption of potential values and use possible sink state). For constraints of equality, we employ the global constraint all\_equal, which ensures for input variables, all have the same value (the implemented propagator is similar to gcc).
+For the no\_overlap constraint and for the main room usage constraint, we employ the global cumulative constraint to ensure that, when sessions utilizing a resource, its maximum capacity is not exceeded, thereby preventing multiple class sessions from overlapping.
+For difference/disjoint constraints, we used the global n-ary constraints all\_different for integer variables and all\_disjoint for set variables.
+%
+ 
+
+ 
+
+\ASP{}~\cite{2003_BARAL_BOOK} is a form of declarative programming for solving difficult search problems. 
+It operates by defining problems in terms of rules and constraints, then computing the ``answer sets'' which are collections of assumptions that satisfy rules and constraints without contradiction.
+The programmer specifies the desired properties of the solution in a high-level language, and the \ASP{} system automatically searches for all solutions that meet these criteria, making it a powerful tool for knowledge representation and reasoning tasks. 
+\ASP{} has been used to address timetabling problems proposed in the \ITC{}-2007 competition
+~\cite{2019_banbara_AOR}.
+The \ASP{} program we propose for \UTP{}  
+(see appendix~\ref{appendix:ASP} for the full program)
+has been developed with clingo - an \ASP{} solver - and clingcon - a constraint answer set programing solver.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%
+ 
+In the state of the art~\cite{2014_sorensen_cor,2014_sorensen_JOS}, mixed-integer linear programming (\MIP{}) models are usually used to solve timetable scheduling problems. 
+In the literature, \MIP{} models are presented in a pseudo-Boolean format, where time is represented in a time-indexed representation. 
+This implies that time is discretized into intervals from 0 to 1 for each time slot. 
+For the \UTP{} problem, where the time horizon is extended, classical representations are not very efficient. 
+Indeed, time-indexed representations exhibit exponential growth. 
+In other scheduling problems such as \RCPCSP{}, representations can be time-indexed, or as in \CP{} in continuous time slots (integer value), or even an event-based approach. 
+Continuous time variables in \MIP{} offer advantages in terms of variable economy, but they require techniques such as big-M to express disjunctions. In some articles~\cite{2011_kone_COR}, it has been demonstrated that event-driven approaches are more effective than continuous or time-indexed approaches for extended time horizons. Here, we present a \MIP{} program for \UTP{}. 
+The program will be used in our experimental study at Section~\ref{sec:experiments}(see Appendix~\ref{appendix:MIP} for the full program). 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  \subsection{CP model}\label{appendix:CP}
+\vspace{-0.6cm}
+\newcounter{rowcntr}[table]
+\renewcommand{\therowcntr}{(\arabic{rowcntr})}
+\setcounter{rowcntr}{0}
+
+
+
+\begin{table}[H]
+
+
+\framebox[\textwidth][c]{\small
+\begin{tabularx}{\textwidth}{>{\hsize=0.01\hsize\linewidth=\hsize}X>{\hsize=1.89\hsize\linewidth=\hsize}X>{\raggedleft\arraybackslash\hsize=.09\hsize\linewidth=\hsize}X}
+&$\forall s \in \SESSION $&\\
+&\hspace*{2,8em}$\var{\SESSION}{\ROOM}{s} \subseteq \map{\PART}{\ROOM}{\map{\SESSION}{\PART}{s}}$& \refstepcounter{rowcntr} \therowcntr \label{cp:allowedrooms}\\
+&$\forall s \in \SESSION $&\\
+&\hspace*{2,8em}$\var{\SESSION}{\TEACHER}{s} \subseteq \map{\PART}{\TEACHER}{\map{\SESSION}{\PART}{s}}$&   \refstepcounter{rowcntr} \therowcntr \label{cp:allowedteachers} \\
+&$\forall p \in \PART,\;  \forall s \in \map{\PART}{\SESSION}{p} $&\\
+&\hspace*{2,8em}$  \multiroompartmin{p} \leq |\var{\SESSION}{\ROOM}{s}| \leq \multiroompartmax{p} $
+& \refstepcounter{rowcntr} \therowcntr \label{cp:multiroom}\\
+&$\forall p \in \PART,\;  \forall s \in \map{\PART}{\SESSION}{p} $&\\
+&\hspace*{2,8em}$  \partteachermultiplicitymin{p} \leq |\var{\SESSION}{\TEACHER}{s}| \leq \partteachermultiplicitymax{p} $
+& \refstepcounter{rowcntr} \therowcntr \label{cp:multiteacher}\\
+&$\forall p \in \PART, \; \forall k \in \CLASS $&\\
+&\hspace*{2,8em}$ \classcapacity{k} \leq \sum\limits_{r \in \ROOM }(r \in \var{\SESSION}{\ROOM}{s}) * \roomcapacity{r}  $
+& \refstepcounter{rowcntr} \therowcntr \label{cp:classcapacity}\\
+&$\forall s \in \SESSION:$ &\\
+      &\hspace*{2,8em}$\var{\SESSION}{\DAILYSLOT}{s} + (\var{\SESSION}{\WEEKDAY}{s}-1)*|\DAILYSLOT| + (\var{\SESSION}{\WEEK}{s}-1)*|\WEEKDAY| * |\DAILYSLOT| = \var{\SESSION}{\SLOT}{s}$
+      & \refstepcounter{rowcntr} \therowcntr\label{cp:coresumvariables}\\
+&$\forall r \in \ROOM:$ &\\
+      &\hspace*{2,8em}\textit{cumulative}($\{\forall s \in \SESSION \mid (r \in \var{\SESSION}{\ROOM}{s}) * \var{\SESSION}{\SLOT}{s}\},\{\forall s \in \SESSION \mid \sessionduration{s}\},1$)
+      & \refstepcounter{rowcntr} \therowcntr\label{ctr:cumulativerooms}\\
+\hline
+
+&$\forall p \in \PART,\; \forall r \in \map{\PART}{\ROOM}{p} :$ &\\
+      &\hspace*{2,8em}\textit{cumulative}($\{\forall s \in \map{\PART}{\SESSION}{p} \mid (r \in \var{\SESSION}{\ROOM}{s}) * \var{\SESSION}{\SLOT}{s}\},\{\forall s \in \map{\PART}{\SESSION}{p} \mid \sessionduration{s}\},1$)
+      & \refstepcounter{rowcntr} \therowcntr\label{ctr:cumulativeroomsredondante}\\
+
+&$\forall p \in \PART:$ &\\
+      &\hspace*{2,8em}\textit{gcc}($\{\forall s \in \map{\PART}{\SESSION}{p} \mid \var{\SESSION}{\ROOM}{s}\},\{\forall s \in \map{\PART}{\SESSION}{p} \mid \sessionduration{s}\},1$)
+      & \refstepcounter{rowcntr} \therowcntr\label{ctr:cumulativeroomsredondantegcc}\\
+\hline
+&$\FORBIDDENPERIOD(\SESSION') = \forall s \in \SESSION' $&\\
+&\hspace*{2,8em}$(\var{\SESSION}{\SLOT}{s}+\sessionduration{s}  \leq h_1 )\vee ( \var{\SESSION}{\SLOT}{s}\geq h_2) $& \refstepcounter{rowcntr} \therowcntr 
+\label{cp:forbiddenperiod}\\
+&$\SAMEWEEKDAY(\SESSION') = \forall s_1,s_2\in \SESSION' , s_1 < s_2$&\\
+&\hspace*{2,8em}$ \var{\SESSION}{\WEEKDAY}{s_1} = \var{\SESSION}{\WEEKDAY}{s_2}$
+& \refstepcounter{rowcntr} \therowcntr \label{cp:sameweekday}\\
+&$\SAMEROOMS(\SESSION') =  \forall s_1,s_2\in \SESSION',   s_1 < s_2$&\\
+&\hspace*{2,8em}$\var{\SESSION}{\ROOM}{s_1} = \var{\SESSION}{\ROOM}{s_2}$ 
+& \refstepcounter{rowcntr}\therowcntr \label{cp:samerooms}\\
+&$\DIFFERENTROOMS (\SESSION') =  $&\\
+&\hspace*{2,8em}\textit{all\_disjoint}($\{\forall s  \in \SESSION' \mid \var{\SESSION}{\ROOM}{s}\}$)  
+& \refstepcounter{rowcntr}\therowcntr \label{cp:differentrooms}\\
+$\DIFFERENTSLOT (\SESSION') =   $&\\
+&\hspace*{2,8em}\textit{all\_different}($\{\forall s  \in \SESSION' \mid \var{\SESSION}{\SLOT}{s}\}$)
+& \refstepcounter{rowcntr}\therowcntr \label{cp:differentslot}\\
+&$\SEQUENCED(\SESSION_1,\SESSION_2) = \forall s_1 \in \SESSION_1,\;\forall s_2 \in \SESSION_2 $&\\
+&\hspace*{2,8em}$\var{\SESSION}{\SLOT}{s_1}\texttt{+}\sessionduration{s_1} \leq \var{\SESSION}{\SLOT}{s_2}$ 
+& \refstepcounter{rowcntr} \therowcntr \label{cp:sequenced}\\
+&$\NOOVERLAP(\SESSION')=$&\\
+&\hspace*{2,8em}cumulative($\{\forall s \in \SESSION' \mid \var{\SESSION}{\SLOT}{s}\},\{\forall s \in \SESSION' \mid \sessionduration{s}\},1$) & \refstepcounter{rowcntr} \therowcntr 
+\label{cp:nooverlap}\\
+
+
+
+\end{tabularx}}\caption{
+Constraints and predicates of the \CP{} model.
+}
+\label{table:cp-contraintes}
+\end{table} \subsection{ASP model}\label{appendix:ASP}
+The \ASP{} model is split in two parts: the first part lists the facts with a small example (Listing~\ref{lst:data-asp}), the second part is the declaration of rules to solve the given \UTP{} problem (Listing~\ref{lst:model-asp}).
+\begin{lstlisting}[style=PrologStyle, caption={ASP facts}, label={lst:data-asp}]
+weeks(4). days(12). slot_per_day(1440).grid(480,90,7).
+courses(1). parts(2).classes(3). sessions(12).
+room(Salle-1,40). room(Salle-2,20). room(Salle-3,20). 
+course(math). teacher(teacher1).teacher(teacher2).
+part(math-CM,12,120,5,12,2,1). class(math-CM-1,80). course_part(math,math-CM).
+part_class(math-CM,math-CM-1). class_sessions(math-CM-1,1..12).
+part_teacher(math-CM,(teacher-1;teacher-2)).
+part_room(math-CM,(salle-1;salle-2;salle-3)).
+part_days(math-CM,1..5). part_weeks(math-CM,1..12).
+part_slots(math-CM, (480;570;660;750;840;930)).
+part_grids("cours-1-pCM",1,1,6).
+group(group-1,20).group(group-2,20). class_group(math-CM-1,(group-1;group-2)).
+session_duration(S,D) :- session(S),session_part(S,P), part_grids(P,_,D,_).
+session_group(S,G) :- class_sessions(C,S),class_group(C,G).
+session_part(S,P) :- session(S), class_session(C,S), part_class(P,C).
+session_teacher(S,T) :- session(S), session_part(S,P), part_teacher(P,T).
+session_room(S,R) :- session(S), session_part(S,P), part_room(P,R).
+sequenced(3,(6;7)).
+periodic(S1,S2,7200) :- session(S1),session(S2),S2 = S1+1 .
+disjunctive_room((1..12),R):- room(R,_).
+disjunctive_teacher((1..12),T):- teacher(T).
+\end{lstlisting}
+\newpage
+\begin{lstlisting}[style=PrologStyle, caption={ASP model}, label={lst:model-asp}]
+1{assigned(S,SL) : session_part(S,P), part_slot(P,SL)}1 :- session(S).
+nrPositionRoom(S,1..N) :- session(S), nrRoomMax(S,N).
+nrRoomMax(S,N) :- session(S), session_part(S,P), part(P,_,_,_,_,N,_), N > 1.
+sessionRoomFix(S) :- session(S), not nrRoomMax(S,_).
+partRoomFix(P) :- part_sessions(P,S), sessionRoomFix(S).
+partRoomMulti(P) :- part_sessions(P,S), nrRoomMax(S,N).
+K{assignedrk(S,SL,I) : nrPositionRoom(S,I)}K :- assigned(S,SL), nrRoomMax(S,K).
+1{assignedr(S,SL,R,K) : session_room(S,R)}1 :- assignedrk(S,SL,K).
+1{assignedr(S,SL,R,1) : session_room(S,R)}1 :- assigned(S,SL), sessionRoomFix(S).
+1{assigned(S,SL) : session_part(S,P), part_slot(P,SL)}1 :- session(S).
+nrPositionTeacher(S,1..N) :- session(S), nrteacherMax(S,N).
+nrteacherMax(S,N) :- session(S), session_part(S,P), part(P,_,_,_,_,_,N), N > 1.
+sessionTeacherFix(S) :- session(S), not nrteacherMax(S,_).
+partTeacherFix(P) :- part_sessions(P,S), sessionTeacherFix(S).
+partTeacherMulti(P) :- part_sessions(P,S), nrteacherMax(S,N).
+K{assignedtk(S,SL,I) : nrPositionTeacher(S,I)}K :- assigned(S,SL), nrteacherMax(S,K).
+:- assignedt(S,_,T,K2), assignedt(S,_,T,K1), K1 != K2.
+
+:- not {assignedt(S,SL,T,K) : session(S), disjunctive_teacher(T,S), nrPositionTeacher(S,K) } 1, slots(SL), teacher(T).
+:- not {assignedt(S,SL,T,1) : session(S), disjunctive_teacher(T,S) } 1, slots(SL), teacher(T).
+:- nrRoomMax(S,_), session_class(S,C), class_headcount(C,N), N > #sum{V:assignedr(S,_,R,_),room(R,V)}.
+:- assignedr(S,SL,R,1), room(R,C1),session_class(S,C), class_headcount(C,N), N > C1.
+:- not {assigned(S,SL) : session(S),disjunctive_group(S,G)}1, group(G,_), slots(SL).
+:- not {assignedr(S,SL,R,K) : session(S), disjunctive_room(R,S), nrPositionRoom(S,K) } 1, slots(SL), room(R,_).
+:- not {assignedr(S,SL,R,1) : session(S), disjunctive_room(R,S) } 1, slots(SL), room(R,_).
+:- assignedr(S,_,R,K2), assignedr(S,_,R,K1), K1 != K2.
+:- periodic(S1,S2,N), assigned(S1,SL1), assigned(S2,SL2), SL2 != SL1+N.
+:- sequenced(S1,S2), assigned(S1,SL1), session_part(S1,P), part_grids(P,_,N,_), assigned(S2,SL2), SL1+N > SL2.
+sequenced(S1,S2) :- part(P,_,_,_,_,_,_), part_class(P,C), class_sessions(C,S1), class_sessions(C,S2), S1+1 = S2.
+:- same_slot(S1,S2), assigned(S1,SL1), assigned(S2,SL2), SL1 != SL2.
+:- same_teachers(S1,S2), assignedt(S1,_,T1,K), assignedt(S2,_,T2,K), T1 != T2.
+:- same_rooms(S1,S2), assignedr(S1,_,R1,K), assignedr(S2,_,R2,K), R1 != R2.
+:- same_rooms(S,S2), nrRoomMax(S,_), not nrRoomMax(S2,_).
+:- assign_rooms(S1,R1), assignedr(S1,_,R2,_), R1 != R2.
+:- assign_teachers(S1,T1), assignedt(S1,_,T2,_), T1 != T2.
+:- serviceTeacher(T,P,N), #count { S,T :assignedt(S,_,T,_),part_sessions(P,S)} != N.
+\end{lstlisting}
+%
+ \subsection{MIP model}\label{appendix:MIP}
+\begin{table}[H]
+\framebox[\textwidth][c]{\scriptsize \begin{tabularx}{\textwidth}{>{\hsize=0.01\hsize\linewidth=\hsize}X>{\hsize=1.89\hsize\linewidth=\hsize}X>{\raggedleft\arraybackslash\hsize=.09\hsize\linewidth=\hsize}X}
+&$\forall p \in \PART, \ROOM' = \map{\PART}{\ROOM}{p}, $&\\
+&\hspace*{2,8em}$\forall s \in \map{\PART}{\SESSION}{p},\;\forall r \in \ROOM \setminus\ROOM',\; \varquad{\SESSION}{\ROOM}{s}{r} = 0$& \refstepcounter{rowcntr} \therowcntr \label{mip:allowedrooms}\\
+&$\forall p \in \PART, \TEACHER' = \map{\PART}{\TEACHER}{p}, $&\\
+&\hspace*{2,8em}$\forall s \in \map{\PART}{\SESSION}{p},\;\forall t \in \TEACHER \setminus\TEACHER',\; \varquad{\SESSION}{\TEACHER}{s}{t} = 0$& \refstepcounter{rowcntr} \therowcntr \label{mip:allowedteachers}\\
+&$\forall p \in \PART,\;  \forall s \in \map{\PART}{\SESSION}{p} $&\\
+&\hspace*{2,8em}$  \multiroompartmin{p} \leq \sum\limits_{\forall r \in \ROOM}\varquad{\SESSION}{\ROOM}{s}{r} \leq \multiroompartmax{p} $
+& \refstepcounter{rowcntr} \therowcntr \label{mip:multiroom}\\
+&$\forall p \in \PART,\;  \forall s \in \map{\PART}{\SESSION}{p} $&\\
+&\hspace*{2,8em}$  \partteachermultiplicitymin{p} \leq \sum\limits_{\forall t \in \TEACHER}\varquad{\SESSION}{\TEACHER}{s}{t} \leq \partteachermultiplicitymax{p} $
+& \refstepcounter{rowcntr} \therowcntr \label{mip:multiteacher}\\
+&$\forall p \in \PART, \; \forall k \in \CLASS $&\\
+&\hspace*{2,8em}$ \classcapacity{k} \leq \sum\limits_{r \in \ROOM } \varquad{\SESSION}{\ROOM}{s}{r} * \roomcapacity{r}  $
+& \refstepcounter{rowcntr} \therowcntr \label{mip:classcapacity}\\
+&$\forall s \in \SESSION:$ &\\
+      &\hspace*{2,8em}$\var{\SESSION}{\DAILYSLOT}{s} + (\var{\SESSION}{\WEEKDAY}{s}-1)*|\DAILYSLOT| + (\var{\SESSION}{\WEEK}{s}-1)*|\WEEKDAY| * |\DAILYSLOT| = \var{\SESSION}{\SLOT}{s}$
+      & \refstepcounter{rowcntr} \therowcntr\label{mip:coresumvariables}\\
+\hline
+
+&$\FORBIDDENPERIOD(\SESSION',\SLOT'$)= $\forall s \in \SESSION',\; h = min(\SLOT'),$& \\
+     &\hspace*{2,8em}$ s_h \in\{0,1\}$&\\
+         &\hspace*{2,8em} $(\var{\SESSION}{\SLOT}{s} -h) \geq ((\sessionduration{s}+M)*s_h - M )$& \\
+         &\hspace*{2,8em} $(h-\var{\SESSION}{\SLOT}{s} ) \geq ((|\SLOT'|+M)*s_h - M )$
+         & \refstepcounter{rowcntr}\therowcntr\label{mip:forbiddenperiod}\\
+&$\FORBIDDENROOMS(\SESSION',\ROOM') = \forall s \in \SESSION' $&\\
+&\hspace*{2,8em}$\forall r \in \ROOM',\;\varquad{S}{R}{s}{r}=0 $
+&\refstepcounter{rowcntr} \therowcntr \label{mip:forbiddenrooms}\\
+&$\SAMEWEEKDAY(\SESSION') = \forall s_1,s_2\in \SESSION' , s_1 < s_2$&\\
+&\hspace*{2,8em}$ \var{\SESSION}{\WEEKDAY}{s_1} - \var{\SESSION}{\WEEKDAY}{s_2} = 0 $
+& \refstepcounter{rowcntr} \therowcntr \label{mip:sameweekday}\\
+&$\SAMESLOT(\SESSION') = \forall s_1,s_2\in \SESSION' , s_1 < s_2$&\\
+&\hspace*{2,8em}$(\var{\SESSION}{\SLOT}{s_1}-\var{\SESSION}{\SLOT}{s_2}) = 0$
+& \refstepcounter{rowcntr} \therowcntr \label{mip:sameslot}\\
+&$\SAMEROOMS(\SESSION') =  \forall s_1,s_2\in \SESSION',   s_1 < s_2$&\\
+&\hspace*{2,8em}$\var{\SESSION}{\ROOM}{s_1} = \var{\SESSION}{\ROOM}{s_2}$ 
+& \refstepcounter{rowcntr}\therowcntr \label{mip:samerooms}\\
+&$\ASSIGNROOMS(\SESSION',\ROOM') =  \forall s\in \SESSION',  $&\\
+&\hspace*{2,8em}$ \forall r \in \ROOM$, $ \varquad{\SESSION}{\ROOM}{s}{r} = 1$ 
+& \refstepcounter{rowcntr}\therowcntr \label{mip:assignrooms}\\
+&$\DIFFERENTROOMS (\SESSION') =  \forall s_1,s_2\in \SESSION', $&\\
+&\hspace*{2,8em}$ \forall r \in \ROOM,\;\varquad{S}{R}{s_1}{r} + \varquad{S}{R}{s_2}{r} \leq 1$ 
+& \refstepcounter{rowcntr}\therowcntr \label{mip:differentrooms}\\
+&$\PERIODIC(\SESSION') = \forall s_1,s_2 \in \SESSION', s_1 < s_2 ,$&\\
+&\hspace*{2,8em} $(\var{\SESSION}{\SLOT}{s_1}  + n) = \var{\SESSION}{\SLOT}{s_2}$
+&\refstepcounter{rowcntr}\therowcntr \label{mip:periodic}\\
+&$\SEQUENCED(\SESSION_1,\SESSION_2) = \forall s_1 \in \SESSION_1,\; s_2 \in \SESSION_2 $&\\
+&\hspace*{2,8em}$(\var{\SESSION}{\SLOT}{s_1}  + \sessionduration{s_1} ) \leq \var{\SESSION}{\SLOT}{s_2}$ 
+& \refstepcounter{rowcntr} \therowcntr \label{mip:sequenced}\\
+&$\REQUIREDTEACHERS(\SESSION',LG)\;=\; \forall s\SESSION',\;\forall t \in\TEACHER,\;\forall\sigma\in\mathbb{N}$&  \\
+&\hspace*{2,8em} $(\sum_{s\in \PART}\varquad{\SESSION}{\TEACHER}{s}{t}) \leq \sigma$ &\refstepcounter{rowcntr}\therowcntr\label{mip:requiredteachers}\\
+&$\NOOVERLAP\_room(\SESSION'$)= $\forall s_1,s_2 \in \SESSION'$,& \\
+        &\hspace*{2,8em} $ \varsequenced{s_1}{s_2}, \varsequenced{s_2}{s_1}\in \{0,1\}$, $r_1r_2 \in  \{0,1\}$&\\
+         &\hspace*{2,8em} $r_1r_2 \leq \var{\SESSION}{\ROOM}{s_1}$, $r_1r_2 \leq \var{\SESSION}{\ROOM}{s_2}
+         ,\;r_1r_2 \geq (\var{\SESSION}{\ROOM}{s_1} + \var{\SESSION}{\ROOM}{s_2} -1 )$& \\
+         &\hspace*{2,8em}$r_1r_2 \geq \varsequenced{s_1}{s_2} $, $r_1r_2 \geq \varsequenced{s_2}{s_1} $&\\
+         &\hspace*{2,8em}$(\var{\SESSION}{\SLOT}{s_1} - \var{\SESSION}{\SLOT}{s_2}) \geq ((\sessionduration{s_2}+M)*\varsequenced{s_1}{s_2} - M )$ &\\
+         &\hspace*{2,8em}$(\var{\SESSION}{\SLOT}{s_2} - \var{\SESSION}{\SLOT}{s_1}) \geq ((\sessionduration{s_1}+M)*\varsequenced{s_2}{s_1} - M )$& \refstepcounter{rowcntr} \therowcntr 
+\label{mip:nooverlaproom}\\
+&$\NOOVERLAP\_group(\SESSION'$)= $\forall s_1,s_2 \in \SESSION'$,& \\
+     &\hspace*{2,8em}$ \varsequenced{s_1}{s_2}, \varsequenced{s_2}{s_1}\in\{0,1\}$, $\varsequenced{s_1}{s_2} + \varsequenced{s_2}{s_1} = 1$&\\
+         &\hspace*{2,8em} $(\var{\SESSION}{\SLOT}{s_1} - \var{\SESSION}{\SLOT}{s_2}) \geq ((\sessionduration{s_2}+M)*\varsequenced{s_1}{s_2} - M )$&  \\
+         &\hspace*{2,8em}$(\var{\SESSION}{\SLOT}{s_2} - \var{\SESSION}{\SLOT}{s_1}) \geq ((\sessionduration{s_1}+M)*\varsequenced{s_2}{s_1} - M )$&\refstepcounter{rowcntr} \therowcntr \label{mip:nooverlapgroup}\\
+\end{tabularx}}\label{table:mip-contraintes}
+\end{table} \section{Complete list of instances}\label{appendix:instances}
+
+{
+\scriptsize
+\rowcolors{2}{gray!25}{white}
+\begin{longtable}{l lllll rrrr rrrr }
+\hline
+name & \rotatebox{0}{$|\ROOM|$} & \rotatebox{0}{$|\TEACHER|$} & \rotatebox{0}{$|\STUDENT|$} & \rotatebox{0}{$|\SESSION|$} & \#ru
+ & \multicolumn{2}{c}{CP} &  \multicolumn{2}{c}{ASP} &  \multicolumn{2}{c}{CASP} &  \multicolumn{2}{c}{MIP} \\
+ &&&&& & BT & ST & BT & ST & BT & ST & BT & ST \\
+\hline
+
+\endfirsthead
+
+
+\hline
+name & \rotatebox{0}{$|\ROOM|$} & \rotatebox{0}{$|\TEACHER|$} & \rotatebox{0}{$|\STUDENT|$} & \rotatebox{0}{$|\SESSION|$} & \#ru
+ & \multicolumn{2}{c}{CP} &  \multicolumn{2}{c}{ASP} &  \multicolumn{2}{c}{CASP} &  \multicolumn{2}{c}{MIP} \\
+ &&&&& & BT & ST & BT & ST & BT & ST & BT & ST \\
+\hline
+
+\multicolumn{14}{c}{(continued)}
+\\
+
+\endhead
+
+
+\multicolumn{14}{c}{(\ldots)}
+
+\endfoot
+
+
+\endlastfoot
+
+
+
+gi5167 & 87 & 4 & 33 & 81 & 19 & 0.86 & 0.97 & 55.41 & 1.93 & 0.34 & 0.06 & 0.04 & 0.11 \\
+gi678 & 60 & 101 & 30 & 117 & 22 & 0.86 & 0.89 & 48.04 & 2.61 & 0.60 & 0.10 & 0.13 & 0.21 \\
+gi8201 & 82 & 4 & 33 & 118 & 23 & 0.86 & 1.86 & 15.71 & 0.08 & 0.30 & 0.23 & 0.17 & 0.26 \\
+gi8445 & 83 & 12 & 45 & 110 & 25 & 0.93 & 2.44 & 54.78 & 1.39 & 0.62 & 0.05 & 0.21 & 0.33 \\
+gi5301 & 99 & 96 & 55 & 139 & 33 & 0.85 & 483.59 & 68.70 & 0.36 & 0.40 & 0.12 & 0.22 & 0.49 \\
+gi9456 & 102 & 15 & 73 & 186 & 27 & 1.02 & 2.74 & 190.18 & 15.01 & 2.35 & 0.28 & 0.29 & 0.52 \\
+gi42910 & 84 & 96 & 110 & 163 & 30 & 1.03 & 1.87 & 146.45 & 1.25 & 0.49 & 0.18 & 0.16 & 0.30 \\
+gi29910 & 100 & 33 & 49 & 163 & 33 & 1.03 & 11.14 & 129.40 & 4.17 & 1.10 & 0.14 & 0.43 & 0.83 \\
+gi8601 & 104 & 97 & 143 & 200 & 16 & 0.99 & 0.98 & 42.49 & 4.93 & 0.40 & 0.17 & 0.08 & 0.14 \\
+gi6012 & 125 & 97 & 65 & 175 & 36 & 1.06 & 2.66 & 296.48 & 11.96 & 1.38 & 0.66 & 0.25 & 0.94 \\
+gi6101 & 85 & 100 & 48 & 212 & 40 & 0.99 & 1.47 & 131.63 & 8.63 & 0.78 & 0.38 & 0.18 & 0.36 \\
+gi4867 & 96 & 21 & 62 & 211 & 30 & 0.94 & 2.10 & 214.09 & 7.74 & 2.38 & 0.23 & 0.97 & 1.91 \\
+gi1045 & 108 & 99 & 50 & 175 & 44 & 0.93 & 7.60 & 84.57 & 2.49 & 0.98 & 0.20 & 0.26 & 0.44 \\
+gi2123 & 128 & 98 & 61 & 240 & 29 & 1.03 & 1.87 & 333.32 & 36.93 & 6.69 & 0.37 & 1.09 & 1.37 \\
+gi8056 & 104 & 4 & 66 & 223 & 37 & 1.06 & 5.01 & 221.33 & 7.81 & 3.31 & 0.57 & 1.61 & 2.52 \\
+gi5534 & 87 & 22 & 194 & 189 & 24 & 1.07 & 3.90 & 71.02 & 2.00 & 0.87 & 0.12 & 0.73 & 1.72 \\
+gi2501 & 123 & 98 & 151 & 245 & 23 & 1.00 & 1.50 & 143.26 & 28.74 & 1.53 & 0.49 & 0.22 & 0.38 \\
+gi223 & 102 & 6 & 135 & 219 & 30 & 1.01 & 4.09 & 87.73 & 1.52 & 0.89 & 0.19 & 1.88 & 2.79 \\
+gi1378 & 95 & 37 & 68 & 244 & 46 & 1.15 & 3.98 & 227.07 & 4.96 & 2.03 & 0.43 & 3.21 & 4.64 \\
+gi8467 & 115 & 24 & 67 & 264 & 46 & 1.30 & 3.33 & 297.07 & 10.62 & 4.23 & 0.57 & 2.48 & 3.87 \\
+gi7967 & 114 & 101 & 206 & 192 & 15 & 1.16 & 4.37 & 406.36 & 24.56 & 3.42 & 0.12 & 0.78 & 1.44 \\
+gi9123 & 78 & 4 & 66 & 325 & 38 & 1.15 & 213.82 & 212.85 & 17.56 & 1.51 & 0.78 & 1.81 & 2.81 \\
+gi9434 & 99 & 4 & 65 & 334 & 38 & 0.93 & 1.73 & 208.71 & 29.71 & 1.77 & 1.22 & 0.59 & 1.30 \\
+gi2245 & 110 & 105 & 132 & 313 & 30 & 1.08 & 2.25 & 134.36 & 16.68 & 2.01 & 0.26 & 1.16 & 1.94 \\
+gi8478 & 90 & 96 & 138 & 295 & 27 & 1.09 & 3.63 & 475.86 & 19.95 & 4.69 & 0.23 & 4.18 & 6.00 \\
+gi9334 & 107 & 14 & 86 & 341 & 30 & 1.03 & 2.24 & 162.71 & 30.17 & 4.54 & 1.43 & 1.63 & 2.64 \\
+gi745 & 107 & 105 & 91 & 352 & 38 & 1.10 & 1.95 & 60.29 & 7.10 & 0.99 & 3.89 & 0.34 & 0.54 \\
+gi1245 & 132 & 5 & 152 & 275 & 30 & 1.19 & 4.44 & 287.89 & 13.60 & 3.30 & 0.81 & 3.93 & 5.81 \\
+gi27910 & 97 & 100 & 114 & 369 & 34 & 1.07 & 59.67 & 131.10 & 15.43 & 1.53 & 1.01 & 0.98 & 1.74 \\
+gi5501 & 83 & 17 & 123 & 361 & 31 & 1.03 & 2.20 & 71.03 & 3.26 & 0.81 & 1.03 & 1.39 & 2.62 \\
+gi1867 & 86 & 39 & 91 & 405 & 47 & 1.08 & 5.22 & 77.95 & 12.20 & 1.99 & 4.64 & 2.07 & 2.95 \\
+gi4067 & 84 & 95 & 154 & 363 & 21 & 1.17 & 3.25 & 118.31 & 12.65 & 1.01 & 0.94 & 0.39 & 0.70 \\
+gi5856 & 78 & 10 & 114 & 324 & 50 & 1.12 & 5.15 & 182.23 & 6.41 & 2.02 & 0.40 & 5.19 & 8.20 \\
+gi9323 & 85 & 8 & 194 & 335 & 39 & 1.25 & 3.81 & 331.39 & 11.30 & 3.40 & 0.44 & 6.08 & 9.02 \\
+gi8956 & 102 & 97 & 162 & 419 & 26 & 1.25 & 11.72 & 527.65 & 33.91 & 1.26 & 1.99 & 1.79 & 2.84 \\
+gi8023 & 93 & 30 & 150 & 392 & 38 & 1.09 & 5.48 & 116.28 & 15.60 & 0.84 & 1.54 & 0.56 & 1.20 \\
+gi6889 & 94 & 98 & 66 & 522 & 55 & 1.24 & 3.64 &  &  & 4.33 & 10.41 & 5.76 & 6.45 \\
+gi3167 & 89 & 95 & 194 & 422 & 27 & 1.14 & 3.42 & 283.10 & 32.00 & 3.94 & 1.41 & 2.93 & 3.85 \\
+gi878 & 87 & 98 & 97 & 437 & 41 & 1.18 & 3.01 & 346.90 & 72.95 & 4.74 & 1.75 & 2.05 & 2.69 \\
+gi9189 & 82 & 27 & 319 & 362 & 52 & 1.36 & 7.84 & 395.76 & 14.18 & 3.58 & 3.39 & 6.88 & 10.05 \\
+gi1578 & 127 & 99 & 195 & 461 & 31 & 1.14 & 2.35 & 319.65 & 90.44 & 2.56 & 2.16 & 0.80 & 1.44 \\
+gi8678 & 83 & 24 & 261 & 369 & 28 & 1.24 & 8.08 & 525.14 & 38.13 & 3.69 & 4.99 & 10.32 & 15.92 \\
+gi7445 & 104 & 7 & 196 & 423 & 58 & 1.24 & 5.02 & 599.88 & 41.23 & 12.32 & 1.21 & 19.15 & 28.57 \\
+gi3934 & 104 & 96 & 159 & 623 & 64 & 1.32 & 4.56 & 613.68 & 142.05 & 5.51 & 2.02 & 5.84 & 8.20 \\
+gi5378 & 88 & 21 & 158 & 665 & 59 & 1.32 & 4.68 & 726.97 & 37.24 & 2.96 & 3.19 & 3.73 & 6.07 \\
+gi6745 & 98 & 98 & 150 & 624 & 65 & 1.35 & 7.20 & 634.56 & 125.36 & 13.92 & 4.53 & 10.29 & 14.84 \\
+gi4389 & 65 & 6 & 174 & 662 & 33 & 1.47 & 4.62 & 693.40 & 210.58 & 14.91 & 4.93 & 7.66 & 10.23 \\
+gi6278 & 99 & 8 & 192 & 588 & 40 & 1.22 & 17.32 & 491.72 & 183.93 & 13.94 & 3.68 & 6.37 & 9.01 \\
+gi7923 & 96 & 96 & 155 & 590 & 45 & 1.32 & 6.38 & 528.75 & 76.06 & 3.51 & 2.98 & 5.72 & 8.36 \\
+gi7867 & 118 & 101 & 211 & 617 & 59 & 1.51 & 8.89 & 1058.61 & 100.78 & 22.35 & 1.43 & 15.72 & 22.05 \\
+gi30910 & 104 & 9 & 190 & 523 & 49 & 1.22 & 8.45 & 472.29 & 22.97 & 7.81 & 1.21 & 21.71 & 32.06 \\
+gi4323 & 120 & 23 & 170 & 629 & 39 & 1.40 & 14.42 & 498.26 & 117.77 & 15.58 & 2.82 & 11.04 & 16.85 \\
+gi8745 & 108 & 105 & 249 & 632 & 34 & 1.38 & 8.38 & 610.86 & 156.25 & 20.13 & 3.22 & 13.08 & 20.08 \\
+gi2401 & 122 & 104 & 152 & 696 & 29 & 1.41 & 4.97 &  &  & 6.31 & 4.81 & 5.45 & 7.72 \\
+gi2867 & 102 & 11 & 154 & 783 & 38 & 1.46 & 4.74 &  &  & 6.41 & 11.81 & 6.53 & 10.06 \\
+gi4245 & 67 & 46 & 187 & 707 & 53 & 1.34 & 8.32 & 386.84 & 23.77 & 3.00 & 3.73 & 12.49 & 17.63 \\
+gi6134 & 113 & 105 & 152 & 748 & 35 & 1.40 & 8.56 & 437.44 & 109.94 & 3.17 & 13.31 & 4.95 & 7.36 \\
+gi8145 & 96 & 100 & 268 & 477 & 42 & 1.21 & 36.84 & 196.38 & 8.18 & 3.59 & 2.05 & 11.62 & 18.11 \\
+gi4278 & 95 & 47 & 251 & 811 & 20 & 1.30 & 4.93 & 645.57 & 25.87 & 1.75 & 8.60 & 1.08 & 2.09 \\
+gi7156 & 125 & 98 & 486 & 711 & 23 & 1.41 & 9.81 & 491.04 & 206.26 & 19.09 & 2.32 & 13.48 & 14.97 \\
+gi5145 & 99 & 96 & 154 & 1017 & 101 & 1.43 & 6.75 &  &  & 2.86 & 36.03 & 0.07 & 0.14 \\
+gi1067 & 113 & 56 & 376 & 716 & 56 & 1.39 & 9.23 & 255.67 & 22.65 & 7.37 & 4.12 & 22.45 & 33.70 \\
+gi3367 & 98 & 45 & 539 & 836 & 99 & 1.48 & 8.44 & 372.95 & 16.04 & 5.09 & 6.10 & 22.19 & 94.02 \\
+gi30910 & 104 & 95 & 361 & 810 & 78 & 1.62 & 13.50 & 825.29 & 36.13 & 6.77 & 5.40 & 24.78 & 29.16 \\
+gi1778 & 112 & 10 & 400 & 880 & 109 & 1.66 & 11.05 &  &  & 46.16 & 15.64 & 65.96 & 107.49 \\
+gi7267 & 89 & 98 & 298 & 1295 & 30 & 1.67 & 10.51 &  &  & 33.20 & 29.72 & 35.02 & 258.28 \\
+gi77910 & 103 & 97 & 422 & 2120 & 102 & 2.17 & 12.58 &  &  & 114.51 & 94.53 & 96.28 & 141.20 \\
+gi9912 & 84 & 103 & 562 & 1956 & 172 & 2.08 & 47.84 &  &  & 10.48 & 1426.66 &  &  \\
+gi2767 & 92 & 21 & 501 & 2003 & 78 & 2.02 & 30.48 &  &  & 128.21 & 57.11 & 130.51 & 7995.32 \\
+gi7034 & 102 & 100 & 454 & 2268 & 162 & 2.07 & 20.72 &  &  & 10.70 & 104.37 & 30.92 & 52.49 \\
+gi9023 & 144 & 103 & 1247 & 1980 & 200 & 2.49 & 24.85 &  &  & 142.35 & 41.64 & 258.11 & 799.06 \\
+gi7723 & 89 & 55 & 432 & 2745 & 152 & 2.50 & 28.02 &  &  & 79.88 & 218.58 & 157.51 & 405.68 \\
+gi5567 & 94 & 94 & 1770 & 6180 & 562 & 4.75 & 381.78 &  &  & 122.89 & 3548.58 &  &  \\
+gi467 & 90 & 61 & 1982 & 8886 & 383 & 4.61 & 33.59 &  &  & 92.65 & 2609.97 &  &  \\
+gi2934 & 106 & 73 & 2111 & 9168 & 515 & 5.34 & 33.87 &  &  & 92.25 & 2469.69 &  &  \\
+\caption{List of instances.}
+\label{appendix:tab:instances}
+\end{longtable}
+}  
+\end{document}

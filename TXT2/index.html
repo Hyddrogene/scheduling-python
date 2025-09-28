@@ -1,0 +1,1198 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>Tiny Tiny Constraint Solver</title>
+<meta name="description" content="A Java library for Constraint Programming">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><link rel="stylesheet" href="/reveal-js/dist/reset.css">
+<link rel="stylesheet" href="/reveal-js/dist/reveal.css"><link rel="stylesheet" href="/reveal-js/dist/theme/league.css" id="theme">
+<link rel="stylesheet" href="/highlight-js/github.min.css">
+  </head>
+  <body>
+    
+    <div class="reveal">
+      <div class="slides">
+  
+
+    <section><h1 id="the-very-tiny-br-constraint-solver">The Very Tiny </br> Constraint Solver</h1>
+</br>
+Charles Prud'homme, Jan. 2022
+<p>IMT Atlantique, LS2N, TASC</p>
+<p><span style="color:#ED5565">This is a work in progress</span></p>
+</section><section>
+<p>In this presentation, we are going to code <span class='fragment highlight-blue'
+  >
+  from scratch
+</span> a minimalist constraint solver.</p>
+<p>The aim is nothing but <span class='fragment highlight-blue'
+  >
+  understanding
+</span> the internal mechanics.</p>
+</section>
+
+  
+
+    <section>
+
+<section data-shortcode-section>
+<h1 id="spoiler-alerts">Spoiler alerts</h1>
+</section><section>
+<p>There are already plenty of great open source constraint solvers:</p>
+<p><a href="https://choco-solver.org/">choco-solver🐙</a>, <a href="https://developers.google.com/optimization/">or-tools</a>, <a href="https://www.gecode.org/">gecode</a>,
+<a href="http://www.cril.univ-artois.fr/en/software/ace.en.html">ACE</a>, <a href="https://github.com/radsz/jacop">JaCoP</a>, <a href="https://homepages.laas.fr/ehebrard/mistral.html">Mistral</a>, <a href="https://github.com/chuffed/chuffed">Chuffed</a>, &hellip;</p>
+</br>
+<small>🐙 My favourite.... but I am biased</small>
+</section>
+<section data-noprocess data-shortcode-slide
+      data-background-iframe="https://choco-solver.org/">
+</section><section>
+<p>And several excellent constraint modeling languages:</p>
+<p><a href="https://www.minizinc.org/index.html">MiniZinc</a>, <a href="http://xcsp.org/">XCSP3 / PyCSP3</a>, <a href="https://cpmpy.readthedocs.io/en/latest/">CPMpy</a>, &hellip;</p>
+</section><section>
+<p>So basically here</br>
+we are <span style="color:#3BAFDA">not going to reinvent</span>
+the wheel </br>
+or break the paradigm </br>
+but just</p>
+<h3 id="understand-by-doing">understand by doing</h3>
+
+</section>
+</section>
+    <section>
+
+<section data-shortcode-section>
+<h1 id="a-little-bit-of-theory">A little bit of theory</h1>
+</section><section>
+<p>We are talking about <span style="color:#3BAFDA">Constraint Satisfaction Problem</span>
+.</p>
+<p>A CSP $\mathcal{P}$ is a triple $\left&lt;\mathcal{X},\mathcal{D},\mathcal{C}\right&gt;$
+where:</p>
+<ul>
+<li>$\mathcal{X} = \{X_1, \ldots, X_n\}$ is a set of variables,</li>
+<li>$\mathcal{D}$ is a function associating a domain to each variable,</li>
+<li>$\mathcal{C}$ is a set of constraints.</li>
+</ul>
+<p><em>It can be turn into a COP quite easily</em></p>
+</section>
+<section data-noprocess data-shortcode-slide
+      data-background="#8CC152"
+      id="ex1">
+<p>Let&rsquo;s consider the following CSP $\mathcal{P}$:</p>
+<ul>
+<li>$\mathcal{X} = \{X_1, X_2, X_3\}$</li>
+<li>$\mathcal{D} = \{D(X_1)=D(X_2)=[1,2], D(X_3)=[1,3]\}$</li>
+<li>$\mathcal{C} = \{X_1\leq X_2,X_2\leq X_3,AtMost(1,[X_1, X_2, X_3],2)\}$</li>
+</ul>
+</section><section>
+<p>A constraint defines a <span style="color:#3BAFDA">relation between variables.</span></p>
+<p>It is said to be <span style="color:#3BAFDA">satisfied</span>
+if :</p>
+<ul>
+<li>its variables are <em>instantiated</em> to a single value*</li>
+<li>and the relation holds</li>
+</ul>
+</br>
+</br>
+*: $x_{i_k} \in \mathcal{D}(X_{i_k})$
+</section>
+<section data-noprocess data-shortcode-slide
+      data-background="#8CC152"
+      id="ex2">
+<p>In $\mathcal{P}$, the constraint $AtMost(1,[X_1, X_2, X_3],2)$ holds iff <u>at most</u> 1 variable among $X_1, X_2, X_3$ is assigned to the value 2.</p>
+<ul>
+<li>$(1,1,1)$ and $(1,2,3)$ satisfy the constraint,</li>
+<li>$(2,2,1)$ does not.</li>
+</ul>
+</section><section>
+<p>The constraints can be defined in <span style="color:#3BAFDA">intension</span>
+or in <span style="color:#3BAFDA">extension</span>
+.</p>
+<p>For $X_1$, $X_2$ on domains $\{1,2\}$:</p>
+<ul>
+<li>intension:
+<ul>
+<li>expression in a higher level language</li>
+<li><em>e.g.</em>, $X_1+X_2\le3$</li>
+</ul>
+</li>
+<li>extension:
+<ul>
+<li>allowed combinations</li>
+<li><em>e.g.</em>, ${(1,1),(1,2),(2,1)}$</li>
+</ul>
+</li>
+</ul>
+</section><section>
+<h2 id="less-formally">Less formally</h2>
+</section><section>
+<p>What we know about a <span style="color:#3BAFDA">variable</span>
+is that :</p>
+<ul>
+<li>it takes its values from a <span style="color:#3BAFDA">domain</span>
+*, <em>e.g.</em>, <code>{1,2,3,5}</code>,</li>
+<li>it is linked to other variables using <span style="color:#3BAFDA">constraints</span>
+,</li>
+<li>and it must be <em>instantiated</em> in a <span style="color:#3BAFDA">solution</span>
+.</li>
+</ul>
+</br>
+</br>
+*: discrete domain in our case.
+</section><section>
+<p>On the other hand, a <span style="color:#3BAFDA">constraint</span>
+:</p>
+<ul>
+<li>defines a <span style="color:#3BAFDA">contract</span>
+between its variables,</li>
+<li>must be <span style="color:#3BAFDA">satisfied</span>
+in every solutions,</li>
+<li>and is more than just a checker.</li>
+</ul>
+</section><section>
+<p>Choose your favourite programming language</p>
+<p>(I chose <a href="https://www.python.org/">Python</a>)</p>
+<h1 id="and-lets-get-started">and let&rsquo;s get started</h1>
+
+</section>
+</section>
+    <section>
+
+<section data-shortcode-section>
+<h1 id="variables-and-domains">Variables and domains</h1>
+</section><section>
+<p>Let&rsquo;s make it simple.</br>
+</br>
+A variable will be referenced by a key, its name.</p>
+</section><section>
+<p>A domain will be associated to it.</br>
+<span style="color:#ED5565">Beware:</span>  each value can appear only once.</p>
+</section><section>
+<p>A dictionary and sets will do :</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="nohighlight" data-noescape><span style="display:flex;"><span><span style="color:#000">variables</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">{</span><span style="color:#4e9a06">&#34;x1&#34;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">{</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">2</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">3</span><span style="color:#000;font-weight:bold">},</span>
+</span></span><span style="display:flex;"><span>             <span style="color:#4e9a06">&#34;x2&#34;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">{</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">2</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">3</span><span style="color:#000;font-weight:bold">}}</span>
+</span></span></code></pre></div><h3 id="and-thats-enough">and that&rsquo;s enough.</h3>
+
+</section>
+</section>
+    <section>
+
+<section data-shortcode-section>
+<h1 id="constraints">Constraints</h1>
+<p>Let&rsquo;s roll up our sleeves and tackle the case of the binary <em>&ldquo;strictly less&rdquo;</em> constraint:</p>
+<h3 id="x_1--x_2">$X_1 &lt; X_2$</h3>
+</section>
+<section data-noprocess data-shortcode-slide
+      data-background="#8CC152"
+      id="ex3">
+<p>Such a constraint will take <span style="color:#3BAFDA">two variables</span>
+as argument and makes sure that the former one takes a value less than the latter one in any solution.</p>
+<ul>
+<li>$(1,2)$ and $(2,5)$ satisfy the constraint,</li>
+<li>$(2,2)$ and $(5,3)$ do not.</li>
+</ul>
+</section><section>
+<p>We will first create a class to declare the behaviour of this constraint:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="nohighlight" data-noescape><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">class</span> <span style="color:#000">LessThan</span><span style="color:#000;font-weight:bold">:</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">def</span> <span style="color:#000">__init__</span><span style="color:#000;font-weight:bold">(</span><span style="color:#3465a4">self</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">v1</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">v2</span><span style="color:#000;font-weight:bold">):</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#3465a4">self</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">v1</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">v1</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#3465a4">self</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">v2</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">v2</span>
+</span></span></code></pre></div></section><section>
+<p>We can impose that $X_1$ is strictly less than $X_2$:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="nohighlight" data-noescape><span style="display:flex;"><span><span style="color:#000">variables</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">{</span><span style="color:#4e9a06">&#34;x1&#34;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">{</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">2</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">3</span><span style="color:#000;font-weight:bold">},</span>
+</span></span><span style="display:flex;"><span>             <span style="color:#4e9a06">&#34;x2&#34;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">{</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">2</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">3</span><span style="color:#000;font-weight:bold">}}</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">c1</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">LessThan</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;x1&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;x2&#34;</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#8f5902;font-style:italic"># means that x1 &lt; x2 should hold</span>
+</span></span></code></pre></div><p>After doing that we didn&rsquo;t do much&hellip;</p>
+</section><section>
+<h2 id="what-can-such-a-constraint-do">What can such a constraint do?</h2>
+</section><section>
+<h3 id="in-cp-we-remove">In CP, we remove</h3>
+<p>The basic behaviour of a constraint is to remove from the variable domain those values <span style="color:#3BAFDA">that cannot be extended</span>
+to any solution</p>
+<p>(<em>according to its own contract</em>)</p>
+</section><section>
+<p>We will create an empty function called <code>filter</code> as follow:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="nohighlight" data-noescape><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">def</span> <span style="color:#000">filter</span><span style="color:#000;font-weight:bold">(</span><span style="color:#3465a4">self</span><span style="color:#000;font-weight:bold">,</span><span style="color:#000">variables</span><span style="color:#000;font-weight:bold">):</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#204a87;font-weight:bold">pass</span> 
+</span></span></code></pre></div></section>
+<section data-noprocess>
+<h2>The 2 rules of $X_1 < X_2$</h2>
+<p class="fragment">1. removing from $X_1$ values <span style="color:deepskyblue;">greater or equal to the largest value</span> in $X_2$,</p>
+<p class="fragment">2. removing from $X_2$ values <span style="color:deepskyblue;">smaller or equal to the smallest value</span> in $X_1$.</p>
+<p class="fragment">Otherwise, in both cases, we could break the contract established between the 2 variables.</p> 
+<!--</section> to bind to the next section tag-->
+</section>
+<section data-noprocess data-shortcode-slide
+      data-background="#8CC152"
+      id="ex4">
+<p>$X_1 = \{1,2,3,4\}$, $X_2 = \{1,2,3,4\}$ and $X_1 &lt; X_2$</p>
+<p>Then</p>
+<ul>
+<li>4 is removed from $X_1$</li>
+<li>1 is removed from $X_2$</li>
+</ul>
+</section>
+<section data-noprocess data-shortcode-slide
+      data-background="#8CC152"
+      id="ex4">
+<p>In other words:</p>
+<ul>
+<li>$max(X_2)$ is removed from $X_1$</li>
+<li>$min(X_1)$ is removed from $X_2$</li>
+</ul>
+</section><section>
+<h3 id="lessthan-filtering-algorithm"><code>LessThan</code> filtering algorithm</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="nohighlight" data-noescape><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">def</span> <span style="color:#000">filter</span><span style="color:#000;font-weight:bold">(</span><span style="color:#3465a4">self</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">variables</span><span style="color:#000;font-weight:bold">):</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">d1</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">variables</span><span style="color:#000;font-weight:bold">[</span><span style="color:#3465a4">self</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">v1</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#8f5902;font-style:italic"># get current domain of &#34;x1&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">d2</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">variables</span><span style="color:#000;font-weight:bold">[</span><span style="color:#3465a4">self</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">v2</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#8f5902;font-style:italic"># get current domain of &#34;x2&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic"># filtering according to the 1st rule</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">d1</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#000">v</span> <span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000">v</span> <span style="color:#204a87;font-weight:bold">in</span> <span style="color:#000">d1</span> <span style="color:#204a87;font-weight:bold">if</span> <span style="color:#000">v</span> <span style="color:#ce5c00;font-weight:bold">&lt;</span> <span style="color:#204a87">max</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">d2</span><span style="color:#000;font-weight:bold">)]</span> 
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic"># filtering according to the 2nd rule</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">d2</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#000">v</span> <span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000">v</span> <span style="color:#204a87;font-weight:bold">in</span> <span style="color:#000">d2</span> <span style="color:#204a87;font-weight:bold">if</span> <span style="color:#000">v</span> <span style="color:#ce5c00;font-weight:bold">&gt;</span> <span style="color:#204a87">min</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">d1</span><span style="color:#000;font-weight:bold">)]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">variables</span><span style="color:#000;font-weight:bold">[</span><span style="color:#3465a4">self</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">v1</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">d1</span> <span style="color:#8f5902;font-style:italic"># update the domain of &#34;x1&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">variables</span><span style="color:#000;font-weight:bold">[</span><span style="color:#3465a4">self</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">v2</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">d2</span> <span style="color:#8f5902;font-style:italic"># update the domain of &#34;x2&#34;	</span>
+</span></span></code></pre></div></section><section>
+<h3 id="does-that-work">Does that work?</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="nohighlight" data-noescape><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"># declare a CSP</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">variables</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">{</span><span style="color:#4e9a06">&#34;x1&#34;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">{</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">2</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">3</span><span style="color:#000;font-weight:bold">},</span>
+</span></span><span style="display:flex;"><span>             <span style="color:#4e9a06">&#34;x2&#34;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">{</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">2</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">3</span><span style="color:#000;font-weight:bold">}}</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">c1</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">LessThan</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;x1&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;x2&#34;</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"># call the filtering algorithm</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">c1</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">filter</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">variables</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"># check everything works fine</span>
+</span></span><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">assert</span> <span style="color:#000">variables</span><span style="color:#000;font-weight:bold">[</span><span style="color:#4e9a06">&#34;x1&#34;</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">==</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">2</span><span style="color:#000;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">assert</span> <span style="color:#000">variables</span><span style="color:#000;font-weight:bold">[</span><span style="color:#4e9a06">&#34;x2&#34;</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">==</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">2</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">3</span><span style="color:#000;font-weight:bold">]</span>
+</span></span></code></pre></div><p><a href="https://colab.research.google.com/drive/1nF0Rf58i4a2uHEIzbVjyWB94uIEUzLL9#scrollTo=h6zZB5EIbytb&line=9&uniqifier=1" target="_blank">Run it</a></p>
+</section><section>
+<h3 id="yes-it-does-">Yes, it does !</h3>
+
+</section>
+</section>
+    <section>
+
+<section data-shortcode-section>
+<h1 id="filtering-is-not-enough">Filtering is not enough</h1>
+</section><section>
+<p>Indeed, we remove impossible values</p>
+<p><span class='fragment ' >but no variable is <u>instantiated</u>.</span></p>
+<p><span class='fragment ' >And we can’t do more filtering.</span></p>
+</section><section>
+<p>It seems that we need to dive into the</p>
+<h3 id="search-space-">search space 🤿</h3>
+</section><section>
+<p>Since we need variables to take <u>single value</u>, we can:</p>
+<pre tabindex="0"><code class="nohighlight" data-noescape>select an uninstantiated variable (e.g., the first)
+pick a value in its domain (e.g., the lowest bound)
+fix the selected variable to the selected value
+and see what is going on !
+</code></pre></section><section>
+<p>We created our first <strong>decision</strong>!</p>
+<p><span class='fragment ' >Wait, one decision may not be enough…</span></p>
+<p><span class='fragment ' >… but still, we defined an <em>enumeration strategy</em> 🥳</span></p>
+</section><section>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="nohighlight" data-noescape><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"># ...</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">c1</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">filter</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">variables</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000">v</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">d</span> <span style="color:#204a87;font-weight:bold">in</span> <span style="color:#000">variables</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">items</span><span style="color:#000;font-weight:bold">():</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic"># if one variable is not *instantiated* yet</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">if</span> <span style="color:#204a87">len</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">d</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#ce5c00;font-weight:bold">&gt;</span> <span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">:</span>
+</span></span><span style="display:flex;"><span>    	<span style="color:#8f5902;font-style:italic"># then fix it to its lower bound</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">variables</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">v</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">{</span><span style="color:#204a87">min</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">d</span><span style="color:#000;font-weight:bold">)}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#8f5902;font-style:italic"># and filter</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">c1</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">filter</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">variables</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"># check everything is fine        </span>
+</span></span><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">assert</span> <span style="color:#000">variables</span><span style="color:#000;font-weight:bold">[</span><span style="color:#4e9a06">&#34;x1&#34;</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">==</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">assert</span> <span style="color:#000">variables</span><span style="color:#000;font-weight:bold">[</span><span style="color:#4e9a06">&#34;x2&#34;</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">==</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">2</span><span style="color:#000;font-weight:bold">]</span>
+</span></span></code></pre></div><p><a href="https://colab.research.google.com/drive/1nF0Rf58i4a2uHEIzbVjyWB94uIEUzLL9#scrollTo=GFCDk4qtcfAB&line=18&uniqifier=1" target="_blank">Run it</a></p>
+</section><section>
+<h2 id="what-if">What if&hellip;</h2>
+<p>we want to find another solution?</p>
+<p>Or enumerate all solutions?</p>
+</section>
+<section data-noprocess>
+<p>For this, we need <span style="color:deepskyblue;">to retrieve the state of the domains</span> before a decision is applied.</p>
+<p><span class="fragment">And therefore it must have been registered beforehand.</span></p>
+<p><span class="fragment">And we must be able to rebut a decision.</span></p>
+</section><section>
+<p><img src="/images/tinytiny/filtering/bintree.svg" alt="Alt text."></p>
+</section><section>
+<h3 id="a-recursive-approach-should-simplify-our-task">A recursive approach should simplify our task</h3>
+<p>Let&rsquo;s break down the needs into 4 functions.</p>
+</section><section>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="nohighlight" data-noescape><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">def</span> <span style="color:#000">create_decision</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">variables</span><span style="color:#000;font-weight:bold">):</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic"># find a variable with at least two values in its domain</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">var</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">dom</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#204a87">next</span><span style="color:#000;font-weight:bold">(</span><span style="color:#204a87">filter</span><span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">lambda</span> <span style="color:#000">x</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#204a87">len</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">x</span><span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">])</span> <span style="color:#ce5c00;font-weight:bold">&gt;</span> <span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">,</span> \
+</span></span><span style="display:flex;"><span>			<span style="color:#000">variables</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">items</span><span style="color:#000;font-weight:bold">()),</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">None</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87;font-weight:bold">None</span><span style="color:#000;font-weight:bold">))</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">if</span> <span style="color:#000">var</span> <span style="color:#204a87;font-weight:bold">is</span> <span style="color:#204a87;font-weight:bold">not</span> <span style="color:#204a87;font-weight:bold">None</span><span style="color:#000;font-weight:bold">:</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#8f5902;font-style:italic"># it true, returns the decision</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#204a87;font-weight:bold">return</span> <span style="color:#000">var</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87">min</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">dom</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">else</span><span style="color:#000;font-weight:bold">:</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#8f5902;font-style:italic"># otherwise, all variables are instantiated</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#204a87;font-weight:bold">return</span> <span style="color:#204a87;font-weight:bold">None</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87;font-weight:bold">None</span>
+</span></span></code></pre></div></section><section>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="nohighlight" data-noescape><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">def</span> <span style="color:#000">copy_domains</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">variables</span><span style="color:#000;font-weight:bold">):</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic"># returns a deep copy of the dictionnary</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">return</span> <span style="color:#000;font-weight:bold">{</span><span style="color:#000">var</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000">dom</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">copy</span><span style="color:#000;font-weight:bold">()</span> <span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000">var</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">dom</span> <span style="color:#204a87;font-weight:bold">in</span> <span style="color:#000">variables</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">items</span><span style="color:#000;font-weight:bold">()}</span>
+</span></span></code></pre></div></section><section>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="nohighlight" data-noescape><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">def</span> <span style="color:#000">propagate</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">variables</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">var</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">val</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">apply</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">constraint</span><span style="color:#000;font-weight:bold">):</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic"># makes a backup of the variables</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">c_variables</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">copy_domains</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">variables</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic"># applies the decision or rebuts is</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">c_variables</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">var</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#000">x</span> <span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000">x</span> <span style="color:#204a87;font-weight:bold">in</span> <span style="color:#000">c_variables</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">var</span><span style="color:#000;font-weight:bold">]</span> \
+</span></span><span style="display:flex;"><span>				<span style="color:#204a87;font-weight:bold">if</span> <span style="color:#000">apply</span> <span style="color:#204a87;font-weight:bold">is</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#000">x</span> <span style="color:#ce5c00;font-weight:bold">==</span> <span style="color:#000">val</span><span style="color:#000;font-weight:bold">)]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">return</span> <span style="color:#204a87">enumerate</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">c_variables</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">constraint</span><span style="color:#000;font-weight:bold">)</span>
+</span></span></code></pre></div></section><section>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="nohighlight" data-noescape><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">def</span> <span style="color:#000">enumerate</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">variables</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">constraint</span><span style="color:#000;font-weight:bold">):</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">constraint</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">filter</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">variables</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">var</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">val</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">create_decision</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">variables</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">if</span> <span style="color:#000">var</span> <span style="color:#204a87;font-weight:bold">is</span> <span style="color:#204a87;font-weight:bold">None</span><span style="color:#000;font-weight:bold">:</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#204a87">print</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">variables</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#8f5902;font-style:italic"># prints the solution</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#204a87;font-weight:bold">return</span> <span style="color:#0000cf;font-weight:bold">1</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">else</span><span style="color:#000;font-weight:bold">:</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">n</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">propagate</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">variables</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">var</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">val</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87;font-weight:bold">True</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">constraint</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">n</span> <span style="color:#ce5c00;font-weight:bold">+=</span> <span style="color:#000">propagate</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">variables</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">var</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">val</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87;font-weight:bold">False</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">constraint</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">return</span> <span style="color:#000">n</span>
+</span></span></code></pre></div></section><section>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="nohighlight" data-noescape><span style="display:flex;"><span><span style="color:#000">variables</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">{</span><span style="color:#4e9a06">&#34;x1&#34;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">{</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">2</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">3</span><span style="color:#000;font-weight:bold">},</span>
+</span></span><span style="display:flex;"><span>             <span style="color:#4e9a06">&#34;x2&#34;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">{</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">2</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">3</span><span style="color:#000;font-weight:bold">}}</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">c1</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">LessThan</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;x1&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;x2&#34;</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#204a87">print</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;it finds&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87">enumerate</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">variables</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">c1</span><span style="color:#000;font-weight:bold">),</span> <span style="color:#4e9a06">&#34;solutions&#34;</span><span style="color:#000;font-weight:bold">)</span>
+</span></span></code></pre></div><p>should output:</p>
+<pre tabindex="0"><code>{&#39;x1&#39;: [1], &#39;x2&#39;: [2]}
+{&#39;x1&#39;: [1], &#39;x2&#39;: [3]}
+{&#39;x1&#39;: [2], &#39;x2&#39;: [3]}
+it finds 3 solutions
+</code></pre></section><section>
+<h1 id="we-did-it-">We did it !</h1>
+<p>Well almost, but still you can pat yourself back !</p>
+
+</section>
+</section>
+    <section>
+
+<section data-shortcode-section>
+<h1 id="what-are-the-_obvious_-limitations">What are the <em>obvious</em> limitations?</h1>
+<p>(of what we&rsquo;ve done so far)</p>
+</section><section>
+<p>It panics when the problem has no solution.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="nohighlight" data-noescape><span style="display:flex;"><span><span style="color:#000">variables</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">{</span><span style="color:#4e9a06">&#34;x1&#34;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">{</span><span style="color:#0000cf;font-weight:bold">3</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">4</span><span style="color:#000;font-weight:bold">},</span>
+</span></span><span style="display:flex;"><span>             <span style="color:#4e9a06">&#34;x2&#34;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">{</span><span style="color:#0000cf;font-weight:bold">2</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">3</span><span style="color:#000;font-weight:bold">}}</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">c1</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">LessThan</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;x1&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;x2&#34;</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#204a87">print</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;it finds&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87">enumerate</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">variables</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">c1</span><span style="color:#000;font-weight:bold">),</span> <span style="color:#4e9a06">&#34;solutions&#34;</span><span style="color:#000;font-weight:bold">)</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="nohighlight" data-noescape><span style="display:flex;"><span><span style="color:#000">Traceback</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#000">most</span> <span style="color:#000">recent</span> <span style="color:#000">call</span> <span style="color:#000">last</span><span style="color:#000;font-weight:bold">):</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#000">File</span> <span style="color:#4e9a06">&#34;sandbox.py&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">line</span> <span style="color:#0000cf;font-weight:bold">54</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87;font-weight:bold">in</span> <span style="color:#ce5c00;font-weight:bold">&lt;</span><span style="color:#000">module</span><span style="color:#ce5c00;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87">print</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;it finds&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87">enumerate</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">variables</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">c1</span><span style="color:#000;font-weight:bold">),</span> <span style="color:#4e9a06">&#34;solutions&#34;</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#000">File</span> <span style="color:#4e9a06">&#34;sandbox.py&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">line</span> <span style="color:#0000cf;font-weight:bold">40</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87;font-weight:bold">in</span> <span style="color:#204a87">enumerate</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">constraint</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">filter</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">variables</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#000">File</span> <span style="color:#4e9a06">&#34;sandbox.py&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">line</span> <span style="color:#0000cf;font-weight:bold">10</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87;font-weight:bold">in</span> <span style="color:#204a87">filter</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">d2</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#000">v</span> <span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000">v</span> <span style="color:#204a87;font-weight:bold">in</span> <span style="color:#000">d2</span> <span style="color:#204a87;font-weight:bold">if</span> <span style="color:#000">v</span> <span style="color:#ce5c00;font-weight:bold">&gt;</span> <span style="color:#204a87">min</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">d1</span><span style="color:#000;font-weight:bold">)]</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#000">File</span> <span style="color:#4e9a06">&#34;sandbox.py&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">line</span> <span style="color:#0000cf;font-weight:bold">10</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87;font-weight:bold">in</span> <span style="color:#ce5c00;font-weight:bold">&lt;</span><span style="color:#000">listcomp</span><span style="color:#ce5c00;font-weight:bold">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">d2</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#000">v</span> <span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000">v</span> <span style="color:#204a87;font-weight:bold">in</span> <span style="color:#000">d2</span> <span style="color:#204a87;font-weight:bold">if</span> <span style="color:#000">v</span> <span style="color:#ce5c00;font-weight:bold">&gt;</span> <span style="color:#204a87">min</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">d1</span><span style="color:#000;font-weight:bold">)]</span>
+</span></span><span style="display:flex;"><span><span style="color:#c00;font-weight:bold">ValueError</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#204a87">min</span><span style="color:#000;font-weight:bold">()</span> <span style="color:#000">arg</span> <span style="color:#204a87;font-weight:bold">is</span> <span style="color:#000">an</span> <span style="color:#000">empty</span> <span style="color:#000">sequence</span>
+</span></span></code></pre></div></section><section>
+<p>It deals with a single constraint.</p>
+<p>And 2 variables.</p>
+
+</section>
+</section>
+    <section>
+
+<section data-shortcode-section>
+<h1 id="dont-panic">Don&rsquo;t panic</h1>
+<h2 id="and-tell-whats-going-on">and tell what&rsquo;s going on</h2>
+</section><section>
+<p>We can tell that the constraint should return :</p>
+<ul>
+<li><code>None</code> : if nothing was filtered</li>
+<li><code>True</code> : if some values were filtered</li>
+<li><code>False</code> : if a domain becomes empty</li>
+</ul>
+</section><section>
+<h3 id="lets-fix-the-code-12">Let&rsquo;s fix the code (1/2)</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="nohighlight" data-noescape><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">def</span> <span style="color:#000">filter</span><span style="color:#000;font-weight:bold">(</span><span style="color:#3465a4">self</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87">vars</span><span style="color:#000;font-weight:bold">):</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">d1</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#204a87">vars</span><span style="color:#000;font-weight:bold">[</span><span style="color:#3465a4">self</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">v1</span><span style="color:#000;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">d2</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#204a87">vars</span><span style="color:#000;font-weight:bold">[</span><span style="color:#3465a4">self</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">v2</span><span style="color:#000;font-weight:bold">]</span>			
+</span></span><span style="display:flex;"><span>    <span style="color:#000">diff</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#204a87">len</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">d1</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#ce5c00;font-weight:bold">+</span> <span style="color:#204a87">len</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">d2</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#8f5902;font-style:italic"># stores current length</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">d1</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#000">v</span> <span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000">v</span> <span style="color:#204a87;font-weight:bold">in</span> <span style="color:#000">d1</span> <span style="color:#204a87;font-weight:bold">if</span> <span style="color:#000">v</span> <span style="color:#ce5c00;font-weight:bold">&lt;</span> <span style="color:#204a87">max</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">d2</span><span style="color:#000;font-weight:bold">)]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">if</span> <span style="color:#204a87">len</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">d1</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#ce5c00;font-weight:bold">==</span> <span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#8f5902;font-style:italic"># &#34;x1&#34; becomes empty...</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#204a87;font-weight:bold">return</span> <span style="color:#204a87;font-weight:bold">False</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">d2</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#000">v</span> <span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000">v</span> <span style="color:#204a87;font-weight:bold">in</span> <span style="color:#000">d2</span> <span style="color:#204a87;font-weight:bold">if</span> <span style="color:#000">v</span> <span style="color:#ce5c00;font-weight:bold">&gt;</span> <span style="color:#204a87">min</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">d1</span><span style="color:#000;font-weight:bold">)]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">if</span> <span style="color:#204a87">len</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">d2</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#ce5c00;font-weight:bold">==</span> <span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#8f5902;font-style:italic"># &#34;x2&#34; becomes empty...</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#204a87;font-weight:bold">return</span> <span style="color:#204a87;font-weight:bold">False</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">diff</span> <span style="color:#ce5c00;font-weight:bold">-=</span> <span style="color:#204a87">len</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">d1</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#ce5c00;font-weight:bold">+</span> <span style="color:#204a87">len</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">d2</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#8f5902;font-style:italic"># difference in length</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87">vars</span><span style="color:#000;font-weight:bold">[</span><span style="color:#3465a4">self</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">v1</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">d1</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87">vars</span><span style="color:#000;font-weight:bold">[</span><span style="color:#3465a4">self</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">v2</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">d2</span>	
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">return</span> <span style="color:#000">diff</span> <span style="color:#ce5c00;font-weight:bold">&gt;</span> <span style="color:#0000cf;font-weight:bold">0</span> <span style="color:#204a87;font-weight:bold">or</span> <span style="color:#204a87;font-weight:bold">None</span> <span style="color:#8f5902;font-style:italic"># reduction of a domain or ...</span>
+</span></span></code></pre></div></section><section>
+<h3 id="lets-fix-the-code-22">Let&rsquo;s fix the code (2/2)</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="nohighlight" data-noescape><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">def</span> <span style="color:#000">enumerate</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">variables</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">constraint</span><span style="color:#000;font-weight:bold">):</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">if</span> <span style="color:#000">constraint</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">filter</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">variables</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#204a87;font-weight:bold">is</span> <span style="color:#204a87;font-weight:bold">False</span><span style="color:#000;font-weight:bold">:</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#204a87;font-weight:bold">return</span> <span style="color:#0000cf;font-weight:bold">0</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">var</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">val</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">select_decision</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">variables</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">if</span> <span style="color:#000">var</span> <span style="color:#204a87;font-weight:bold">is</span> <span style="color:#204a87;font-weight:bold">None</span><span style="color:#000;font-weight:bold">:</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#204a87">print</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">variables</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#204a87;font-weight:bold">return</span> <span style="color:#0000cf;font-weight:bold">1</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">else</span><span style="color:#000;font-weight:bold">:</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">n</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">propagate</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">variables</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">var</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">val</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87;font-weight:bold">True</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">constraint</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">n</span> <span style="color:#ce5c00;font-weight:bold">+=</span> <span style="color:#000">propagate</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">variables</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">var</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">val</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87;font-weight:bold">False</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">constraint</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#204a87;font-weight:bold">return</span> <span style="color:#000">n</span>
+</span></span></code></pre></div><p><code>None</code> and <code>True</code> will be used later.</p>
+</section><section>
+<h3 id="its-fine">It&rsquo;s fine</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="nohighlight" data-noescape><span style="display:flex;"><span><span style="color:#000">variables</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">{</span><span style="color:#4e9a06">&#34;x1&#34;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">{</span><span style="color:#0000cf;font-weight:bold">3</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">4</span><span style="color:#000;font-weight:bold">},</span>
+</span></span><span style="display:flex;"><span>             <span style="color:#4e9a06">&#34;x2&#34;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">{</span><span style="color:#0000cf;font-weight:bold">2</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">3</span><span style="color:#000;font-weight:bold">}}</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">c1</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">LessThan</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;x1&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;x2&#34;</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#204a87">print</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;it finds&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87">enumerate</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">variables</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">c1</span><span style="color:#000;font-weight:bold">),</span> <span style="color:#4e9a06">&#34;solutions&#34;</span><span style="color:#000;font-weight:bold">)</span>
+</span></span></code></pre></div><p>outputs:</p>
+<pre tabindex="0"><code>it finds 0 solutions
+</code></pre>
+</section>
+</section>
+    <section>
+
+<section data-shortcode-section>
+<h1 id="many-constraints">Many constraints</h1>
+<p>of the same type</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="nohighlight" data-noescape><span style="display:flex;"><span><span style="color:#000">variables</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">{</span><span style="color:#4e9a06">&#34;x1&#34;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">{</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">2</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">3</span><span style="color:#000;font-weight:bold">},</span>
+</span></span><span style="display:flex;"><span>             <span style="color:#4e9a06">&#34;x2&#34;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">{</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">2</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">3</span><span style="color:#000;font-weight:bold">},</span>
+</span></span><span style="display:flex;"><span>             <span style="color:#4e9a06">&#34;x3&#34;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">{</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">2</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">3</span><span style="color:#000;font-weight:bold">}}</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">c1</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">LessThan</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;x1&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;x2&#34;</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">c2</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">LessThan</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;x2&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;x3&#34;</span><span style="color:#000;font-weight:bold">)</span>
+</span></span></code></pre></div></section><section>
+<p>We will create a method to iterate on the constraints:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="nohighlight" data-noescape><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">def</span> <span style="color:#000">fix_point</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">variables</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">constraints</span><span style="color:#000;font-weight:bold">):</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000">c</span> <span style="color:#204a87;font-weight:bold">in</span> <span style="color:#000">constraints</span><span style="color:#000;font-weight:bold">:</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#204a87;font-weight:bold">if</span> <span style="color:#000">c</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">filter</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">variables</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#204a87;font-weight:bold">is</span> <span style="color:#204a87;font-weight:bold">False</span><span style="color:#000;font-weight:bold">:</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#204a87;font-weight:bold">return</span> <span style="color:#204a87;font-weight:bold">False</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">return</span> <span style="color:#204a87;font-weight:bold">True</span>
+</span></span></code></pre></div></section><section>
+<p>A call to this method will replace the first line of the <code>enumerate(_,_)</code> function:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="nohighlight" data-noescape><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">def</span> <span style="color:#000">enumerate</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">variables</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">constraints</span><span style="color:#000;font-weight:bold">):</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic"># if constraint.filter(variables) is False:</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">if</span> <span style="color:#204a87;font-weight:bold">not</span> <span style="color:#000">fix_point</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">variables</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">constraints</span><span style="color:#000;font-weight:bold">):</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#204a87;font-weight:bold">return</span> <span style="color:#0000cf;font-weight:bold">0</span> <span style="color:#8f5902;font-style:italic"># at least one constraint is not satisfied</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic"># ...        </span>
+</span></span></code></pre></div></section><section>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="nohighlight" data-noescape><span style="display:flex;"><span><span style="color:#000">variables</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">{</span><span style="color:#4e9a06">&#34;x1&#34;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">{</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">2</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">3</span><span style="color:#000;font-weight:bold">},</span>
+</span></span><span style="display:flex;"><span>             <span style="color:#4e9a06">&#34;x2&#34;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">{</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">2</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">3</span><span style="color:#000;font-weight:bold">},</span>
+</span></span><span style="display:flex;"><span>             <span style="color:#4e9a06">&#34;x3&#34;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">{</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">2</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">3</span><span style="color:#000;font-weight:bold">}}</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">c1</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">LessThan</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;x1&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;x2&#34;</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">c2</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">LessThan</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;x2&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;x3&#34;</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#204a87">print</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;it finds&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87">enumerate</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">variables</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000;font-weight:bold">{</span><span style="color:#000">c1</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">c2</span><span style="color:#000;font-weight:bold">}),</span> <span style="color:#4e9a06">&#34;solutions&#34;</span><span style="color:#000;font-weight:bold">)</span>
+</span></span></code></pre></div><p>outputs:</p>
+<pre tabindex="0"><code>{&#39;x1&#39;: [1], &#39;x2&#39;: [2], &#39;x3&#39;: [3]}
+it finds 1 solutions
+</code></pre></section><section>
+<h3 id="does-fix_point__-work-properly">Does <code>fix_point(_,_)</code> work properly?</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="nohighlight" data-noescape><span style="display:flex;"><span><span style="color:#000">variables</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">{</span><span style="color:#4e9a06">&#34;x1&#34;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">{</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">2</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">3</span><span style="color:#000;font-weight:bold">},</span>
+</span></span><span style="display:flex;"><span>             <span style="color:#4e9a06">&#34;x2&#34;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">{</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">2</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">3</span><span style="color:#000;font-weight:bold">},</span>
+</span></span><span style="display:flex;"><span>             <span style="color:#4e9a06">&#34;x3&#34;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">{</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">2</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">3</span><span style="color:#000;font-weight:bold">}}</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">c1</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">LessThan</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;x1&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;x2&#34;</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">c2</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">LessThan</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;x2&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;x3&#34;</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">fix_point</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">variables</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000;font-weight:bold">{</span><span style="color:#000">c1</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">c2</span><span style="color:#000;font-weight:bold">})</span>
+</span></span><span style="display:flex;"><span><span style="color:#204a87">print</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">variables</span><span style="color:#000;font-weight:bold">)</span>
+</span></span></code></pre></div><p>goes:</p>
+<pre tabindex="0"><code>{&#39;x1&#39;: [1, 2], &#39;x2&#39;: [2], &#39;x3&#39;: [3]}
+</code></pre><h3 id="p-classfragmentno-it-doesntp"><p class="fragment">No, it doesn&rsquo;t</p></h3>
+</section><section>
+<p>Indeed:</p>
+<ol>
+<li><code>c1</code> is called first and bounds <code>&quot;x1&quot;</code> and <code>&quot;x2&quot;</code>,</li>
+<li><code>c2</code> is called and bounds <code>&quot;x2&quot;</code> and  <code>&quot;x3&quot;</code>,</li>
+<li>and the loops ends.</li>
+</ol>
+<p>But <code>c1</code> wasn&rsquo;t <em>informed</em> that <code>&quot;x2&quot;</code> was modified by <code>c2</code>.</p>
+</section><section>
+<p>So, as long as a constraint filters values,</br>
+<b><u>all</u></b> the other ones must be checked.</p>
+</br>
+<p class="fragment">
+<small>💡 This could be refined.</small>
+</p>
+</section><section>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="nohighlight" data-noescape><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">def</span> <span style="color:#000">fix_point</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">variables</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">constraints</span><span style="color:#000;font-weight:bold">):</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">while</span> <span style="color:#204a87;font-weight:bold">True</span><span style="color:#000;font-weight:bold">:</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">fltrs</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#204a87;font-weight:bold">False</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000">c</span> <span style="color:#204a87;font-weight:bold">in</span> <span style="color:#000">constraints</span><span style="color:#000;font-weight:bold">:</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000">flt</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">c</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">filter</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">variables</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#204a87;font-weight:bold">if</span> <span style="color:#000">flt</span> <span style="color:#204a87;font-weight:bold">is</span> <span style="color:#204a87;font-weight:bold">False</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#8f5902;font-style:italic"># in case of failure</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#204a87;font-weight:bold">return</span> <span style="color:#204a87;font-weight:bold">False</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#204a87;font-weight:bold">elif</span> <span style="color:#000">flt</span> <span style="color:#204a87;font-weight:bold">is</span> <span style="color:#204a87;font-weight:bold">True</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#8f5902;font-style:italic"># in case of filtering</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#000">fltrs</span> <span style="color:#ce5c00;font-weight:bold">|=</span> <span style="color:#204a87;font-weight:bold">True</span> <span style="color:#8f5902;font-style:italic"># keep on looping </span>
+</span></span><span style="display:flex;"><span>        <span style="color:#204a87;font-weight:bold">if</span> <span style="color:#204a87;font-weight:bold">not</span> <span style="color:#000">fltrs</span> <span style="color:#000;font-weight:bold">:</span> <span style="color:#8f5902;font-style:italic"># to break the while-loop</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#204a87;font-weight:bold">return</span> <span style="color:#204a87;font-weight:bold">True</span>
+</span></span></code></pre></div></section><section>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="nohighlight" data-noescape><span style="display:flex;"><span><span style="color:#000">variables</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">{</span><span style="color:#4e9a06">&#34;x1&#34;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">{</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">2</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">3</span><span style="color:#000;font-weight:bold">},</span>
+</span></span><span style="display:flex;"><span>             <span style="color:#4e9a06">&#34;x2&#34;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">{</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">2</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">3</span><span style="color:#000;font-weight:bold">},</span>
+</span></span><span style="display:flex;"><span>             <span style="color:#4e9a06">&#34;x3&#34;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">{</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">2</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">3</span><span style="color:#000;font-weight:bold">}}</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">c1</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">LessThan</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;x1&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;x2&#34;</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">c2</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">LessThan</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;x2&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;x3&#34;</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">fix_point</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">variables</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000;font-weight:bold">{</span><span style="color:#000">c1</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">c2</span><span style="color:#000;font-weight:bold">})</span>
+</span></span><span style="display:flex;"><span><span style="color:#204a87">print</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">variables</span><span style="color:#000;font-weight:bold">)</span>
+</span></span></code></pre></div><p>now prints:</p>
+<pre tabindex="0"><code>{&#39;x1&#39;: [1], &#39;x2&#39;: [2], &#39;x3&#39;: [3]}
+</code></pre>
+</section>
+</section>
+    <section>
+
+<section data-shortcode-section>
+<h1 id="many-constraints">Many constraints</h1>
+<p>of the different type</p>
+</section><section>
+<h2 id="adding-the-constraint">Adding the constraint</h2>
+<h3 id="x_1neq-x_2--c">$X_1\neq X_2 + c$</h3>
+<p>where $c$ is a constant</p>
+<h2 id="should-be-quite-easy">should be quite easy</h2>
+<p><span class='fragment ' >It requires to define the <code>filter</code> function.</span></p>
+</section>
+<section data-noprocess>
+<h2>The 2 rules of $X_1\neq X_2 + c$</h2>
+<p class="fragment">1. if $X_2$ is instantied to $v_2$, </br>then $v_2+c$ must be removed from $X_1$ values,</p>
+<p class="fragment">2. if $X_1$ is instantied to $v_1$, </br>then $v_1-c$ must be removed from $X_2$ values.</p>
+<!--</section> to bind to the next section tag-->
+</section><section>
+<h3 id="the-notequal-class">The <code>NotEqual</code> class</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="nohighlight" data-noescape><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">class</span> <span style="color:#000">NotEqual</span><span style="color:#000;font-weight:bold">:</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">def</span> <span style="color:#000">__init__</span><span style="color:#000;font-weight:bold">(</span><span style="color:#3465a4">self</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">v1</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">v2</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">c</span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">):</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#3465a4">self</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">v1</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">v1</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#3465a4">self</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">v2</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">v2</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#3465a4">self</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">c</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">c</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">def</span> <span style="color:#000">filter</span><span style="color:#000;font-weight:bold">(</span><span style="color:#3465a4">self</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87">vars</span><span style="color:#000;font-weight:bold">):</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">d1</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#204a87">vars</span><span style="color:#000;font-weight:bold">[</span><span style="color:#3465a4">self</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">v1</span><span style="color:#000;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">d2</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#204a87">vars</span><span style="color:#000;font-weight:bold">[</span><span style="color:#3465a4">self</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">v2</span><span style="color:#000;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">size</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#204a87">len</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">d1</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#ce5c00;font-weight:bold">+</span> <span style="color:#204a87">len</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">d2</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#204a87;font-weight:bold">if</span> <span style="color:#204a87">len</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">d2</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#ce5c00;font-weight:bold">==</span> <span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">:</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000">d1</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#000">v</span> <span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000">v</span> <span style="color:#204a87;font-weight:bold">in</span> <span style="color:#000">d1</span> <span style="color:#204a87;font-weight:bold">if</span> <span style="color:#000">v</span> <span style="color:#ce5c00;font-weight:bold">!=</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#000">d2</span><span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">+</span> <span style="color:#3465a4">self</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">c</span><span style="color:#000;font-weight:bold">)]</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#204a87;font-weight:bold">if</span> <span style="color:#204a87">len</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">d1</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#ce5c00;font-weight:bold">==</span> <span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#204a87;font-weight:bold">return</span> <span style="color:#204a87;font-weight:bold">False</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#204a87;font-weight:bold">if</span> <span style="color:#204a87">len</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">d1</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#ce5c00;font-weight:bold">==</span> <span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">:</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000">d2</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#000">v</span> <span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000">v</span> <span style="color:#204a87;font-weight:bold">in</span> <span style="color:#000">d2</span> <span style="color:#204a87;font-weight:bold">if</span> <span style="color:#000">v</span> <span style="color:#ce5c00;font-weight:bold">!=</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#000">d1</span><span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">-</span> <span style="color:#3465a4">self</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">c</span><span style="color:#000;font-weight:bold">)]</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#204a87;font-weight:bold">if</span> <span style="color:#204a87">len</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">d2</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#ce5c00;font-weight:bold">==</span> <span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#204a87;font-weight:bold">return</span> <span style="color:#204a87;font-weight:bold">False</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">size</span> <span style="color:#ce5c00;font-weight:bold">-=</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#204a87">len</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">d1</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#ce5c00;font-weight:bold">+</span> <span style="color:#204a87">len</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">d2</span><span style="color:#000;font-weight:bold">))</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#204a87">vars</span><span style="color:#000;font-weight:bold">[</span><span style="color:#3465a4">self</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">v1</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">d1</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#204a87">vars</span><span style="color:#000;font-weight:bold">[</span><span style="color:#3465a4">self</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">v2</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">d2</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#204a87;font-weight:bold">return</span> <span style="color:#000">size</span> <span style="color:#ce5c00;font-weight:bold">&gt;</span> <span style="color:#0000cf;font-weight:bold">0</span> <span style="color:#204a87;font-weight:bold">or</span> <span style="color:#204a87;font-weight:bold">None</span>
+</span></span></code></pre></div>
+</section>
+</section>
+    <section>
+
+<section data-shortcode-section>
+<p>Now, we are able to</p>
+<h1 id="solve-a-basic-problem">solve a basic problem</h1>
+</section><section>
+<h1>The 8 queens puzzle</h1>
+<blockquote>The eight queens puzzle is the problem of placing eight chess queens on an 8×8  chessboard so that no two queens threaten each other;  thus, a solution requires that no two queens share the same row, column, or diagonal.</blockquote>
+<p><a href="https://en.wikipedia.org/wiki/Eight_queens_puzzle">Wikipedia</a></p>
+</section><section>
+<figure>
+    <img src="/images/tinytiny/nqueens/8queens.png" alt="This is an alt" width="40%" >
+    <figcaption>Src: <a href="https://en.wikipedia.org/wiki/Eight_queens_puzzle">Wikipedia</a></figcaption>
+</figure>
+</section><section>
+<p>A first idea is to indicate by a <span style="color:deepskyblue;">Boolean</span> variable if a cell is occupied by a queen or not.</p>
+<p><span class='fragment ' >But we wouldn’t be able to use our constraints.</span></p>
+<p><span class='fragment ' >Also, it is very MILP-like or SAT-like.</span></p>
+</section><section>
+<h2 id="a-more-cp-way-to-model-it">A more CP way to model it</h2>
+<p>A <span style="color:deepskyblue;">variable</span> per column.</p>
+<p>Each <span style="color:deepskyblue;">domain</span> encodes the row where the queen is set.</p>
+<p>Four groups of inequality <span style="color:deepskyblue;">constraints</span> are posed:</p>
+<ol>
+<li>no two queens share the same row</li>
+<li>no two queens share the same column (➡️ <em>handled by the model</em> 🤘)</li>
+<li>no two queens share the same upward diagonal</li>
+<li>no two queens share the same downward diagonal</li>
+</ol>
+</section><section>
+<h2 id="6-queens-puzzle-in-python">6 Queens puzzle in Python</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="nohighlight" data-noescape><span style="display:flex;"><span><span style="color:#000">n</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#0000cf;font-weight:bold">8</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">variables</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">{}</span>
+</span></span><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000">i</span> <span style="color:#204a87;font-weight:bold">in</span> <span style="color:#204a87">range</span><span style="color:#000;font-weight:bold">(</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">n</span> <span style="color:#ce5c00;font-weight:bold">+</span> <span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">):</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">variables</span><span style="color:#000;font-weight:bold">[</span><span style="color:#4e9a06">&#34;x&#34;</span> <span style="color:#ce5c00;font-weight:bold">+</span> <span style="color:#204a87">str</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">i</span><span style="color:#000;font-weight:bold">)]</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">{</span><span style="color:#000">k</span> <span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000">k</span> <span style="color:#204a87;font-weight:bold">in</span> <span style="color:#204a87">range</span><span style="color:#000;font-weight:bold">(</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">n</span> <span style="color:#ce5c00;font-weight:bold">+</span> <span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">)}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000">cs</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">[]</span>
+</span></span><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000">i</span> <span style="color:#204a87;font-weight:bold">in</span> <span style="color:#204a87">range</span><span style="color:#000;font-weight:bold">(</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">n</span><span style="color:#000;font-weight:bold">):</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000">j</span> <span style="color:#204a87;font-weight:bold">in</span> <span style="color:#204a87">range</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">i</span> <span style="color:#ce5c00;font-weight:bold">+</span> <span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">n</span> <span style="color:#ce5c00;font-weight:bold">+</span> <span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">):</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">cs</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">append</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">NotEqual</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;x&#34;</span> <span style="color:#ce5c00;font-weight:bold">+</span> <span style="color:#204a87">str</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">i</span><span style="color:#000;font-weight:bold">),</span> <span style="color:#4e9a06">&#34;x&#34;</span> <span style="color:#ce5c00;font-weight:bold">+</span> <span style="color:#204a87">str</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">j</span><span style="color:#000;font-weight:bold">)))</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">cs</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">append</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">NotEqual</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;x&#34;</span><span style="color:#ce5c00;font-weight:bold">+</span><span style="color:#204a87">str</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">i</span><span style="color:#000;font-weight:bold">),</span><span style="color:#4e9a06">&#34;x&#34;</span><span style="color:#ce5c00;font-weight:bold">+</span><span style="color:#204a87">str</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">j</span><span style="color:#000;font-weight:bold">),</span> <span style="color:#000">c</span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">j</span><span style="color:#ce5c00;font-weight:bold">-</span><span style="color:#000">i</span><span style="color:#000;font-weight:bold">)))</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">cs</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">append</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">NotEqual</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;x&#34;</span><span style="color:#ce5c00;font-weight:bold">+</span><span style="color:#204a87">str</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">i</span><span style="color:#000;font-weight:bold">),</span><span style="color:#4e9a06">&#34;x&#34;</span><span style="color:#ce5c00;font-weight:bold">+</span><span style="color:#204a87">str</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">j</span><span style="color:#000;font-weight:bold">),</span> <span style="color:#000">c</span><span style="color:#ce5c00;font-weight:bold">=-</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">j</span><span style="color:#ce5c00;font-weight:bold">-</span><span style="color:#000">i</span><span style="color:#000;font-weight:bold">)))</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"># mirror symm. breaking</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">variables</span><span style="color:#000;font-weight:bold">[</span><span style="color:#4e9a06">&#34;cst&#34;</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">{</span><span style="color:#204a87">int</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">n</span> <span style="color:#ce5c00;font-weight:bold">/</span> <span style="color:#0000cf;font-weight:bold">2</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#ce5c00;font-weight:bold">+</span> <span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">cs</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">append</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">LessThan</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;x1&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;cst&#34;</span><span style="color:#000;font-weight:bold">))</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#204a87">print</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;it finds&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87">enumerate</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">variables</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">cs</span><span style="color:#000;font-weight:bold">),</span> <span style="color:#4e9a06">&#34;solutions&#34;</span><span style="color:#000;font-weight:bold">)</span>
+</span></span></code></pre></div></section><section>
+<h3 id="46-solutions">46 solutions</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="nohighlight" data-noescape><span style="display:flex;"><span><span style="color:#000;font-weight:bold">{</span><span style="color:#4e9a06">&#39;x1&#39;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#4e9a06">&#39;x2&#39;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">5</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#4e9a06">&#39;x3&#39;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">8</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#4e9a06">&#39;x4&#39;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">6</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#4e9a06">&#39;x5&#39;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">3</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#4e9a06">&#39;x6&#39;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">7</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#4e9a06">&#39;x7&#39;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">2</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#4e9a06">&#39;x8&#39;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">4</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#4e9a06">&#39;cst&#39;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">5</span><span style="color:#000;font-weight:bold">]}</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">{</span><span style="color:#4e9a06">&#39;x1&#39;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#4e9a06">&#39;x2&#39;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">6</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#4e9a06">&#39;x3&#39;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">8</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#4e9a06">&#39;x4&#39;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">3</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#4e9a06">&#39;x5&#39;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">7</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#4e9a06">&#39;x6&#39;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">4</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#4e9a06">&#39;x7&#39;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">2</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#4e9a06">&#39;x8&#39;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">5</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#4e9a06">&#39;cst&#39;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">5</span><span style="color:#000;font-weight:bold">]}</span>
+</span></span><span style="display:flex;"><span><span style="color:#ce5c00;font-weight:bold">...</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">{</span><span style="color:#4e9a06">&#39;x1&#39;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">4</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#4e9a06">&#39;x2&#39;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">8</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#4e9a06">&#39;x3&#39;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#4e9a06">&#39;x4&#39;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">5</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#4e9a06">&#39;x5&#39;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">7</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#4e9a06">&#39;x6&#39;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">2</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#4e9a06">&#39;x7&#39;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">6</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#4e9a06">&#39;x8&#39;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">3</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#4e9a06">&#39;cst&#39;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">5</span><span style="color:#000;font-weight:bold">]}</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">{</span><span style="color:#4e9a06">&#39;x1&#39;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">4</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#4e9a06">&#39;x2&#39;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">8</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#4e9a06">&#39;x3&#39;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">5</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#4e9a06">&#39;x4&#39;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">3</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#4e9a06">&#39;x5&#39;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#4e9a06">&#39;x6&#39;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">7</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#4e9a06">&#39;x7&#39;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">2</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#4e9a06">&#39;x8&#39;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">6</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#4e9a06">&#39;cst&#39;</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">5</span><span style="color:#000;font-weight:bold">]}</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">it</span> <span style="color:#000">finds</span> <span style="color:#0000cf;font-weight:bold">46</span> <span style="color:#000">solutions</span>
+</span></span></code></pre></div><p>There are 92 solutions without the (simple) symmetry breaking constraint, 46 otherwise.</p>
+</section><section>
+<h2 id="we-did-it-">We did it 🍾</h2>
+<p>We build a minimalist CP solver :</p>
+<ul>
+<li>based on integer variables,</li>
+<li>using two different types of constraints,
+<ul>
+<li>each equipped with a filtering algorithm,</li>
+</ul>
+</li>
+<li>exploring the search space in DFS way.</li>
+</ul>
+<p>And we were able to enumerate solutions</br>
+on a puzzle !</p>
+
+</section>
+</section>
+    <section>
+
+<section data-shortcode-section>
+<h1 id="analogy-with-sudoku">Analogy with Sudoku</h1>
+</section><section>
+<h2 id="we-reached-the-sudoku-point">We reached the Sudoku point</h2>
+<p>When trying to explain how constraint programming works,
+it is common to draw a parallel with sudoku.</p>
+</section><section>
+<h2 id="at-modelling-step">At modelling step</h2>
+<ul>
+<li>
+<p>One must write a value in $[1,9]$ in each cell</p>
+<ul>
+<li>➡️ a variable and a domain</li>
+</ul>
+</li>
+<li>
+<p>Such that each digit is used exactly once per <span style="color:#3BAFDA">row</span>
+, per <span style="color:#3BAFDA">column</span>
+and per <span style="color:#3BAFDA">square</span></p>
+<ul>
+<li>➡️ sets of $\neq$ constraints</li>
+</ul>
+</li>
+</ul>
+</section><section>
+<h2 id="at-solving-step">At solving step</h2>
+</section><section>
+<h3 id="local-reasonning">Local reasonning</h3>
+<figure>
+    <img src="/images/tinytiny/sudoku/local.png" alt="This is an alt" width="40%" >
+    <figcaption>Each constraint infers on a local view. </figcaption>
+</figure>
+</section><section>
+<h3 id="filtering">Filtering</h3>
+<figure>
+    <img src="/images/tinytiny/sudoku/filtering.png" alt="This is an alt" width="40%" >
+    <figcaption>Impossible values are removed </br> from a variable's domain</figcaption>
+</figure>
+</section><section>
+<h3 id="propagation">Propagation</h3>
+<figure>
+    <img src="/images/tinytiny/sudoku/propagations.png" alt="This is an alt" width="40%" >
+    <figcaption>The information is shared between the constraints through the variables</figcaption>
+</figure>
+</section><section>
+<h3 id="search">Search</h3>
+<p>On <strong>devil sudoku</strong>, one has to make assumptions.</p>
+<p>And validate them by propagation.</p>
+</section><section>
+<h3 id="a-4x4-sudoku-example">A 4x4 sudoku example</h3>
+<figure>
+    <img src="/images/tinytiny/sudoku/4x4sudoku.png" alt="This is an alt" width="20%" >
+</figure>
+</section><section>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="nohighlight" data-noescape><span style="display:flex;"><span><span style="color:#000">n</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#0000cf;font-weight:bold">4</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">variables</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">{}</span>
+</span></span><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000">i</span> <span style="color:#204a87;font-weight:bold">in</span> <span style="color:#204a87">range</span><span style="color:#000;font-weight:bold">(</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">n</span> <span style="color:#ce5c00;font-weight:bold">+</span> <span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">):</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000">j</span> <span style="color:#204a87;font-weight:bold">in</span> <span style="color:#204a87">range</span><span style="color:#000;font-weight:bold">(</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">n</span> <span style="color:#ce5c00;font-weight:bold">+</span> <span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">):</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">variables</span><span style="color:#000;font-weight:bold">[</span><span style="color:#4e9a06">&#34;x&#34;</span> <span style="color:#ce5c00;font-weight:bold">+</span> <span style="color:#204a87">str</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">i</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#ce5c00;font-weight:bold">+</span> <span style="color:#204a87">str</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">j</span><span style="color:#000;font-weight:bold">)]</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">{</span><span style="color:#000">k</span> <span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000">k</span> <span style="color:#204a87;font-weight:bold">in</span> <span style="color:#204a87">range</span><span style="color:#000;font-weight:bold">(</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">n</span> <span style="color:#ce5c00;font-weight:bold">+</span> <span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">)}</span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"># fix values</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">variables</span><span style="color:#000;font-weight:bold">[</span><span style="color:#4e9a06">&#34;x12&#34;</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">2</span><span style="color:#000;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">variables</span><span style="color:#000;font-weight:bold">[</span><span style="color:#4e9a06">&#34;x21&#34;</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">3</span><span style="color:#000;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">variables</span><span style="color:#000;font-weight:bold">[</span><span style="color:#4e9a06">&#34;x31&#34;</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">2</span><span style="color:#000;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">variables</span><span style="color:#000;font-weight:bold">[</span><span style="color:#4e9a06">&#34;x32&#34;</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">variables</span><span style="color:#000;font-weight:bold">[</span><span style="color:#4e9a06">&#34;x33&#34;</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">3</span><span style="color:#000;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">variables</span><span style="color:#000;font-weight:bold">[</span><span style="color:#4e9a06">&#34;x41&#34;</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">4</span><span style="color:#000;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">variables</span><span style="color:#000;font-weight:bold">[</span><span style="color:#4e9a06">&#34;x43&#34;</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">2</span><span style="color:#000;font-weight:bold">]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000">zones</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">[]</span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"># rows</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">zones</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">append</span><span style="color:#000;font-weight:bold">([</span><span style="color:#4e9a06">&#34;x11&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;x12&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;x13&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;x14&#34;</span><span style="color:#000;font-weight:bold">])</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">zones</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">append</span><span style="color:#000;font-weight:bold">([</span><span style="color:#4e9a06">&#34;x21&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;x22&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;x23&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;x24&#34;</span><span style="color:#000;font-weight:bold">])</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">zones</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">append</span><span style="color:#000;font-weight:bold">([</span><span style="color:#4e9a06">&#34;x31&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;x32&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;x33&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;x34&#34;</span><span style="color:#000;font-weight:bold">])</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">zones</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">append</span><span style="color:#000;font-weight:bold">([</span><span style="color:#4e9a06">&#34;x41&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;x42&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;x43&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;x44&#34;</span><span style="color:#000;font-weight:bold">])</span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"># columns</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">zones</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">append</span><span style="color:#000;font-weight:bold">([</span><span style="color:#4e9a06">&#34;x11&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;x21&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;x31&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;x41&#34;</span><span style="color:#000;font-weight:bold">])</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">zones</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">append</span><span style="color:#000;font-weight:bold">([</span><span style="color:#4e9a06">&#34;x12&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;x22&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;x32&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;x42&#34;</span><span style="color:#000;font-weight:bold">])</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">zones</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">append</span><span style="color:#000;font-weight:bold">([</span><span style="color:#4e9a06">&#34;x13&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;x23&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;x33&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;x43&#34;</span><span style="color:#000;font-weight:bold">])</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">zones</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">append</span><span style="color:#000;font-weight:bold">([</span><span style="color:#4e9a06">&#34;x14&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;x24&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;x34&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;x44&#34;</span><span style="color:#000;font-weight:bold">])</span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"># square</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">zones</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">append</span><span style="color:#000;font-weight:bold">([</span><span style="color:#4e9a06">&#34;x11&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;x12&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;x21&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;x22&#34;</span><span style="color:#000;font-weight:bold">])</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">zones</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">append</span><span style="color:#000;font-weight:bold">([</span><span style="color:#4e9a06">&#34;x13&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;x14&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;x23&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;x24&#34;</span><span style="color:#000;font-weight:bold">])</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">zones</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">append</span><span style="color:#000;font-weight:bold">([</span><span style="color:#4e9a06">&#34;x31&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;x32&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;x41&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;x42&#34;</span><span style="color:#000;font-weight:bold">])</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">zones</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">append</span><span style="color:#000;font-weight:bold">([</span><span style="color:#4e9a06">&#34;x33&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;x34&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;x43&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;x44&#34;</span><span style="color:#000;font-weight:bold">])</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000">cs</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">[]</span>
+</span></span><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000">z</span> <span style="color:#204a87;font-weight:bold">in</span> <span style="color:#000">zones</span><span style="color:#000;font-weight:bold">:</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000">j</span> <span style="color:#204a87;font-weight:bold">in</span> <span style="color:#204a87">range</span><span style="color:#000;font-weight:bold">(</span><span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">n</span><span style="color:#000;font-weight:bold">):</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000">k</span> <span style="color:#204a87;font-weight:bold">in</span> <span style="color:#204a87">range</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">j</span> <span style="color:#ce5c00;font-weight:bold">+</span> <span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">n</span><span style="color:#000;font-weight:bold">):</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000">cs</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">append</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">NotEqual</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">z</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">j</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#000">z</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">k</span><span style="color:#000;font-weight:bold">]))</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#204a87">print</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;it finds&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87">enumerate</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">variables</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">cs</span><span style="color:#000;font-weight:bold">),</span> <span style="color:#4e9a06">&#34;solutions&#34;</span><span style="color:#000;font-weight:bold">)</span>
+</span></span></code></pre></div>
+</section>
+</section>
+    <section>
+
+<section data-shortcode-section>
+<p>The <span style="color:#3BAFDA">value</span>
+of CP lies</p>
+<h2 id="in-the-constraints">in the constraints</h2>
+<p><span class='fragment ' >We only saw two basic binary constraints.</span></p>
+<p><span class='fragment ' >But there are hundreds of them.</span></p>
+</section>
+<section data-noprocess data-shortcode-slide
+      data-background-iframe="http://sofdem.github.io/gccat/gccat/sec5.html"
+      id="gccat">
+</section><section>
+<h2 id="why-are-there-so-many-of-them">Why are there so many of them?</h2>
+<p>Is it not possible to do with less?</p>
+<p><span class='fragment ' >Indeed, MILP and SAT are doing very well with <strong>one</strong> type of constraint !</span></p>
+</section><section>
+<h2 id="two-main-reasons">Two main reasons</h2>
+<ol>
+<li><span style="color:#3BAFDA">Modeling</span>
+: stronger expressive power</li>
+<li><span style="color:#3BAFDA">Solving</span>
+: increased filter quality</li>
+</ol>
+</section><section>
+<h3 id="at-the-modeling-stage">At the modeling stage</h3>
+<ul>
+<li>each constraint is semantically defined</li>
+<li>which also indicates the contract it guarantees</li>
+</ul>
+</section><section>
+<h3 id="examples">Examples</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>alldifferent</code></td>
+<td>enforces all variables in its scope to take distinct values</td>
+</tr>
+<tr>
+<td><code>increasing</code></td>
+<td>the variables in its scope are increasing</td>
+</tr>
+<tr>
+<td><code>maximum</code></td>
+<td>a variable is the maximum value of a collection of variables</td>
+</tr>
+<tr>
+<td>&hellip;</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section><section>
+<h3 id="others-are-less-obvious-">Others are less obvious 😇</h3>
+<p><code>subgraph_isomorphism</code>, <code>path</code>, <code>diffn</code>, <code>geost</code>, &hellip;</p>
+<p>but are documented</p>
+</section><section>
+<h3 id="at-the-modeling-stage-22">At the modeling stage (2/2)</h3>
+<ul>
+<li>A CSP model is a conjunction of constraints</li>
+<li>The model can be very compact</li>
+<li>It is easy to understand and modify a model</li>
+</ul>
+<p><span class='fragment ' >Recall that there are modelling languages to do this</span></p>
+</section><section>
+<h3 id="at-solving-stage">At solving stage</h3>
+<p>But it is rather here that one can measure the interest of the constraints</p>
+</section><section>
+<p>A constraint captures a sub-problem</p>
+<h3 id="and-provides-an-efficient-way-to-deal-with-it">and provides an efficient way to deal with it</h3>
+<p>thanks to an adapted filtering algorithm</p>
+</section><section>
+<h2 id="on-one-example">On one example</h2>
+</section><section>
+<h3 id="bigwedge_x_ix_j-in-x-ineq-j-x_i-neq-x_j">$\bigwedge_{X_i,X_j \in X, i\neq j} X_i \neq X_j$</h3>
+<h3 id="-vs-">-vs-</h3>
+<h3 id="textttalldifferentx">$\texttt{allDifferent}(X)$</h3>
+<p><span class='fragment ' >Both version find the same solutions</span></p>
+<p><span class='fragment ' >but the 2nd filters more</span></p>
+</section><section>
+<h3 id="with-binary-constraints">With binary constraints</h3>
+<p><img src="/images/tinytiny/constraints/alldiff1.svg" alt="Alt text."></p>
+<p>What can be deduced?</p>
+<p><span class='fragment ' >Nothing until a variable is set</span></p>
+</section>
+<section data-noprocess data-shortcode-slide
+      data-transition="fade-in none">
+<h3 id="with-a-global-constraint">With a global constraint</h3>
+<p><img src="/images/tinytiny/constraints/alldiff1.svg" alt="Alt text."></p>
+<p>Rely on graph theory&hellip;</p>
+</section>
+<section data-noprocess data-shortcode-slide
+      data-transition="fade-in none">
+<h3 id="with-a-global-constraint-1">With a global constraint</h3>
+<p><img src="/images/tinytiny/constraints/alldiff2.svg" alt="Alt text."></p>
+<p>pair variables and values in a bipartite graph&hellip;</p>
+</section>
+<section data-noprocess data-shortcode-slide
+      data-transition="none"
+      data-transition-speed="fast">
+<h3 id="with-a-global-constraint-2">With a global constraint</h3>
+<p><img src="/images/tinytiny/constraints/alldiff3.svg" alt="Alt text."></p>
+<p>find maximum cardinality matchings&hellip;</p>
+</section>
+<section data-noprocess data-shortcode-slide
+      data-transition="none"
+      data-transition-speed="fast">
+<h3 id="with-a-global-constraint-3">With a global constraint</h3>
+<p><img src="/images/tinytiny/constraints/alldiff4.svg" alt="Alt text."></p>
+<p>remove values which belong to none of them.</p>
+</section><section>
+<h2 id="summary">Summary</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>$\bigwedge_{x_i,x_j \in X, i\neq j} x_i \neq x_j$</th>
+<th>$\texttt{allDifferent}(X)$</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>#cstrs</td>
+<td>$\frac{\vert X \vert \times \vert X\vert -1}{2}$</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Filtering</td>
+<td>weak and late</td>
+<td><em>arc-consistency</em> in polynomial time and space</td>
+</tr>
+<tr>
+<td>Algorithm</td>
+<td>straightforward</td>
+<td>tricky*</td>
+</tr>
+</tbody>
+</table>
+<p><small>*: but already done for you in libraries</small></p>
+<aside class="notes"><p>fix-point might be long</p>
+<p>$$O(n\sqrt{\sum d})$$</p>
+</aside>
+</section><section>
+<h2 id="remarks-about-global-constraints">Remarks about global constraints</h2>
+<p>Many model <span style="color:#3BAFDA">highly combinatorial problems</span></p>
+<p>It is likely that:</p>
+<ul>
+<li>arc-consistency is not reached (<em>i.e., weaker filtering</em>)</li>
+<li>filtering is complex to achieve</li>
+</ul>
+<p>Their expressive power remains strong</p>
+
+</section>
+</section>
+    <section>
+
+<section data-shortcode-section>
+<h1 id="improvements">Improvements</h1>
+<p>that we do not develop</p>
+</section><section>
+<h2 id="at-the-modelling-level">At the modelling level</h2>
+<ul>
+<li>Other kinds of variables</li>
+<li>Other constraints or way to express rules</li>
+<li>Search space exploration
+<ul>
+<li>Black-box strategies,</li>
+<li>Restarting,</li>
+<li>Alternatives to DFS</li>
+</ul>
+</li>
+</ul>
+</section><section>
+<h2 id="at-the-solving-step">At the solving step</h2>
+<ul>
+<li>Refine the way constraints are propagated</li>
+<li>Fine response of propagators to variables&rsquo; changes</li>
+<li>Restore by copy or trail</li>
+<li>Conflict-driven Clause-learning</li>
+<li>&hellip;</li>
+</ul>
+</section><section>
+<p>And so many other things !</p>
+<h1 id="thank-you">Thank you</h1>
+<p>Q?</p>
+
+</section>
+</section>
+
+</div>
+      
+
+    </div>
+<script type="text/javascript" src=/reveal-hugo/object-assign.js></script>
+
+
+<script src="/reveal-js/dist/reveal.js"></script>
+
+
+  <script type="text/javascript" src="/reveal-js/plugin/markdown/markdown.js"></script>
+  
+  <script type="text/javascript" src="/reveal-js/plugin/highlight/highlight.js"></script>
+  
+  <script type="text/javascript" src="/reveal-js/plugin/zoom/zoom.js"></script>
+  
+  <script type="text/javascript" src="/reveal-js/plugin/notes/notes.js"></script>
+  
+<script type="text/javascript">
+  
+  
+  function camelize(map) {
+    if (map) {
+      Object.keys(map).forEach(function(k) {
+        newK = k.replace(/(\_\w)/g, function(m) { return m[1].toUpperCase() });
+        if (newK != k) {
+          map[newK] = map[k];
+          delete map[k];
+        }
+      });
+    }
+    return map;
+  }
+
+  var revealHugoDefaults = { center: true, controls: true, history: true, progress: true, transition: "slide" };
+  var revealHugoSiteParams = {};
+  var revealHugoPageParams = {"highlight_theme":"github","slide_number":true,"theme":"league"};
+
+  var revealHugoPlugins = {
+    
+    plugins: [RevealMarkdown,RevealHighlight,RevealZoom,RevealNotes]
+  };
+
+  
+  var options = Object.assign({},
+    camelize(revealHugoDefaults),
+    camelize(revealHugoSiteParams),
+    camelize(revealHugoPageParams),
+    camelize(revealHugoPlugins));
+
+  Reveal.initialize(options);
+</script>
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+    <script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  },
+  svg: {
+    fontCache: 'global'
+  }
+};
+</script>
+
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
+</script>
+    
+  </body>
+</html>

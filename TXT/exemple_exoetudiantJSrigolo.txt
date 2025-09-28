@@ -1,0 +1,13 @@
+Écrivez une fonction qui prend en entrée un nombre et renvoie "C'est un nombre impair et franchement je m'en fiche" si c'est un nombre impair ou "C'est un nombre pair et c'est ennuyeux" si c'est un nombre pair.
+
+Écrivez une fonction qui prend en entrée une chaîne de caractères et renvoie "C'est une chaîne vide et c'est inutile" si la chaîne est vide, "C'est une chaîne de caractères et ça n'a aucun sens" si la chaîne n'est pas vide.
+
+Écrivez une fonction qui prend en entrée un tableau et renvoie "Ce tableau est vide et c'est triste" si le tableau est vide, "Ce tableau n'est pas vide et c'est un peu mieux" si le tableau n'est pas vide.
+
+Écrivez une fonction qui prend en entrée un objet et renvoie "C'est un objet vide et c'est décevant" si l'objet est vide, "C'est un objet plein et c'est intéressant" si l'objet n'est pas vide.
+
+Écrivez une fonction qui prend en entrée une expression mathématique et renvoie "C'est une expression mathématique et c'est compliqué" si l'expression est compliquée, "C'est une expression mathématique et c'est simple" si l'expression est simple.
+
+-------------
+
+"Vous êtes en charge d'une équipe de développeurs qui ressemble plus à une bande de singes qu'à une équipe professionnelle. Chacun a des compétences uniques, mais aussi des habitudes détestables. Et pour couronner le tout, ils ont tous un planning différent et aucun ne peut travailler le mercredi après-midi parce qu'ils ont une réunion de boisson. Comment pouvez-vous utiliser l'algorithme CSP pour décider qui fait quoi et quand, tout en veillant à ce que les délais soient respectés et que personne ne soit surmené ?"

@@ -1,0 +1,71 @@
+\begin{table}[!ht]
+%\resizebox{\textwidth}{!}{%
+\centering
+{\small
+\begin{tabular}{|rl|}
+%\hline
+%\SLOT & ensemble des créneaux définissant l'horizon de temps \\
+%%& (1..(nr\_daily\_slot $\times$ nr\_week\_day $\times$ nr\_week))\\ 
+%\COURSE & ensemble des cours\\
+%\PART & ensembles des parties de cours\\
+%\CLASS & ensembles des classes\\
+%\SESSION & ensembles des séances\\
+%\ROOM & ensemble des salles\\
+%\TEACHER & ensemble des enseignants\\
+%\GROUP & ensemble des groupes d'étudiants\\
+%\STUDENT & ensembles des étudiants\\
+\hline
+part\_sessions              & sessions of a part \\%séances d'une partie de cours\\
+class\_sessions             & sessions of a class \\%séances d'une classe\\
+part\_resources            & resources of a part\\%ressources allouables dans une partie de cours\\
+part\_daily\_slots          & allowed dailyslots of a part\\%créneaux quotidiens autorisés pour une partie de cours\\
+part\_weekdays              & allowed weekdays of a part\\%journées hebdomadaires autorisées pour une partie de cours\\
+part\_weeks                 & allowed weeks of a part\\%semaines autorisées pour une partie de cours\\
+part\_room\_use             & how rooms are used by a part (none, single, multiple)\\%régime d'utilisation des salles dans une partie de cours\\
+part\_lecturer\_service      & number of sessions a lecturer has in a part\\%volume de séances par enseignant et partie de cours\\
+room\_capacity              & maximum capacity of a room\\%capacité d'accueil d'une salle\\
+class\_capacity             & maximum capacity of a class\\%effectif maximum d'une classe\\
+class\_parent               & parent class of a class\\
+%room\_max\_use              & \\
+%teacher\_max\_use           & \\
+%group\_max\_use             & \\
+%\end{tabular}
+%}
+%\caption{Données d'instance}
+%\label{table:input-data}
+%\end{table*}
+%
+%\begin{table*}[h]
+%%\resizebox{\textwidth}{!}{%
+%\centering
+%{\footnotesize
+%\begin{tabular}{|rl|}
+\hline
+session\_course         & course of a session \\%cours d'une séance\\
+session\_part           & part of a session \\%partie de cours d'une séance\\
+session\_class          & class of a session \\%classe d'une séance\\
+session\_rank           & rank of a session in its class \\%rang d'une séance dans sa classe\\
+session\_length         & number of slots between the start and the end of a session \\%durée d'une séance\\
+lecturer\_per\_session   & number of lecturers of a session \\%nombre d'enseignants d'une séance\\
+room\_sessions          & set of possible sessions of a room \\%ensemble des séances possibles pour une salle\\
+lecturer\_sessions       & set of possible sessions of a lecturer \\%ensemble des séances possibles pour un enseignant\\
+group\_sessions         & set of possible sessions of a group \\%ensemble des séances possibles pour un groupe\\
+class\_mandatory        & set of mandatory rooms of a class \\%ensemble de salles obligatoires pour une classe\\
+slot\_dailyslot         & dailyslot of a slot \\%créneau quotidien caractérisant un créneau\\
+slot\_weekday           & weekday of a slot \\%journée hebdomadaire caractérisant un créneau\\
+slot\_week              & week of a slot \\%semaine caractérisant un créneau\\
+\hline
+is\_multi\_rooms        & is the session multi-room? \\%indique si une séance est multi-salles\\
+has\_mandatory\_rooms   & has the session got mandatory rooms? \\%indique si une séance a des salles obligatoires\\
+nr\_weekly\_slots       & number of slots in a week \\%nombre de créneaux dans une semaine\\
+\hline
+\end{tabular}
+}
+\caption{
+%Données d'instances et fonctions utilitaires
+Instance data shared by the \MINIZINC{} and \CHR{} models
+}
+\label{table:cp-instance-data}
+\end{table}
+
+%------------------------------------------------------------

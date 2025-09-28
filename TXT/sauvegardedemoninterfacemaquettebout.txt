@@ -1,0 +1,76 @@
+            <div id='cours${i}' class='course-title'>Cours ${i}</div>
+            <div class="left"> 
+                <select id="sessionType-${i}">
+                    <option value="CM">CM</option>
+                    <option value="TD">TD</option>
+                    <option value="TP">TP</option>
+                </select>
+            <p id="contain-data${i}" class="contain-data"></p>
+            <div name="teacherContainBubble" >
+                <select id="keywordSelect${i}">
+                    <option value="">Choisir un mot-clé...</option>
+                </select>
+                <button onclick="addKeyword(${i})">Ajouter</button>
+            </div>
+            <div id="selectedKeywords${i}" class="keykey"></div>
+
+            <div name="teacherContainBubble" >
+            <select id="keywordSelectR${i}">
+                <option value="">Choisir un mot-clé...</option>
+            </select>
+            <button onclick="addKeywordRoom(${i})">Ajouter</button>
+            </div>
+            <div id="selectedKeywordsR${i}" class="keykey"></div>
+
+            </div>
+            <div class="right">
+
+                
+                <div id="session-${i}" >
+    
+                    <div id="session-details-container-${i}" class="session-details-container"></div>
+                    <button onclick="addSessionDetails(${i}, 'part${i}')">Valider</button>
+                </div>
+            </div>
+
+Récupère les informatiosn dans du code html de cette forme et récole ensuite tu transfoimes ça dans ce format la :
+
+<course id="cours-1" label="cours">
+        <part id="cours-1-pCM" nrSessions="10" label="CM">
+        <classes maxHeadCount="200">
+        <class id="cours-1-pCM-c1" label="CM"/>
+        </classes>
+        <allowedSlots sessionLength="180">
+          <dailySlots>480,570,660,750,840,930,1020,1110</dailySlots>
+          <days>1,2,3,4,5</days>
+          <weeks>1,2,3,4,5,6,7,8,9,10</weeks>
+        </allowedSlots>
+        <allowedRooms sessionRooms="single">
+          <room refId="room1"/>
+          <room refId="room2"/>
+        </allowedRooms>
+        <allowedTeachers sessionTeachers="1">
+        <teacher refId="teacher1" nrSessions="5"/>
+        <teacher refId="teacher2" nrSessions="5"/>
+        </allowedTeachers>
+            </part>
+        <part id="cours-1-pTP" nrSessions="10" label="TP">
+        <classes maxHeadCount="20">
+        <class id="cours-1-pTP-c1" parent="cours-1-pCM-c1" label="TP,1"/>
+        <class id="cours-1-pTP-c2" parent="cours-1-pCM-c1" label="TP,2"/>
+        </classes>
+        <allowedSlots sessionLength="180">
+          <dailySlots>480,570,660,750,840,930,1020,1110</dailySlots>
+          <days>1,2,3,4,5</days>
+          <weeks>1,2,3,4,5,6,7,8,9,10</weeks>
+        </allowedSlots>
+        <allowedRooms sessionRooms="single">
+          <room refId="room1"/>
+          <room refId="room2"/>
+        </allowedRooms>
+        <allowedTeachers sessionTeachers="1">
+        <teacher refId="teacher1" nrSessions="10"/>
+        <teacher refId="teacher2" nrSessions="10"/>
+        </allowedTeachers>
+            </part>
+</course>

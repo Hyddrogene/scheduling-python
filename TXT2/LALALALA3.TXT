@@ -1,0 +1,35 @@
+\begin{table}[!ht]
+\begin{center}
+%\rowcolors{1}{gray!25}{white}
+
+%\begin{tabular}{|r>{\columncolor{gray!25}}l|}
+\begin{tabular}{|rl|}
+%\begin{tabular}{rl}
+\hline
+\grayrow
+$\var{\SESSION}{\SLOT}{s}\in{\SLOT}$ & l'heure de début attribuée à la séance $s$\\
+%$\var{\GROUP}{\STUDENT}{g}\subseteq{\STUDENT}$ & l'ensemble des étudiants assignés au groupe $g$ \\
+%$\var{\CLASS}{\GROUP}{k}\subseteq{\GROUP}$ & l'ensemble des groupes assignés à la classe $k$ \\
+$\var{\SESSION}{\ROOM}{s}\subseteq{\ROOM}$ & l'ensemble des salles attribuées à la séance $s$ \\
+\grayrow
+$\var{\SESSION}{\TEACHER}{s}\subseteq{\TEACHER}$ & l'ensemble des enseignants affectés à la séance $s$ %\\
+%$\var{\TEACHER}{\SESSION}{t}\subseteq{\SESSION}$ & l'ensemble des séances attribuées à l'enseignant $t$\\ 
+%\hdashline
+        \\[-0.75em]
+        \arrayrulecolor{black}
+        \multicolumn{2}{|c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+%$\var{\ROOM}{\SESSION}{r}\subseteq{\SESSION}$ & (variable auxiliaire) l'ensemble des séances affectées à la salle $r$ \\
+$\var{\SESSION}{\WEEK}{s}\in{\WEEK}$ & (variable auxiliaire) la semaine de l'heure de début attribuée à la séance $s$
+\\
+\grayrow
+$\var{\SESSION}{\WEEKDAY}{s}\in{\WEEKDAY}$ & (variable auxiliaire) le jour de la semaine de l'heure de début attribuée à la séance $s$
+\\
+$\var{\SESSION}{\DAILYSLOT}{s}\in{\DAILYSLOT}$ & (variable auxiliaire) le créneau horaire journalier de l'heure de début attribuée à la séance $s$
+\\
+\hline
+\end{tabular}
+\caption{Variables de décision principales et auxiliaires.}
+\label{table:core-variables}
+\end{center}
+\end{table}
+%\todo{@corentin: style de la table FAIT}

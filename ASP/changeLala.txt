@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# Vérifier si au moins un argument est passé
+if [ "$#" -lt 1 ]; then
+    echo "Usage: $0 <file1> [<file2> ...]"
+    exit 1
+fi
+
+# Boucler sur tous les arguments passés au script
+for original_path in "$@"
+do
+    # Utiliser 'sed' pour ajouter 'solution_' après le dernier '/' du chemin
+    new_path=$(echo "$original_path" | sed 's|\(.*\/\)\(.*\)|\1solution_\2|')
+
+    # Afficher le nouveau chemin pour vérification
+    echo "Renommé: $original_path -> $new_path"
+done

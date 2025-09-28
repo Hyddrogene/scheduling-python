@@ -1,0 +1,35 @@
+pour automatiser un logicel -> solver
+consister à la réduction, selctionner selon les varaiantes
+archtectures modulaire de ton modèle
++ clé de lecture de l'etat de l'art
+configure le feature model 
+customisation solver , generation d'instance
+modèle graphique s'appuie sur une chaine d'automatisation de logicel
+1) automatisationpas achever -> reformulation spécifiques (générique et spécialisation)
+2) domaine d'application -> d'un pdv combinatoire (exsahtif) -> définis experience dans la littérature et UTP (modélisable par UTP)
+
+problème d'affectation -> modèle simplifié (à l'oral)
+our proposal -> bouge pour changer
+representer plus rapidement ( quelques extensions faites) par rapport à 2022
+ (le service des profs , automatiser sous formde de rgèle , choix de de figer l'appariment des groupesaux classes)
+
+rpesneter par haut niveau par les concepts
+
+ajouter les tableaux de -> grilles lectures
+
+modèle - extension -> FM -> 
+mettre en exergue l'etat de l'art
+
+contraintes règles vers la fin extension du schema
+
+modele , les autres modèles
+
+
+présenté à distance ? 
+
+
+ce soir planning - 
+
+csi d'urgence petit lettre en début d'année -> 
+our proposal -> bouge pour changer
+our proposal -> bouge pour changer

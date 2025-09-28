@@ -1,0 +1,116 @@
+belzebuu/GroupFromation
+
+group formation -> on fait les groupes pour les cours de 3-4/ go to test with CP model 
+
+
+
+comparaison unitime et FlopEdt --> on pourrait voir les différences
+
+Ils ont touites les données des étudaints
+
+
+
+
+
+greedy coloring
+
+pentontionnal-based greedy coloring
+Desatur -> c'est ça 
+daAlgo.org system
+
+Di4L_HTSag
+
+
+complicated course hours: les horaires : nedd breaks : only teach prefer certain subjetcs
+
+jolie diapo avec complétion de l'FlopEdt
+
+limit ressources ocnszstriant xhstt
+class building limited
+
+ilss ont esayé d'adapter au mieux le nouvel algo mais fondamentleent c'est pareil
+Il s'agit d'une extension
+2 new constraints
+
+un étudaint fume la pipe.
+
+18 nouvelle instances venant de germany
+IMC-UAS-K
+SA-> LNS
+2 days for solve instance
+
+
+multi week. le temps de résolution, possibiltié de faire des contraintes par ressources
+
+event chains <=> periodic| gap genr eune forme de sequence de session qu'il faut placer correctement.
+ALNS-> meilleur avec chaine
+TS -> bof avec les chaines | multi-week peut efficace
+duplication des existants 
+warm strat -> god
+two satge heuristic.
+
+Peut hétérogène.
+
+
+
+ALNS
+
+5à years of metaheuristic
+
+
+
+destroy repair, et on peut voir lesolutions
+aléatoire destruction  et reperation 1 par 1 de mieux en mieux
+
+fix/otpimize <-> destroy /repair
+
+computaionnal rsult on news staffs scheduling benchmark instances
+
+alns -> set of methd to destroy and repair.
+roulette wheel selection with weight
+wj / sum wi
+
+let alns to s'adapter ave cle moent de la metaheuristic
+aléatoire destroy
+relation customers
+historique avec pondération
+
+repair constructoin heuristics
+exact method
+
+
+a comparison of acceptante cecriteria for thed daptative LNS 2018 Santini alberto
+
+several operator
+
+simple operator -> fast and simple
+randomizing destroy
+
+a learning lns to nurse rostering
+
+alns in hyper heuristics
+
+cowling 2003 alns operateur roulette whelle
+
+
+pprésentation sur le uncaited problem of exam
+flow graph pour le exam problem
+
+
+IAP exam inviligator problem -> ett is solved
+complete edt
+sifeeretne faculty mm endorit donc gros examen
+blaance worload
+kahar et kendall 2014
+Cimen et all 2022
+problem undeerstaffin corriger à la main
+mcnfp -> polynomial -> iap to
+
+minize le nombre de personne différentes que tu vas surveiller pour le covid
+
+number of the room CETT
+loss capcaity, avec des variables aléatoires
+1ER etage solution
+
+2nd etage répartion,-> to later certains examens
+relocate the exams-> salle unvailiable

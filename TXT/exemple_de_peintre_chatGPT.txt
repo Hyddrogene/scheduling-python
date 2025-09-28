@@ -1,0 +1,193 @@
+Gérard Garouste
+Erik Dietman
+Sophie Calle
+Jean-Michel Othoniel
+Jean-Charles Blais
+Jean-Paul Agosti
+Jean Le Gac
+Christian Boltanski
+Jacques Monory
+Philippe Cognée.
+
+Pierre Soulages
+Jacques Villeglé
+Arman
+Françoise Gilot
+François Rouan
+Simon Hantaï
+Ben Vautier
+Hervé Télémaque
+Jean-Pierre Raynaud
+Martial Raysse
+
+Yves Klein
+Georges Mathieu
+Niki de Saint Phalle
+Robert Combas
+François Morellet
+Jean Dubuffet
+Bernard Buffet
+Marcel Duchamp
+Daniel Buren
+Annette Messager
+
+vortiscime
+futurisme
+
+abstraction lyrique -> tachisme
+
+symphonie de stephan schmitzz
+
+
+Carl Friedrich Gauss : mathématicien allemand connu pour ses travaux en arithmétique, en géométrie et en statistiques.
+
+Leonhard Euler : mathématicien suisse qui a travaillé sur une variété de sujets, notamment la théorie des nombres, la géométrie, la physique et l'analyse mathématique.
+
+Pierre-Simon Laplace : mathématicien et astronome français connu pour ses travaux en probabilités et en statistiques.
+
+Évariste Galois : mathématicien français connu pour ses travaux en théorie des groupes et pour avoir développé la théorie de Galois.
+
+Blaise Pascal : mathématicien, physicien et philosophe français, connu pour sa contribution à la théorie des probabilités, à la géométrie projective et pour avoir inventé la première machine à calculer.
+
+Emmy Noether : mathématicienne allemande connue pour ses travaux en algèbre abstraite et pour le théorème de Noether qui relie les symétries en physique à la conservation des quantités physiques.
+
+Bernhard Riemann : mathématicien allemand connu pour sa contribution à la géométrie différentielle et pour la conjecture de Riemann, l'un des problèmes non résolus les plus célèbres des mathématiques.
+
+John Nash : mathématicien américain connu pour ses travaux en théorie des jeux et pour son histoire personnelle qui a été popularisée dans le film "Un homme d'exception".
+
+Paul Erdős : mathématicien hongrois qui a travaillé sur une grande variété de sujets, notamment la théorie des nombres et la combinatoire.
+
+Andrew Wiles : mathématicien britannique connu pour avoir résolu la conjecture de Fermat, l'un des problèmes les plus célèbres de l'histoire des mathématiques
+
+Alan Turing : mathématicien et informaticien britannique connu pour ses contributions à la cryptologie et à la création de l'ordinateur.
+
+Ada Lovelace : mathématicienne britannique considérée comme la première programmeuse informatique, pour avoir travaillé sur la machine analytique de Charles Babbage.
+
+Bill Gates : informaticien et entrepreneur américain, co-fondateur de Microsoft.
+
+Steve Jobs : entrepreneur et informaticien américain, co-fondateur d'Apple et créateur de l'iPhone.
+
+Tim Berners-Lee : informaticien britannique connu pour avoir créé le World Wide Web.
+
+Grace Hopper : informaticienne américaine connue pour avoir créé le premier compilateur.
+
+Linus Torvalds : informaticien finlandais connu pour avoir créé le système d'exploitation Linux.
+
+John von Neumann : mathématicien et informaticien hongrois-américain, connu pour ses contributions à la théorie des jeux et à l'architecture des ordinateurs.
+
+Douglas Engelbart : informaticien américain connu pour avoir inventé la souris d'ordinateur.
+
+Alan Kay : informaticien américain connu pour avoir travaillé sur les interfaces utilisateur graphiques et pour avoir inventé le concept d'ordinateur personnel.
+
+Évariste Galois : mathématicien français connu pour ses contributions à la théorie des équations algébriques.
+
+Pierre-Simon Laplace : mathématicien et astronome français connu pour ses travaux sur la mécanique céleste et la théorie des probabilités.
+
+Henri Poincaré : mathématicien et physicien français connu pour ses contributions à la topologie, à la géométrie et à la physique.
+
+Gottfried Wilhelm Leibniz : mathématicien, philosophe et inventeur allemand, connu pour son invention du calcul infinitésimal et pour ses travaux en logique.
+
+Georg Cantor : mathématicien allemand connu pour sa création de la théorie des ensembles et de la cardinalité.
+
+Srinivasa Ramanujan : mathématicien indien connu pour ses contributions à la théorie des nombres et pour sa collaboration avec le mathématicien anglais G. H. Hardy.
+
+Carl Gustav Jacobi : mathématicien allemand connu pour ses travaux en théorie des nombres, en mécanique céleste et en géométrie.
+
+Paul Erdős : mathématicien hongrois connu pour ses travaux en théorie des nombres, en combinatoire et en analyse.
+
+Bernhard Riemann : mathématicien allemand connu pour ses contributions à la géométrie et à l'analyse complexe.
+
+Emmy Amalie Noether : mathématicienne allemande connue pour ses contributions à la théorie des invariants et à la physique théorique.
+
+Euclide : mathématicien grec antique connu pour ses travaux sur la géométrie.
+
+Archimède : mathématicien grec antique connu pour ses travaux sur les volumes et la mécanique.
+
+Isaac Newton : mathématicien et physicien anglais, considéré comme l'un des plus grands scientifiques de tous les temps.
+
+Carl Friedrich Gauss : mathématicien allemand connu pour ses travaux en géométrie, en algèbre et en analyse.
+
+Leonhard Euler : mathématicien suisse connu pour ses contributions à de nombreux domaines des mathématiques, notamment l'analyse, la géométrie et la théorie des nombres.
+
+Blaise Pascal : mathématicien, physicien et philosophe français connu pour ses travaux sur la géométrie projective et la théorie des probabilités.
+
+Alan Turing : mathématicien et informaticien britannique, connu pour son rôle dans le décryptage des codes allemands pendant la Seconde Guerre mondiale et pour ses contributions à la théorie de l'informatique.
+
+John von Neumann : mathématicien et physicien hongrois-américain, connu pour ses contributions à la théorie des jeux, à l'informatique et à la physique.
+
+Emmy Noether : mathématicienne allemande connue pour ses travaux en algèbre abstraite et en théorie des groupes.
+
+Andrew Wiles : mathématicien britannique connu pour sa démonstration du dernier théorème de Fermat.
+
+===========
+
+Frida Kahlo : une peintre mexicaine connue pour ses autoportraits poignants.
+
+Yayoi Kusama : une artiste japonaise connue pour ses installations de polka dots et ses oeuvres psychédéliques.
+
+Jean-Michel Basquiat : un artiste américain connu pour ses peintures urbaines et son style de graffiti.
+
+Jackson Pollock : un peintre américain connu pour ses "drip paintings", des oeuvres abstraites créées en faisant goutter de la peinture sur la toile.
+
+Salvador Dali : un peintre espagnol connu pour son style surréaliste et sa fascination pour l'inconscient.
+
+Vincent van Gogh : un peintre hollandais connu pour ses tableaux post-impressionnistes, comme La Nuit Étoilée.
+
+René Magritte : un peintre belge connu pour ses tableaux surréalistes, comme La Trahison des Images.
+
+Claude Monet : un peintre français connu pour ses tableaux impressionnistes, comme Les Nymphéas.
+
+Gustav Klimt : un peintre autrichien connu pour ses tableaux symbolistes, comme Le Baiser.
+
+Hieronymus Bosch : un peintre néerlandais du XVe siècle connu pour ses oeuvres fantastiques et allégoriques, comme Le Jardin des Délices.
+==========
+
+Kiki : un nom court et facile à retenir qui peut convenir à un caméléon espiègle.
+
+Chammy : un nom qui évoque le mot caméléon, facile à prononcer et à retenir.
+
+Zephyr : un nom qui signifie "brise légère" en grec, qui peut bien convenir à un caméléon agile et rapide.
+
+Caruso : un nom inspiré du célèbre chanteur d'opéra italien Enrico Caruso, qui convient parfaitement à un caméléon au chant mélodieux.
+
+Yoda : un nom inspiré de la série Star Wars, qui convient parfaitement à un caméléon sage et intelligent.
+
+Poppy : un nom qui évoque la couleur rouge vif, qui peut bien convenir à un caméléon à la couleur vive et éclatante.
+
+Darwin : un nom inspiré de Charles Darwin, célèbre naturaliste qui a étudié les caméléons et leur capacité à s'adapter à leur environnement.
+
+Pixel : un nom inspiré de la technologie, qui peut bien convenir à un caméléon à la peau texturée et pixelisée.
+
+Slinky : un nom qui évoque un animal souple et agile, qui convient parfaitement à un caméléon.
+
+Ozzy : un nom court et original qui peut bien convenir à un caméléon au caractère espiègle et joueur.
+
+Ziggy : ce nom est court, facile à retenir et sonne bien.
+
+Violette : un nom original qui peut bien convenir à un varan de couleur violette.
+
+Drago : ce nom évoque un animal puissant et majestueux.
+
+Zara : un nom court et facile à retenir, qui peut bien s'adapter à un varan de petite taille.
+
+Spike : un nom qui évoque les épines ou les piques que l'on peut trouver sur le corps d'un varan.
+
+Sauron : un nom qui peut être adapté pour un varan au corps imposant et puissant.
+
+Tatsu : un nom japonais qui signifie dragon, qui convient parfaitement à un varan, souvent associé à ces créatures mythologiques.
+
+Ozzy : un nom court et original qui peut bien convenir à un varan au caractère espiègle et joueur.
+
+Loki : un nom qui évoque la malice et la malice, qui peut bien convenir à un varan espiègle.
+
+Drogon : un nom inspiré de la série Game of Thrones, qui convient parfaitement à un varan puissant et imposant.
+
+==========
+
+l était une fois un nain nommé Gormir, qui était connu pour sa folie et son amour de la gymnastique. Malgré les avertissements de ses amis, Gormir aimait faire des acrobaties et des figures dangereuses, comme marcher sur les mains.
+
+Un jour, alors qu'il effectuait sa dernière acrobatie, Gormir perdit l'équilibre et tomba lourdement sur le sol. Il fut immédiatement transporté à l'infirmerie des nains où les guérisseurs constatèrent qu'il avait subi une grave blessure à la colonne vertébrale.
+
+Les nains se rassemblèrent autour de Gormir et se mirent à discuter de son sort. Certains prétendaient qu'il était maudit pour avoir défié les lois de la gravité, tandis que d'autres estimaient qu'il avait simplement été imprudent.
+
+Quoi qu'il en soit, Gormir ne fut plus jamais capable de marcher sur ses mains et passa le reste de sa vie à se déplacer en chaise roulante. Les autres nains se souvenaient toujours de son histoire et répétaient souvent le proverbe : "Un nain qui marche sur les mains, finira les pieds en l'air."

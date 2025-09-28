@@ -1,0 +1,54 @@
+theoreme non constructif
+syste:me axiome T, -> alors YT admets un model ssi pour toute partir fini T ya modèle -> théorme compacité
+
+théorie modèle lien entre langage formule logique et realisation mdoel
+
+hyperréel
+topologie des ultrafiltres
+
+langage L
+ensemble de constatne (1g neutre groupe, 1a neutre anneau)
+
+F union Fn symbole fonction n-aire (not) fois dans les groupes -> monoide
+
+R union Rn symbole relation n-aire (<, <=,)
+
+L{0,1,+,-,x} 0,1 constante + -x fonction binaire (anneaux langage)
+
+L{<} langage relation binaire
+
+Soit L = C u F u R
+
+definit de manière inductive oes L termes
+
+niveau 0; c , c e C 
+            x une vaeiable
+
+niveau n+1 f(t1,...tn) f e Fn symbole fonction naire
+    ti des termes deja cosntruit
+
+ex anneau
+    niveau 0 : 0,1,X
+    niveau autre : 1+1, 0+(0+1)-X termes
+(besoin parenthèse)
+
+L formules
+
+formule atomeique botom top t1=t2 p(t1,...,tn)
+____ non atomique not s,  s v q, p /\ q 
+
+l structure interprétations 
+
+m=<M,Cm,Fm,Rm> M univers, c vré const, Fm : Mxm -> M
+P un partie de M (prédicat)
+
+ex L anneau
+m= <Q,0m = 0q, 1m =1q, op Q>
+
+t1(x) = t2(x) (a) -> signifie a = 1 sastfait 
+
+Langage groupe
+
+Théroie des groupes c'est la théorie avec les axiomes ( formules) ddes groupes -> modèles les groupes
+
+principe robinson theta-p

@@ -1,0 +1,89 @@
+Parfait ! On peut décomposer tout ça en plusieurs diapositives pour que ce soit clair et progressif pour les étudiants. Voici une proposition structurée :
+
+---
+
+### **Diapositive 1 : Accès aux pages web**
+
+```latex
+\begin{frame}{Accès aux pages web}
+Le client accède aux pages web en spécifiant une \textbf{URL} (Uniform Resource Locator), c'est-à-dire l'adresse d'une machine ou d'un fichier sur une machine.  
+
+Exemple :  
+\url{https://leria-info.univ-angers.fr/~jeanmichel.richer/index.php}
+\end{frame}
+```
+
+---
+
+### **Diapositive 2 : Structure d'une URL**
+
+```latex
+\begin{frame}{Structure d'une URL}
+Une URL se décompose en plusieurs parties :
+\begin{itemize}
+    \item \textbf{Protocole} : http:// ou https:// (HyperText Transfer Protocol sécurisé)
+    \item \textbf{Adresse du serveur} : nom du serveur (ex. leria-info.univ-angers.fr), traduit en \textbf{adresse IP} par les serveurs DNS
+    \item \textbf{Port (optionnel)} : :x où x est un nombre entre 1 et 65535
+    \item \textbf{Répertoire} : ~jeanmichel.richer (serveur web le traduit en répertoire réel, ex. /home/richer/public_html)
+    \item \textbf{Nom du fichier} : index.php
+\end{itemize}
+\end{frame}
+```
+
+---
+
+### **Diapositive 3 : Fonctionnement côté serveur**
+
+```latex
+\begin{frame}{Fonctionnement côté serveur}
+\begin{itemize}
+    \item Le serveur renvoie le contenu du fichier pour affichage dans le navigateur
+    \item Si le fichier n'existe pas, une erreur 404 (\textit{Page Not Found}) est générée
+    \item Remarque : parfois, l'URL ne contient pas de nom de fichier → le serveur utilise un fichier implicite comme index.html ou index.php
+\end{itemize}
+\end{frame}
+```
+
+---
+
+### **Diapositive 4 : Adresses IP**
+
+```latex
+\begin{frame}{Adresse IP}
+Chaque machine sur Internet est identifiée par une \textbf{adresse IP}.  
+
+Norme IPv4 : 4 octets séparés par un point (ex. 142.250.65.131)  
+
+Types de réseaux :  
+\begin{itemize}
+    \item PAN / LAN : réseau personnel ou petite entreprise
+    \item MAN : réseau métropolitain (ex. université)
+    \item WAN : réseau étendu (ex. à l'échelle d'un pays)
+    \item GAN : réseau global (Internet)
+\end{itemize}
+\end{frame}
+```
+
+---
+
+### **Diapositive 5 : Serveurs DNS**
+
+```latex
+\begin{frame}{Serveurs DNS}
+\begin{itemize}
+    \item Les \textbf{serveurs DNS} traduisent un nom de domaine en adresse IP
+    \item Exemple : 
+    \begin{verbatim}
+nslookup google.com
+Réponse : 142.250.65.131
+    \end{verbatim}
+    \item Permet de ne pas mémoriser de longues suites de chiffres
+\end{itemize}
+\end{frame}
+```
+
+---
+
+Si tu veux, je peux te **faire une version encore plus visuelle** avec un **schéma URL → DNS → IP → serveur → page web** pour 2-3 diapositives supplémentaires, ce qui rendrait la séquence plus dynamique et pédagogique.
+
+Veux‑tu que je fasse ça ?

@@ -1,0 +1,176 @@
+Demirović and Musliu (2017) proposed a local search combined with a novel maxSAT-based large neighbourhood search in solving XHSTT formatted data. The Partial Weighted maxSAT formulation was used to model an XHSTT instance. Two operators (destroy and insertion operations) were used in the large neighbourhood search algorithm (LNS). An initial solution was refined by the local search algorithm; then the maxSAT-based LNS was used to further improve the solution. The hybrid algorithm was able to model 27 out of 39 instances. From the 27 instances, the average solution cost is better than that of IP (
+
+
+
+
+The quest for formulations and benchmarks carried out for this
+survey has brought out various aspects of the current practice in
+timetabling research. We summarize here our observations, and we
+split them in three groups regarding the standard formulations, the
+specific formulations, and the solution techniques, respectively. In
+our opinion, these observations can serve as starting points for fu-
+ture research directions.
+Key observations about standard formulations:
+A. Most of the standard formulations arose from timetabling com-
+petitions, which have given the necessary initial boost in terms
+of infrastructure and promotion.
+B. For some of the standard formulations, the benchmark in-
+stances are not challenging anymore, as they are too easily
+solved to optimality. Others, on the contrary, are still very chal-
+lenging more than 20 years after their publication.
+C. We can notice some common features across different formu-
+lations and benchmarks. First of all, the size of the instances
+in terms of events (lectures, exams,...) is rather uniform, with
+some exceptions, and around a few hundreds. This is due to
+the fact that they are mostly real-world cases, and this is the
+typical size of departments and other institutions. Secondly, the
+room occupancy is on average about 60%, which again is a
+reasonable value for balancing effectiveness and flexibility. On
+the contrary, we notice that the density of the conflict graphs
+are rather heterogeneous, ranging from 1% to more than 50%.
+Nonetheless, conflicts are not the only source of hardness, so
+that also instances with small conflict density are still challeng-
+ing.
+D. There is a clear trend in the timetabling community to move
+toward rich formulations, getting rid of strong simplifications.
+In our opinion, this is a positive trend, but should be paired
+with the maintenance and renewal of the simple formulations,
+that could still serve as better testbeds for comparisons.
+Moving to the contributions introducing specific formulations,
+we have the following observations:
+E. Many of the papers discussing original formulations do not pro-
+vide publicly available data. For others, the original repository
+has become inaccessible after some time from the publication
+of the paper. Finally, in other cases, the file formats are too
+cumbersome and not sufficiently documented, to be easily us-
+able for other researchers.
+F. Most formulations are too specific for the particular case at
+hand without consideration of wider application, so that it is
+difficult to gain general insights from the papers. In addition, in
+some cases the precise formulation is not completely explained,
+so that it is not possible for other researchers to replicate the
+same model and to obtain comparable results.
+G. For most formulations, the solutions are not made available,
+and thus the results in the papers could not be validated. In
+addition, the source code of the search method is very rarely
+available, so that the experiments cannot be replicated.
+H. Only in a very few cases the solution of a specific formulation is
+complemented with the solution of some benchmarks of some
+standard formulation.
+
+
+Despite the above “negative” observations, we nonetheless be-
+lieve that these contributions still represent a praiseworthy effort
+for bridging the gap between theory and practice, by modeling and
+exposing to the community novel problems that take into account
+unsimplified real-life features.
+Regarding the comparison of solution techniques, we make the
+following observations:
+I. There is a need for the clear definition of the competition
+grounds, in terms of running time, statistical significance, com-
+puting architecture, usable technology, commercial licenses,
+and other issues. In the formulations coming form the competi-
+tions, the ground has been set by the official competition rules,
+which however might need to be refined and extended in order
+to do not harness future research.
+J. The results of Section 4 clearly show that both exact and
+(meta)heuristic techniques have their role and their chance to
+emerge, depending on the specific formulation and the compe-
+tition ground.
+K. There is a need for new formulations and new benchmarks. In
+particular, for ETT the current benchmarks are still challenging,
+but there is a need for novel formulations that could better cap-
+ture the real-world issues. For CTT, the ITC-2019 formulation
+is indisputably sufficiently close to real-world cases, but there
+might be room for alternative, possibly less complex, formula-
+tions. For HTT, in our opinion the main current concern is to
+collect new benchmarks that could take over for the ones that
+turned out to be too easy for state-of-the-art techniques.
+L. There is also need for more instances that could be used for the
+statistically-principled tuning of the solution methods, letting
+the benchmarks to be used only for the validation phase (avoid-
+ing overtuning). To this aim, the use of high quality generators
+could also help, as these could provide an unlimited number of
+instances.
+All above points together highlight the need for the develop-
+ment of research infrastructures in terms of common formulations,
+robust file formats, long-term web repositories with instances and
+solutions, generators, and solution checkers. The implementation
+of a wholesome and robust infrastructure of this type is clearly
+too expensive in terms of human effort to be left to the initiative
+of single research groups. Therefore, there is the need for coordi-
+nated community-level actions, in order to develop an infrastruc-
+ture and, at the same time, create the necessary consensus upon
+its adoption. In our opinion, to this aim, the organization of future
+timetabling competitions could still be the right key to pursuit this
+task.
+Another point that emerged from our analysis is the issue of
+the reproducibility and trustworthiness of results. In fact, the risk
+of reporting false results has emerged significantly, though mainly
+in the early times of the timetabling research. In any case, it is
+still important that data is available for both inspection and future
+comparisons. This is indeed a general issue that is ubiquitous in
+many research areas, as journals currently push for publication of
+data along with the papers.
+We are trying to give our contribution for solving these issues
+by the development of the web application OptHub, which pro-
+vides a common platform able to host new problems with their
+instances and solutions. Solutions in OptHub are immediately vali-
+dated and made available to the community.
+OptHub is an ongoing project, and hopefully will be extended
+significantly in future releases. The main future feature that will be
+include in a new version is the possibility to upload the software
+and to run it (also on behalf of other researchers). Hopefully, this
+option will allow the community to make fairer comparisons and
+statistical analyses on the behavior of the solution code.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Sørensen et al. (2012) applied ALNS to the ITC2011 dataset, and the algorithm was among the round two finalists in the competition. Three strategies were implemented in ALNS: Remove Strategy (removal and insertion methods specifically for sub-events), Adaptive Strategy (a metric to influence the selection of methods in the remove strategy) and Accept Strategy (acceptance criteria similar to SA). The results were competitive in most cases compared to the best-known solutions.
+
+Sørensen and Stidsen (2012) proposed ALNS for six Danish high school timetabling problems in the Lectio dataset. In their implementation, two neighbourhood operators were used; namely insertion and removal. The insertion operator consists of three functions: InsertGreedy, InsertRegretN and RoomInsert. It was used to insert event chains based on their objective measurement. The removal operator consists of five functions: RemoveRandom, RemoveRelated, RemoveTime, RemoveClass and RoomRemove. It was used to remove or unassign a resource or event based on the objective. The un-assignment of events allowed events to be assigned a time slot and a room.
+
+A single-stage Adaptive Large Neighborhood Search (ALNS) was applied to the CB-CTP by Kiefer et al. (2017). This algorithm was based on destroying and repairing large parts of solutions in a repetitive manner. Four features for destroy limit, temperature reheating, infeasible solutions allowance, and repair operators computation times were implemented in ALNS, alongside several destroy and repair operators. ALNS achieved highly competitive results for the ITC2007-Track3 dataset and found 5 new best solutions.
+
+
+
+
+
+
+
+Ant Colony Optimization (ACO) algorithm is based on the pheromone-based communication of ants. It was inspired by the double-bridge experiment in Colorni et al. (1991). ACO algorithms have been designed and successfully applied to many different types of COPs, including dynamic and multi-objective optimization problems (Burke & Kendall, 2014).
+
+Student grouping (placing students in disjoint groups where each student belongs to exactly one group based on selected events) was investigated in Badoni and Gupta (2015b). Then, a single-stage ACO algorithm based on student grouping was presented and applied to 11 instances obtained from the Socha dataset. Ant Colony Optimization With Student Groupings (ACOWSG) excluded students from further selection once they were assigned a group. ACOWGS managed to outperform ACO on all the studied instances and was competitive with 9 other methods on 9 of the instances.
+
+A single-stage ACO to tackle CB-CTP was proposed in Kenekayoro and Zipamone (2016). Unlike other ACO-based studies that incorporate different local search algorithms for the improvement phase, an ant system was used here. The proposed approach was able to find feasible solutions for all the ITC2007-Track3 instances and near-optimal solutions for some instances. The main drawback of this approach is the high computational time of the improvement phase.
+
+
+Genetic Algorithm.
+
+Genetic Algorithm (GA) is the most widely used type of EAs (Eiben et al., 2003). It is based on the principles of natural selection and genetics and was introduced in Fraser (1957).
+
+Many necessary constraints in the real-world UCTP are not accounted for in the benchmark datasets. Related research (Abdelhalim & El Khayat, 2016) introduced a new variant of the UCTP with maximizing resource utilization as their objective and proposed a Utilization-based Genetic Algorithm (UGA) to tackle this problem. The novelty of this work was the inclusion of professors' preferences and constraints. Applying to the real-world dataset from the Faculty of Commerce, Alexandria University in Egypt, UGA enhanced the occupancy rates of the allocated events and managed to save resources. However, it was more computationally expensive on smaller instances compared to other methods.
+
+Energy consumption is a big concern for universities. Saving energy can be fulfilled by an efficient allocation of classrooms. However, there have been few attempts to consider spatial and functional capacities related to energy use in classrooms. Song et al. studied the correlation between timetabling and energy usage at the Liberal Arts Building 1 in the Seoul National University campus in Seoul, South Korea (Song et al., 2017). They introduced a new variant of the UCTP, focusing on minimizing energy consumption, and applied a single-stage genetic algorithm to address this problem. This approach contributed to 4% energy saving (up to 5% by discarding the hard constraints).
+
+Current generic solutions do not meet certain specific constraints of the real-world UCTP. A real-world UCTP at Telkom University was addressed in Gozali and Fujimura (2018). A Reinforced asynchronous Island Model Genetic Algorithm (RIMGA) was proposed to optimize the usage of the computer's resources. In this design, the slave islands that had completed their processes were utilized to assist those who had not. RIMGA managed to achieve comparable results with Asynchronous Island Model Genetic Algorithm (AIMGA) in half the time. It was also less likely to get trapped in the local optimum.
+
+In student sectioning UCTP, a set of preferred classes are chosen by students, and then a timetable is created while attempting to minimize constraint violations and adopt students' preferences. To address this problem, a Localized Island Model Genetic Algorithm with Dual Dynamic Migration Policy (DM-LIMGA) was proposed in Gozali et al. (2020). In this method, direct representation encoding was used for chromosomes, and each gene block consisted of time, room, lecturer, class, and students. This approach strictly dedicated one slave island to finding feasible solutions, while the second one attempted to minimize soft constraints, and the third one focused on student-level constraints. For each of these islands, a different variant of GA was used. The diversity of each island was estimated using a bias value. DM-LIMGA managed to find feasible solutions for student sectioning UCTP and outperform GA, AIMGA, and UniTime on the Telkom University and ITC2007-Track2 datasets.

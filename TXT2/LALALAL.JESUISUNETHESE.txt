@@ -1,0 +1,81 @@
+
+
+Dans la section précédente, nous avons présenté la programmation par contraintes (CP) du point de vue de l’utilisateur. Nous abordons ici le **processus de résolution** utilisé pour trouver effectivement les solutions. En pratique, chaque solveur adopte un cadre d’exécution différent, mais un lecteur intéressé pourra se référer à [30], source d’inspiration notamment du **choco-solver**.
+
+L’**Algorithme 2.1** présente une version de base du processus de résolution, sous forme récursive et dans un style de programmation fonctionnelle, permettant d’explorer l’ensemble des solutions d’un CSP. Cet algorithme alterne entre deux étapes fondamentales : **propagation** et **décision**.
+
+La phase de **propagation** (ligne 2) consiste à analyser les contraintes et les domaines actuels des variables, afin d’identifier les valeurs qui ne peuvent en aucun cas apparaître dans une solution. Ces valeurs peuvent alors être filtrées en toute sécurité (c’est-à-dire supprimées des domaines). Cette étape est détaillée dans la section 2.4.1. Si, à l’issue de cette propagation, le domaine d’une variable devient vide (ligne 3), cela signifie que le sous-problème est **incohérent** et ne possède aucune solution.
+
+En revanche, si toutes les variables sont **instanciées** (c’est-à-dire que chaque domaine contient une unique valeur, ligne 5), alors une solution a été trouvée et peut être retournée. Si le sous-problème reste cohérent mais contient encore des variables non instanciées, une **décision** doit être prise. Pour cela, la fonction \texttt{MakeDecision} est appelée afin de produire une contrainte décisionnelle (qui peut être ultérieurement niée), comme indiqué à la ligne 8. Deux appels récursifs sont alors effectués sur les sous-problèmes issus de cette décision : l’un où la contrainte est appliquée, l’autre où elle est niée (ligne 9). Cette étape de décision est décrite plus en détail dans la section 2.4.2.
+
+Les appels récursifs dans l’Algorithme 2.1 construisent un **arbre de recherche** récursif. En programmation par contraintes, cet arbre est appelé **arbre de backtrack**, et l’exploration de ses branches correspond à la **recherche avec retour arrière (backtrack-search)**. Un **backtrack** désigne le retour d’un appel récursif de la fonction \texttt{Solve}, et intervient lorsqu’une solution ou une incohérence est rencontrée, ou encore lorsque les deux branches issues d’une décision ont été entièrement explorées.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Le premier composant principal de la fonction \texttt{Solve} est la fonction \texttt{Propagate}.  
+La **propagation de contraintes** consiste à réduire les domaines des variables sans éliminer de solutions valides. Cette opération permet de réduire l’espace de recherche et ainsi de concentrer la recherche sur l’espace des solutions. L’objectif est d’identifier les valeurs pouvant être éliminées sans risque.
+
+### Cohérence
+
+Afin de déterminer quelles valeurs peuvent être supprimées, une notion de **cohérence** est définie.  
+Nous présentons ici la **cohérence d’arc**, qui est la forme de cohérence la plus couramment utilisée.
+
+**Définition 7 (Cohérence d’arc [34])**  
+Soit \( P = \langle X, D, C \rangle \) un problème de satisfaction de contraintes (CSP).  
+Soit \( C \) une contrainte dont la portée est \( \text{scp}(C) = \{X_{i_1}, \dots, X_{i_r}\} \).  
+Soit \( j \in \{1, \dots, r\} \), une valeur \( x_{i_j} \in D(X_{i_j}) \) est dite **cohérente par arc** avec la contrainte \( C \) s’il existe un tuple \( \tau = (x_{i_1}, \dots, x_{i_r}) \), avec \( x_{i_k} \in D(X_{i_k}) \), tel que \( \tau \in \text{rel}(C) \).  
+Le tuple \( \tau \) est alors appelé un **support** pour la valeur \( x_{i_j} \).
+
+Si toutes les valeurs de tous les domaines des variables sont cohérentes par arc avec toutes les contraintes, on dit alors que le CSP est **cohérent par arc**.
+
+Intuitivement, lorsqu’on considère une valeur donnée et une contrainte, si l’on peut trouver une affectation aux autres variables de la contrainte telle que celle-ci soit satisfaite, alors la valeur en question est cohérente par arc.  
+Nous illustrons cette notion de cohérence d’arc à l’aide de la contrainte \texttt{alldifferent} et de sa décomposition.
+
+
+
+
+
+Lorsqu'une valeur est retirée d’un domaine (dans le cadre de la cohérence d’arc), d’autres valeurs peuvent ne plus être cohérentes avec certaines contraintes. Ces valeurs doivent alors être vérifiées par rapport à ces contraintes, jusqu’à ce que le problème redevienne cohérent par arcs. L’un des premiers algorithmes proposés pour assurer cette propriété est **AC3** [34], présenté dans l’Algorithme 2.2. Il repose sur une fonction **Revise** qui filtre les valeurs de la variable \( X \) qui ne sont pas cohérentes par arc avec une contrainte \( C \). Cette fonction informe également l’algorithme principal lorsqu’une modification a été effectuée.
+
+L’algorithme principal utilise une **file \( Q \)** contenant des paires (variable, contrainte), telles que certaines valeurs de la variable peuvent ne plus être cohérentes avec la contrainte considérée. Tant que la file n’est pas vide, l’algorithme extrait une paire (variable, contrainte) et exécute la vérification de cohérence via la fonction **Revise**. Si une modification est effectuée, il vérifie que le domaine de la variable n’est pas vide (sinon, le sous-problème est incohérent — voir ligne 6). Il met également à jour la file en y ajoutant toutes les variables dont les valeurs pourraient ne plus être cohérentes. Pour chaque contrainte \( C \) telle que \( X \in \text{scp}(C) \), l’algorithme ajoute à la file les paires \( (X', C) \) pour tout \( X' \in \text{scp}(C) \) avec \( X' \neq X \).
+
+Cet algorithme a été par la suite amélioré, notamment par l’ajout d’informations supplémentaires, dans des variantes telles que **AC4** [37], **AC6** [7] et **AC2001** [8]. Ces algorithmes sont particulièrement efficaces lorsqu’il s’agit de raisonner sur les **tuples de support**, notamment dans le cas des **contraintes tabulaires**. D’autres cadres de propagation ont également été proposés, centrés davantage sur les contraintes elles-mêmes [30, 55].
+
+La mise en œuvre d’un solveur de **programmation par contraintes (CP)** est une tâche complexe, car de nombreuses optimisations doivent être prises en compte. Durant la phase de propagation, certaines contraintes peuvent être **priorisées**, car elles sont susceptibles de filtrer les valeurs plus rapidement (par exemple, la contrainte \texttt{alldifferent} n’élimine souvent que peu de valeurs tant que les domaines ne sont pas suffisamment réduits [10]).
+
+L’Algorithme 2.1 présentait un solveur CP dans un pseudocode de style récursif et fonctionnel. Toutefois, les implémentations concrètes n’adoptent pas nécessairement ce modèle. Dans ce cas, il est essentiel d’enregistrer toutes les modifications apportées aux domaines afin de pouvoir les annuler ultérieurement lors d’un **retour arrière (backtrack)**.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+L’ordre dans lequel un algorithme de recherche avec retour arrière (**backtracking**) assigne les variables, ainsi que l’ordre dans lequel il explore les valeurs des domaines, peut avoir un impact considérable sur la taille de l’arbre de recherche exploré par l’algorithme [28, 72, 73]. Des **heuristiques** sont couramment utilisées pour guider la recherche, en aidant à prendre les meilleures décisions concernant la prochaine variable à assigner et la valeur à choisir dans son domaine (ou, plus généralement, la manière de le diviser).
+
+Cet ordre peut être **statique**, c’est-à-dire défini à l’avance et inchangé durant toute la recherche, ou **dynamique**, c’est-à-dire adapté en fonction des informations collectées au cours de la recherche [72]. Par exemple, une heuristique statique pour l’ordre des variables peut se fonder sur le **nombre de contraintes** dans lesquelles une variable intervient [28, 72]. À l’inverse, une heuristique dynamique typique est l’heuristique **fail-first**, qui sélectionne en priorité la variable dont le domaine est le plus restreint [72].
+
+Concernant le choix des **valeurs**, les heuristiques les plus courantes consistent à sélectionner la plus petite valeur du domaine, la plus grande, ou encore à **diviser le domaine en deux** parties et à explorer d’abord l’une d’entre elles (par exemple la moitié inférieure ou supérieure) [23].
+
+De manière générale, les **heuristiques dynamiques d’ordre sur les variables** tendent à produire des arbres de recherche plus petits que les heuristiques statiques, ce qui se traduit par une recherche plus efficace [28, 31, 74].

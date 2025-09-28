@@ -1,0 +1,152 @@
+%------------------------------------------------------------
+%------------------------------------------------------------
+\section{Constraint Programming Models for {\UTP} Instances}
+\label{sec:model}
+
+0: présentation du modèle global
++ présentation MZN
++ présentation CHR
+CHR (for {\it Constraint Handling Rules}) \cite{Fruhwirth_TechReport_92,Fruhwirth_CP_94,Fruhwirth_JLP_98,Fruhwirth_CHR_09,Fruhwirth_Abdennadher_CHR_03,Fruhwirth_Raiser_2011} are a committed-choice language consisting of multiple-heads guarded rules that replace constraints by more  simple constraints until they are solved.
+CHR are a special-purpose language concerned with defining declarative constraints in the sense of {\it Constraint logic programming} \cite{VanHentenryck_ker_91,Jaffar_Lassez_POPL_87,Jaffar_Malher_JLP_94}.
+CHR are a language extension that allows to introduce {\it user-defined} constraints, i.e. first-order predicates, into a given host language as Prolog, Lisp, Java, or C/C++.
+CHR have been extended to CHR\ensuremath{^{\vee}} \cite{Abdennadher_Schutz_FQAS_98} that introduces the \emph{don't know} nondeterminism in CHR \cite{Betz_Fruhwirth_TCL_13}.
+This nondeterminism is freely offered when the host language is Prolog.
+This nondeterminism allows to specify easily problems from the NP complexity class (i.e. the same class of problems than SAT and CSP problems). To model and solve \UTP\ instances with CHR language, we use the \CHRPP\ solver\cite{barichard_stephan_2019} (for Constraint Handling Rules in C++), which is an efficient integration of Constraint Handling Rules (CHR) in the \texttt{C++} programming language.
+
++ parsing XML -> JSON (via MZN)
+
+1: MZN
+- modèle MZN: contraintes globales utilisées, heuristiques, ...
+
+2: CHR
+- modèle CHR: 
+
+%% PROBLEM INPUT
+The set of classes each class is numbered:
+
+$$
+\begin{array}{rl}
+groups & \mbox{ is the set of groups} \\
+parts & \mbox{ is the set of parts} \\
+classes & \mbox{ is the set of classes} \\
+rooms & \mbox{ is the set of rooms} \\
+teachers & \mbox{ is the set of teachers} \\
+\end{array}
+$$
+
+$\forall p \in parts$:
+$$
+\begin{array}{rl}
+|p\#classes| & \mbox{ is the number of classes of part } p\\
+p\#classes & \mbox{ is the set of classes of part } p, \mbox{ with } p\#classes \subseteq classes\\
+\end{array}
+$$
+
+$\forall cl \in classes$:
+$$
+\begin{array}{rl}
+|cl\#groups| & \mbox{ is the number of groups which follow class } cl\\
+cl\#groups & \mbox{ is the set of groups which follow class } cl,\\
+            & \mbox{with } cl\#groups \subseteq groups\\
+|cl\#sessions| & \mbox{ is the number of sessions of class } cl\\
+cl\#sessions = & \{ i \;|\; i \in [1 \dots |cl\#sessions|] \}, \mbox{ is the set of sessions of class } cl\\
+\end{array}
+$$
+
+Hereafter, we call $cl\#i$ the $i^{th}$ session of class $cl$.\\
+
+%% PROBLEM OUTPUT
+For each session, we have starting and ending times, room and teachers
+\begin{align*}
+     SStart = \{ St_{cl\#i} \;|\; St_{cl\#i} \in [1 \dots End], cl \in classes, i \in cl\#sessions \} \\
+     SEnd = \{ Se_{cl\#i} \;|\; Se_{cl\#i} \in [1 \dots End], cl \in classes, i \in cl\#sessions \} \\
+     STeachers = \{ T_{cl\#i} \;|\; T_{cl\#i} \in \mathcal{P}(teachers), cl \in classes, i \in cl\#sessions \} \\
+     SRoom = \{ R_{cl\#i}^g \;|\; R_{cl\#i}^g \in rooms, cl \in classes, i \in cl\#sessions, g \in cl\#groups \} \\
+\end{align*}
+
+%% CONTRAINTES STATIQUES DE DOMAINE
+\begin{align}
+\forall cl \in classes, \forall i \in cl\#sessions : allowed\_slots(St_{cl\#i}) \\
+\forall cl \in classes, \forall i \in cl\#sessions : allowed\_teachers(T_{cl\#i}) \\
+\forall cl \in classes, \forall i \in cl\#sessions, \forall g \in cl\#groups : allowed\_rooms(R_{cl\#i}^g)
+\end{align}
+
+
+%% CONTRAINTES STATIQUES
+% La date de fin et la date de départ sont liées
+$\forall cl \in classes, \forall i \in cl\#sessions :$
+\begin{equation}
+    Se_{cl\#i} = St_{cl\#i} + length(cl\#i)
+\end{equation}
+
+% Les sessions d'une même classe sont ordonnées
+$\forall cl \in classes, \forall i_1 \in cl\#sessions, \forall i_2 \in cl\#sessions :$
+\begin{equation}
+    i_1 < i_2 \longrightarrow  before(cl\#{i_1}, cl\#{i_2})
+\end{equation}
+
+% quand single, les groupes d'une même classe sont dans la même salle pour la même session
+$\forall cl \in classes, \forall i \in cl\#sessions, \forall g_1 \in cl\#groups, \forall g_2\in cl\#groups :$
+\begin{equation}
+    single(cl) \longrightarrow R_{cl\#i}^{g_1} = R_{cl\#i}^{g_2}
+\end{equation}
+
+% Les sessions d'un même groupe ne doivent pas être en même temps
+$\forall cl_1, cl_2 \in classes :$
+\begin{equation}
+    \begin{split}
+        \MoveEqLeft
+        \exists g_1 \in cl_1\#groups, \exists g_2 \in cl_2\#groups, \;\; g_1 = g_2 \longrightarrow \\ 
+        & \forall i_1 \in cl_1\#sessions, \forall i_2 \in cl_2\#sessions,\; not\_clash(cl_1\#i_1, cl_2\#i_2)
+    \end{split}
+\end{equation}
+
+% Le nombre de personnes qui assistent à une même session dans la même salle ne doivent pas excéder la capacité de la salle
+$\forall cl \in classes, \forall i \in cl\#sessions, \forall g_1 \in cl\#groups :$
+\begin{equation}
+    \sum \{ size(g_2) \;|\; g_2 \in cl\#groups, R_{cl\#i}^{g_1} = R_{cl\#i}^{g_2} \} \leq capacity(R_{cl\#i}^{g_1})
+\end{equation}
+
+% Le nombre de teachers d'une session doit être égale à NTeachers (lié à la part)
+$\forall cl \in classes, \forall i \in cl\#sessions :$
+\begin{equation}
+    |T_{cl\#i}| = nrTeachers(cl)
+\end{equation}
+
+% Un enseignant doit assurer un certains nombre de sessions (par part). Pour chaque teacher on connait le nombre de sessions d'une part
+$\forall p \in parts, \forall t \in teachers :$
+\begin{equation}
+    \begin{split}
+        |\{ i \;|\; cl \in p\#classes, i \in cl\#sessions, t \in T_{cl\#i} \}| = \\
+        nrSessionsForTeacher(t,p)
+    \end{split}
+\end{equation}
+
+%% CONTRAINTES DYNAMIQUES
+% Les sessions d'un enseignant ne doivent pas être en même temps 
+$\forall cl_1, cl_2 \in classes, \forall i_1 \in cl_1\#sessions, \forall i_2 \in cl_2\#sessions \mbox{ s.t. } cl_1\#i_1 \neq cl_2\#i_2 :$
+\begin{equation}
+    T_{{cl_1}\#{i_1}} \cap T_{{cl_2}\#{i_2}} \neq \emptyset \longrightarrow not\_clash(cl_1\#i_1, cl_2\#i_2)
+\end{equation}
+
+% Les sessions d'une même salle ne doivent pas être en même temps
+$\forall cl_1, cl_2 \in classes, \forall i_1 \in cl_1\#sessions, \forall i_2 \in cl_2\#sessions,$\newline
+\indent$\forall g_1 \in cl_1\#groups, \forall g_2 \in cl_2\#groups \mbox{ s.t. } cl_1 \neq cl_2 \vee i_1 \neq i_2:$
+\begin{equation}
+    R_{{cl_1}\#{i_1}}^{g_1} = R_{{cl_2}\#{j_2}}^{g_2} \longrightarrow not\_clash(cl_1\#i_1, cl_2\#i_2)
+\end{equation}
+
+with:
+\begin{itemize}
+    \item $single(cl)$ is true if the class $cl$ is given true to the $single$ parameter;
+    \item $nrTeachers(cl)$ is the number of teachers of class $cl$;
+    \item $nrSessionsForTeacher(t,p)$ is the number of session for teacher $t$ in part $p$;
+    \item $length(cl\#i)$ is the length of the $i^{th}$ session of class $cl$;
+    \item $size(group)$ is the size of $group \in groups$;
+    \item $capacity(room)$ is the capacity of $room \in rooms$;
+\end{itemize}
+
+%% CONTRAINTES D'OVERLAP
+
+3: Traduction de quelques règles du catalogue 
+

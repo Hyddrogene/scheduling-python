@@ -1,0 +1,30 @@
+disjonctive étudiant,	H,	S,	O,	H,	H,	H,	,	H,	,	H,	H,	H,	H,	H,	,	H,	,	,	H,	H,	H,	H,	H,	H,	H,	O,	H,	S
+disjonctive salle,	H,	H,	H,	H,	,	,	,	S,	S,	,	H,	,	,	,	H,	,	,	H,	,	H,	H,	H,	,	,	H,	H,	,	S
+disjonctive enseignant,	,	H,	,	H,	H,	H,	H,	H,	H,	H,	,	H,	H,	H,	,	H,	H,	H,	H,	H,	H,	,	H,	H,	H,	,	H,	S
+Capacité des salles,	H,	H,	H,	,	,	,	,	H,	H,	,	H,	,	,	,	H,	,	,	,	,	H,	H,	,	,	,	H,	H,	,	
+Assistance à tous les cours,	S,	,	,	H,	H,	,	H,	H,	,	O,	,	H,	,	,	O,	,	,	,	,	,	,	H,	,	,	,	,	H,	O
+horaires différents,	,	,	H,	H,	H,	,	,	,	,	,	,	,	,	S,	,	H,	,	,	,	,	,	,	,	,	H,	H,	H,	
+créneau horaire fixé,	,	,	,	H,	,	H,	,	,	,	,	,	,	,	,	,	,	,	,	H,	,	,	,	H,	,	,	,	,	
+Salle indisponible,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	
+Créneau horaire indisponible,	,	,	,	,	,	H,	,	S,	H,	,	,	,	H,	H,	,	H,	S,	H,	,	H,	,	S,,H,	H,	,	,		
+Écarts de temps,	,	,	,	S,	,	S,	,	,	,	,	,	O,	,	,	,	,	,	,	,	,	,	,	,	,	,	, , 
+Compacité des horaires,   ,	,	,	S,	,	,	,	,	,	,	,	,	S,	S,	,	S,	,	H,	S,	,	,	S,	S,	,	O,	,	S,	
+Pause déjeuner ,	,	,	,	S,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	
+Séances consécutives,	,	,	H,	H,	,	,	,	,	,	,	,	,	,	S,	,	S,	,	,	S,	,	,	,	,	,	,	,	,	S
+Nombre maximum d'heures,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	H,	H,	,	,	S,	S,	H,	H,	H,	,	S
+Charge de travail enseignant,	,	,	,	,	,	,	,	H,	,	H,	,	O,	,	,	,	,	O,	,	,	,	,	,	,	,	,	,	,	
+ordres entre les cours,	,	,	,	,	,	,	,	,	H,	,	,	,	,	,	,	,	,	,	,	,	,	H,	,	,	,	,	,	
+Temps de trajet,	,	,	,	,	,	,	,	S,	,	,	,	,	,	,	,	,	,	O,	,	,	,	,	,	,	,	,	,	S
+Ressources allouées,	H,	H,	H,	H,	,	,	H,	H,	H,	H,	H,	,	,	,	H,	,	H,	S,	,	,	H,	,	,	H,	H,	H,	,	
+Même salle ,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	O,	,	,	,	,	,	,	,	,	,	,	,	,	
+Même enseignant ,	,	,	,	,	,	,	,	,	,	,	,	,	S,	,	,	,	,	,	,	,	,	,	,	,	,	,	S,	
+Même créneau horaire,	,	,	,	,	,	,	,	,	,	,	,	S,	S,	H,	,	,	H,	,	,	,	,	,	,	,	,	,	S,	
+Contrainte souple,	O,	O,	,	,	,	,	,	O,	O,	,	,	O,	O,	O,	,	O,	,	,	O,	,	,	O,	O,	,	,	,	O,	
+Nombre de siège vide,	,	O,	,	,	,	,	,	O,	,	H,	O,	,	,	,	O,	,	,	,	,	,	,	,	,	O,	,	,	,	
+Préférences horaires des enseignants,	,	,	,	,	,	,	O,	,	,	,	,	,	,	,	,	H,	,	O,	,	,	,	,	,	,	,	,	,	
+Minimisation du coût (budget),	,	,	O,	,	,	,	,	O,	,	,	,	,	,	O,	,	,	,	,	O,	O,	,	,	,	,	,	,	
+Nombre minimum d'étudiant,	,	,	,	O,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	
+Minimisation d'un coût linéaire,	,   ,	,	,	,	O,	O,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	
+Éviter les heures consécutives,	,	,	,	,	,	S,	S,	,	,	,	S,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	
+Nombre de salle utilisé,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	
+Répartition uniforme des cours,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	,	S,	,	,	,	,	

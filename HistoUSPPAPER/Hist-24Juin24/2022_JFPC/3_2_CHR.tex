@@ -1,0 +1,170 @@
+\subsection{Modèle \CHR{}}
+
+{\it Constraint Handling Rules} ({\CHR}) \cite{Fruhwirth_JLP_98,Fruhwirth_CHR_09} est un langage à base de règles d’inférence à chaînage avant qui remplacent les contraintes du problème
+par d’autres plus simples jusqu’à la résolution complète.
+\CHR\ est un langage spécialisé permettant de définir des contraintes déclaratives au sens de la programmation logique par contraintes \cite{VanHentenryck_ker_91,Jaffar_Malher_JLP_94}.
+\CHR\ est une extension de langage qui permet d'introduire des contraintes définies par l'utilisateur, c'est-à-dire des prédicats du premier ordre, dans un langage hôte donné tel que {\PROLOG}, {\LISP}, {\JAVA}, ou {\C}/{\CPP}.
+Il a ensuite été étendu à {\CHR}\ensuremath{^{\vee}} \cite{Abdennadher_Schutz_FQAS_98} qui introduit le \emph{don't know} \cite{Betz_Fruhwirth_TCL_13}.
+Ce non-déterminisme est offert gratuitement lorsque le langage hôte est {\PROLOG} et il permet de spécifier facilement des problèmes de la classe de complexité {\NP}. Pour modéliser et résoudre les instances {\UTP} avec le langage {\CHR}, nous utilisons le solveur {\CHRPP}~\cite{barichard_stephan_2019} (pour Constraint Handling Rules in {\CPP}), qui est une intégration efficace de {\CHR} dans le langage de programmation \texttt{C++}.\\
+
+%\marc{paragraphe parsing}
+Le modèle \CHR{} est instancié à la lecture de l'instance au format \JSON{}.
+Le modèle d'entité est d'abord défini, puis les contraintes issues des règles sont déclarées et enfin les domaines des variables sont mis à jour si une partie solution est fourniée, avant de lancer la résolution de l'instance.
+%
+Le modèle complet pour \CHRPP\ est trop long pour être détaillé ici\footnote{Le lecteur intéressé peut télécharger les sources du modèle~\cite{uspSite}}. Nous donnons dans le tableau~\ref{table:contrainte-tab-chr} la liste des contraintes prises en compte par le solveur. Les variables de décisions devant être instanciées sont données au tableau~\ref{table:chr-variables}. Elles sont en grande partie similaires à celles du modèle \MINIZINC, seules les variables de fin de séances sont ajoutées.\\
+
+\begin{table*}[!ht]
+\framebox[\linewidth][c]{%
+\small
+\begin{tabular}{ll}
+array[\SESSION] of var set of \ROOM: $\xroom$ & ensemble de salles allouées à une séance\\
+array[\SESSION] of var set of \TEACHER: $\xteacher$ & ensemble d'enseignants alloués à une séance\\
+array[\SESSION] of int \SLOT: $\xslotstart$ & créneau de départ attribué à une séance\\
+array[\SESSION] of int \SLOT: $\xslotend$ & créneau de fin attribué à une séance\\
+\end{tabular}%
+}
+\caption{Variables de décision (\CHR)}
+\label{table:chr-variables}
+\end{table*}
+
+\newcounter{rowcntrchr}[table]
+\setcounter{rowcntrchr}{0}
+\renewcommand{\therowcntrchr}{(\arabic{rowcntrchr})}
+
+\begin{table*}[!ht]
+\framebox[\textwidth][c]{%
+\small
+\begin{tabularx}{\textwidth}{>{\hsize=0.01\hsize\linewidth=\hsize}X>{\hsize=1.89\hsize\linewidth=\hsize}X>{\raggedleft\arraybackslash\hsize=.09\hsize\linewidth=\hsize}X}
+%% CONTRAINTES STATIQUES
+\multicolumn{3}{l}{Contrainte d'intégrité~:}\\
+%
+% La date de fin et la date de départ sont liées
+& $\forall s \in \SESSION\ : \arraychr{\xslotend}[s] = \arraychr{\xslotstart}[s] + \funcchr{length}(s)$ %
+& \refstepcounter{rowcntrchr} \therowcntrchr \label{ctrchr:startend} \\
+%&&\\
+\multicolumn{3}{l}{Contraintes statiques (filtrage des entrées de l'instance)~:}\\
+%
+% Restriction de domaine au parsing (allowed_xxx)
+& $\forall s \in \SESSION\ : \arraychr{\xroom}[s] \subseteq \arraychr{part\_rooms}[\funcchr{session\_part(s)}]$ %
+& \refstepcounter{rowcntrchr} \therowcntrchr \label{ctrchr:allowedroom} \\
+%
+& $\forall s \in \SESSION\ : \arraychr{\xteacher}[s] \subseteq \arraychr{part\_lecturers}[\funcchr{session\_part(s)}]$ %
+& \refstepcounter{rowcntrchr} \therowcntrchr \label{ctrchr:allowedteacher} \\
+%
+& $\forall p \in \PART, \forall s \in \funcchr{part\_sessions}(p) :$ $\big(\funcchr{week}(\arraychr{\xslotstart}[s]) \in  \arraychr{weeks}[p]\big )$& \\
+& \hspace*{3em}$\wedge \big(\funcchr{weekday}(\arraychr{\xslotstart}[s]) \in  \arraychr{days}[p]\big ) \wedge \big(\funcchr{dailyslot}(\arraychr{\xslotstart}[s]) \in  \arraychr{dailyslots}[p]\big )$ %
+& \refstepcounter{rowcntrchr} \therowcntrchr \label{ctrchr:allowedslot} \\
+%
+% Une session commence et finit le même jour
+& $\forall s \in \SESSION\ : \arraychr{\xslotstart}[s] / nr\_daily\_slots = \arraychr{\xslotend}[s] / nr\_daily\_slots$ %
+& \refstepcounter{rowcntrchr} \therowcntrchr \label{ctrchr:startendsameday} \\
+%
+% Cardinalité nombre de teachers
+& $\forall s \in \SESSION\ : \funcchr{card}(\arraychr{\xteacher}[s]) = \arraychr{team}[\arraychr{part\_sessions}[s]]$ %
+& \refstepcounter{rowcntrchr} \therowcntrchr \label{ctrchr:cardteacher} \\
+%
+% Cardinalité nombre de salles
+& $\forall k \in \CLASS, \forall s \in \arraychr{class\_sessions}[k] :$&\\
+& \hspace*{3em}Si $\big( \arraychr{part\_room\_use}[\funcchr{class\_part}(k)] = \arraychr{none} \big )$ alors $ \funcchr{card}(\arraychr{\xroom}[s]) = 0$ &\\%
+& \hspace*{3em}Si $\big( \arraychr{part\_room\_use}[\funcchr{class\_part}(k)] = \arraychr{single} \big )$ alors $ \funcchr{card}(\arraychr{\xroom}[s]) = 1$ &\\%
+& \hspace*{3em}Si $\big( \arraychr{part\_room\_use}[\funcchr{class\_part}(k)] = \arraychr{multiple} \big )$ alors $ \funcchr{card}(\arraychr{\xroom}[s]) \geq 1$ %
+& \refstepcounter{rowcntrchr} \therowcntrchr \label{ctrchr:cardroom} \\
+%
+% Ranking des sessions
+& $\forall k \in \CLASS, \forall s,s' \in \arraychr{class\_sessions}[k], s.t.\; \funcchr{rank}(s) < \funcchr{rank}(s') : \ctchr{before}(s,s')$ %
+& \refstepcounter{rowcntrchr} \therowcntrchr \label{ctrchr:ranking} \\
+%
+% Un groupe dans deux classes
+& $\forall k_1,k_2 \in \CLASS, s.t.\; \exists g_1 \in \arraychr{class\_groups}[k_1], \exists g_2 \in \arraychr{class\_groups}[k_2], \mbox{ avec } g_1 = g_2 :$ &\\%
+& \hspace*{3em}$\forall s_1 \in \funcchr{class\_sessions}(k_1), s_2 \in \funcchr{class\_sessions}(k_2) : \ctchr{disjunct}(s_1,s_2)$%
+& \refstepcounter{rowcntrchr} \therowcntrchr \label{ctrchr:disjunctgroups} \\
+%
+%&&\\
+\multicolumn{3}{l}{Prédicats statiques~:}\\
+%
+% Forbidden slots
+& $forbidden\_period((e,S'),h,h') = \forall i \in S' : (\arraychr{\xslotstart}[i] < h) \wedge (\arraychr{\xslotstart}[i] > h')$ %
+& \refstepcounter{rowcntrchr} \therowcntrchr \label{ctrchr:forbiddenslot} \\
+%
+& $sequenced((e_1,S_1),(e_2,S_2)) = \forall i_1 \in S_1, \forall i_2 \in S_2 : \ctchr{before}(i_1,i_2)$ %
+& \refstepcounter{rowcntrchr} \therowcntrchr \label{ctrchr:sequenced} \\
+%
+% Same rooms
+& $same\_rooms((e,S')) = \forall s_1,s_2 \in S', s.t.\; s_1 < s_2 : \arraychr{\xroom}[s_1] \sim \arraychr{\xroom}[s_2]$%
+& \refstepcounter{rowcntrchr} \therowcntrchr \label{ctrchr:samerooms} \\
+%
+%&&\\
+\multicolumn{3}{l}{Contraintes dynamiques~:}\\
+% Un teacher fait son bon nombre de sessions
+& $\forall p \in \PART, \forall l \in \arraychr{part\_lecturers}[p] : \big|\big| \{ x \;|\; x \in \funcchr{part\_sessions}(p), l \in \arraychr{\xteacher}[x] \} \big | \big | = \arraychr{service}[p,l] $%
+& \refstepcounter{rowcntrchr} \therowcntrchr \label{ctrchr:teacherservice} \\
+%
+% Capacité des salles à ne pas dépasser
+& $\forall s \in \SESSION, \forall r \in \arraychr{session\_rooms}(s) :$ &\\%
+& \hspace*{3em}$\sum \{ \funcchr{group\_students}[g] \;|\; g \in \arraychr{x\_groups}[\arraychr{session\_class}[s]], r \in \arraychr{\xroom}[s] \} \leq \arraychr{room\_capacity}[r] $%
+& \refstepcounter{rowcntrchr} \therowcntrchr \label{ctrchr:roomcapacity} \\
+%
+% Salle mandatory
+& $\forall s \in \SESSION :  \arraychr{mandatory\_rooms}[\arraychr{session\_part}[s]] \subseteq \arraychr{\xroom}[s] $%
+& \refstepcounter{rowcntrchr} \therowcntrchr \label{ctrchr:roommandatory} \\
+%
+%&&\\
+\multicolumn{3}{l}{Prédicat dynamique~:}\\
+% Same weekday
+& $same\_weekday((e,S')) = $&\\
+& \hspace*{3em}$\forall s_1,s_2 \in S', s.t.\; s_1 < s_2 : \arraychr{\xslotstart}[s_1] / nr\_weekly\_slots = \arraychr{\xslotstart}[s_2] / nr\_weekly\_slots $%
+& \refstepcounter{rowcntrchr} \therowcntrchr \label{ctrchr:sameweekday} \\
+%
+%&&\\
+\multicolumn{3}{l}{Contraintes introspectives~:}\\
+% Un teacher dans deux classes
+& $\forall k_1,k_2 \in \CLASS, \forall s_1 \in \arraychr{class\_sessions}[k_1], \forall s_2 \in \arraychr{class\_sessions}[k_2], \mbox{ s.t. } s_1 \ne s_2 :$ &\\%
+& \hspace*{3em}$ \arraychr{\xteacher}[s_1] \cap \arraychr{\xteacher}[s_2] \ne \emptyset \chrprop \ctchr{disjunct}(s_1,s_2)$%
+& \refstepcounter{rowcntrchr} \therowcntrchr \label{ctrchr:disjunctteacher} \\
+%
+% Une salle dans deux groupes
+& $\forall k_1,k_2 \in \CLASS, \forall s_1 \in \arraychr{class\_sessions}[k_1], \forall s_2 \in \arraychr{class\_sessions}[k_2] \mbox{ s.t. } s_1 \ne s_2 :$ &\\%
+& \hspace*{3em}$ \arraychr{\xroom}[s_1] \cap \arraychr{\xroom}[s_2] \ne \emptyset \chrprop \ctchr{disjunct}(s_1,s_2)$%
+& \refstepcounter{rowcntrchr} \therowcntrchr \label{ctrchr:disjunctroom} \\
+%
+\end{tabularx}%
+}%
+\caption{Contraintes et prédicats du modèle \CHR}
+\label{table:contrainte-tab-chr}
+\end{table*}
+
+Pour simplifier son implémentation, le modèle \CHR\ est en partie non cumulatif et certaines ressources comme les enseignants ne peuvent se partager. Il considère également que le sectionnement et l'affectation des étudiants aux groupes est fait en amont. Ainsi, calculer une solution revient à trouver une affectation des ressources consistante tout en plaçant les horaires de toutes les séances.
+
+Plusieurs contraintes peuvent être posées dès l'analyse de l'instance. C'est le cas des contraintes \ref{ctrchr:startend} à \ref{ctrchr:disjunctgroups} du tableau~\ref{table:contrainte-tab-chr}. Les contraintes \ref{ctrchr:allowedroom}, \ref{ctrchr:allowedteacher} et \ref{ctrchr:allowedslot} filtrent les domaines en retirant les salles, enseignants ou horaires impossibles par construction de l'instance. La contrainte~\ref{ctrchr:startendsameday} assure qu'une séance commence et se termine le même jour en retirant du domaine les valeurs qui la contredisent.
+
+D'autres contraintes sont posées et gérées par des règles \CHR\ surveillant les modifications des domaines des variables. C'est le cas de la contrainte~\ref{ctrchr:startend} qui assure l'intégrité des variables de début et de fin de séance. Il en est de même pour \ref{ctrchr:cardteacher} qui assure que le nombre d'enseignants demandé pour une session est valide et \ref{ctrchr:cardroom} qui vérifie que le nombre de salles d'une séance correspond bien à ce qui est demandé dans l'instance.
+
+Nous donnons pour exemple la règle \CHRPP\ qui vérifie l'intégrité des variables de début et de fin de séance. Celle-ci est déclenchée dès qu'un domaine d'une variable est mis à jour~:
+
+\begin{lstlisting}[style=custom, language=c++]
+session_slot(_, S_Start, S_End, S_Length)
+  =>> CP::Int::plus(S_Start, (*S_Length)-1, S_End);;
+\end{lstlisting}
+
+Nous utilisons \CHRPP\ qui permet de manipuler des valeurs associées à des variables logiques et de réveiller les règles correspondantes dès qu'une modification de la valeur survient. Ce mécanisme combiné avec le chaînage avant de \CHR\ nous permet d'implémenter un mécanisme de réveil des règles et de propagation des domaines efficace à la manière d'un solveur CSP.
+
+Les contraintes~\ref{ctrchr:ranking} et \ref{ctrchr:disjunctgroups} ajoutent de nouvelles contraintes \CHR\ au modèle. En effet, les contraintes \ctchr{before} et \ctchr{disjunct} sont des contraintes \CHR\ assurant la précédence et le non chevauchement de deux séances. Elles sont accompagnées de règles vérifiant la cohérence du graphe disjonctif créé implicitement par l'ajout de toutes ces contraintes. Les prédicats statiques correspondent à ceux lus depuis l'instance. Ils sont traités et des contraintes (contraintes de filtrage, contraintes \CHR\ ou unification de variables) sont ajoutées. 
+
+Les contraintes dynamiques de \ref{ctrchr:teacherservice} à \ref{ctrchr:disjunctroom} ne se déclenchent que dans certaines conditions. Des règles \CHR\ avec garde sont utilisées à cet effet. \ref{ctrchr:teacherservice} vérifie qu'un enseignant effectue bien la liste des enseignements auxquels il est inscrit. \ref{ctrchr:roomcapacity} assure que la capacité des salles est respectée et \ref{ctrchr:roommandatory} vérifie que les salles marquées comme obligatoires se retrouvent bien dans la solution. Le prédicat~\ref{ctrchr:sameweekday} assure que des séances associées au même prédicat $same\_weekday$ sont fixées sur le même jour de la semaine.
+
+Les contraintes \ref{ctrchr:disjunctteacher} et \ref{ctrchr:disjunctroom} ajoutent des contraintes \CHR\ \ctchr{disjunct} lorsque certaines conditions sont vérifiées. Ainsi, \ref{ctrchr:disjunctteacher} pose un \ctchr{disjunct} entre deux séances lorsqu'un même enseignant y participe. \ref{ctrchr:disjunctroom} ajoute une contrainte \ctchr{disjunct} entre deux séances si celles-ci ont lieu dans la même salle. Ces contraintes \CHR\ viennent enrichir le graphe disjonctif représentant le séquencement de toutes les séances.
+
+
+%\begin{lstlisting}[style=custom, language=c++]
+%session_slot(_, Start_slot, End_Slot, S_Length)
+%    =>> CP::Int::plus(Start_Slot, (*S_Length)-1, End_Slot);;
+%\end{lstlisting}
+%
+%
+%\begin{lstlisting}[style=custom, language=c++]
+%same_days(Modulo, Session_id),
+%session_slot(Session_id, Start_slot, End_slot, S_Length)
+%    =>> CP::Int::modulo_boundConsistency(Start_slot, slotsPerWeek, Modulo);;
+%\end{lstlisting}
+
+Il est à noter que le modèle \CHR\ effectue du filtrage de domaine mais analyse également le graphe disjonctif afin d'éliminer des non solutions. Les arêtes du graphe disjonctif sont orientées au fur et à mesure de l'avancement de la résolution et de l'instanciation des variables de décision. 

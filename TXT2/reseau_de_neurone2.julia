@@ -1,0 +1,147 @@
+# Reseau de neurones simple en Julia - Backpropagation manuelle avec fonctions d'activation par couche (style inspire de Flux)
+
+using Random
+
+# Fonctions d'activation et leurs derivees
+function sigma(x)
+    return 1.0 ./ (1.0 .+ exp.(-x))
+end
+
+function sigma_prime(x)
+    s = sigma(x)
+    return s .* (1 .- s)
+end
+
+function relu(x)
+    return max.(0, x)
+end
+
+function relu_prime(x)
+    return x .> 0.0
+end
+
+# Definition d'une couche dense avec activation
+struct DenseLayer
+    W::Matrix{Float64}
+    b::Vector{Float64}
+    activation::Function
+    activation_prime::Function
+end
+
+# Reseau de neurones generique avec plusieurs couches
+struct SimpleChain
+    layers::Vector{DenseLayer}
+end
+
+# Initialisation d'un reseau avec architecture generique et fonctions d'activation par couche
+function create_network(sizes::Vector{Int}, activations::Vector{Tuple{Function, Function}})
+    Random.seed!(42)
+    layers = DenseLayer[]
+    for i in 1:(length(sizes)-1)
+        W = randn(sizes[i+1], sizes[i])
+        b = randn(sizes[i+1])
+        act, act_prime = activations[i]
+        push!(layers, DenseLayer(W, b, act, act_prime))
+    end
+    return SimpleChain(layers)
+end
+
+# Predict = forward pass
+function predict(model::SimpleChain, x)
+    for layer in model.layers
+        x = layer.activation(layer.W * x .+ layer.b)
+    end
+    return x
+end
+
+# Fonction de perte MSE
+function loss(model::SimpleChain, x, y)
+    y_hat = predict(model, x)
+    return sum((y_hat .- y).^2)
+end
+
+# Backpropagation generique pour n couches avec activations variables
+function backward(model::SimpleChain, x, y)
+    L = length(model.layers)
+    z = Vector{Any}(undef, L)
+    a = Vector{Any}(undef, L + 1)
+    a[1] = x
+
+    # Forward pass
+    for i in 1:L
+        z[i] = model.layers[i].W * a[i] .+ model.layers[i].b
+        a[i+1] = model.layers[i].activation(z[i])
+    end
+
+    # Initialisation des gradients
+    delta = Vector{Any}(undef, L)
+    grads_W = Vector{Any}(undef, L)
+    grads_b = Vector{Any}(undef, L)
+
+    # Derniere couche
+    delta[L] = (a[end] .- y) .* model.layers[L].activation_prime(z[L])
+    grads_W[L] = delta[L] * a[L]'
+    grads_b[L] = delta[L]
+
+    # Couches intermediaires
+    for i in (L-1):-1:1
+        delta[i] = (model.layers[i+1].W' * delta[i+1]) .* model.layers[i].activation_prime(z[i])
+        grads_W[i] = delta[i] * a[i]'
+        grads_b[i] = delta[i]
+    end
+
+    return grads_W, grads_b, a[end]
+end
+
+# Mise a jour des parametres avec SGD
+function sgd!(param, grad, eta)
+    param .-= eta .* grad
+end
+
+# Creation du modele
+sizes = [2, 4, 1]
+activations = [(relu, relu_prime), (sigma, sigma_prime)]
+model = create_network(sizes, activations)
+eta = 0.1  # taux d'apprentissage
+
+# Dataset XOR
+X = [
+    [0.0, 0.0],
+    [0.0, 1.0],
+    [1.0, 0.0],
+    [1.0, 1.0]
+]
+Y = [0.0, 1.0, 1.0, 0.0]
+
+# Entrainement
+epochs = 100000
+for epoch in 1:epochs
+    total_loss = 0.0
+    for i in 1:4
+        x = X[i]
+        y = Y[i]
+        x_vec = reshape(x, :, 1)
+        y_vec = reshape([y], :, 1)
+
+        grads_W, grads_b, y_hat = backward(model, x_vec, y_vec)
+
+        for j in 1:length(model.layers)
+            sgd!(model.layers[j].W, grads_W[j], eta)
+            sgd!(model.layers[j].b, grads_b[j], eta)
+        end
+
+        total_loss += sum((y_hat .- y_vec).^2)
+    end
+    if epoch % 1000 == 0
+        println("Epoch $epoch - Loss: $(round(total_loss, digits=4))")
+    end
+end
+
+# Test
+println("\nResultats apres entrainement :")
+for i in 1:4
+    x = X[i]
+    x_vec = reshape(x, :, 1)
+    y_hat = predict(model, x_vec)
+    println("Entree: $x -> Predite: $(round(y_hat[1], digits=4))")
+end

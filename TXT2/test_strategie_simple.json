@@ -1,0 +1,15 @@
+{
+"time_out":"300s",
+"vars":[
+
+{"x_room":[{"rank":"*"},"first_fail","equilibrate_room_disposition"]}
+],
+"constraint_hard":["implicite_sequenced_sessions","teacher_service",
+"disjunctive_teacher","disjunctive_group","disjunctive_room",
+"size_of_multiroom","bench_class_equilibrate"],
+"constraint_soft":["forbiddenPeriod","sameTeachers","sameRooms","periodic",
+"weekly","allowedPeriod","sequenced","sameWeek","assignRoom",
+"forbiddenRooms","sameWeekDay","differentWeekDay","differentWeek",
+"differentSlots","disjunct","sameWeeklySlot","sameSlot","sameSlots"],
+"deactivate_rules":[{"rules":"","comment":"Contrainte de test"}]
+}

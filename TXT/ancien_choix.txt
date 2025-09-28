@@ -1,0 +1,13 @@
+{"x_room":[{"rank":"*"},"first_fail","equilibrate_room_disposition"]},
+{"x_slot":[{"rank":"[5-9]"},"first_fail","indomain_middle"]},
+{"x_slot":[{"rank":"[9-*]"},"first_fail","indomain_max"]},
+{"rules":"358-362","comment":"L3 finish before 6 p.m"}
+{"x_slot":[{"rank":"[5-*]"},"first_fail","indomain_min"]},
+
+
+Faire des test avec arg sort en choco
+
+augmenter le langage de strategie
+strategie de variable en fonction 
+
+strategie pour les profs très rendue et les ressources tendus

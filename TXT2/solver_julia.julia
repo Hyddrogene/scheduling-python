@@ -1,0 +1,245 @@
+# Constraint Satisfaction Problem (CSP) Solver in Julia
+# This solver allows finite-domain variables and supports adding constraints (e.g. AllDifferent).
+# It uses backtracking with basic forward-checking for constraint propagation.
+# The design is object-oriented in style: we define classes for Variables, Constraints, and the Solver model.
+
+# Define a variable with a name, finite domain, and optional assigned value.
+mutable struct CSPVar
+    name::String
+    domain::Vector{Int}            # finite set of possible values
+    value::Union{Nothing, Int}     # currently assigned value (Nothing if unassigned)
+end
+
+# Abstract type for a constraint. Specific constraints will be subtypes of this.
+abstract type Constraint end
+
+# AllDifferent constraint: all variables in the set must take different values.
+struct AllDifferent <: Constraint
+    vars::Vector{CSPVar}
+end
+
+# Binary inequality constraint: two variables must not be equal.
+struct NotEqual <: Constraint
+    var1::CSPVar
+    var2::CSPVar
+end
+
+# Binary offset inequality: ensures var2 - var1 != offset (useful for diagonal constraints in N-queens).
+struct NotEqualOffset <: Constraint
+    var1::CSPVar
+    var2::CSPVar
+    offset::Int
+end
+
+# CSP Model holds all variables and constraints. We can add variables/constraints and then solve.
+mutable struct CSPModel
+    variables::Vector{CSPVar}
+    constraints::Vector{Constraint}
+    function CSPModel()
+        new(Vector{CSPVar}(), Vector{Constraint}())
+    end
+end
+
+# Method to add a new finite-domain variable to the model.
+function add_variable!(model::CSPModel, name::String, domain::Vector{Int})
+    var = CSPVar(name, copy(domain), nothing)
+    push!(model.variables, var)
+    return var
+end
+
+# Method to add a constraint to the model.
+function add_constraint!(model::CSPModel, constraint::Constraint)
+    push!(model.constraints, constraint)
+    return constraint
+end
+
+# Convenience method to add an AllDifferent constraint on a list of variables.
+function all_different!(model::CSPModel, vars::Vector{CSPVar})
+    return add_constraint!(model, AllDifferent(vars))
+end
+
+# Convenience method to add a NotEqual constraint between two variables.
+function not_equal!(model::CSPModel, v1::CSPVar, v2::CSPVar)
+    return add_constraint!(model, NotEqual(v1, v2))
+end
+
+# Convenience method to add an offset inequality constraint (var2 - var1 != offset).
+function not_equal_offset!(model::CSPModel, v1::CSPVar, v2::CSPVar, offset::Int)
+    return add_constraint!(model, NotEqualOffset(v1, v2, offset))
+end
+
+# Solve the CSP model using backtracking search with forward checking.
+# Returns a list of solutions, where each solution is a list of (variable_name, value) pairs.
+function solve(model::CSPModel)
+    solutions = []  # to store solutions found (each solution is a list of assignments)
+
+    # Recursive backtracking function
+    function backtrack()
+        # If all variables are assigned, record the solution
+        if all(var -> var.value !== nothing, model.variables)
+            sol = [(var.name, var.value) for var in model.variables]   # collect (name, value)
+            push!(solutions, sol)
+            return true   # return true to indicate a solution is found (to stop at first solution)
+        end
+
+        # Select an unassigned variable (simple heuristic: first unassigned)
+        var_to_assign = nothing
+        for var in model.variables
+            if var.value === nothing
+                var_to_assign = var
+                break
+            end
+        end
+        # If no unassigned variable found (should not happen due to earlier check), backtrack
+        if var_to_assign === nothing
+            return false
+        end
+
+        # Preserve the current domain of the chosen variable (for restoration)
+        original_domain = copy(var_to_assign.domain)
+
+        # Try each value in the variable's domain
+        for val in original_domain
+            # Assign the value tentatively
+            var_to_assign.value = val
+
+            # Keep track of domain changes for forward checking so we can undo them
+            changes = Vector{Tuple{CSPVar, Int}}()
+            consistent = true  # flag to check if constraints hold so far
+
+            # Propagate constraints (forward checking)
+            for constr in model.constraints
+                if constr isa AllDifferent
+                    # For AllDifferent, if var_to_assign is part of it, remove this value from others
+                    if var_to_assign in constr.vars
+                        for other in constr.vars
+                            if other !== var_to_assign && other.value === nothing
+                                if val in other.domain
+                                    # Remove conflicting value from domain of other
+                                    push!(changes, (other, val))
+                                    other.domain = filter(x -> x != val, other.domain)
+                                    if isempty(other.domain)
+                                        consistent = false
+                                        break
+                                    end
+                                end
+                            end
+                        end
+                    end
+
+                elseif constr isa NotEqual
+                    # For NotEqual, if one side is assigned, remove that value from the other's domain
+                    if constr.var1 === var_to_assign && constr.var2.value === nothing
+                        if val in constr.var2.domain
+                            push!(changes, (constr.var2, val))
+                            constr.var2.domain = filter(x -> x != val, constr.var2.domain)
+                            if isempty(constr.var2.domain)
+                                consistent = false
+                            end
+                        end
+                    elseif constr.var2 === var_to_assign && constr.var1.value === nothing
+                        if val in constr.var1.domain
+                            push!(changes, (constr.var1, val))
+                            constr.var1.domain = filter(x -> x != val, constr.var1.domain)
+                            if isempty(constr.var1.domain)
+                                consistent = false
+                            end
+                        end
+                    end
+
+                elseif constr isa NotEqualOffset
+                    # For NotEqualOffset (var2 - var1 != offset):
+                    if constr.var1 === var_to_assign && constr.var2.value === nothing
+                        # If var1 is assigned, forbid var2 = var1 + offset
+                        local forbidden = val + constr.offset
+                        if forbidden in constr.var2.domain
+                            push!(changes, (constr.var2, forbidden))
+                            constr.var2.domain = filter(x -> x != forbidden, constr.var2.domain)
+                            if isempty(constr.var2.domain)
+                                consistent = false
+                            end
+                        end
+                    elseif constr.var2 === var_to_assign && constr.var1.value === nothing
+                        # If var2 is assigned, forbid var1 = var2 - offset
+                        local forbidden = val - constr.offset
+                        if forbidden in constr.var1.domain
+                            push!(changes, (constr.var1, forbidden))
+                            constr.var1.domain = filter(x -> x != forbidden, constr.var1.domain)
+                            if isempty(constr.var1.domain)
+                                consistent = false
+                            end
+                        end
+                    end
+                end
+
+                # If any inconsistency found, stop propagating further
+                if !consistent
+                    break
+                end
+            end
+
+            if consistent
+                # Recursively assign remaining variables
+                if backtrack()   # if a solution is found in recursion, we can stop at first solution
+                    return true
+                end
+            end
+
+            # Undo the assignment and restore domains (backtrack)
+            # Unassign the variable
+            var_to_assign.value = nothing
+            # Restore domains of any variables that were reduced
+            for (v_changed, removed_val) in changes
+                push!(v_changed.domain, removed_val)
+            end
+            # (Note: order of domain restoration is not critical for correctness here)
+        end
+
+        # Restore the original domain of var_to_assign (in case it was changed by propagation)
+        var_to_assign.domain = original_domain
+        return false  # no valid assignment found for this variable, trigger backtracking
+    end
+
+    backtrack()  # start the recursive search
+    return solutions
+end
+
+# -------------------------------
+# Example: Solving the N-Queens problem using the CSP solver
+# N-Queens constraints:
+#  - N queens on an NxN board, one per row and one per column (AllDifferent on columns).
+#  - No two queens on the same diagonal.
+# We represent each queen by a variable (row index is implicit by variable index, value = column).
+
+# Define N
+N = 4
+
+# Initialize model and variables
+model = CSPModel()
+queens = Vector{CSPVar}(undef, N)
+for i in 1:N
+    queens[i] = add_variable!(model, "Q$i", collect(1:N))  # domain 1..N for each queen's column
+end
+
+# All queens must be in different columns
+all_different!(model, queens)
+
+# Add diagonal constraints: for each pair of distinct queens (i,j), they cannot share a diagonal.
+for i in 1:N-1, j in i+1:N
+    # Diagonal difference constraints: row difference = j-i, so enforce column difference != j-i and != -(j-i)
+    not_equal_offset!(model, queens[i], queens[j], j - i)    # Qj - Qi != j-i  (no same \ diagonal)
+    not_equal_offset!(model, queens[i], queens[j], -(j - i)) # Qj - Qi != -(j-i) (no same / diagonal)
+end
+
+# Solve the model
+solutions = solve(model)
+
+# Print the first solution found (if any)
+if !isempty(solutions)
+    println("One solution to the $N-Queens problem:")
+    for (var_name, val) in solutions[1]
+        println("  $var_name = $val")
+    end
+else
+    println("No solution found for $N-Queens.")
+end

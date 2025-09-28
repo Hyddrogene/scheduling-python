@@ -1,0 +1,20 @@
+// Simplified Ontology Schema for GTP
+digraph {
+	Entities [label="Entities
+(Type, Other attributes)" fillcolor=lightgrey shape=box style=filled]
+	Resources [label="Resources
+(Type, Other attributes)" fillcolor=lightgrey shape=box style=filled]
+	Activities [label="Activities
+(Type, Other attributes)" fillcolor=lightgrey shape=box style=filled]
+	"E-meshes" [label="E-meshes
+(Mesh cell structure)" fillcolor=lightgrey shape=box style=filled]
+	"R-meshes" [label="R-meshes
+(Mesh cell structure)" fillcolor=lightgrey shape=box style=filled]
+	Rules [label="Rules
+(Business, Physical)" fillcolor=lightgrey shape=box style=filled]
+	Entities -> Resources [label=seize]
+	Entities -> Activities [label=perform]
+	Activities -> "E-meshes" [label="map to"]
+	Activities -> "R-meshes" [label="map to"]
+	Activities -> Rules [label=follow]
+}

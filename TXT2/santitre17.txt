@@ -1,0 +1,149 @@
+
+\begin{frame}{Pourquoi faire des tests unitaires ?}
+\textbf{Définition :}
+Un test unitaire vérifie le fonctionnement d’une \textbf{unité de code} : fonction, méthode ou classe.
+
+\textbf{Exemple concret :}
+\begin{itemize}
+\item Fonction somme : somme(2,3) = 5
+\item Fonction somme : somme(-1,1) = 0
+\end{itemize}
+
+\textbf{Intérêt :}
+\begin{itemize}
+\item Détecter rapidement les erreurs
+\item Empêcher que de nouvelles modifications cassent le code existant
+\item Améliorer la maintenabilité et la sécurité du code
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{PHPUnit : outil standard pour les tests}
+\textbf{PHPUnit :} framework officiel pour les tests unitaires en PHP
+
+\textbf{Installation :}
+\begin{lstlisting}\[language=bash]
+composer require --dev phpunit/phpunit
+\end{lstlisting}
+
+\textbf{Concepts clés :}
+\begin{itemize}
+\item Une classe de test hérite de \texttt{PHPUnit\Framework\TestCase}
+\item Chaque méthode teste une fonctionnalité spécifique
+\item On compare résultats réels et attendus via des assertions
+\end{itemize}
+
+\textbf{Assertions courantes :}
+\begin{itemize}
+\item \texttt{\$this->assertEquals(\$attendu, \$reel)}
+\item \texttt{\$this->assertTrue(\$condition)}
+\item \texttt{\$this->assertFalse(\$condition)}
+\item \texttt{\$this->assertCount(\$n, \$array)}
+\end{itemize}
+\end{frame}
+
+
+
+
+\begin{frame}\[fragile]{Tester une fonction simple}
+\textbf{Fonction à tester :}
+\begin{lstlisting}\[language=PHP]
+
+<?php
+function somme($a, $b) {
+    return $a + $b;
+}
+\end{lstlisting}
+
+\textbf{Classe de test :}  
+\begin{lstlisting}[language=PHP]
+<?php
+use PHPUnit\Framework\TestCase;
+
+class TestSomme extends TestCase {
+    public function testSomme() {
+        $this->assertEquals(5, somme(2, 3));
+        $this->assertEquals(0, somme(-1, 1));
+    }
+}
+\end{lstlisting}
+
+\textbf{Exécution :}  
+\begin{lstlisting}[language=bash]
+./vendor/bin/phpunit tests
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[fragile]{Tester une classe}
+\textbf{Classe à tester :}  
+\begin{lstlisting}[language=PHP]
+<?php
+class Calculatrice {
+    public function addition($a, $b) {
+        return $a + $b;
+    }
+    public function multiplication($a, $b) {
+        return $a * $b;
+    }
+}
+\end{lstlisting}
+
+\textbf{Classe de test :}  
+\begin{lstlisting}[language=PHP]
+<?php
+use PHPUnit\Framework\TestCase;
+
+class CalculatriceTest extends TestCase {
+    public function testAddition() {
+        $calc = new Calculatrice();
+        $this->assertEquals(5, $calc->addition(2,3));
+    }
+
+    public function testMultiplication() {
+        $calc = new Calculatrice();
+        $this->assertEquals(6, $calc->multiplication(2,3));
+    }
+}
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}{Tester les cas limites}
+\textbf{Pourquoi ?}  
+Les cas limites révèlent souvent des bugs :  
+- Valeurs négatives  
+- Zéros  
+- Chaines vides ou null  
+
+\textbf{Exemple :}  
+\begin{lstlisting}[language=PHP]
+$this->assertEquals(0, somme(0,0));
+$this->assertEquals(-5, somme(-2,-3));
+\end{lstlisting}
+
+\textbf{Conseil :} toujours tester les cas normaux + limites
+\end{frame}
+
+
+\begin{frame}{Bonnes pratiques pour débuter}
+\begin{itemize}
+    \item Tester une fonctionnalité à la fois  
+    \item Noms explicites : \texttt{testAdditionAvecDeuxEntiers}  
+    \item Commencer simple, complexifier progressivement  
+    \item Vérifier à la fois valeurs normales et limites  
+    \item Automatiser l’exécution des tests
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Évoluer vers le PHP avancé}
+\begin{itemize}
+    \item \textbf{Mocking / Stubs :} simuler BDD ou API externes  
+    \item \textbf{Tester HTML, JSON, XML généré} par les classes  
+    \item \textbf{Couverture de code} (code coverage) : savoir ce qui est testé  
+    \item \textbf{Intégration continue (CI/CD)} : lancer les tests automatiquement à chaque push
+\end{itemize}
+\end{frame}
+
+

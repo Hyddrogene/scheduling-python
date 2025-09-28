@@ -1,0 +1,15 @@
+combat -> batch effect2007 centrer réduire les données(ajuste pas les données en pb batch)
+recentrage moyenne / mediane global
+moyenne chaque batch-> centers(gene-wise strandrzition)
+colorant diffère selon pays
+SMOTENN (ellicptic Rlog)
+donnée HEKOTR 2021isolation forest,elliptic envellop, oneclasssvm,
+
+calcul CCIPL
+numba -> cuda c++ (plus bas niveau)
+
+
+deepimageJ google colabotory
+napari : dask, vispy
+hybrid datacloud -> deepaas
+active learning

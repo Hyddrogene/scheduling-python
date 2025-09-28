@@ -1,0 +1,78 @@
+%------------------------------------------------------------
+%------------------------------------------------------------
+\section{Related work}
+\label{sec:related-work}
+
+We highlight here the main differences between the {\UTP} language and the {\ITC} schema ({\ITC} for short) \cite{2018muller,ITC2019}.
+
+%the two approaches use the same temporal representation but {\ITC} leaves the possibility to configure the granularity of daily slots in each instance (${\DAILYSLOT\in\myset{1\ldots 1440}}$)  while it is set to the minute in {\UTP}. Nevertheless, any granularity may be used in {\UTP} by filtering the series of allowed slots in course parts and by re-scaling session duration and travel time data.
+A first difference between the two frameworks lies in the representation of the possible times a class can meet.
+In {\UTP}, a class is defined by a single sequence of sessions of equal duration and the problem is to schedule each session.
+In {\ITC}, a class is given alternative fixed session schedules ({\texttt{times}} elements in the {\XML} schema) and the problem is to choose one of the schedules for the class.
+A schedule is the repetition over a set of weeks of one or more sessions that have the same duration and start on specific days of the week at the same predefined time (daily slot).
+The two representations are not reducible to one another.
+For instance, alternative schedules using different session durations cannot be modeled in {\UTP}.
+Conversely, class schedules where sessions do not necessarily start on the same daily slot cannot be modeled in {\ITC}.
+Nevertheless, basic class schedules may be represented in either approach by stating {\ITC} constraints or {\UTP} rules on classes.
+For instance, a class meeting every week on the same day and the same daily slot, both being subject to time restrictions, may be modeled using \texttt{\SAMEDAILYSLOT}, \texttt{\WEEKLY} and \texttt{\FORBIDDENPERIOD} constraints.
+The implementation of a more comprehensive reduction method %for alternative schedules 
+%(based, for instance, on a dedicated {\UTP} predicate) 
+will be the subject of future work.
+
+%Another difference lies in the representation of resources and the constraints governing their distribution and allocation.
+%On the one hand, 
+Second, 
+{\ITC} represents alternative course configurations
+by introducing an intermediate layer in the course hierarchy 
+that sits between courses and parts.
+The configurations of a course typically differ in their number of (sub)parts
+and are mutually exclusive from a student sectioning standpoint, that is, 
+a registered student must be assigned a single configuration and attend all of its parts.
+This feature is not currently supported in {\UTP}.
+As for resources, {\UTP} explicitly represents teachers on par with rooms %and allows to specify their workload in each course part %(i.e., the number of sessions to teach)
+whereas {\ITC} only models rooms.
+{\UTP} also provides the flexibility to allocate different resources within a class 
+(and specify teacher workload in particular) %(i.e., the number of sessions to teach)
+whereas the same room must be allocated in {\ITC}.
+Additionally, {\UTP} supports multi-resource sessions whereas {\ITC} is restricted to single-room sessions.
+
+The two constraint languages also present important differences.
+While {\ITC} constraint predicates apply to classes,
+{\UTP} predicates apply to any set(s) of sessions
+and may be used in particular on individual sessions, hence granting finer-grained control.
+Besides, {\UTP} rules and the selector language allows to constrain any class of resources or course elements in a concise way.
+
+Lastly, the {\ITC} schema addresses the timetabling problem as a combinatorial optimization problem.
+It includes a cost function weighting 4 criteria which respectively penalize the choice of sessions and rooms for the classes, the violations of constraints and the overlapping of sessions per student.
+In its current version, the {\UTP} language addresses the problem as a hard constraint satisfaction problem.
+The integration of soft constraints and the possibility of aggregating penalties or preferences, either in solution generation or repair contexts, is under investigation.
+
+%Student groups 
+% near-identical course structure: no course configuration element
+% no time elements in UTP classes. Alternative class times are fixed in ITC
+% OK time elements in extension -> unusitable for loosely constrained class programs
+% OK impossible to express k weekly slots with different starting slots. In UTP: use sameWeeklySlot with masks.
+% OK impossible to enforce different constraints bettwen first period of a course (amorcage) and the rest => ok for us with masks
+% KO: times with different #sessions and session length. 
+% => solution per session (vs per class) : slot + romms + teachers
+
+
+%Sectioning:: as itc (parent class)
+%Ressources
+%- rooms: travel in ITC => using constraint travel in UTP.
+%- new: teachers.
+%- students: no change.
+%- OK groups. Admin and computational needs.
+%- Domain constraints
+%- by default, all resources are cumultative (explain). Avec contrainte (disjunctive):: no overlap on romms/etc. 
+%- allowed slot (applies to all sessions of a part's classes) : ITC via time elements. Adequate for "grid systems". 
+%- allowed rooms and allowed teachers (worklaod per part = prescribed number of sessions)
+%- single or multi-room/teacher session in UTP.
+%- possibly different resources between sessions of a class (unless addiiotnal rules:: sameRoom, sameTeacher, ...)
+%Rules language
+%- ITC: class-level constraints vs session-level constraints on UTP
+%- Labelling: simplifies constraint expression to look up entities
+%Solution
+%seul ajout: group-to-class and student-to-group
+%Résolution: UTP == SAT vs Opt/gestion prefs => pas de priorites, pondérations, etc
+%

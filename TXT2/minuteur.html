@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minuteur Programmable</title>
+</head>
+<body>
+
+<h1>Minuteur Programmable</h1>
+
+<label for="minutes">Minutes:</label>
+<input type="number" id="minutes" min="1" value="1">
+<button onclick="startTimer()">Démarrer le Minuteur</button>
+
+<div id="timerDisplay">Temps restant : 0:00</div>
+
+<script>
+let timer;
+let startTime;
+let milliseconds;
+
+function startTimer() {
+    // Obtenir la durée en minutes depuis l'input
+    const minutesInput = document.getElementById("minutes");
+    const minutes = parseInt(minutesInput.value);
+
+    if (isNaN(minutes) || minutes <= 0) {
+        alert("Veuillez entrer une valeur de minute valide.");
+        return;
+    }
+
+    // Convertir les minutes en millisecondes
+    milliseconds = minutes * 60 * 1000;
+
+    // Enregistrer le temps de début
+    startTime = Date.now();
+
+    // Mettre à jour le temps restant toutes les secondes
+    timer = setInterval(updateTime, 1000);
+
+    // Démarrer le minuteur
+    setTimeout(() => {
+        playSound();
+         // Fonction pour jouer un son
+        clearInterval(timer); // Arrêter la mise à jour du temps
+    }, milliseconds);
+}
+
+function updateTime() {
+    // Calculer le temps écoulé
+    const elapsedMilliseconds = Date.now() - startTime;
+
+    // Convertir le temps écoulé en minutes et secondes
+    const elapsedSeconds = Math.floor(elapsedMilliseconds / 1000);
+    const remainingSeconds = Math.max(0, Math.ceil((startTime + milliseconds - Date.now()) / 1000));
+    
+    const minutes = Math.floor(remainingSeconds / 60);
+    const seconds = remainingSeconds % 60;
+
+    // Mettre à jour l'affichage
+    const timerDisplay = document.getElementById("timerDisplay");
+    timerDisplay.textContent = `Temps restant : ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+}
+
+function playSound() {
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    
+    // Créer un oscillateur (source de son)
+    const oscillator = audioContext.createOscillator();
+    
+    // Connecter l'oscillateur à la sortie audio
+    oscillator.connect(audioContext.destination);
+
+    // Démarrer l'oscillateur
+    oscillator.start();
+
+    // Arrêter l'oscillateur après quelques secondes (ajustez la durée selon vos besoins)
+    setTimeout(() => {
+        oscillator.stop();
+    }, 5000); // Par exemple, arrêter après 2 secondes
+}
+</script>
+
+</body>
+</html>

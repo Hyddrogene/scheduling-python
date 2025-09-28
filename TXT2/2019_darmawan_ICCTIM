@@ -1,0 +1,84 @@
+Produire un excellent emploi du temps éducatif est une question importante et une tâche difficile pour chaque personnel administratif dans une institution académique. Il faut travailler dur pour répondre aux exigences des parties prenantes importantes (enseignants, étudiants et gestion). Principalement, pour adapter la nouvelle situation à la pratique actuelle, on réplique l'emploi du temps des années précédentes pour accélérer le processus avec quelques modifications mineures. Cependant, récemment, certains changements peuvent se produire fréquemment en raison de nouvelles politiques pour chaque institution, et corriger ce qui a été développé auparavant demande beaucoup de travail. Dans ces circonstances, étant donné les progrès réalisés dans le domaine des systèmes matériels et logiciels, la communauté scientifique continue d'examiner cette question afin d'établir des processus généraux et automatisés pour établir des emplois du temps efficaces et souhaitables pour les parties prenantes (Bettinelli et al., 2015).
+
+Le problème de la planification des cours basé sur le curriculum se définit comme la construction de l'emploi du temps en assignant les cours universitaires aux périodes de la semaine de travail et aux salles de classe spécifiques adaptées aux besoins du cours et au nombre d'étudiants inscrits au cours et au professeur pour chaque cours sur une base hebdomadaire tout en satisfaisant diverses contraintes (De Cesco et al., 2008). Dans chaque université, l'objectif de produire un emploi du temps satisfaisant peut différer en raison des différences de préférences et de politiques éducatives. Cependant, l'objectif reste le même : créer un emploi du temps convaincant et réalisable en satisfaisant les préférences des parties prenantes au moins dans une certaine mesure (Kristiansen et Stidsen, 2013).
+
+Le problème de la planification des cours basé sur le curriculum a été largement exploré depuis 1980 par plusieurs techniques bien connues de la recherche opérationnelle et du domaine de l'informatique. Au cours de la dernière décennie, les méthodologies principales utilisées sont classées comme l'algorithme d'intelligence en essaim, l'algorithme évolutif, l'algorithme de recherche locale, l'algorithme de coloration de graphe et les méthodes exactes (Kristiansen et Stidsen, 2013). Parmi ces méthodologies, les méthodes exactes, la programmation en nombres entiers, deviennent l'une des techniques préférées utilisées pour résoudre le problème afin de surmonter la qualité de la solution trouvée grâce aux avancées des logiciels et matériels informatiques (Caccetta et Aizam, 2012).
+
+Clarence H. Martin (Martin, 2004) a employé cette approche pour le Collège des affaires de l'Université de l'Ohio en tenant compte des questions pratiques sur les enseignants, les cours, les salles de classe et les créneaux horaires. (Daskalaki et al., 2004) ont réalisé une nouvelle formulation de programmation en nombres entiers 0-1 en minimisant la fonction de coût linéaire pour accommoder un nombre important de règles opérationnelles et de contraintes, telles que les périodes d'enseignement, les jours de la semaine ou les cours spécifiques à une salle de classe, en utilisant des données réelles du Département d'électrotechnique et d'informatique de l'Université de Patras. Lach et Lübbecke (Lach et Lübbecke, 2012) abordent le problème par la programmation linéaire en nombres entiers en utilisant une technique décomposée en deux étapes avec des données réelles de l'Université d'Udine, Département de génie électrique et informatique.
+
+Le défi de la planification des cours universitaires est de garder le problème étudié aussi proche que possible du problème pratique. L'optimisation multi-objectifs joue un rôle influent dans ce problème (Bettinelli et al., 2015). Dans une fonction objectif de coût pondéré à minimiser, une stratégie courante consiste à implémenter des contraintes et à pénaliser leurs violations. En réalité, certaines universités ont une règle pour considérer la capacité de la salle de classe comme une contrainte à respecter (Bettinelli et al., 2015) comme approche dans cette étude pour apporter une contribution réelle et théorique dans le domaine de la recherche. Cet article est organisé comme suit. Le problème fondamental de la planification des cours basé sur le curriculum est décrit. Ensuite vient l'explication de la formulation du modèle multi-objectifs, les résultats et la discussion sur la performance du modèle et la conclusion.
+
+
+### 2. Approche Proposée
+
+Cette section décrit la description du problème dans le domaine de recherche et la conception expérimentale pour construire le problème.
+
+#### 2.1 Description du Problème
+
+Dans la planification des cours basée sur le curriculum universitaire, le problème se formule comme suit : étant donné un ensemble de cours appelé curriculum, chaque curriculum se compose de plusieurs conférences/cours. Chaque cours est associé à un enseignant. Chaque cours doit être attribué à une salle de classe à une période de temps, sur des jours de semaine particuliers, sans aucun conflit. Chaque salle de classe a également une taille spécifique et des exigences pour répondre aux besoins du cours. Fondamentalement, pour atteindre un objectif efficace et réalisable, la formulation mathématique doit satisfaire toutes les contraintes associées. Chaque institution a une politique pour gérer son emploi du temps, donc dans de nombreux cas, des ajustements sont nécessaires pour satisfaire chaque communauté de planification. Dans cet article, l'objet de l'étude est une université privée, l'Université Da-Yeh située à ChangHwa, Taïwan. Plus précisément, les données proviennent des cours de premier cycle du Département de Génie Industriel et Management au Collège d'Ingénierie pour la période d'analyse du semestre d'automne des deux dernières années académiques, 2017 et 2018. La Figure 1 montre les données collectées.
+
+Figure 1 : Données de l'emploi du temps.
+
+Dans cet article, nous supposons et construisons les préférences horaires pour chaque professeur pour chaque semestre aussi proche que possible d'un problème pratique et nous accommodons l'utilisation des salles de classe pour une classe particulière équipée, classe informatique. Les attributs uniques de l'université apparaissent pour le coût, chaque professeur dépend du statut académique (professeur assistant, professeur associé et professeur titulaire) et de la période de temps (matin, après-midi et soir). Plus le statut académique est élevé, plus le coût par heure est élevé. La période de temps est divisée en segments de trois heures en fonction de la durée du cours offert, matin, après-midi et soir. La valeur de la période de nuit est plus élevée que celle des périodes de matin et après-midi. Pour satisfaire le point de vue de l'institution, la préférence est d'avoir une bonne occupation des salles de classe pour des raisons d'efficacité des ressources, des salles de classe et des coûts. Sur cette base, le modèle considère les fonds pour satisfaire la contrainte de capacité des salles de classe et obtenir une planification réalisable.
+
+#### 2.2 Conception Expérimentale
+
+Construire l'emploi du temps universitaire en utilisant une approche de programmation multi-objectifs et la notation suivante est nécessaire pour décrire le modèle en fonction des paramètres qui construisent le modèle comme élément structurel essentiel, les variables de décision, la fonction objective et les contraintes. Ce modèle est un modèle conceptuel simplifié de minimisation des coûts.
+
+**Paramètres**
+
+- \( c \) : cours
+- \( r \) : salle de classe
+- \( t \) : période de temps
+- \( s \) : groupe d'étudiants
+- \( l \) : enseignant
+- \( fr \) : capacité maximale de la salle de classe \( r \)
+- \( ec \) : nombre d'étudiants inscrits au cours \( c \)
+- \( cost_{c,r,t} \) : coût correspondant lorsque le cours \( c \) est assigné à la salle \( r \), à la période \( t \)
+- \( I_l \) : ensemble des cours \( c \) enseignés par l'enseignant \( l \)
+- \( I_s \) : ensemble des cours \( c \) suivis par le groupe d'étudiants \( s \)
+- \( T_l \) : ensemble des périodes \( t \) où l'enseignant \( l \) n'est pas disponible
+
+**Variables de Décision**
+
+- \( x_{c,r,t} \) : fonction booléenne, la valeur est 1 une fois que le cours \( c \) est attribué à une salle de classe \( r \) à la période \( t \); sinon, elle est de zéro.
+
+**Fonction Objective**
+
+- \( A1 = \text{Min} \sum_{c=1}^{n} \sum_{r=1}^{m} \sum_{t=1}^{p} cost_{c,r,t} x_{c,r,t} (fr - ec) \) (1)
+
+L'équation (1) est utilisée pour contrôler l'utilisation de la salle de classe en minimisant le coût de perte pour chaque siège vide.
+
+- \( A2 = \text{Min} \sum_{c=1}^{n} \sum_{r=1}^{m} \sum_{t=1}^{p} cost_{c,r,t} x_{c,r,t} \) (2)
+
+L'équation (2) est utilisée pour concevoir l'emploi du temps en minimisant le coût. La formulation mathématique du problème se lit comme suit :
+
+- \( Z = w1 A1 + w2 A2 \) (3)
+
+**Contraintes**
+
+- \( \sum_{r=1}^{m} \sum_{t=1}^{p} x_{c,r,t} = 1 \quad 1 \leq c \leq n \) (4)
+
+L'équation (4) indique que chaque cours doit être attribué à une salle de classe et à une période.
+
+- \( \sum_{c=1}^{n} x_{c,r,t} \leq 1 \quad 1 \leq r \leq m, 1 \leq t \leq p \) (5)
+
+L'équation (5) indique que chaque cours ne peut pas être attribué à la même salle de classe et période, pas de collision.
+
+- \( ec x_{c,r,t} \leq fr \quad 1 \leq c \leq n, 1 \leq r \leq m, 1 \leq t \leq p \) (6)
+
+L'équation (6) indique que la capacité du cours doit satisfaire la capacité de la salle de classe.
+
+- \( \sum_{c \in I_l} \sum_{r=1}^{m} x_{c,r,t} \leq 1 \quad 1 \leq t \leq p, 1 \leq l \leq L \) (7)
+
+L'équation (7) désigne que chaque enseignant ne peut pas être attribué à plus d'un cours dans une période donnée, pas de collision.
+
+- \( \sum_{c \in I_l} \sum_{r=1}^{m} \sum_{t \in T_l} x_{c,r,t} = 0 \) (8)
+
+L'équation (8) indique que l'emploi du temps des cours doit satisfaire les préférences horaires des enseignants.
+
+- \( \sum_{c \in I_s} \sum_{r=1}^{m} x_{c,r,t} \leq 1 \quad 1 \leq t \leq p, 1 \leq s \leq S \) (9)
+
+L'équation (9) désigne que les étudiants ne peuvent pas être attribués à plus d'un cours dans une période donnée, pas de collision.
+
+Le cadre multi-objectifs considéré pour ce modèle utilise une fonction objective pondérée pour aider à la préférence du décideur afin d'obtenir un ensemble de solutions réalisables (Hwang et Yoon, 1981). La méthode pondérée subjective est utilisée comme fonction simulée pour montrer comment chaque objectif se comporte par rapport aux autres (Hwang et Yoon, 1981). Le modèle est conçu pour proposer une interface d'entrée/sortie simple pour intégrer la théorie et la pratique de l'utilisateur (Chen, 2007).

@@ -1,0 +1,4 @@
+implémenter une première version en lisp et voir
+demander une explication sur la contrainte globale cumulative
+demander pour un premier reseau de neurone en python pour le traitement du lanage
+voir en php si c'est possible. mm très basique.

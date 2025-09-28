@@ -1,0 +1,74 @@
+propager les nom des prédicats
+discuter des extensions des catalogues-> weeky parametrique, prédicats gap +distribution  etc...
+
+
+Syntaxe xpaths -> <sessions generator="//room[label="Batimlent G"][rank="1-3,6"]"
+
+add event -> rapidos
+
+
+spécifié la mesure contrainte soft (e.G. all diff linimse nombre egalité)  indvidualisé les contraintes violé pour comprendre des clashs-> optimisation préférences
+amener avec la politique de réparation "relaxation de contraintes"
+
+
+CamelCase pour les méthodes
+Fichier 
+interface à pars
+Main
+flatten rule
+
+parseXml
+genertaeDzn,Json,XML
+Entity -> CiurseElement: Course,...; Ressource : group,student,Room..;
+Session emap (Entity,Sessions)
+
+Rule COntrainte arité, tab emap
+Emamp
+Interface -> generate parseXml
+
+UTPisntace
+-> courses getsession
+-> ressources[]
+-> RulesSet[]
+->Solution
+
+rule
+    ruleSession(selector)
+        generatorRequest string
+        filters
+        [T,L,O]genratro,T1,L1,O1filter
+        flatten(){}domain emap
+    constraint
+        arity
+        vecteur emap
+    
+    
+predicat
+    name
+    parameters
+    arity
+    
+emap
+    entity
+    session
+    
+    
+    
+    
+entités   séances
+
+
+propagateurs prennent en compte
+
+On saura les tourner 2weekly diffilcuté propagations entre les dur et soft
+
+
+deux release submodule github
+
+
+
+[réunion 12 avril 2022]
+
+PArlé des commentaires en début de fichier
+Pour parler des instances-> statistiques résultats (nombre de stats, variables, propagations, etc.., type de solver, time, donnée sur l'instance (taille etc..), calendar cosmétique pour débug) 
+    

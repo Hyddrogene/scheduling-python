@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FeatureModel name="feature model for UTP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="featureModel-schema.xsd">
+<Features>
+<feature name="Timetabling problem" activate="true">
+    <subfeature>
+        <feature name="courses" activate="true">
+            <subfeature>
+                <feature name="course-hierarchy" activate="true" />
+                <feature name="event" activate="true" />
+            </subfeature>
+        </feature>
+        <feature name="timing" activate="false">
+            <subfeature>
+                <feature name="full-period" activate="false">
+                    <subfeature>
+                        <feature name="single-week" activate="false" />
+                    </subfeature>
+                </feature>
+                <feature name="full-week" activate="false" />
+            </subfeature>
+        </feature>
+        <feature name="hosting" activate="true">
+            <subfeature>
+                <subfeature type="OR">
+                    <feature name="no-room" activate="false" />
+                    <feature name="single-room" activate="true" />
+                    <feature name="multi-room" activate="true" />
+                </subfeature>
+                <feature name="room-capacity" activate="true" />
+                <subfeature type="XOR">
+                    <feature name="all-exclusive" activate="false" />
+                    <feature name="none-exclusive" activate="false" />
+                    <feature name="some-exclusive" activate="true" />
+                </subfeature>
+            </subfeature>
+        </feature>
+        <feature name="teaching" activate="true">
+            <subfeature>
+                <subfeature type="OR">
+                    <feature name="no-teacher" activate="true" />
+                    <feature name="single-teacher" activate="true" />
+                    <feature name="multi-teacher" activate="true" />
+                </subfeature>
+                <feature name="session-overlap" activate="false" />
+                <feature name="service" activate="true" />
+            </subfeature>
+        </feature>
+        <feature name="crosscutting" activate="false">
+            <subfeature>
+                <feature name="calendar" activate="false" />
+                <feature name="regularity" activate="false" />
+                <feature name="orchestration" activate="false" />
+                <feature name="workload" activate="false" />
+                <feature name="logistics" activate="false" />
+                <feature name="resourcing" activate="false" />
+            </subfeature>
+        </feature>
+        <feature name="scheduling" activate="true">
+            <subfeature>
+                <feature name="no-overlap" activate="false" />
+                <feature name="same-duration" activate="false" />
+                <feature name="modular" activate="true" />
+            </subfeature>
+        </feature>
+        <feature name="attending" activate="true">
+            <subfeature>
+                <feature name="session-overlap " activate="true" />
+                <feature name="sectioning" activate="true" />
+            </subfeature>
+        </feature>
+    </subfeature>
+</feature>
+</Features>
+</FeatureModel>

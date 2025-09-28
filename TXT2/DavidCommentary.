@@ -1,0 +1,140 @@
+Le langage UTP propose un catalogue de prédicats dédiés (p. ex. ordonnancement de séances, allocation des salles, distribution des enseignants) pour formuler des contraintes d'instance.
+Les prédicats s'appliquent, selon leur arité, à un ou plusieurs ensembles de séances, chacun lié à une entité (ressource ou élément de cours).
+Chaque contrainte est donc l'instantiation d'un prédicat n-aire du catalogue à un n-uplet de paires, appelées e-maps et associant chacune une entité à un ensemble de \italic{ses} séances.
+
+Le langage permet ainsi de cibler des séances constitutives d'éléments de cours ou des séances possibles de ressources et de les contraindre selon les besoins.
+La cohérence d'un emploi du temps relativement à une contrainte n'est évaluée que sur le n-uplet d'ensembles de séances qui sont effectivement liées dans cet EDT aux n entités visées.
+Dans le cas de contraintes ciblant exclusivement des éléments de cours, ces contraintes seront évaluées sur l'intégralité des ensembles de séances ciblés puisque celles-ci sont constitutives des éléments de cours.
+A l'inverse, toute contrainte portant sur une ressource ne sera évaluée que sur les séances effectivement affectées à la ressource dans l'EDT.
+En ce sens, le langage permet d'exprimer des contraintes conditionnelles (contraintes sur séances de ressources) et inconditionnelles (contraintes sur séances d'éléments de cours), l’interprétation d’une contrainte conditionnelle au regard d’un EDT donné reposant sur le déconditionnement préalable des ensembles de séances.
+
+Nous présentons de manière informelle le concept d’e-map, la syntaxe et le schéma d’interprétation des contraintes, puis passons en revue les prédicats du catalogue.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1.2.4.1 E-maps et contraintes
+
+Toute contrainte d'instance se formule par l'instantiation d'un prédicat n-aire du catalogue à un n-uplet d'e-maps, éventuellement accompagné de paramètres supplémentaires selon la signature du prédicat.
+Un e-map est une paire associant une entité de l'instance - élément de cours (classe, modalité, cours ou l'ensemble intégral des cours) ou ressource (étudiant, groupe d'étudiants, enseignant, salle) -  et un ensemble de séances.
+Dans le cas où l'entité d'un e-map est un élément de cours, le langage impose que toutes les séances associées soient constitutives de cet élément, cad. choisies parmi les séances appartenant à une classe, une modalité, un cours, ou parmi l'ensemble de toutes les séances de l'instance si l'entité est l'ensemble intégral des cours.
+La même règle s'applique au cas où l'entité est un étudiant ou un groupe d'étudiants puisque les séances d'une telle entité sont fixées dans l'instance.
+Dans le cas où l'entité est un enseignant ou une salle, le langage impose que toutes les séances associées soient autorisées pour cette ressource au regard des contraintes d'éligibilité posées dans le modèle d'entités sur cette ressource.
+En résumé, toute contrainte d'instance doit s'appliquer à des e-maps valides au sens des règles édictées ci-dessus.
+On notera que l'ensemble des séances d'un e-map peut être vide.
+
+
+
+1.2.4.2 Prédicats et interprétation
+
+
+Les prédicats du catalogue UTP représentent des contraintes types d'emploi du temps qui permettent de formuler des contraintes d'instance ciblant entités et ensembles de séances.
+Les prédicats s'appliquent tous à des n-uplets d'e-maps, l'arité n étant propre à chaque prédicat.
+Certains prédicats acceptent aussi un ou plusieurs paramètres supplémentaires (p. ex. une durée, un nombre de salles).
+La signature générale des prédicats obéit donc au format suivant :
+p(m_1, ...m_n,p_1,...,p_k) où ...
+
+Chaque prédicat a une sémantique prédéfinie sur laquelle se base l'interprétation d'une contrainte l'instanciant pour un EDT donné, cad pour tester la cohérence de l'EDT avec la contrainte.
+L'interprétation d'une contrainte instanciant un prédicat n-aire repose sur le déconditionnement préalable des n e-maps selon l'EDT.
+Ce déconditionnement détermine les n ensembles de séances liées par l'EDT aux n entités.
+Comme évoqué plus haut, le déconditionnement laisse inchangé l'ensemble de séances si l'entité est un élément de cours, un étudiant ou un groupe d'étudiants.
+A l'inverse, dans le cas d'un enseignant ou d'une salle, le déconditionnement réduit l'ensemble des séances à celles effectivement allouées à la ressource par l'EDT.
+Sur cette base, la contrainte est satisfaite si le n-uplet d'ensembles de séances résultants et les affectations correspondantes dans l'EDT (horaires, enseignants, salles) satisfont à la sémantique du prédicat. 
+Par exemple, un prédicat temporel ne contraindra que les horaires de départ de séances alors qu'un prédicat d'allocation de salles ne contraindra que le nombre ou la capacité des salles allouées aux séances.
+
+Le tableau 1.1 liste les prédicats du catalogue. etc.
+
+
+
+
+
+
+Le prédicat \texttt{\ALLOWEDSLOTS{}} impose des contraintes horaires spécifiques, exprimées sous forme d'intervalles. \\
+\noindent\textbf{À un niveau plus global,} le prédicat \texttt{\ALLOWEDGRIDS{}} permet de sélectionner des \emph{grilles horaires} complètes — ...
+
+
+
+
+
+
+
+
+
+
+
+
+D Lesaint09/04/2025 à 12:06:12
+
+Chapeau
+
+1.2.5 Le langage de règles
+Les attentes et besoins rencontrés dans les problèmes d'EDT s'expriment souvent sur des groupes d'entités auxquels s'appliquent des contraintes communes. Il peut s'agir par exemple d'imposer un candencement précis des séances de \italic(chacune) des classes d'une modalité particulière, ou bien d'exprimer l'indisponibilité d'une équipe d'enseignants ou de restreindre l’hébergement de certains classes à un pool de salles. A cet effet, le langage UTP intègre un langage de règles permettant une formulation concise de collections de contraintes qui s’accompagne d’une méthode de conversion automatique de règles en contraintes.
+
+Chaque règle exprime une conjonction de contraintes instanciant le même prédicat n-aire. Chacune des contraintes s'applique donc à un n-uplet d’e-maps et la règle représente l’ensemble de ces n-uplets en intension à l'aide de n sélecteurs. Chaque sélecteur s'interprète comme un ensemble d'e-maps et les n sélécteurs comme le produit cartésien de ces ensembles. Le langage UTP offre une syntaxe inspirée de XPath pour sélectionner les entités et les ensembles de séances à associer en combinant logiquement de multiples filtres (identifiant, type ou étiquette d'entité, entité constituante ou éligible de séance et rang de séance).
+
+Nous présentons de manière informelle la syntaxe des sélecteurs et des règles et illustrons le processus de conversion des règles en contraintes.
+[Annotation NoIcon]
+Langage de modélisation
+générateurs et des ﬁltres, qui permettent d’automatiser la déﬁnition des contraintes
+et d’aﬃner leur application.
+1.2.5.1 Structure XML
+Toutes les règles sont initialement regroupées dans une section dédiée du schéma.
+Chaque règle peut être associée à des étiquettes et à un identiﬁant unique, ce qui
+permet de les retrouver facilement et de pouvoir les regrouper entre elles.
+De plus, chaque règle doit inclure au moins un sélecteur représenté par l’élément
+<selector>, et il est possible d’en déclarer plusieurs pour répondre aux besoins des pré-
+dicats utilisés. Les sélecteurs sont des éléments fondamentaux qui permettent d’extraire
+des sous-ensembles spéciﬁques d’entités ou de séances (il crée les e-maps). Dans la dé-
+composition structurelle, nous retrouvons ensuite l’élément <constraint>, qui est déﬁni
+par un nom, il s’agit de la notion de prédicat UTP. Chaque contrainte peut contenir un
+ensemble de paramètres,<parameters>, avec chaque parameter associé à un nom, un
+type et une valeur. Les types et nombres de paramètres dépendent directement du prédi-
+cat utilisé, et chaque prédicat impose des types de paramètres déﬁni dans le catalogue de
+prédicats UTP.
+Par exemple, la ﬁgure 1.15 illustre des règles UTP dans le schéma. La première règle
+peut être interprétée de la manière suivante : elle applique le prédicat allowedRooms 1.11
+à un ensemble de séances. Ce prédicat, d’arité 1, ne prend en entrée qu’un seul ensemble
+d’e-maps, et par conséquent, cette règle ne déclare qu’un seul sélecteur. De plus, le prédicat
+allowedRooms accepte un paramètre sous forme de liste, qui spéciﬁe les salles autorisées
+pour les séances sélectionnées par le sélecteur. Ainsi, cette liste de salles détermine quelles
+ressources peuvent être aﬀectées aux séances déﬁnies dans le contexte de cette règle.
+La deuxième règle illustre le prédicat sequenced, un prédicat d’arité n-aire, qui prend
+en entrée plusieurs sélecteurs. Ce prédicat est utilisé pour imposer un ordre de séquen-
+cement entre les séances ou les entités sélectionnées. Contrairement à d’autres prédi-
+cats, sequenced ne requiert aucun paramètre supplémentaire, d’où l’absence d’éléments
+<parameters> dans la déclaration de cette règle. L’utilisation de plusieurs sélecteurs per-
+met de cibler un ensemble d’e-maps, entre lesquelles l’ordre doit être déﬁni.
+1.2.5.2 Langage de requête
+Nous allons maintenant présenter la syntaxe des sélecteurs, en particulier les généra-
+teurs et ﬁltres. Les générateurs déﬁnissent le type d’entités sur lesquelles les contraintes
+20
+[Annotation NoIcon]
+
+
+
+
+
+
+
+
+Un sélecteur représente en intension un ensemble d'e-maps. Il se formule par un \italic{générateur} éventuellement couplé à des \italic{filtres}.
+
+Le générateur est la donnée d'un type d'entités (étudiants, groupes, enseignants, salles, classes, modalités, cours ou ensemble des cours de l'instance),
+éventuellement restreint par la donnée d'un identifiant ou d'une étiquette à, respectivement, un singleton ou aux entités de cette étiquette. Le générateur dénote alors l'ensemble d'e-maps associant chacune des entités ciblées à son ensemble de séances constitutives ou éligibles.
+
+Ces ensembles de séances peuvent être criblés en combinant logiquement différents filtres. Un filtre exprime une condition sur l'identifiant, le type ou l'étiquette des entités dont les séances relèvent, ou bien sur les valeurs de rangs autorisés. Chaque filtre dénote donc un sous-ensemble des séances de l'instance et les filtres peuvent être combinés par conjonction (intersection), disjonction (union) ou négation (complément relatif à l'ensemble intégral de séances).
+
+In fine, un sélecteur dénote l’ensemble des e-maps construits par le générateur et dont les séances sont criblées par les filtres.

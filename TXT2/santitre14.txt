@@ -1,0 +1,109 @@
+% ------------------------
+\begin{frame}{Exemple pratique : titres et paragraphes}
+\textbf{Balises :} \texttt{<h1>-<h3>, <p>}\\[2mm]
+\textbf{Objectif :} structurer le texte et ajouter des paragraphes.\\[2mm]
+
+\textbf{Code HTML :}
+\begin{lstlisting}[language=HTML]
+<h1>Bienvenue sur Dinosaure.org</h1>
+<h2>Section : Triceratops</h2>
+<p>Le Triceratops est un dinosaure herbivore possédant trois cornes et un large bouclier crânien.</p>
+<h3>Caractéristiques</h3>
+<p>Il vivait à la fin du Crétacé et mesurait jusqu'à 9 mètres de long.</p>
+\end{lstlisting}
+
+\textbf{Rendu attendu :}
+\begin{itemize}
+    \item Titre principal "Bienvenue sur Dinosaure.org"
+    \item Sous-titre "Section : Triceratops"
+    \item Paragraphe descriptif
+\end{itemize}
+\end{frame}
+
+% ------------------------
+\begin{frame}{Exemple pratique : listes}
+\textbf{Balises :} \texttt{<ul>, <ol>, <li>}\\[1mm]
+\textbf{Objectif :} organiser l'information sous forme de liste.\\[1mm]
+
+\textbf{Code HTML :}
+\begin{lstlisting}[language=HTML]
+<h3>Alimentation du Triceratops</h3>
+<ul>
+    <li>Plantes basses</li>
+    <li>Feuilles</li>
+    <li>Fougères</li>
+</ul>
+
+<h3>Points forts</h3>
+<ol>
+    <li>Trois cornes pour se défendre</li>
+    <li>Bouclier crânien large</li>
+    <li>Herbivore pacifique</li>
+</ol>
+\end{lstlisting}
+
+\textbf{Rendu attendu :}
+\begin{itemize}
+    \item Liste à puces : alimentation
+    \item Liste numérotée : points forts
+\end{itemize}
+\end{frame}
+
+% ------------------------
+\begin{frame}{Exemple pratique : liens et images}
+\textbf{Balises :} \texttt{<a>, <img>}\\[1mm]
+\textbf{Objectif :} ajouter des liens et des images.\\[1mm]
+
+\textbf{Code HTML :}
+\begin{lstlisting}[language=HTML]
+<p>Pour en savoir plus : 
+    <a href="https://www.dinosaure.org/triceratops" target="_blank">
+    Page Triceratops
+    </a>
+</p>
+
+<img src="triceratops.png" alt="Image d'un Triceratops" width="300">
+\end{lstlisting}
+
+\textbf{Rendu attendu :}
+\begin{itemize}
+    \item Lien cliquable ouvrant la page Triceratops
+    \item Image du Triceratops affichée avec largeur 300px
+\end{itemize}
+\end{frame}
+
+% ------------------------
+\begin{frame}{Exemple complet : mini-page HTML}
+\textbf{Combinaison de balises principales :}\\[1mm]
+
+\textbf{Code HTML :}
+\begin{lstlisting}[language=HTML]
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Triceratops</title>
+</head>
+<body>
+    <h1>Bienvenue sur Dinosaure.org</h1>
+    <h2>Section : Triceratops</h2>
+    <p>Le Triceratops est un dinosaure herbivore possédant trois cornes.</p>
+
+    <h3>Alimentation</h3>
+    <ul>
+        <li>Plantes basses</li>
+        <li>Feuilles</li>
+        <li>Fougères</li>
+    </ul>
+
+    <p>Plus d'infos sur 
+        <a href="https://www.dinosaure.org/triceratops" target="_blank">
+        cette page
+        </a>.
+    </p>
+
+    <img src="triceratops.png" alt="Image d'un Triceratops" width="300">
+</body>
+</html>
+\end{lstlisting}
+\end{frame}

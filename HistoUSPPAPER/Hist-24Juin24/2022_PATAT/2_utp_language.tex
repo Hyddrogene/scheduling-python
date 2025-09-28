@@ -1,0 +1,42 @@
+%------------------------------------------------------------
+%------------------------------------------------------------
+\section{University Timetabling Problem}
+\label{sec:schema}
+A \UTP{} instance is defined by an entity model and a rules set. %and a solution. % and a pre-assignment. 
+%The entity model defines the schedule horizon, courses and resources of the instance and encodes core constraints relating to session scheduling, resource allocation, and student sectioning.
+%Rules express additional constraints meant to capture stakeholder requirements on particular aspects of the problem.
+%A rule is a conjunction of constraints built from a catalog of timetabling-specific predicates.
+%The solution is a list of choices made for some or all of the decisions at stake (e.g., start time of a session).
+%Note that a \UTP{} instance may have no rules.% rules set and solution components may be omitted. 
+% Besides, the listed solution is not required to be consistent with the constraints enforced by the entity model or the rules set.
+% This allows to tackle subproblems using separate instances and to support timetable generation or repair tasks.
+% Each rule is an intensional representation of a collection of constraints applying to different entities.
+% {\UTP} instances may thus be compiled to lower-level representations that explicitly declare all constraints and whose format is compatible with {\CP} languages.
+%{\UTP} instances may therefore be compiled into lower-level representations that lists all constraints and whose format is tailored to back-end solvers.
+%
+A solution to a \UTP{} instance is a list of choices made for all the decisions at stake %(e.g., start time of a session).
+that satisfies the core constraints of the entity model and the constraints expressed by the rules.
+%Note that a \UTP{} instance may have no rules and an input solution may be provided based on context.
+%We defined \acronym{XUTP}, an embedded version of the \UTP{} language into \XML{}.
+%We do not provide here the detailed \XML{} specification of \acronym{XUTP} (see~\cite{uspSite}).
+We provide in this section an informal description and set-theoretic semantics for the \UTP{} language components, namely the entity model (Section~\ref{sec:entity-model}), constraints (Section~\ref{sec:constraints}), rules (Section~\ref{sec:rules}) and solution (Section~\ref{sec:solution}).
+Section~\ref{sec:related-work} draws a comparison between the \UTP{} language and the \ITC{} schema.
+
+
+%
+%We present theses components in turn, 
+%discuss the type of features and requirements that may be factored in,
+%and provide set-theoretic semantics for the rules language and flattening process.
+%The reader is referred to \cite{uspSite} for the detailed {\XML} specification of {\XUTP} and the {\JSON/\DZN} instance formats.
+%\cite{uspSite} also provides access to the {\MINIZINC} and {\CHR} models, the tool suite, and a benchmark of instances.
+%motivate design choices,
+%whose {\CP} implementation is addressed in Section~\ref{sec:model}.
+
+%motivate design choices, 
+%and highlight differences with related work.
+
+\input{2_1_utp_entity_model}
+\input{2_2_utp_constraints}
+\input{2_3_utp_rules}
+\input{2_4_utp_solution}
+\input{2_5_utp_stateoftheart}

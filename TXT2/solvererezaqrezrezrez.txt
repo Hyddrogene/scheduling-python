@@ -1,0 +1,15 @@
+#!/bin/bash
+#SBATCH --job-name=utpSolver
+#SBATCH --mail-user=corentin.behuet@univ-angers.fr
+#SBATCH --mail-type=end,fail
+#SBATCH --ntasks-per-node=1
+#SBATCH --nodes=1
+#SBATCH --partition=intel-E5-2695
+#SBATCH --mem-per-cpu=2048
+#SBATCH --output=%x-%A-%a.out
+#SBATCH --error=%x-%A-%a.err
+#SBATCH --array=0-100
+#SBATCH --time= 0-00:25:00
+
+
+python3 runJobFunctionnalV3.py $SLURM_JOB_NAME $SLURM_ARRAY_TASK_ID 

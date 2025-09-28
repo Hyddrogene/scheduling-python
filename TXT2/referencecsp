@@ -1,0 +1,21 @@
+3
+4
+5
+
+
+FULLCALENDAR.io ->  tout les composants graphique
+front end affichage -> back end (envoie au format jSon puis visualiser) soit direct en xml avec JS
+nodeJS _> ?
+un serveur ? -> script php to json ?
+xml natif coté js +simple
+
+
+objectif :
+
+filtre sur les ressources, e.g. juste les salles, un prof /\ room
+
+plusieurs instances codifier 
+
+Salon dsicord + salon git + compte sur star wars
+
+techno langage utiliser -> le but

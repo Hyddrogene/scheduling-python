@@ -1,0 +1,110 @@
+La première donnée essentielle pour un emploi du temps est le calendrier.  
+Il définit la période de planification, avec une date initiale et une date de fin.  
+
+Ce calendrier est décomposé en semaines, chaque semaine étant ensuite divisée en jours.  
+Les jours, à leur tour, sont segmentés en différents points temporels, qui peuvent représenter des unités de 1 minute, 5 minutes, voire 1 heure.  
+
+Selon le pas choisi, une journée peut ainsi contenir :
+- 1440 points temporels (si chaque point représente 1 minute).
+- 288 points temporels (si chaque point représente 5 minutes).
+- 24 points temporels (si chaque point représente 1 heure).  
+
+C'est cette granularité temporelle quotidienne qui détermine la densité de l'horizon temporel.  
+- Si la densité est faible, on aura moins de points temporels.  
+- Si la densité est élevée, on aura davantage de points temporels.  
+
+Disposer d'un grand nombre de points temporels permet d'être plus précis, mais une précision excessive peut devenir inutilement complexe.  
+On peut visualiser cette granularité comme l'écart entre deux points temporels successifs (ex. : 1 minute entre chaque point).
+
+
+
+L’horizon temporel peut être relatif ou absolu.  
+
+L'élément `calendar` représente cet aspect temporel en effectuant un produit cartésien des données saisies, ce qui définit l'horizon temporel correspondant.
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+Le Calendrier et l’Horizon Temporel dans la Planification  
+
+Dans le cadre de la planification d’un emploi du temps, la première donnée essentielle est le calendrier, qui définit la période de planification. Ce calendrier est structuré en semaines, chaque semaine étant décomposée en jours, eux-mêmes segmentés en points temporels.  
+
+
+Un point temporel représente une unité de temps élémentaire qui peut être définie selon différentes résolutions :  
+- 1 minute → 1440 points temporels par jour.  
+- 5 minutes → 288 points temporels par jour.  
+- 1 heure → 24 points temporels par jour.  
+
+La granularité temporelle est définie comme l'intervalle entre deux points temporels consécutifs. Plus la granularité est fine (ex. : 1 minute), plus l’horizon temporel est dense, ce qui permet une précision accrue mais augmente la complexité de la planification. Inversement, une granularité plus grossière (ex. : 1 heure) simplifie la gestion mais réduit la flexibilité.  
+
+#2. Définition de l’Horizon Temporel  
+L'horizon temporel représente l’ensemble des points temporels disponibles pour la planification. Il peut être défini :  
+- De manière absolue : fixé en fonction d’une plage temporelle définie à l’avance.  
+- De manière relative : ajusté dynamiquement en fonction des besoins et des contraintes du système.  
+
+#3. Construction de l’Horizon Temporel  
+L'élément `calendar` formalise cet aspect temporel en effectuant un produit cartésien entre les unités temporelles définies (semaines, jours, points temporels). Ainsi, chaque emploi du temps repose sur une grille temporelle générée à partir des données saisies, assurant une cohérence entre la structure temporelle et les contraintes de planification.  
+
+En choisissant judicieusement la granularité et l'horizon temporel, il est possible d’optimiser l’équilibre entre précision et complexité computationnelle dans le processus de planification.
+
+
+
+
+
+%%%%%%%%%%%%%%%%%
+
+
+
+La **granularité temporelle** définit la résolution du découpage du temps dans un emploi du temps en déterminant l'intervalle entre deux points temporels consécutifs. Chaque point temporel représente une unité élémentaire de temps, dont l'écart intra-point temporel influence directement la précision et la complexité du modèle de planification. Par exemple, une granularité de **1 minute** génère **1440 points temporels par jour**, tandis qu'une granularité de **5 minutes** réduit ce nombre à **288 points**, et une granularité de **1 heure** le limite à **24 points**. Une granularité plus fine, comme le pas d'une minute, offre une **précision maximale** en permettant une allocation plus détaillée des ressources, mais au prix d'une **complexité computationnelle accrue** et d'un volume de données plus important à manipuler. À l'inverse, une granularité plus grossière, telle qu'un pas d'une heure, simplifie le traitement et réduit la charge de calcul, mais limite la flexibilité de la planification.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+\subsection{Contraintes appliquées aux ensembles d'emaps}
+
+
+\begin{figure}[!hbtp]
+    \centering
+    \begin{lstlisting}
+<constraint rule="43" arity="1" name="periodic" >
+    <parameters>
+        <parameter type="slot" name="value">1</parameter>
+        <parameter type="enum" name="unit">week</parameter>
+    </parameters>
+    <emaps>
+        <emap type="student" refId="student-mi2-3a-1">219,309,311,313,315</emap>
+    </emaps>
+</constraint>
+    \end{lstlisting}
+    \caption{Exemple de \texttt{constraint} dans le schéma \UTP{}}
+    \label{fig:utp-calendar}
+\end{figure}
+
+\subsubsection{Interprétation}
+
+%%%%%%%%%%%%%%%%%
+
+
+
+\subsection{De la déclaration des éléments à leur affectation}
+
+Jusqu'à présent, nous avons présenté la déclaration des différents éléments constituant un emploi du temps, tels que les cours, les ressources (enseignants, étudiants, salles) et les contraintes régissant leur organisation. Toutefois, la simple déclaration de ces éléments ne suffit pas à construire un emploi du temps fonctionnel. Il est nécessaire d’effectuer une \textbf{affectation}, c'est-à-dire d’attribuer à chaque séance un ensemble de ressources et un créneau horaire précis.  
+
+L’affectation représente l’étape où les différentes séances de cours sont \textit{effectivement planifiées} dans le calendrier, en tenant compte des contraintes définies en amont. Cette opération est décrite dans le schéma \UTP{} à travers un élément XML dédié, nommé \texttt{<affectation>}, qui associe chaque séance aux ressources et aux créneaux correspondants. Dans la section suivante, nous détaillons la structure de cet élément et son rôle dans le processus de génération des emplois du temps.
+
+
+%Hi, thanks for accepting me into your team ! :D
+%Hi, thanks for accepting me into your team ! :D
+
+
+%Hej, tak for at acceptere mig på jeres hold! :D
+%Hej, tak for at acceptere mig på jeres hold ! :D

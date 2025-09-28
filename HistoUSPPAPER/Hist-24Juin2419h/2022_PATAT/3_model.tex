@@ -1,0 +1,94 @@
+%------------------------------------------------------------
+%------------------------------------------------------------
+\section{A Constraint-Based Model for {\UTP}}
+\label{sec:model}
+\setcounter{equation}{0}
+We introduce in this section a constraint-based model for {\UTP} instances.
+The model of an instance combines the constraints associated to the entity model and the constraints resulting from the flattening of the rules, if any. 
+The former are decomposed into 4 fragments relating to student sectioning, resource distribution, session scheduling and resource allocation.
+We present each fragment in turn by reusing notations of Table~\ref{table:model-maps}, illustrate the modeling of some predicates before discussing opportunities for model reformulations on a per-instance basis.
+Note that some constraints are given a naive formulation to clarify semantics and more efficient implementations using {\MINIZINC} and {\CHR} will be discussed in Section~\ref{sec:cp-model}.
+
+%Table~\ref{table:cp-data} lists all input data which includes sets and relational maps (e.g., set of compatible sessions for rooms) and metric properties (e.g., room capacity). 
+%Note that each map $\maptype{\SESSION}{X}$ is the inverse of map $\maptype{X}{\SESSION}$.\footnote{
+%$
+%\forall X,Y \in {\TYPE}:
+%X\preceq^{*} Y 
+%\Rightarrow 
+%(\forall i \in X, j \in Y:
+%j \in \map{X}{Y}{i} \Leftrightarrow i \in \map{Y}{X}{j}
+%)
+%$
+%%\label{model:symmetry}\\
+%}
+Table~\ref{table:cp-variables} lists the decision variables of the model. 
+All, except time slot variables, are set variables. 
+
+%\begin{table}[ht]
+%\begin{center}
+%\begin{tabular}{|rl|}
+%\hline
+%$(\WEEK,\WEEKDAY,\DAILYSLOT)$               & the number of weeks $\WEEK$, weekdays $\WEEKDAY$ and daily slots $\DAILYSLOT$
+%\\
+%$\map{X}{Y}{i}\subseteq{Y}$                 & the set of entities of type $Y$ associated with entity $i$ of type $X$
+%\\
+%$\map{X}{\SESSION}{i}\subseteq{\SESSION}$   & the set of sessions compatible with entity $i$ of type $X$
+%\\
+%$\map{\SESSION}{X}{i}\subseteq{X}$          & the set of entities of type $X$ compatible with session $i$
+%\\
+%$\partallowedslots{i}\subseteq{\SLOT}$      & the set of start time slots allowed for session $i$
+%%\\
+%%$\disjunctiverooms\subseteq{\ROOM}$         & the set of disjunctive rooms
+%\\
+%$\multiroompart\subseteq{\PART}$           & the set of multi-rooms parts
+%%$\oneroom{i}\in{\BOOLEAN}$$                    & whether every session of part $i$ uses a single room
+%\\
+%$\classparent{i}\subseteq{\CLASS}$          & the set of parent classes of class $i$
+%\\
+%$\rankedsessions\subseteq{\SESSION\times\SESSION}$  & the sessions with consecutive ranks in a class
+%%\\
+%%$\sessionrank{i}\in{\SLOT}$                & the rank of session $i its class
+%\\
+%$\sessionduration{i}\in{\SLOT}$             & the duration of session $i$
+%\\
+%$\classcapacity{i}\in{\NATURAL}$            & the maximum size of class $i$
+%\\
+%$\roomcapacity{i}\in{\NATURAL}$             & the capacity of room $i$
+%\\
+%$\partteachermultiplicity{i}\in{\NATURAL}$  & the number of teachers required by every session of part $i$
+%\\
+%$\partteacherservice{i,j}\in{\NATURAL}$     & the number of sessions required by teacher $i$ in part $j$
+%\\
+%\hline
+%\end{tabular}
+%\caption{Input data}
+%\label{table:cp-data}
+%\end{center}
+%\end{table}
+
+\vspace*{-1em}
+\begin{table}[ht]
+\begin{center}
+\begin{tabular}{|rl|}
+\hline
+$\var{\GROUP}{\STUDENT}{g}\subseteq{\STUDENT}$ & the set of students assigned to group $g$ \\
+$\var{\CLASS}{\GROUP}{k}\subseteq{\GROUP}$ & the set of groups assigned to class $k$ \\
+$\var{\SESSION}{\ROOM}{s}\subseteq{\ROOM}$ & the set of rooms assigned to session $s$ \\
+$\var{\SESSION}{\TEACHER}{s}\subseteq{\TEACHER}$ & the set of lecturers assigned to session $s$ \\
+$\var{\ROOM}{\SESSION}{r}\subseteq{\SESSION}$ & the set of sessions assigned to room $r$ \\
+%$\var{\TEACHER}{\SESSION}{t}\subseteq{\SESSION}$$ & the set of sessions assigned to teacher $t$\\ 
+$\var{\SESSION}{\SLOT}{s}\in{\SLOT}$ & the start slot assigned to session $s$
+\\
+\hline
+\end{tabular}
+\caption{The decision variables.}
+\label{table:cp-variables}
+\end{center}
+\end{table}
+
+
+\input{2022_PATAT/3_1_sectioning_model}
+\input{2022_PATAT/3_2_distribution_model}
+\input{2022_PATAT/3_3_scheduling_model}
+\input{2022_PATAT/3_4_predicate_model}
+\input{2022_PATAT/3_5_reformulation}

@@ -1,0 +1,10 @@
+<flattenConstraint rule="4" arity="1" >
+    <consraint name="same_week" type ="hard" >
+        <parameters>
+        </parameters>
+    </consraint>
+    <emaps>
+        <emap type="class" id="class1">1,2,3,5,8</emap>
+    <emaps>
+<flattenConstraint>
+    

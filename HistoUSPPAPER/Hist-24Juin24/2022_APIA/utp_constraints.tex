@@ -1,0 +1,128 @@
+%------------------------------------------------------------
+%------------------------------------------------------------
+\subsection{Predicates and constraints}
+\label{sec:constraints}
+{\UTP} constraints apply to pairs, called e-maps, which associate an entity with a non-empty subset of its compatible sessions.
+%which we call e-maps. 
+Constraints are built with predicates whose signature includes e-map variables%ranging over the set of e-maps
+, the number of which is referred to as the arity of the predicate. 
+Note that some predicates may also accept parameters.
+Let 
+${\EMAP}=
+\setunion{X}{\TYPE}
+\myset{(e,S')\ |\ e\in X,S'\subseteq\map{X}{\SESSION}{e}\wedge S'\neq\emptyset}$
+denote the set of e-maps,
+a {\UTP} constraint has the form
+\begin{align}
+c((e_1,S_1),\ldots,(e_m,S_m),p_1,\ldots,p_n) \label{rule:constraint}
+\end{align}
+where 
+$c$ is a predicate symbol of arity $m$,
+$(e_1,S_1)$, $\ldots$, $(e_m,S_m)$ are e-maps ($(e_i,S_i)\in{\EMAP}$, $i=1\ldots m$) 
+and 
+$p_1,\ldots,p_n$ are values for the parameters of $c$ ($n\geq0$).
+
+
+Every predicate may be used indistinctly with e-maps defined on course elements or on resources.
+E-maps defined on resources are interpreted as conditional session-to-resource assignments
+when checking constraints 
+whereas e-maps defined on course elements are unconditional assignments since they model constitutive sessions.
+In other words, 
+a constraint is only evaluated
+on the sessions whose assignments in the considered solution are consistent with its e-map arguments.\footnote{Formally, let $\var{E}{\SESSION}{e}$ be the variable denoting the set of sessions assigned to entity $e$ and $S'_1,\ldots,S'_m$ be sets of sessions, the conditionality of a constraint $c$ is stated as follows: 
+$(\var{E}{\SESSION}{e_1}=S'_1 \wedge \var{E}{\SESSION}{e_m}=S'_m)
+\Rightarrow
+(c((e_1,S_1),\ldots,(e_m,S_m),p_1,\ldots,p_n)
+\Leftrightarrow
+c((e_1,S_1\cap S'_1),\ldots,(e_m,S_m\cap S'_m),p_1,\ldots,p_n))$.
+}
+It follows that 
+a constraint is evaluated on every session that is mapped to a course element.
+In particular, constraints that apply exclusively to course elements are unconditional. 
+Note also that the use of e-maps that model the whole set of sessions compatible with an entity 
+will necessarily constrain any session that may be assigned to this entity.
+
+
+%Every predicate may be used indistinctly with e-maps defined on course elements or on resources which we call c-maps and r-maps, respectively. R-maps are interpreted conditionally since they map a resource to some of its possible sessions whereas c-maps model unconditional assignments since they model constitutive sessions of course elements. In other words, a constraint must be evaluated on every session of every c-map in its scope but only on the sessions of its r-maps whose resource assignment is compatible with the proposed solution.\footnote{Formally, let $\var{E}{\SESSION}{e}$ be the variable denoting the set of sessions assigned to entity $e$ and $S'_1,\ldots,S'_m$ be sets of sessions, the conditionality of a constraint $c$ is stated as follows:  $(\var{E}{\SESSION}{e_1}=S'_1 \wedge \var{E}{\SESSION}{e_m}=S'_m) \Rightarrow (c((e_1,S_1),\ldots,(e_m,S_m),p_1,\ldots,p_n) \Leftrightarrow c((e_1,S_1\cap S'_1),\ldots,(e_m,S_m\cap S'_m),p_1,\ldots,p_n))$.}
+%effectively assigns to the resource of the r-map.
+%(see Rule (\ref{rule:conditionality})).
+%It follows that constraints applying exclusively to c-maps are unconditional. Besides, the scoping of e-maps that model the whole set of sessions compatible with an entity will constrain every session assigned to a resource or constitutive of a course element.
+%%The rule below %(\ref{rule:conditionality}) models the conditionality of constraints.
+
+%{\footnotesize{
+%\begin{multline}
+%\forall S'_1,\ldots,S'_m\in{\SESSION}:
+%(\var{E}{\SESSION}{e_1}=S'_1 \wedge \var{E}{\SESSION}{e_m}=S'_m)
+%\Rightarrow\\
+%(c((e_1,S_1),\ldots,(e_m,S_m),p_1,\ldots,p_n)
+%\Leftrightarrow
+%c((e_1,S_1\cap S'_1),\ldots,(e_m,S_m\cap S'_m),p_1,\ldots,p_n))
+%\label{rule:conditionality}
+%\end{multline}
+%}}
+
+\input{utp_predicates}
+
+Table \ref{tab:predicate_catalog} lists the predicates of the language
+and indicates which are variadic or parametric.
+The first predicates 
+\texttt{\SAMEDAILYSLOT},
+\ldots,
+%\texttt{\SAMEWEEKDAY},
+%\texttt{\SAMEWEEKLYSLOT},
+%\texttt{\SAMEWEEK},
+%\texttt{\SAMEDAY} and
+\texttt{\SAMESLOT}
+enforce common restrictions on the start times of the targeted sessions (e.g., sessions starting the same day).
+Additionally,
+any start time interval may be forbidden 
+by passing its start and end points 
+as parameters to 
+predicate \texttt{\FORBIDDENPERIOD}.
+Predicates \texttt{\ATMOSTDAILY}
+and
+\texttt{\ATMOSTWEEKLY}
+upper-bound
+the number of sessions
+scheduled daily or weekly
+within the given time interval.
+\texttt{\SEQUENCED}
+is a n-ary predicate ($n\geq2$)
+which constrains
+the latest session of the $i$-th e-map 
+to end before
+the earliest session of $i+1$-th e-map ($i=1..n-1$).
+Predicate 
+\texttt{\WEEKLY}
+ensures sessions
+are scheduled %weekly
+on the same weekly slot
+without presuming any particular sequencing.
+Predicate
+\texttt{\NOOVERLAP}
+ensures sessions do not overlap in time
+and is typically used to model disjunctive resources.
+Predicate \texttt{\TRAVEL}
+factors in any travel time
+incurred between consecutive sessions
+hosted in distant rooms.
+The travel time matrix is a parameter of the predicate.
+\texttt{\SAMEROOMS},
+\texttt{\SAMESTUDENTS}
+and
+\texttt{\SAMETEACHERS}
+require that sessions be assigned to the same set of rooms,
+students or teachers.
+Predicate 
+\texttt{\ADJACENTROOMS}
+require that sessions be hosted in 
+adjacent rooms 
+based on an adjacency graph passed as a parameter.
+Lastly, 
+predicate \texttt{\TEACHERDISTRIBUTION}
+distributes the volumes of sessions represented by the different e-map arguments 
+among different teachers. Teachers and session volumes are parameters of the predicate.
+%\marc{Je pense qu'un exemple ici pourrait être intéressant ?
+%"Two teachers may share a class where one does the first half of the sessions and the other one the last half."}
+
+%\marc{Je remonterai le tableau pour qu'il apparaisse plus tôt ?}

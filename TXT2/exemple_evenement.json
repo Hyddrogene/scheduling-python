@@ -1,0 +1,8 @@
+{
+"EVENEMENTS":[    
+    {"id":"e5","name":"remove","date":"02/07/1997","selector":{"type":"day","element":[9]}},//mauvaise idée
+    {"id":"e6","name":"invalid","date":"02/10/1997","selector":{"type":"lecturer","element":["LESAINT David"]},"filter":{"period":[1200,7600],"sessions":[] }}
+    {"id":"e6","name":"invalid","date":"02/10/1997","selector":{"type":"lecturer","element":["LESAINT David"]},"filter":{"period": <3d> [1200,7600],"sessions":[] }}
+
+]
+}

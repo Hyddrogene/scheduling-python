@@ -1,0 +1,17 @@
+Exercice : Créer une application de gestion de projet en JavaScript
+
+Objectif : L'étudiant doit créer une application en ligne pour gérer les tâches et les projets d'une équipe. L'application doit permettre à l'utilisateur de :
+- Ajouter des projets
+- Ajouter des tâches à un projet
+- Assigner des tâches à des membres de l'équipe
+- Marquer une tâche comme terminée
+- Afficher la liste des tâches en attente et leur avancement
+
+Règles : 
+- L'application doit utiliser la bibliothèque React pour la gestion de l'interface utilisateur
+- L'application doit utiliser les requêtes AJAX pour communiquer avec une API REST pour la gestion des données
+- L'application doit utiliser le stockage local pour enregistrer les données de manière persistante
+- L'étudiant doit utiliser des algorithmes avancés pour la gestion des données, tels que les algorithmes de tri et de filtrage
+- L'étudiant peut ajouter des fonctionnalités supplémentaires telles que la notification des mises à jour en temps réel, la gestion des dépendances entre les tâches, etc.
+
+Bonne chance ! Et n'oubliez pas de vous amuser en codant !

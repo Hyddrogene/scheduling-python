@@ -1,0 +1,133 @@
+%\newcolumntype{N}{>{\refstepcounter{rowcntr}\therowcntr}r}
+\newcounter{rowcntr}[table]
+\renewcommand{\therowcntr}{(\arabic{rowcntr})}
+\setcounter{rowcntr}{0}
+
+
+
+\begin{table}[H]
+%\resizebox{\textwidth}{!}{%
+
+\framebox[\textwidth][c]{%
+\small
+\begin{tabularx}{\textwidth}{>{\hsize=0.01\hsize\linewidth=\hsize}X>{\hsize=1.89\hsize\linewidth=\hsize}X>{\raggedleft\arraybackslash\hsize=.09\hsize\linewidth=\hsize}X}
+%\begin{math}\STUDENT = \funcmzn{array\_union}(\xgroup) \end{math} & 
+%partition\_set(\xgroup,\begin{math}\STUDENT\end{math}) & \refstepcounter{rowcntr} \therowcntr \label{cp:grouppartition}\\
+%
+%
+%&$\forall(p \in \PART,k1,k2 \in \arraymzn{part\_classes}[p] \wmzn k1\gqmzn k2)$&\\
+%
+%\hspace{2cm}all_disjoint
+%&\hspace*{2,8em}$(\xgroup[k1] \intermzn \xgroup[k2]=\{\})$& \refstepcounter{rowcntr} \therowcntr \label{cp:exclusiveclass}\\
+%
+%
+%&$\forall(k1 \in \CLASS, k2 \in \funcmzn{class\_parents}(k1))(\xgroup[k1] \subseteq \xgroup[k2])$ &  \refstepcounter{rowcntr} \therowcntr \label{cp:parent}\\
+%
+%&$\forall(k \in \CLASS)(\arraymzn{maxsize}[k] \geqmzn \summzn(g \in \GROUP)$&\\
+%&\hspace*{2,8em}$(\funcmzn{bool2int}(g \in \xgroup[k])*\summzn(u \in \STUDENT)(\funcmzn{bool2int}(\xstudent[u]=g)))$ &  \refstepcounter{rowcntr} \therowcntr \label{cp:classcapacity}\\
+% 
+%
+%\hline
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+&$\forall s \in \SESSION $&\\
+&\hspace*{2,8em}$\var{\SESSION}{\ROOM}{s} \subseteq \map{\PART}{\ROOM}{\map{\SESSION}{\PART}{s}}$& \refstepcounter{rowcntr} \therowcntr \label{cp:allowedrooms}\\
+%
+% 
+&$\forall s \in \SESSION $&\\
+&\hspace*{2,8em}$\var{\SESSION}{\TEACHER}{s} \subseteq \map{\PART}{\TEACHER}{\map{\SESSION}{\PART}{s}}$&   \refstepcounter{rowcntr} \therowcntr \label{cp:allowedteachers} \\
+%
+%
+%$\forall(k \in \CLASS)(((\arraymzn{part\_room\_use}[\funcmzn{class\_part}(k)]=\text{none}) \Longleftrightarrow (\xroom[k] = \{\})) $&\\
+&$\forall p \in \PART,\;  \forall s \in \map{\PART}{\SESSION}{p} $&\\
+&\hspace*{2,8em}$  \multiroompartmin{p} \leq |\var{\SESSION}{\ROOM}{s}| \leq \multiroompartmax{p} $
+& \refstepcounter{rowcntr} \therowcntr \label{cp:multiroom}\\
+%
+&$\forall p \in \PART,\;  \forall s \in \map{\PART}{\SESSION}{p} $&\\
+&\hspace*{2,8em}$  \partteachermultiplicitymin{p} \leq |\var{\SESSION}{\TEACHER}{s}| \leq \partteachermultiplicitymax{p} $
+& \refstepcounter{rowcntr} \therowcntr \label{cp:multiteacher}\\
+%
+%
+&$\forall p \in \PART, \; \forall k \in \CLASS $&\\
+&\hspace*{2,8em}$ \classcapacity{k} \leq \sum\limits_{r \in \ROOM }(r \in \var{\SESSION}{\ROOM}{s}) * \roomcapacity{r}  $
+& \refstepcounter{rowcntr} \therowcntr \label{cp:classcapacity}\\
+%
+%
+&$\forall s \in \SESSION:$ &\\
+      &\hspace*{2,8em}$\var{\SESSION}{\DAILYSLOT}{s} + (\var{\SESSION}{\WEEKDAY}{s}-1)*|\DAILYSLOT| + (\var{\SESSION}{\WEEK}{s}-1)*|\WEEKDAY| * |\DAILYSLOT| = \var{\SESSION}{\SLOT}{s}$
+      & \refstepcounter{rowcntr} \therowcntr\label{cp:coresumvariables}\\
+%
+%
+&$\forall r \in \ROOM:$ &\\
+      &\hspace*{2,8em}\textit{cumulative}($\{\forall s \in \SESSION \mid (r \in \var{\SESSION}{\ROOM}{s}) * \var{\SESSION}{\SLOT}{s}\},\{\forall s \in \SESSION \mid \sessionduration{s}\},1$)
+      & \refstepcounter{rowcntr} \therowcntr\label{ctr:cumulativerooms}\\
+%
+%
+\hline
+
+&$\forall p \in \PART,\; \forall r \in \map{\PART}{\ROOM}{p} :$ &\\
+      &\hspace*{2,8em}\textit{cumulative}($\{\forall s \in \map{\PART}{\SESSION}{p} \mid (r \in \var{\SESSION}{\ROOM}{s}) * \var{\SESSION}{\SLOT}{s}\},\{\forall s \in \map{\PART}{\SESSION}{p} \mid \sessionduration{s}\},1$)
+      & \refstepcounter{rowcntr} \therowcntr\label{ctr:cumulativeroomsredondante}\\
+
+&$\forall p \in \PART:$ &\\
+      &\hspace*{2,8em}\textit{gcc}($\{\forall s \in \map{\PART}{\SESSION}{p} \mid \var{\SESSION}{\ROOM}{s}\},\{\forall s \in \map{\PART}{\SESSION}{p} \mid \sessionduration{s}\},1$)
+      & \refstepcounter{rowcntr} \therowcntr\label{ctr:cumulativeroomsredondantegcc}\\
+\hline
+%
+%&$\forall r \in \ROOM:$ &\\
+%      &\hspace*{2,8em}\textit{gcc}($\{\forall s \in \SESSION \mid \var{\SESSION}{\ROOM}{s}\},\{\forall r \in \ROOM \mid r\},\{\}$)
+%      & \refstepcounter{rowcntr} \therowcntr\label{ctr:roomservicegcc}\\
+%\hline
+%
+%
+&$\FORBIDDENPERIOD(\SESSION') = \forall s \in \SESSION' $&\\
+&\hspace*{2,8em}$(\var{\SESSION}{\SLOT}{s}+\sessionduration{s}  \leq h_1 )\vee ( \var{\SESSION}{\SLOT}{s}\geq h_2) $& \refstepcounter{rowcntr} \therowcntr 
+\label{cp:forbiddenperiod}\\
+%
+%
+&$\SAMEWEEKDAY(\SESSION') = \forall s_1,s_2\in \SESSION' , s_1 < s_2$&\\
+&\hspace*{2,8em}$ \var{\SESSION}{\WEEKDAY}{s_1} = \var{\SESSION}{\WEEKDAY}{s_2}$
+& \refstepcounter{rowcntr} \therowcntr \label{cp:sameweekday}\\
+%
+%
+&$\SAMEROOMS(\SESSION') =  \forall s_1,s_2\in \SESSION',   s_1 < s_2$&\\
+%
+&\hspace*{2,8em}$\var{\SESSION}{\ROOM}{s_1} = \var{\SESSION}{\ROOM}{s_2}$ 
+& \refstepcounter{rowcntr}\therowcntr \label{cp:samerooms}\\
+%
+%
+&$\DIFFERENTROOMS (\SESSION') =  $&\\
+%
+&\hspace*{2,8em}\textit{all\_disjoint}($\{\forall s  \in \SESSION' \mid \var{\SESSION}{\ROOM}{s}\}$)  
+& \refstepcounter{rowcntr}\therowcntr \label{cp:differentrooms}\\
+%
+%
+$\DIFFERENTSLOT (\SESSION') =   $&\\
+%
+%\multicolumn{2}{c}{\hspace*{2,8em}\textit{all\_different}($\var{\SESSION}{\SLOT}{s}$) }
+&\hspace*{2,8em}\textit{all\_different}($\{\forall s  \in \SESSION' \mid \var{\SESSION}{\SLOT}{s}\}$)
+& \refstepcounter{rowcntr}\therowcntr \label{cp:differentslot}\\
+%
+%
+&$\SEQUENCED(\SESSION_1,\SESSION_2) = \forall s_1 \in \SESSION_1,\;\forall s_2 \in \SESSION_2 $&\\
+&\hspace*{2,8em}$\var{\SESSION}{\SLOT}{s_1}\texttt{+}\sessionduration{s_1} \leq \var{\SESSION}{\SLOT}{s_2}$ 
+& \refstepcounter{rowcntr} \therowcntr \label{cp:sequenced}\\
+%
+%
+&$\NOOVERLAP(\SESSION')=$&\\
+&\hspace*{2,8em}cumulative($\{\forall s \in \SESSION' \mid \var{\SESSION}{\SLOT}{s}\},\{\forall s \in \SESSION' \mid \sessionduration{s}\},1$) & \refstepcounter{rowcntr} \therowcntr 
+\label{cp:nooverlap}\\
+%
+%
+
+
+\end{tabularx}%
+}%
+%}
+\caption{
+%Contraintes et prédicats du modèle \MINIZINC{}
+Constraints and predicates of the \CP{} model.
+}
+\label{table:cp-contraintes}
+\end{table}

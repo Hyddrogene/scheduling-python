@@ -1,0 +1,17 @@
+Exercice : "Créez une application de simulation de vie extraterrestre"
+
+Description :
+Nous sommes en 2023 et l'humanité vient de découvrir la vie extraterrestre ! Le gouvernement a besoin de votre aide pour créer une simulation pour comprendre comment ces nouvelles formes de vie vivent sur leur planète.
+
+Instructions :
+
+Créez une classe "Extraterrestrial" qui définit les caractéristiques de la vie extraterrestre, telles que la couleur, la taille, l'âge, etc.
+Créez une fonction "grow" qui augmente la taille de la vie extraterrestre de 1 unité par jour.
+Créez une fonction "reproduce" qui crée un nouvel extraterrestre en utilisant les mêmes caractéristiques que la vie extraterrestre parent.
+Créez une fonction "die" qui décrémente la durée de vie de la vie extraterrestre de 1 unité par jour jusqu'à ce qu'elle atteigne 0.
+Utilisez ces fonctions pour simuler la vie extraterrestre sur leur planète pendant 1000 jours.
+Astuce drôle :
+
+Ajoutez une fonction "sing" qui joue un son extraterrestre aléatoire lorsque la vie extraterrestre est heureuse.
+Ajoutez une fonction "dance" qui fait danser la vie extraterrestre lorsqu'elle est triste.
+Bonne chance ! Et n'oubliez pas de prendre des photos de ces extraterrestres en train de chanter et de danser pour les montrer à tout le monde.

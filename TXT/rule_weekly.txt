@@ -1,0 +1,111 @@
+        <rule> <!-- Sessions once a week, on the same weekly slot -->
+            <sessions groupBy="class"> 
+                <filter type="part" attributeName="id" in="English-Les"/>
+            </sessions>
+            <constraint name="weekly" type="hard">
+            </constraint>
+        </rule>
+        
+        <rule> <!-- Lecture sessions should be once a week on the same weekly slot, except for the second session -->
+            <sessions groupBy="class" sessionsMask="1,3-8"> 
+                <filter type="part" attributeName="id" in="Databases-part2-Lec"/>
+            </sessions>
+            <constraint name="weekly" type="hard">
+            </constraint>
+        </rule>
+
+        <rule> <!-- Tutorial sessions and Practice sessions should be respectively once a week on the same weekly slot -->
+            <sessions groupBy="class">
+                <filter type="part" attributeName="id" in="Databases-part2-Pra,Databases-part2-Tut"/>
+            </sessions>
+            <constraint name="weekly" type="hard">
+            </constraint>
+        </rule>
+        
+                <rule> <!-- Lecture sessions should be once a week on the same weekly slot, except for the second and third session -->
+            <sessions groupBy="class" sessionsMask="1,4-12">
+                <filter type="part" attributeName="id" in="Web-Development-Lec"/>
+            </sessions>
+            <constraint name="weekly" type="hard">
+            </constraint> 
+        </rule>
+
+        <rule> <!-- Practice sessions and Project sessions should be respectively once a week on the same weekly slot -->
+            <sessions groupBy="class">
+                <filter type="part" attributeName="id" in="Web-Development-Pra,Web-Development-Pro"/>
+            </sessions>
+             <constraint name="weekly" type="hard">
+            </constraint> 
+        </rule>
+
+
+
+        		
+		<rule> <!-- Lecture and Practice sessions should be once a week and on the same weekly slot. Meaning that Practices start after Lectures. -->
+	        <sessions groupBy="course">
+	        	<filter type="course" attributeName="id" in="Virtual-rendering"/>
+	            <filter type="part" attributeName="label" in="LECTURE,PRACTICE"/>
+	        </sessions>
+	        <constraint name="weekly" type="hard">
+	        </constraint>
+		</rule>
+		
+		
+		<rule> <!-- Lesson sessions and Practice sessions should be respectively once a week and on the same weekly slot. -->
+	        <sessions groupBy="class">
+	        	<filter type="course" attributeName="id" in="Python-data-analysis"/>
+	            <filter type="part" attributeName="label" in="LESSON,PRACTICE"/>
+	        </sessions>
+	        <constraint name="weekly" type="hard">
+	        </constraint>
+		</rule>
+		
+				<rule> <!-- Practice sessions should be once a week and on the same weekly slot. -->
+	        <sessions groupBy="class">
+	        	<filter type="course" attributeName="id" in="IA-algorithms-101"/>
+	            <filter type="part" attributeName="label" in="PRACTICE"/>
+	        </sessions>
+	        <constraint name="weekly" type="hard">
+	        </constraint>
+		</rule>
+		
+				<rule> <!-- Practice sessions should be once a week on the same weekly slot. -->
+	        <sessions groupBy="class">
+	        	<filter type="course" attributeName="id" in="Qt"/>
+	            <filter type="part" attributeName="label" in="PRACTICE"/>
+	        </sessions>
+	        <constraint name="weekly" type="hard">
+	        </constraint>
+		</rule>
+			    <rule> <!-- Lecture sessions are once a week on the same weekly slot, except for the second session. -->
+            <sessions groupBy="class" sessionsMask="1,3-7"> 
+                <filter type="part" attributeName="id" in="Functional-programming-Lec"/>
+            </sessions>
+            <constraint name="weekly" type="hard">
+            </constraint>
+        </rule>
+        
+        <rule> <!-- Tutorial sessions and Practice sessions are respectively once a week on the same weekly slot, except for the second session. -->
+            <sessions groupBy="class"> 
+                <filter type="part" attributeName="id" in="Functional-programming-Tut,Functional-programming-Pra"/>
+            </sessions>
+            <constraint name="weekly" type="hard">
+            </constraint>
+        </rule>
+        
+                <rule> <!-- Lecture sessions are once a week on the same weekly slot, except for the second an third sessions. -->
+            <sessions groupBy="class" sessionsMask="1,4-6"> 
+                <filter type="part" attributeName="id" in="Logic-programming-Lec"/>
+            </sessions>
+            <constraint name="weekly" type="hard">
+            </constraint>
+        </rule>
+        
+        <rule> <!-- Tutorial sessions and Practice sessions are respectively once a week on the same weekly slot, except for the second session. -->
+            <sessions groupBy="class"> 
+                <filter type="part" attributeName="id" in="Logic-programming-Tut,Logic-programming-Pra"/>
+            </sessions>
+            <constraint name="weekly" type="hard">
+            </constraint>
+        </rule>
+		

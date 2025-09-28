@@ -1,0 +1,26 @@
+            <Feature name="Modalité" mandatory="true">
+                <subFeature>
+                    <subFeature type="XOR">
+                        <Feature name="CM" />
+                        <Feature name="TD" />
+                        <Feature name="TP" />
+                    </subFeature>
+                </subFeature>
+            </Feature>
+
+            <Feature name="Matériel" mandatory="false">
+                <subFeature>
+                    <subFeature type="OR">
+                        <Feature name="Tableau" />
+                        <Feature name="Vidéoprojecteur" />
+                        <Feature name="Tableau interactif" />
+                        <Feature name="Micro" />
+                    </subFeature>
+                </subFeature>
+            </Feature>
+
+
+
+ANNEXE_2_UNIV_2_3
+ANNEXE_2_UNIVscience04
+ANNEXE_2_UNIVscience05

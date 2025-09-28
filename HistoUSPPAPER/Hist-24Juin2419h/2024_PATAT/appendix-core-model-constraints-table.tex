@@ -1,0 +1,90 @@
+\newcounter{rowconstraint}[table]
+\renewcommand{\therowconstraint}{(\arabic{rowconstraint})}
+\setcounter{rowconstraint}{0}
+%\therowconstraint{rowconstraint} \therowconstraint
+ \begin{table}[!t]
+    \centering
+    %\begin{tabular}{lcr}
+    \begin{tabular}{|lcr|}
+    %p{4cm}|p{7cm}|}
+    \hline%======================
+
+%
+\grayrow$\forall s \in \SESSION$&\multicolumn{1}{c}{$\var{\SESSION}{\SLOT}{s} = \var{\SESSION}{\DAILYSLOT}{s} + \dailyslot*(\var{\SESSION}{\WEEKDAY}{s} - 1) + \dailyslot*\weekday*(\var{\SESSION}{\WEEK}{s} - 1)$}&\refstepcounter{rowconstraint} \therowconstraint\label{ctr:auxiliary}
+\\
+      $\forall s \in \SESSION$  &
+       \multicolumn{1}{c}{$\var{\SESSION}{\SLOT}{s} \in \partallowedslots{s}$ }
+&\refstepcounter{rowconstraint} \therowconstraint\label{ctr:allowedslots}
+
+      \\
+      \grayrow$\forall s \in \SESSION$&
+      \multicolumn{1}{c}{ 
+      $\var{\SESSION}{\WEEKDAY}{s} + (\var{\SESSION}{\WEEK}{s}-1)* \weekday = (\var{\SESSION}{\SLOT}{s}+\sessionduration{s})\div{\dailyslot} $
+      }     &\refstepcounter{rowconstraint} \therowconstraint\label{ctr:nooverlap2days}
+\\
+
+      $\forall c \in \CLASS,\;\forall s_1,s_2\in\map{\CLASS}{\SESSION}{c}$&
+      \multicolumn{1}{c}{ 
+      $ \sessionrank{s_1} < \sessionrank{s_2} \rightarrow (\var{\SESSION}{\SLOT}{s_1} + \sessionduration{s_1}) \leq \var{\SESSION}{\SLOT}{s_2} $
+      }     &\refstepcounter{rowconstraint} \therowconstraint\label{ctr:ranksequenced}
+\\
+      \grayrow$\forall s \in \SESSION$ &\multicolumn{1}{c}{$\dmap{\SESSION}{\ROOM}{s}\subseteq\var{\SESSION}{\ROOM}{s} \subseteq \umap{\SESSION}{\ROOM}{s}$}&\refstepcounter{rowconstraint}\therowconstraint\label{ctr:allowedrooms}
+\\
+      $\forall s \in \SESSION$ &
+      \multicolumn{1}{c}{ $\dmap{\SESSION}{\TEACHER}{s}\subseteq\var{\SESSION}{\TEACHER}{s} \subseteq \umap{\SESSION}{\TEACHER}{s}$}
+      &\refstepcounter{rowconstraint} \therowconstraint\label{ctr:allowedteachers}
+%\\
+     % & \forall p \in \PART \setminus\multiroomparts,s\in\map{\PART}{\SESSION}{p} :
+    %  & \mycard{\var{\SESSION}{\ROOM}{s}}=1
+    %  &\label{ctr:cardinalroom}
+\\
+      \grayrow\multicolumn{1}{|l}{$\forall p \in \PART, \forall s\in\map{\PART}{\SESSION}{p}$}&
+    \multicolumn{1}{c}{$\multiroompartmin{p} \leq \mycard{\var{\SESSION}{\ROOM}{s}} \leq \multiroompartmax{p}$}
+      &\refstepcounter{rowconstraint} \therowconstraint\label{ctr:cardinalmultiroom}
+%\\
+    %  &\forall p \in \PART \setminus\multiteacherparts,\forall s\in\map{\PART}{\SESSION}{p}:
+    %  & \mycard{\var{\SESSION}{\TEACHER}{s}}=1
+    %  &\label{ctr:cardinalroom}
+\\
+      \multicolumn{1}{|l}{ $\forall p \in \PART,\forall s\in\map{\PART}{\SESSION}{p}$}&
+      \multicolumn{1}{c}{ $\partteachermultiplicitymin{p} \leq \mycard{\var{\SESSION}{\TEACHER}{s}} \leq \partteachermultiplicitymax{p}$}
+      &\refstepcounter{rowconstraint} \therowconstraint\label{ctr:cardinalmultiteacher}
+\\
+\grayrow$\forall t\in\TEACHER,\;\forall p\in\PART$
+&$\partteacherservice{l,p}=\sum_{s\in\map{\PART}{\SESSION}{p}}{(l\in\var{\SESSION}{\TEACHER}{s})}$
+&\refstepcounter{rowconstraint} \therowconstraint\label{ctr:serviceteacher}\\
+%\\
+%      & \forall s \in \SESSION:
+%      & \var{\SESSION}{\TEACHER}{s} \in \map{\SESSION}{\TEACHER}{s}
+%      &\label{ctr:allowedteachers}
+%$\roomuse{r}{k}{s}{h}=(r\in\var{\SESSION}{\ROOM}{s})*(\var{\SESSION}{\SLOT}{s}\leq h\wedge h\leq\sessionend{s})$
+
+%      $\forall s \in \SESSION$&\\
+%      \multicolumn{2}{|c|}{ $\var{\SESSION}{\DAILYSLOT}{s} + (\var{\SESSION}{\WEEKDAY}{s}-1)*|\DAILYSLOT| + (\var{\SESSION}{\WEEK}{s}-1)*|\WEEKDAY| * |\DAILYSLOT| = \var{\SESSION}{\SLOT}{s}$}      \refstepcounter{rowconstraint} \therowconstraint\label{ctr:coresumvariables}
+%\\
+%
+$\forall r\in\ROOM, \forall h\in\SLOT$&
+\multicolumn{1}{c}{$ \roomcapacity{r} \geq \sum\limits_{s\in\SESSIONINC}(r\in\var{\SESSION}{\ROOM}{s})*(h = \var{\SESSION}{\SLOT}{s})*(\classcapacity{\map{\SESSION}{\CLASS}{s}})+$}&\\
+&\multicolumn{1}{c}{ $\sum\limits_{s\in\SESSIONEX}(r\in\var{\SESSION}{\ROOM}{s})*(h = \var{\SESSION}{\SLOT}{s})*(\roomcapacity{r})$}& \refstepcounter{rowconstraint} \therowconstraint\label{ctr:roomuse}
+%\sum\limits_{\forall s \in \SESSION'  } ( \var{\SESSION}{\SLOT}{s} \leq h \land h \leq (\var{\SESSION}{\SLOT}{s}+\sessionduration{s}))* (r\in\var{\SESSION}{\ROOM}{s})*\classcapacity{\map{\SESSION}{\CLASS}{s}} \leq \roomcapacity{r}$
+%} \refstepcounter{rowconstraint} \therowconstraint\label{ctr:roomuse}
+\\
+\grayrow\multicolumn{1}{|l}{$\forall s\in\SESSION, \forall k \in \map{\SESSION}{\CLASS}{s}$}&
+\multicolumn{1}{c}{$\map{\CLASS}{\ROOM}{k} \neq \emptyset \rightarrow$$\classcapacity{k} \leq \sum_{r \in \var{\SESSION}{\ROOM}{s}} \roomcapacity{r}$}&\refstepcounter{rowconstraint} \therowconstraint\label{ctr:cumulativeroomcapacity}
+\\
+%
+%
+%\roomuse{r}{k}{s}{h}
+%=
+%(r\in\var{\SESSION}{\ROOM}{s})
+%*(\var{\SESSION}{\SLOT}{s}\leq h\wedge h\leq\sessionend{s})
+%&.(\var{\SESSION}{\SLOT}{s}\leq h\wedge h\leq\var{\SESSION}{\SLOT}{s} + \sessionduration{s})
+%\\
+%&.\sum_{\substack{g\in\GROUP}}\mycard{\var{\GROUP}{\STUDENT}{g}}
+%.(g\in\var{\CLASS}{\GROUP}{k})
+%
+    \hline
+    \end{tabular}
+    \caption{Core constraints.}
+    \label{table:core-constraints}
+ \end{table}

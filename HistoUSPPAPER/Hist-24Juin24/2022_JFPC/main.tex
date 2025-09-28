@@ -1,0 +1,214 @@
+\documentclass[french]{pfia}
+
+% ------------------------------------------
+% TITRE
+% ------------------------------------------
+
+\title{\textbf{Approche par contraintes pour une classe d'emplois du temps universitaires}}
+\usepackage{mathtools}
+\usepackage{url}
+\include{2022_JFPC/commands}
+
+\usepackage{graphicx}
+\usepackage{tabularx}
+\usepackage{multirow} 
+\usepackage{array}
+\usepackage{mathtools}
+\usepackage{amsmath}
+\usepackage{amssymb}% for disjoint-union operator
+\usepackage{stmaryrd}%for denotational brackets
+\usepackage{nccmath}
+\setlength{\marginparwidth}{2cm}
+\usepackage{todonotes}
+
+\newcommand{\davidg}[1]{\todo[inline,color=orange!40]{#1}}
+\newcommand{\davidl}[1]{\todo[inline,color=yellow!40]{#1}}
+\newcommand{\vincent}[1]{\todo[inline,color=blue!40]{#1}}
+\newcommand{\marc}[1]{\todo[inline,color=green!40]{#1}}
+\newcommand{\corentin}[1]{\todo[inline,color=pink]{#1}}
+
+
+% *******************************************************
+% **** Listing 
+% *******************************************************
+% Solarized colors
+\definecolor{sbase03}{HTML}{002B36}
+\definecolor{sbase02}{HTML}{073642}
+\definecolor{sbase01}{HTML}{586E75}
+\definecolor{sbase00}{HTML}{657B83}
+\definecolor{sbase0}{HTML}{839496}
+\definecolor{sbase1}{HTML}{93A1A1}
+\definecolor{sbase2}{HTML}{EEE8D5}
+\definecolor{sbase3}{HTML}{FDF6E3}
+\definecolor{syellow}{HTML}{B58900}
+\definecolor{sorange}{HTML}{CB4B16}
+\definecolor{sred}{HTML}{DC322F}
+\definecolor{smagenta}{HTML}{D33682}
+\definecolor{sviolet}{HTML}{6C71C4}
+\definecolor{sblue}{HTML}{268BD2}
+\definecolor{scyan}{HTML}{2AA198}
+\definecolor{sgreen}{HTML}{859900}
+
+\usepackage{listings}
+\lstdefinestyle{custom}{
+	aboveskip=0.5em,
+	belowskip=0em,
+	basewidth=0.5em,
+	lineskip=-3pt,
+	breaklines=true,
+	xleftmargin=\parindent,
+	showstringspaces=false,
+	basicstyle=\small\ttfamily,
+%	keywordstyle=\color{sorange},
+%	commentstyle=\color{sbase1},
+%	stringstyle=\color{sblue},
+%	numberstyle=\color{sviolet},
+%	identifierstyle=\color{sbase00},
+	tabsize=2,
+	inputencoding=utf8,
+	extendedchars=true,
+	literate={Ç}{{\,C}}1 {è}{{\`a}}1 {è}{{\`e}}1 {é}{{\'e}}1,
+	escapechar=µ
+}
+
+% ------------------------------------------
+% AUTEUR(S)
+% ------------------------------------------
+
+% 1 auteur
+% \author{L. Auteur \\
+%  Organisme de rattachement, acronyme laboratoire}
+% \date{mél}
+ 
+% plusieurs auteurs 
+\author{Vincent Barichard, Corentin Behuet, David Genest, Marc Legeay, David Lesaint\\[6pt]
+%\fup{1} Organisme de rattachement 1, acronyme laboratoire 1\\
+\fup{1} Univ Angers, LERIA, F-49000 Angers, France \\
+%\fup{2} Organisme de rattachement 2, acronyme laboratoire 2\\
+%\fup{3} Organisme de rattachement 3, acronyme laboratoire 3\\
+}
+
+\date{
+\{prenom.nom\}@univ-angers.fr
+}
+
+\begin{document}
+
+\maketitle
+
+% ------------------------------------------
+% RÉSUMÉS ET MOTS-CLÉS
+% ------------------------------------------
+
+\begin{resume}
+%\davidl{FAIT : à propager sur EasyChair}
+Le calcul d'emplois du temps universitaire est un problème d'optimisation combinatoire complexe tant dans sa modélisation que sa résolution.
+Nous proposons une approche par contraintes qui englobe la constitution de groupes, la distribution des salles et enseignants, leur allocation et l'ordonnancement des séances.
+Cette approche se fonde sur un langage dédié à base de règles ({\UTP}) 
+permettant de modéliser les différentes entités et contraintes d'une instance.
+Les instances \UTP{} sont encodées en \XML{} et un générateur convertit les règles en contraintes dans un format %\JSON{} 
+compatible avec les solveurs \MINIZINC{} et \CHRPP{}.
+Nous présentons dans cet article le langage {\UTP} et ces modèles de programmation par contraintes ainsi que des expérimentations préliminaires réalisées sur un cas d'études concret.
+%des instances réelles issues du système universitaire francais.
+%
+%La résolution repose quant à elle sur un modèle générique développé en {\MINIZINC} et {\CHR} ainsi qu'un parser qui permet de compiler toute instance {\UTP} dans un langage de programation par contraintes et de la résoudre par un solver de contraintes. Nous présentons quelques expérimentations préliminaires menées sur des instances réelles.
+\end{resume}
+
+%\begin{motscles}
+%%\davidl{FAIT : à propager sur EasyChair}
+%Emploi du temps universitaire $\bullet$ Programmation par contraintes $\bullet$ Ordonnancement
+%\end{motscles}
+
+\begin{abstract}
+%\davidl{FAIT : à propager sur EasyChair}
+University course timetabling are complex combinatorial optimization problems to model and solve.
+We propose a constraint-based approach which encompasses student sectioning, room and teacher distribution planning, session scheduling and resource allocation.
+Our approach is based on a domain-specific rule-based language {\UTP} to model instance entities and constraints.
+{\UTP} instances are encoded in {\XML} and a flattener converts rules into constraints using formats supported by \MINIZINC{} and \CHR{}.
+This article presents the {\UTP} language and the two constraint programming models as well as early expriments carried out on a real case study. 
+\end{abstract}
+
+%\begin{keywords}
+%%\davidl{FAIT : à propager sur EasyChair}
+%University Timetabling $\bullet$ Constraint Programming $\bullet$ Resource scheduling
+%\end{keywords}
+
+% ------------------------------------------
+% CORPS DE L'ARTICLE
+% ------------------------------------------
+
+\input{2022_JFPC/1_introduction}
+\input{2022_JFPC/2_langage}
+\input{2022_JFPC/2_4_etat_art}
+\input{2022_JFPC/3_model}
+\input{2022_JFPC/4_experimentations}
+\input{2022_JFPC/5_conclusion}
+
+%\subsection{Travaux antérieurs}
+%
+%Les en-têtes sont également en 12 points gras.
+%
+%Il n'y a pas nécessairement d'espacement entre les paragraphes.
+%
+%Les références à la Bibliographie peuvent être de la forme
+% \cite{key:foo} o\`u \cite{foo:baz}.  Les numéros correspondent à
+% l'ordre d'apparition dans la bibliographie, pas dans le texte.
+% L'ordre alphabétique est conseillé.
+%
+%\subsubsection{Les autres éléments}
+%
+%Vous pouvez également utiliser des sous-sous-sections (comme c'est le cas ici). Taille 10 points, gras.
+%
+%Pour les figures, elles doivent être insérées à l'aide de l'environnement \verb|figure| et avoir une légende numérotée.
+%
+%L'inclusion d'images peut se faire à l'aide de la commande
+%\verb|\includegraphics|.
+%
+%Vous pouvez utiliser des listes d'éléments sans changer l'item (ici le tiret) :
+%\begin{itemize}
+%  \item item1
+%  \item item2
+%  \item ...
+%\end{itemize}
+%
+%Vous pouvez utiliser aussi l'environnement \verb|\paragraph|.
+%
+%\paragraph{Ce ceci est un paragraphe.} Remarquez que le titre du paragraphe se termine par un point, et qu'il n'est PAS numéroté.
+%
+%Essayez si possible de ne pas utiliser de subdivision supplémentaire dans votre article car il risquerait de perdre en lisibilité. 
+%\section{Pagination}
+%
+%Afin que l'éditeur puisse assembler vos contributions en un seul volume, veillez impérativement à :
+%\begin{itemize}
+%  \item ne PAS ajouter de numéros de page ;
+%  \item ne PAS changer les marges (ou tout autre élément de mise en page) ;
+%  \item d'une manière générale, ne PAS modifier le style fourni ou ne PAS lui ajouter des éléments de formatage qui changent le visuel, sinon votre contribution risque de ne pas être formatée de la même manière que celle des autres.
+%\end{itemize}
+%
+%En principe, les articles doivent faire au plus 8 pages.
+%
+%\section{Biblio}
+%
+%Dans la section suivante, vous voyez deux exemples de références. Si vous utilisez bib\TeX, alors spécifiez l'utilisation du style plain à l'aide de la commande habituelle : \verb|\bibliographystyle{plain}|.
+%
+\section*{Remerciements}
+Ce travail est partiellement financé par le projet Thélème octroyé aux universités d'Angers et du Mans dans le cadre du PIA3.
+%
+%
+%\begin{thebibliography}{9}
+%\bibitem{foo:baz}
+%U. Nexpert,
+%{\em Le livre,}
+%Son Editeur, 1929.
+%\bibitem{key:foo}
+%I. Troiseu-Pami,
+% Un article intéressant,
+%{\em Journal de Spirou}, Vol. 17, pp. 1-100, 1987.
+%\end{thebibliography}
+
+
+\bibliographystyle{plain}
+\bibliography{ref_JFPC}
+
+\end{document}
+

@@ -1,0 +1,237 @@
+% \subsubsection{Data Model}
+% \label{sec:entity-schema-model}
+Table~\ref{table:entity-model} provides a formal specification of the schema elements.
+Resources and course elements, except sessions, are referred to as \textit{entities}.
+Entities are typed,
+the set of sessions is cast as distinct type, 
+and each type is modeled as a finite set.
+% % :
+% % the set of courses ${\COURSE}$, 
+% % course parts ${\PART}$, 
+% % classes ${\CLASS}$, 
+% % teachers ${\TEACHER}$,
+% % rooms ${\ROOM}$,
+% % students ${\STUDENT}$, 
+% % student groups ${\GROUP}$, 
+% % and the domain of courses %${\COURSES}$ 
+% % ${\COURSES}=\myset{\COURSE}$. 
+% % ${\TYPE}$
+% % (
+% $
+% {\TYPE}
+% =
+% \myset{
+% {\COURSES}, 
+% {\COURSE},
+% {\PART},
+% {\CLASS},
+% {\ROOM},
+% {\TEACHER},
+% {\STUDENT},
+% {\GROUP}
+% }
+% $
+% % )
+% denotes the set of entity types, 
+% % ${\ENTITY}$
+% ${\ENTITY}=\setunion{X}{\TYPE}{X}$
+%  the set of entities,
+% and ${\SESSION}$ the set of sessions.
+The course element hierarchy
+defines 1-to-many \textit{composition relations} over the pair of types
+$(X,Y)$ corresponding to parent and child types
+in the course element hierarchy. 
+Each relation is modeled by a function ${\maptype{X}{Y}}:X\rightarrow2^{Y}$
+mapping each object $i$ of type $X$
+to the set ${\map{X}{Y}{i}}$ of its constitutive objects of type $Y$.
+% For notational convenience, the table also represents the inverse ${\maptype{Y}{X}}:Y\rightarrow2^{X}$ of each function ${\maptype{X}{Y}}$.
+% ($j\in\map{X}{Y}{i}\leftrightarrow i\in\map{Y}{X}{j}$)
+For instance, 
+${\maptype{\PART}{\CLASS}}$ 
+models the classes of each part.
+% and ${\maptype{\CLASS}{\PART}}$ 
+% the (singleton) part of each class.
+Each \textit{compatibility relation}
+defining the allowed or assigned resources of a course element object
+for a given resource type and course element type
+defines a many-to-many relation
+which we model the same way.
+%by 2 inverse functions.
+For instance, 
+${\maptype{\PART}{\ROOM}}$
+models the allowed rooms per part
+and ${\maptype{\CLASS}{\GROUP}}$
+the set of groups assigned to classes.
+
+For notational convenience, 
+the table also defines 
+the maps resulting from 
+the symmetric and transitive closure of the binary relation %(digraph)
+merging the composition and compatibility maps.
+This includes
+the maps
+computed over the course tree.
+% \footnote{
+% $\forall X,Y,Z \in {\TYPE}\cup\myset{\SESSION}:
+% X\preceq^{*} Y\preceq^{*} Z 
+% \Rightarrow 
+% (\forall i \in X:
+% \map{X}{Z}{i}=\setpartition{j}{\map{X}{Y}{i}}{\map{Y}{Z}{j}}
+% $
+% }
+For instance, 
+%function 
+${\maptype{\CLASS}{\PART}}$ 
+models the (singleton) part of each class,
+and ${\maptype{\COURSE}{\SESSION}}$ 
+the sessions of a course.
+%resulting from the recursive set-union of the sessions of its parts' classes.
+This also includes the 
+inverse compatibility constraints
+and those inherited along the course tree.
+For instance, ${\maptype{\SESSION}{\ROOM}}$ models the rooms allowed for a session
+which results from the composition of ${\maptype{\SESSION}{\CLASS}}$, ${\maptype{\CLASS}{\PART}}$ and ${\maptype{\PART}{\ROOM}}$.
+% - 
+% $
+% j\in{\map{\SESSION}{\ROOM}{i}}
+% \leftrightarrow 
+% j\in{\map{\PART}{\ROOM}{k}}
+% \wedge
+% i\in{\map{\PART}{\SESSION}{k}}
+% $
+% )
+Lastly, the table defines the constants (e.g., number of weeks),
+scalar properties
+(e.g., room capacity),
+and remaining relations and sets (e.g. required resources, labels).
+% and remaining relations (required resources) 
+% and sets (labels, exclusive/inclusive sessions).
+
+% $
+% {\prec}
+% =
+% \myset{
+% ({\COURSES},{\COURSE}),
+% ({\COURSE},{\PART}),
+% ({\PART},{\CLASS}),
+% ({\CLASS},{\SESSION}),
+% ({\TEACHER},{\PART}),
+% ({\ROOM},{\PART}),
+% ({\STUDENT},{\GROUP}),
+% ({\GROUP},{\COURSE})
+% }
+% $
+% denotes the relation over 
+% ${\TYPE}\cup\myset{\SESSION}$ 
+% that models the course hierarchy
+% and the distribution of resource types over course components.
+
+% ${\prec^{*}}$
+% %${\preceq^{*}}$
+% denotes the transitive %and reflexive 
+% closure of
+% ${\prec}$ 
+% over
+% ${\TYPE}\cup\myset{\SESSION}$
+% and
+% ${\maptype{X}{Y}}:X\rightarrow2^{Y}$
+% denotes the function mapping each element of $X$ to its set of compatible elements in $Y$
+% for each pair %$(X,Y)$ such that 
+% %$X{\preceq^{*}}Y$.
+% $X{\prec^{*}}Y$.
+% For instance, 
+% ${\maptype{\ROOM}{\PART}}$ 
+% represents the distribution of rooms over course parts, 
+% ${\maptype{\PART}{\CLASS}}$ 
+% the decomposition of course parts into classes,
+% ${\maptype{\CLASS}{\SESSION}}$ 
+% the decomposition of classes into sessions,
+% and ${\maptype{\ROOM}{\SESSION}}$ 
+% the inferred distribution of rooms over sessions.
+% The functions corresponding to the pairs of $\prec$
+% are directly encoded in the entity model
+% and the remaining functions are defined inductively using recursive aggregation. 
+
+% We shall denote by ${\map{X}{Y}{i}}$ the image of entity $i$ of type $X$ over $2^Y$ %, i.e., the set of elements of type $Y$ compatible with $i$. 
+% and by ${\maptype{Y}{X}}$ the inverse of ${\maptype{X}{Y}}$.
+
+% Equation (\ref{model:hierarchy}) below models the hierarchical decomposition of course elements\footnote{$\disjunion$ denotes the disjoint union operation, i.e. set union over pairwise disjoint sets.},
+% Equation (\ref{model:transitivity}) is the closure rule over 
+% %$\preceq^{*}$. 
+% $\prec^{*}$,
+% %Note that each map $\maptype{\SESSION}{X}$ is the inverse of map $\maptype{X}{\SESSION}$.
+% and Equation (\ref{model:inverse}) models inverse maps.
+
+% \begin{align}
+% %
+% \forall (X,Y) \in 
+% \myset{
+% ({\COURSES},{\COURSE}),
+% ({\COURSE},{\PART}),
+% ({\PART},{\CLASS}),
+% ({\CLASS},{\SESSION})
+% }:
+% Y=
+% \setpartition{i}{X}{\map{X}{Y}{i}} 
+% \label{model:hierarchy}
+% \\
+% %
+% \forall X,Y,Z \in {\TYPE}\cup\myset{\SESSION}:
+% X\preceq^{*} Y\preceq^{*} Z 
+% \Rightarrow 
+% (\forall i \in X:
+% \map{X}{Z}{i}=\setpartition{j}{\map{X}{Y}{i}}{\map{Y}{Z}{j}}
+% \label{model:transitivity})
+% \\
+% %
+% \forall X,Y \in {\TYPE}:
+% X\preceq^{*} Y 
+% \Rightarrow 
+% (\forall i \in X, j \in Y:
+% j \in \map{X}{Y}{i} \Leftrightarrow i \in \map{Y}{X}{j}
+% )
+% \label{model:inverse}
+% %\\
+% %%
+% %\forall X \in {\TYPE}\cup\myset{\SESSION},
+% %i \in X:
+% %\domarg{X}{X}{i} = \myset{i} \label{model:selfmap}
+% %%
+% \end{align}
+
+
+%\footnote{
+% The following rules apply. $\SLOT=\myset{i.\WEEKDAY.\DAILYSLOT+j.\DAILYSLOT+k\ |\ 0\leq i<\WEEK,0\leq j<\WEEKDAY,1\leq k\leq\DAILYSLOT}$.
+% For each class $k$ in part $p$,
+% $\myset{\sessionrank{s}\ |\ s\in\map{\CLASS}{\SESSION}{k}}=\myset{1,\ldots,\mycard{\map{\CLASS}{\SESSION}{k}}}$, 
+% %$\mycard{\classparents{k}}\leq1$ 
+% and $\classparents{k}\not\subset\map{\PART}{\CLASS}{p}$.
+% For each pair of sessions $s,s'$, 
+% $(s,s')\in\sessionranked$ iff $\map{\SESSION}{\CLASS}{s}=\map{\SESSION}{\CLASS}{s'}$ and $\sessionrank{s'}=\sessionrank{s}+1$.
+% For each course part $p$,
+% %$p\in\multiroomparts$ iff $\multiroompart{p}$; 
+% %and 
+% $\partteachermultiplicity{p}.\mycard{\map{\PART}{\SESSION}{p}}=\sum\limits_{l\in\map{\PART}{\TEACHER}{p}}{\partteacherservice{l,p}}$.}
+%
+%We shall denote by
+%${\RANK}$
+%the range of session ranks,
+%${\maptype{\RANK}{\SESSION}}:\RANK\rightarrow2{^\SESSION}$
+%the rank-based partitioning of sessions,
+%and
+%${\LABEL}$
+%the set of labels 
+%(${\LABEL}\subseteq2^{{\ENTITY}}$)
+%completed 
+%with the whole set of entities %to mock label optionality
+%($\ENTITY\in{\LABEL}$)
+%and singleton entities %to support identity-based selection
+%($\myset{\myset{e}\ |\ e\in{\ENTITY}}\subseteq{\LABEL}$).
+%As discussed in section~\ref{sec:rules},
+%labels are optional filters used in rules to select entities
+%hence the formal inclusion of $\ENTITY$ in ${\LABEL}$ to mock label optionality.
+%Likewise, entity identifiers are used as an alternative to labels
+%hence the inclusion of singleton entities in ${\LABEL}$.
+
+
+\input{2-1-entity-schema-table}

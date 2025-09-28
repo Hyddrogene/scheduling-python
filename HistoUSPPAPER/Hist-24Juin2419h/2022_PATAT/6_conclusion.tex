@@ -1,0 +1,39 @@
+%------------------------------------------------------------
+%------------------------------------------------------------
+\section{Conclusion and Perspectives}
+\label{sec:conclusion}
+We introduced in this paper a domain-specific language for university course timetabling. 
+The language allows to model a wide variety of course timetabling problems
+such as those encountered in French universities. 
+%This is particularly the case in French universities where students are divided into groups that attend all the courses they are registered for.
+It provides support for typical timetabling entities (students, sessions, lecturers, rooms, groups) and features (student sectioning, resource distribution, session scheduling, resource allocation) and includes a rules language to easily express constraints (sequencing, periodicity, etc.).
+Rules allow to target any subset of domain entities and sessions and enforce timetabling-specific predicates.
+
+We used the language to encode a real instance (Bachelor courses of a French university) and 
+implemented a tool chain to convert the \XML\ instance files into solver-compatible formats.
+In order to validate our approach, we implemented a \CSP\ model in \MINIZINC\ and \CHR\ and produced solutions for the considered instance.
+
+We are currently working on different extensions of the language and the back-end solvers.
+First, we intend to represent preferences and priorities in order to support timetable optimization and repair tasks.
+Second, the current {\CP} models may be improved using dedicated scheduling constraints, search strategies and heuristics and take advantage of model simplication and reformulation techniques.
+Another objective is to improve scalability by testing our solvers on large-scale instances aggregating different curriculae or converted from academic benchmarks.
+Lastly, we intend to investigate the revision of timetables to manage unexpected events (e.g.  unavailability of a lecturer, late registration of students) or to support incremental solution construction. 
+
+
+
+
+%\begin{acknowledgements}
+%This work is funded by a research grant from the university of Angers.
+%\marc{Déjà sur la première page ?}
+%\end{acknowledgements}
+
+
+% Authors must disclose all relationships or interests that 
+% could have direct or potential influence or impart bias on 
+% the work: 
+%
+% \section*{Conflict of interest}
+%
+% The authors declare that they have no conflict of interest.
+
+

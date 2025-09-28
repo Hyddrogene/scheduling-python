@@ -1,0 +1,1650 @@
+3.1.1.2 Course assignment order
+Matijas et al., 2009 investigated the laboratory exercises timetabling problem (LETP)
+— a subset of the general UCTP. Efficiency of the construction graph was again cited
+as a cardinal concern, particularly as the authors’ aim was to implement their system
+for real world scheduling at their institution, the University of Zagreb. Construction
+of the graph here differed from Ayob and Jaradat, 2009 with the introduction of ‘dock
+nodes’ — an ordered pair of room and period. The construction graph was tripartite,
+with independent sets L of lectures, D of dock nodes and S of students. Edges were
+used to connect nodes in L with D and in D with S, yielding an upper bound on
+the number of edges of (l + s)pr, where l, p, r and s were used to denote numbers of
+lectures, periods, rooms and students respectively. Pre-processing typically reduced
+the graph by eliminating edges known a priori to be invalid. The issue of maintaining
+feasibility was handled by so-called ‘constraint fences’, which were particular to each
+individual virtual ant. While the construction graph in essence remained static,
+certain edges were rendered invisible to virtual ants whenever crossing them would
+render a partial assignment infeasible in that particular path. This was achieved by
+forcing the heuristic value to zero as appropriate. The order in which the events
+— laboratory exercises in this study but equivalently, lectures — were scheduled
+was not fixed, but reset before each new iteration. The new order was determined
+with reference to the best path from the previous iteration. Events having more
+unscheduled students in this path were given higher priority in the next iteration.
+The idea of dynamic lecture ordering also appears in Mayer et al., 2012,
+whose approach earned 4th place for the ITC2007 track 2 (post enrollment). Here,
+pheromones were associated with nodes rather than edges. This is permissible
+because, while the order of lecture assignments may impact directly upon the efficacy
+of an algorithm, it has no meaning in the context of a solution’s finalised timetable.
+Therefore nodes, along with their pheromone values, can be shuffled during a run.
+The approach taken was to generate a uniform random permutation of lectures, πe,
+at each iteration. The priority of periods and rooms were also randomised, but
+with weights corresponding to their current pheromone values. In this way, the
+probabilistic element of the ACO was shifted and the assignments were technically
+made in a greedy deterministic fashion. The naive randomisation of πe would appear
+less sophisticated than in Matijas et al., 2009 and yet there is uncertainty in the
+literature around the best method and even the importance of lecture ordering.
+Patrick and Godswill, 2016 are one of the few research teams to have used
+the ITC2007 track 3 benchmark in their ACO-based approach to timetabling as a
+single-objective problem. Of particular interest for this review is their initial phase
+construction graph, which was bipartite and fully connected. One part was made
+up of lecture nodes while the other comprised combined room-period nodes.
+
+ Trails began at a random lecture and there was no fixed ordering of lecture assignments.
+The authors accepted in their conclusions that the expressiveness afforded by this
+representation was worth the higher compute time, also finding that 8 was the
+optimal number of virtual ants for their system. A recent ACO interpretation by
+Fotovvati and Mirghaderi, 2023 retained the same style of bipartite construction
+graph, while introducing a dynamic bias to the pheromone update rules which was
+found to aid convergence.
+Thepphakorn and Pongcharoen, 2012 also experimented on the ITC2007 using
+ACO. Their approach to ordering invoked graph colouring based heuristics, namely
+random ordering (RO), largest enrolment first (LE), largest degree first (LD), largest
+coloured degree first (LCD), largest weighted degree first (LWD), and saturation
+degree (SD) (Burke et al., 2007). These heuristics work by determining a priority
+level for each event (equivalently, course or lecture) and ordering accordingly. LE,
+for example, attaches higher priority to course lectures that have a larger number
+of enrolled students, whereas the authors’ proposed method — largest unpermitted
+period degree first (LUPD) — uses the number of unavailable periods in a similar
+fashion. Employing an ACO variant known as rank-based ant system (AS-Rank)
+(Bullnheimer et al., 1999), the construction graph was determined heuristically in
+an initialisation phase before the optimisation was allowed to proceed as normal.
+Six heuristic techniques were tested: RO and LE, as well as LUPD — alone and
+combined in series and in parallel with LE. The percentage of solutions that were
+feasible over a limited-iteration AS-Rank run was used as the primary performance
+metric. Results showed superior performance of the hybridised LUPD+LE heuristics,
+both in terms of the feasibility metric and speed of computation.
+Other practitioners using ACOs have implied the use of similar simple heuristics
+for event ordering. In Lutuksin et al., 2009, the brief description is found: “sort
+courses (C) according to the priority of events and student sizes”, with no further
+detail provided. Meanwhile, in Munirah et al., 2019, experimental results were
+presented with and without “priority”, where, “priority is given on several tests to
+determine the allocation of course timetabling for a different large number of students
+to be scheduled into the prescribed time”.
+
+
+
+
+
+
+
+
+For ease of reference, this section begins with a high level overview of the entire
+proposed system, illustrated by two schematics. The first schematic, Figure 3.2,
+depicts the training process. Beginning with a set of small training problems, all
+of the possible course permutations are queued up. For each distinct permutation,
+the MMAS then solves the corresponding problem. A performance measure can
+thereby be attributed to each permutation for each problem. These target values
+are then used to train a regression model, denoted for convenience by T0. The full
+rationale behind T0 is given in Section 3.2.3, while the generation of its training set
+is described later in Section 3.3.2.
+The second schematic, Figure 3.3, illustrates the benchmark experiment phase,
+in which unseen ITC2007 problems are solved. Having learned how to identify a
+good permutation of courses, T0 is used to inform the operation of a basic genetic
+algorithm1 (details of which are given in Section 3.2.4). The permutation space of the
+problem is mapped to the equivalent space of the learned permutations. The genetic
+algorithm searches this space to locate a promising permutation. The mapping,
+T0, and the genetic algorithm are referred to in combination as the Permutation
+Predictor. Set against this approach is a baseline comparator known as Random
+Permutation, which has no learned behaviour and merely selects a permutation at
+random. The MMAS solves the problem as before. For both Permutation Predictor
+and Random Permutation, local search can be enabled or disabled as part of the
+MMAS, meaning that, in total, there are four variants tested. These are denoted
+PP-LS, PP, RP-LS, and RP, as laid out in Figure 3.3
+
+
+
+
+
+
+
+In a survey of the state of the art, Burke et al., 1997 lamented both the lack
+of a standardised description of the UCTP and a benchmark for cross-comparing
+timetabling algorithms. It was in the context of this research landscape that the
+Metaheuristics Network was formed. A European Commission project involving
+collaboration between five European institutes (Rossi-Doria et al., 2006), its goal was
+to empirically compare the performance of different metaheuristics on combinatorial
+optimisation problems, including university timetabling. From the work of Rossi-
+Doria et al., 2003, a standardised UCTP formulation was devised, which would enable
+results from different researchers to be compared more evenly (Alhuwaishel and
+Hosny, 2011). An artificial instance generator, referenced in Lewis and Paechter, 2005,
+was created by Ben Paechter to reflect aspects of Napier University’s timetabling.
+It worked on eight input parameters (events, rooms, features, features per room,
+percentage of features used, students, max events per student and max students
+per event) and a random seed. The generator initially yielded a benchmark set
+of twelve UCTP problem instances, designated as “easy”, “medium” and “hard”
+(later adapted in terminology to “small”, “medium” and “large”) according to their
+complexity and size. This set contains five, five and two of each type respectively
+and all have at least one perfect solution. It appears in the literature variously as the
+Paechter benchmark, the Socha et al. (2002) set, Socha benchmark or Rossi-Doria
+et al. (2003) set.
+
+
+2.2.2 The Sixty Instances.
+In Lewis and Paechter, 2005, sixty further instances were generated by the Paechter
+generator. Again, these were subdivided into three sets of “small”, “medium” and
+“large”, with 20 instances in each category. These have been made freely available for
+testing, and continue to be popular (Song et al., 2018) with the instances of highest
+complexity being of interest to pure feasibility solvers (see also Section 2.3.2.4).
+
+
+2.2.3 International Timetabling Competition 2002
+The work of the Metaheuristic Network resulted in the establishment of the Interna-
+tional Timetabling Competition (ITC) in 2002. For this, standardised data formats
+(with the file extension .tim) and the rules formalised by Ben Paechter were utilised.
+The first set, in the post-enrolment format, comprised 20 instances. These were
+released to the competitors at staggered intervals in the run-up to the competition
+and are now maintained online. They continue to be a popular benchmark, referenced
+for example in Badoni et al., 2014, in which the performance of two algorithms was
+tested.
+
+
+2.2.4 International Timetabling Competition 2007
+Post-enrolment timetabling featured again, in a slightly modified form, as track 2
+of the second ITC edition in 2007. Of greater interest in this thesis though is the
+track 3 formulation, curriculum-based (Gaspero et al., 2007). A set of 21 instances,
+nominally comp01 to comp21, were modelled on the real world timetabling problem
+of the University of Udine. For the sake of generality, a range of requirements from
+different faculties were included. The magnitude of the instances, which have lecture
+counts in the hundreds, is mostly on a departmental scale. The model was built
+around a number of entities and variables, for which we use the following notation:
+• Days. A day with index i is denoted di. The number of days in a week that
+are available for teaching is fixed by the problem instance. The set of days is
+D.
+• Timeslots. Each day is divided into an equal and fixed-sized set, t, of timeslots.
+• Periods. A period, pi, is a day × timeslot. The set of periods is P.
+• Rooms. A room, ri ∈ R, is defined by its seating capacity, cap(ri) which
+ought not to be exceeded. In all other respects, any room is suitable to host
+any lecture. Adopting the terminology used in Lewis, 2006, a room/period pair
+is referred to as a place, and the action of assigning a lecture to a particular
+room/period as placing
+• Lectures. Lectures, li, are events that must be assigned to a suitable place.
+The set of all lectures is L.
+• Courses. Every lecture belongs to exactly one course, Ci, while a course can
+comprise any number of lectures. Each course Ci has a fixed number of enrolled
+students, stud(Ci) as well as several other properties. The set of all courses is
+C.
+
+• Teachers. Exactly one teacher is pre-assigned to each course, while teachers
+can teach multiple courses. The unit set consisting of the teacher of a course
+Ci is denoted teach(Ci) and the set of all teachers is T .
+• Curricula. A curriculum, ui, is a set of courses. A course may belong to
+multiple curricula but must belong to at least one. Any two courses in the same
+curriculum implicitly have students in common and the set of all curricula is U.
+Figure 2.2 offers a visualisation of the relationship between curricula u1, u2,
+courses C1, . . . , C4 and lectures l1, . . . , l16 for a published toy example from the
+ITC2007 track 3. Table 2.1 meanwhile gives the characteristics of the comp* instances.
+The formulation also prescribed a set of hard and soft constraints, which are
+denoted H or S and named and numbered as below. The penalty points incurred for
+violations of the soft constraints are also given.
+• H1: AllLectures. All lectures must be assigned to a distinct place.
+• H2: RoomOccupancy. A room can host a maximum of one lecture per
+period.
+• H3: CurriculumConflicts. Lectures of courses belonging to a common
+curriculum cannot be scheduled in the same period.
+• H4: UnavailablePeriods. One or more periods may be pre-defined as
+unavailable for a particular course Ci. As such, no lecture belonging to that course can take place in such a period. This set of periods is denoted as
+unav(Ci), while the union of these sets of over all the courses is denoted N .
+• H5: TeacherConflicts. Lectures of courses sharing a common teacher cannot
+be scheduled in the same period.
+• S1: RoomCapacity. The number of students should be less than or equal
+to the capacity of the room holding the lecture. Each student above capacity
+counts as one point of penalty.
+• S2: MinimumWorkingDays. The scheduling of the lectures of a course Ci
+should be spread over a minimum number of distinct days, denoted mwd(Ci).
+Each day below this minimum counts as five points of penalty.
+• S3: CurriculumCompactness. Lectures should be adjacent in timeslot to
+some other lecture from the same curriculum. Any lecture that is ‘isolated’ in
+this respect counts as two points of penalty. The last timeslot in a day does
+not count as adjacent to the first timeslot in the next day.
+• S4: RoomStability. Within each course, lectures should be held in the same
+room. Every distinct room beyond the first used for a course counts as one
+point of penalty.
+The soft constraint penalty scheme outlined above provides a method by which
+to express the overall quality of a solution. For feasible solutions, the cost is simply
+the sum of the penalties incurred for soft constraint violations, a value referred to by
+SCV. A high SCV reflects a low quality and vice versa. In certain circumstances, it
+may also be useful to ascribe a cost to infeasible solutions. The archetypal use case
+for this is when an optimisation process is allowed to traverse the infeasible space in
+search of disconnected regions of feasibility. In Mayer et al., 2012, the distance to
+feasibility (DTF) was defined as the sum total of students taking lectures that have
+failed to be scheduled. DTF — described by Schaerf, 1999 as a nominal measure of
+the magnitude of a solution’s infeasibility — can be conceptualised and expressed
+in other ways, such as the number of courses unassigned, or a sum total of all hard
+violations. A value representing DTF can then be returned as a summary statistic,
+or amalgamated with the SCV, at the practitioner’s discretion.
+An augmentation of this set of soft constraints was proposed by Bonutti et al.,
+2012. The purpose was both to increase the model complexity and to address some
+perceived inadequacies of the original definitions. For example, the intention behind
+CurriculumCompactness was to discourage lengthy gaps in a student’s day, by
+penalising any temporally isolated lectures belonging to some curriculum. Consider a
+10-timeslot day. The placing of two common lectures in timeslots 1 and 10 would, in
+isolation, trigger a penalty. If four lectures were instead scheduled in timeslots 1, 2, 9
+and 10, no such penalty would be incurred — despite the existence of a time gap of
+comparable size. In Bonutti’s alternative definition of CurriculumCompactness,
+named Windows, unwanted time gaps incur the same number of violations as their
+length in periods. A full list of suggested constraints is given in Figure 2.2, as well as
+five proposed configurations. Despite the merits of these, the original configuration, UD2, has remained the most enduring in the literature and is adopted in our work
+also.
+Supplementary problem instance sets have since been created for the track
+3 formulation. These are: DDS* (7 instances), test* (4 instances) (Bonutti et al.,
+2012), erlangen* (6 instances), EA* (based on EasyAcademy timetables, originally
+12 instances in 2014, to which 11 more were added in 2021) and Udine* (9 instances).
+Of the problems within these sets, erlangen* are by some margin the largest, with
+course counts ranging from 705 to 850 and lecture counts from 788 to 930.
+
+2.2.5 International Timetabling Competition 2011
+While the 2011 competition focused on high school timetabling rather than university,
+it did provide some interesting cross-domain innovations. The 15 constraint types,
+ranging from lecture spread to student idle times, could be designated as either soft
+or hard, enabling complete modular control over problem design.
+
+2.2.6 International Timetabling Competition 2019
+The facility to mix and match constraint types was carried forward to the 2019
+competition. By that year, another trend had become apparent — formulations were
+moving progressively away from artificially generated sets and towards real world.
+As confirmed by the organisers at the time, “We already have an agreement with
+ten institutions including Purdue University in the USA, Masaryk University in the
+Czech Republic, AGH University of Science and Technology in Poland and Istanbul
+Kultur University in Turkey that we can use their data.” (M¨uller et al., 2018)
+The new formulation introduced greater flexibility than the ITC2007 tracks.
+The inclusion of several novel features also helped to bring theory closer to practise
+in terms of simulating the complexities of a real world problem. Outlined below are
+some of the major differences between ITC2007 and ITC2019:
+• Student sectioning. Previously, student clashes were implied by common
+curriculum membership of courses. Such violations are explicit in ITC2019, as
+every student is defined as an entity with individual enrollment requirements.
+• Constraints. A wider pool of constraints, referred to as ‘distributions’, was
+introduced. The majority of these can be applied as either hard or soft, while a
+smaller number are invariant. Some constraints were defined as pairwise, while
+others may apply to multiple classes.
+• Teachers. Teachers are absent from the newer formulation. Instead, they can
+be modelled either implicitly using the available constraints, or explicitly in
+the guise of a ‘student’.
+• Courses. Courses are subdivided into ‘configs’ and then ‘subparts’. This
+allows modelling of different versions of the same course/module, for example
+undergraduate vs. masters.
+• Classes. Equivalent to ‘lectures’ in ITC2007, classes exist within subparts. A
+more complex hierarchical structure is made possible. Some pairs of classes
+may have parent-child relations. Any student sectioned to a ‘child’ class is also
+obligated to attend the ‘parent’ class. This is a convenient way to model a
+lecture-lab session dependency, for example.
+• Granularity. Time is discretised into small slots of 5 minutes, meaning that
+classes can have staggered start times and potentially partial overlaps too.
+• Room location. Travel distances are defined between rooms. This is to
+encourage consideration of the physical geography of the campus.
+• Weekly variation. The ITC2019 allows for different weekly schedules over
+the course of a semester, rather than a static timetable that is repeated every
+week.
+• Format. Due to their tree-like structure, ITC2019 problems are supplied in
+XML format rather than as plaintext .ctt files.
+The following hard constraints are embedded within the scoring system:
+• H1: All students must be sectioned into one class of every subpart of exactly
+one configuration.
+• H2: Any parent-child class relations must be respected in the above.
+• H3: Class limits on number of enrolled students must not be exceeded.
+• H4: Rooms cannot be used during any pre-defined ‘unavailable’ time.
+• H5: Rooms cannot host more than one class at any time.
+• H6: If a room assignment is demanded for a class, this room must come from
+the domain of that class. All rooms in such a domain are necessarily suitable for
+hosting the relevant class, both in their implied facilities and stated capacity.
+• H7: Classes must be assigned a time from their respective domains.
+Note that H4 and H5 correspond directly to ITC2007’s H4 and H2 respectively.
+H3 is a stronger variation on the idea of student capacity as seen previously in
+ITC2007’s S1. The remainder are prescriptive constraints relating to room and time
+suitability, precedence and student sectioning — aspects that were either undefined,
+non-explicit or absent in ITC2007.
+The fixed soft constraints in ITC2019 are:
+• S1: Student conflicts. A conflict occurs when a pair of classes that a student
+is assigned to has any kind of time overlap. This counts regardless of the total
+length and/or whether the overlaps are contiguous or not.
+• S2: Time penalty. Penalty values of zero or greater are associated with each
+available time in the time domain of a class.
+• S3: Room penalty. An equivalent penalty is associated with each room in the
+room domain of a class.
+A further 19 flexible constraints (F1 - F19), referred to as the aforemen-
+tioned ‘distributions’, can be treated as either hard or soft, or omitted entirely.
+Without reproducing the full definitions here, these are: SameStart, Same-
+Time, DifferentTime, SameDays, DifferentDays, SameWeeks, Different-
+Weeks, Overlap, NotOverlap, SameRoom, DifferentRoom, SameAttendees,
+Precedence, WorkDay(S ), MinGap(G), MaxDays(D), MaxDayLoad(S ),
+MaxBreaks(R,S ) and MaxBlock(M,S ). Semantically, there is provision for both
+affirmative (e.g. certain classes should start at the same time) and prohibitory (e.g.
+certain classes should not start at the same time) requirements around entities such
+as days, weeks and rooms. There is also scope to impose a precedence relation
+between the timing of a first class and subsequent classes. Lastly, the behaviours of
+some constraints are reliant upon arguments. For example, the number of breaks
+between classes exceeding S time slots can be limited by MaxBreaks to a maximum
+of R per day. The cost of a solution is a weighted sum of the individual violation
+sums for student (S1), time (S2), room (S3) plus any ‘distributions’ (F1-F19) that
+have been applied as soft. The four weights applied to these violation counts are
+problem-specific and supplied in the XML attribute ‘optimization’.
+
+2.2.6.1 Problem interrogation
+Some initial insights into the ITC2019 model can be gained by interrogation of the
+problem data by way of the following: After pre-processing, instances were read into
+a struct array. Variables ‘days’ and ‘weeks’ were encoded as bitstrings, while all other
+numeric values were stored as 16-bit unsigned integers. Native IDs of entities such
+as rooms, courses, configs, subparts, classes and students, which may be character
+strings or numeric, were mapped to sequential integer IDs. The variable counts could
+then be extracted as well as a directed graph of class parent relations. Figure 2.3
+illustrates the parent-child relations for an example problem agh-ggis-spr17.
+A simple form of pure random search can be executed in the solution space
+which, by the nature of its sampling algorithm, automatically enforces the subset
+{H1, H6, H7} of hard constraints. This sample space can be further narrowed by
+employing a more sophisticated approach for student sectioning, informed by the
+digraph. Algorithm 1 gives the pseudo-code. By way of rejection sampling, the
+algorithm considers parent-child relations as well as selecting exactly one class per
+subpart of a randomly chosen config. This guarantees that H2 is also respected, and
+the distance to feasibility is consequently reduced.
+A set of 500 solutions were sampled using this method, for the instance
+muni-fspsx-fal17. Solutions were written back to XML documents before being
+converted into the recognised format using XSL style sheets. These were evaluated
+by making programmatic API calls to the ITC website validator. The embedded
+code is currently protected and we are unaware of any open source function evaluator
+for this problem. Histograms for the four aggregated objective values, as well as
+the weighted sum total cost, are shown in Figure 2.4. All sampled solutions have a
+positive overall distance to feasibility. For context, the vertical red line shows the
+individual values that make up the best known feasible (single-objective) solution.
+Some very basic intuitions about possible trade-offs between different con-
+straints can be gleamed from the positions of the red lines. Sample values for student
+conflicts in Figure 2.4(b) are all worse than the best known result, while those for
+room penalty in Figure 2.4(d) conversely are better. Developing robust techniques
+for the sampling of solutions, aided by an understanding of which hard constraints
+are being respected and what biases may be present, forms an integral part of the
+technical work in later chapters.
+
+
+2.2.7 Other real world instances
+It is evident from the above that the ITC2019 represented a large step forward in
+bridging the gap between timetabling theory and practise. While some aspects of
+real world problems remain unaccounted for in this model, these are mostly esoteric.
+Perhaps the least so, though, is the concept of priority or preference on the part
+of students and/or teachers. Some real world institutions allow students to make
+reservations, giving them priority to be assigned to a particular class. The first version
+of the UniTime project (UniTime, 2023) was designed around the autumn (fall) and
+spring 2007 Purdue University data sets, with data broken down by department. An
+example of expressed preferences in UniTime may be those of a teacher, for whom
+certain time slots, buildings or rooms are more appealing than others. Seven nominal
+levels of preference were made available: Required, strongly preferred, preferred,
+neutral, discouraged, strongly discouraged, prohibited. This opened up more of a
+continuum across constraint types, spanning hard (prohibited) to soft (the rest). In
+the original Purdue timetabling problem data set, there were approximately 750
+classes, 29,000 students and 41 large lecture rooms (Vermirovsky, 2003). All data
+are available in anonymised form on the UniTime website.
+Other early uses of real world timetabling problems can be found in Abdullah
+et al., 2007, Avella and Vasil’ev, 2005, Daskalaki et al., 2004, Dimopoulou and
+Miliotis, 2004 and Santiago-Mozos et al., 2005. More recently, Maya et al., 2016
+utilised three data sets from different Mexican universities in Zitacuaro, Valle de
+Morelia and Tuxtla Gutierrez, while Babaei et al., 2019 used a hybrid fuzzy and
+clustering algorithm to satisfy the multi-departmental demands of the Islamic Azad
+University of Ahar branch. Cross-pollination between the real and artificial is possible
+too. A large, real world data set from College of Arts and Sciences, Universiti Utara
+Malaysia known as UUMCAS A131 (247 courses, 850 lectures, 32 rooms, 350 teachers,
+and 20,000 students) had such synergy with the ITC2007 that it was proposed as a
+test problem under that formulation (Wahid and Hussin, 2017).
+n this section, some background has been presented on the different UCTP
+models that have been used by researchers. Over time, a diversity of approaches
+have been explored to find optimal or satisfactory solutions to such problems, both
+artificial and real world. In the next section, a fuller review is offered of some of the
+most prominent techniques.
+
+
+
+
+
+2.3 Approaches to solving the UCTP
+Due to the large size and complexity of real-world UCTP instances, many tradi-
+tional optimisation techniques are impractical (Garg, 2009). An exact algorithm,
+guaranteeing optimality, has proven elusive for all but unrealistically small, artificial
+cases (Schaerf, 1999). Much research has therefore been carried out into heuristic
+and approximation techniques, as well as hybridisation with traditional methods.
+The fundamental idea is to find solutions that are both good enough in practise and
+achievable with finite computing resources. As well as weighing up these unavoidable
+trade-offs, researchers have also grappled with some interesting philosophical consid-
+erations, for example how to handle the different constraint types. Eiselt and Laporte,
+1987 proposed separating the hard and soft constraints in order to solve for the former
+first then the latter. Subsequently, two-phase metaheuristic approaches have gained
+in popularity and continue to show promise for the UCTP (Rossi-Doria et al., 2003,
+Lewis and Paechter, 2005). One-phase metaheuristics, as their name suggests, seek
+to solve for both types of constraints concurrently. Another design choice concerns
+infeasible regions of the solution space. Hertz, 1991 deliberately included these in
+order to maintain connectedness across the entire search space, while others have
+preferred to restrict the search to the feasible-only space. Some of the important
+comprehensive surveys referenced when documenting previous approaches include
+Schaerf, 1999, Lewis, 2008b, Babaei et al., 2014, Pandey and Sharma, 2016, Chen
+et al., 2021 and Ceschia et al., 2023. More targeted surveys such as Pillay, 2016
+and Ilyas and Iqbal, 2015 are referenced for hyper-heuristic and hybrid methods
+respectively. Broadly speaking, the same taxonomy is used as in Chen et al., 2021,
+with some rearrangement and expansion. While acknowledging that the categor-
+ies are not mutually exclusive, a non-exhaustive overview is presented under the
+following headings: Operational research techniques (Section 2.3.1), single solution
+based metaheuristics (Section 2.3.2), population based metaheuristics (Section 2.3.3),
+multi-agent systems (Section 2.3.4), novel intelligent methods (Section 2.3.5) and
+multi/many-objective approaches (Section 2.3.6). The presentation of these themes
+roughly corresponds to a chronology of popular usage, such that the reader can trace
+the development of ideas through this chapter
+
+
+2.3.1 Operational Research techniques
+Operational research techniques have a long history of use for timetabling and other
+scheduling problems. They have the advantage of being relatively intuitive to model
+and implement. However, due to scaling issues, they are often inefficient for the
+UTCP when used in strict isolation.
+2.3.1.1 Reduction to Graph Colouring
+Early timetable models were formulated as graph colouring problems — with courses
+as nodes, conflicts/constraints as edges, and periods as colours. In this pared back
+representation, the chromatic number χ(G) implies the minimum number of periods
+required for a feasible course-teacher schedule. Figure 2.5 shows an example solution
+to a five course problem with pairwise conflicts {1,2}, {2,3}, {3,4}, {4,5}, {5,1}.
+
+Welsh and Powell, 1967 were two of the first authors to point out the structural
+similarities between graph models and timetabling, as well as offering an improved
+upper bound for χ(G) and an algorithm to obtain a valid colouring. This early model
+had inherent limitations however, such as being uncapacitated (paying no heed to
+rooms or their capacities) and not allowing for additional real-world constraints. The
+second of these issues was addressed by Neufeld and Tartar, 1974, who introduced the
+possibility of certain preconditions on course assignments. By imposing restrictions
+on the colouring of particular nodes, unavailability constraints could be accounted
+or. Meanwhile, preassigned meetings were enforced by limiting particular nodes to
+a single colour. The authors offered a formal mathematical proof that the existence
+of a |P|-colouring (where |P| is the number of discrete periods) is a necessary and
+sufficient condition for the existence of a feasible solution. A number of different
+threads of timetabling operational research were later brought together by de Werra,
+1985, who discussed algorithmic approaches for valid graph colourings. An established
+method at that time was degree saturation (Br´elaz, 1979), which proceeds as follows:
+Initially the node with the greatest number of neighbours is selected, and coloured. At
+each subsequent step, the uncoloured node with the greatest number of colours in its
+immediate neighbourhood is selected. The smallest colour (based on a lexicographic
+ordering) that has not been assigned to any of its neighbours is then assigned for this
+node. The process is iterated until completion or impasse. While degree saturation
+provides an infallible method for the optimal colouring of bipartite, cycle and wheel
+graphs, it is considered a heuristic method when used on the other types of graphs
+more likely to be encountered in timetabling.
+Bipartite graphs are responsive to the degree saturation method because of
+their structure, in which edges only connect nodes from different disjoint sets, of
+which there are two. These convenient properties were later exploited by Badoni
+et al., 2014, who tackled an uncapacitated school timetabling problem with a novel,
+two-phase approach. In phase one, a bipartite multigraph (whose parts are lectures
+and teachers) was used to derive a daily requirement matrix from a given weekly
+requirement matrix. In the second phase, an edge colouring was generated for a
+second bipartite graph (lectures and periods) using the highest degree first heuristic.
+Thus a connection was made between the three entities (lectures, teachers and periods)
+such that all constraints were satisfied. It must be noted that once again, the model
+was a simplified and artificial one, without courses, rooms or other dependencies,
+and small-scale instances were used for testing.
+
+2.3.1.2 Direct constructive heuristics
+Degree saturation and highest degree first are both examples of direct constructive
+heuristics. These are used to build solutions incrementally, adding lectures to an
+empty timetable one by one, according to a set of logical rules. Constructive heuristics
+formed the basis of the 1980’s SCHOLA timetabling software (Junginger, 1986).
+Using this strategy, lectures are generally sorted according to some measure of how
+constrained they are. The rationale for this is an intuitive one — lectures that are
+harder to place should be handled with greater priority. The sorting process can
+either be static (executed once and then fixed) or dynamic (recalculated at each
+decision point over the lectures yet to be assigned). Another example of the dynamic
+type is colour degree, in which priority is determined by the number of conflicts
+that each lecture has with those already assigned. Constructive heuristics are by
+nature greedy, making locally optimal moves at the expense of global consequences.
+Enhancements such as swapping rules or backtracking can be added to extricate such
+heuristics from unproductive construction paths. Even so, while construction by
+heuristic may produce feasible timetables, it cannot be relied on to generate optimal
+ones. Petrovic and Burke, 2004 cautioned against using such solutions as anything
+other than a starting point for further optimisation or as a baseline for comparison
+
+2.3.1.3 Network flow
+Graph theory is once again invoked in the network flow approach. In this paradigm,
+the UCTP is formulated as one or more flow networks (Dyer and Mulvey, 1976,
+Mulvey, 1982, Chahal and Werra, 1989). A graph is generated in which edges have
+numerical flow capacities, limited to 0 or 1. In Dinkel et al., 1989, the vertices were
+layered at intermediate levels between a sink and source, representing departments,
+teacher/course and room/timeslot combinations respectively. Edges were omitted
+wherever co-assignments of particular variables were impossible, while the unimodu-
+larity property ensured integrality of solutions. While the resultant maximum flow
+problem can be solved in polynomial time, the authors noted that their approach
+occasionally required human intervention. This is because constraints such as H5 —
+the prohibition on assigning a single teacher to multiple lectures simultaneously —
+could not automatically be guaranteed.
+These shortcomings were highlighted further in the more recent work of Kampke
+et al., 2019, which modelled the ITC2007 track 3 problem using ostensibly the same
+graph architecture as Dinkel et al., 1989. Hard constraints H2 and H3 were
+guaranteed, while the remainder were not. Due to a lack of backtracking, it was
+possible to reach a situation in which no feasible places remained for the unassigned
+lectures. This induced a no-win scenario in which the only options were to return an
+incomplete timetable (violating H1) or introduce conflicts (violating H4 or H5).
+Soft constraints were not considered explicitly, but modifications to the base
+solving algorithm indirectly assisted S2 (room stability) and S3 (minimum working
+days). A solution was represented by a valid flow through the network, which was
+found using the Ford-Fulkerson method with breadth first search (Ford and Fulkerson,
+1962). The added refinements in Kampke et al., 2019 were two-fold:
+1. For each course C ∈ C, nodes in the room/period layer were visited in ascending
+order of room capacity, beginning with the smallest room whose capacity
+exceeded stud(C). When/if these were exhausted, the search continued with
+the undersized rooms, this time in descending order.
+2. Feasibility checking was implemented such that infeasible placements were
+avoided and the better alternative was always preferred.
+The first of these modifications is a greedy heuristic from the same family
+as those in Section 2.3.1.2, demonstrating again how deceptively simple rules can
+aid certain objectives. The authors stated that the two constraints served by this
+heuristic were almost never violated. Returning complete or feasible solutions,
+however, proved more difficult, with the overall approach failing consistently on 12
+of the 21 instances. In 8 of the others (comps 01, 04, 06, 08, 09, 13, 14 and 18),
+feasible solutions were found only in a fraction of the trials (55%, 22%, 3%, 3%, 3%,
+37%, 7% and 84% respectively), while comp11 was the sole problem to achieve 100%
+on this metric. It was only through supplementary stages that the initial returns
+could be moulded into high quality timetables. Partial solutions from the network
+flow phase were completed by a constructive algorithm ISCB−CT T (Kampke et al.,
+2015), before further optimisation took place through a simulated annealing process
+using a greedy randomised adaptive search procedure (GRASP).
+The limitations of network flow as a standalone modelling approach are evident.
+A related field, offering a richer modelling environment in which to overcome these, is
+mathematical programming. In the next section, some important integer and mixed
+integer based approaches are relayed.
+
+
+
+2.3.1.4 Mathematical Programming
+Mathematical programming has been used to address timetabling as an assignment
+problem (or a collection of sub-problems), often using binary variables for direct
+representation. One of the earliest examples is Lawrie, 1969, who used a branch-and-
+bound procedure with Gomory cuts to find a feasible timetable for a high school
+problem. Other early proponents include: Breslaw, 1976, Shin and Sullivan, 1977,
+McClure and Wells, 1984, Ferland and Roy, 1985, and Tripathy, 1992. Tripathy,
+1984 and Carter, 1989 employed Lagrangian relaxation to solve instances of a course
+timetabling problem with up to 287 lectures. While this may be comparable in
+size to the ITC2007 benchmark, these approaches only considered straight-forward
+conflicts of the type depicted in Figure 2.5. More complex interactive effects were
+disregarded as these would have increased both modelling difficulty and solver run
+time. Indeed, in Carter, 1989, the assignment variable was indexed only by course
+and room.
+Burke et al., 2010 went further in attempting to include all hard and soft
+constraints from the ITC2007 track 3 benchmark in an integer linear programming
+(ILP) model, named Monolithic. Five sets of decision variables were defined as
+follows:
+xCpr ∈ B. Lectures of course C should be placed in period p, room r if and
+only if this variable is set to 1.
+
+vCd ∈ B. At least one lecture of course C is scheduled on day d if and only if
+this variable is set to 1.
+zpu ∈ B. A lecture in curriculum u ∈ U is ‘isolated’ in period p if and only if
+this variable is set to 1.
+yCr ∈ B. Some lecture of course C is scheduled in room r if and only if this
+variable is set to 1.
+iC ∈ Z. This value (bounded by zero and the number of days per week) is the
+number of days that the lectures of course C fall short of the recommended minimum
+working days.
+As instance properties in this benchmark are defined by course rather than by
+lecture, the graph theoretic interpretation of the problem became supernodal. That
+is to say, each course node (akin to those in example Figure 2.5) became a clique
+of nodes representing its constituent lectures, and inter-clique edges proliferated
+accordingly. The core binary decision variables, xCpr, therefore remained indexed
+by course rather than lecture, while the values of the other (dependent) variables
+were inferred during the solving process. Two equations were used to enforce H1
+(all lectures must be assigned) and H4 (no unavailable periods can be used) while
+the remaining hard constraints were guaranteed by a set of inequalities. The soft
+constraints, which were formulated as six additional inequalities, presented a more
+challenging aspect in their design. The S3 (curriculum compactness) constraint, for
+example, was expressed by:
+
+:
+X
+C∈u
+X
+r∈R
+(xCpr − xC,p−1,r − xC,p+1,r) ≤ zpu u ∈ U, p ∈ P (2.1)
+With the added complication that if p coincided with the first (or last) timeslot
+of a day, p − 1 (or p + 1 respectively) ceased to exist for the purposes of this inequality
+and had to be taken as zero. This follows from the definition of S3.
+The objective function, which returned the solution cost to be minimised, was
+similarly unwieldy:
+
+Where w denotes the penalty weights for each soft constraint. This ILP was
+solved using ILOG CPLEX 11 Dual Simplex LP Solver, and theoretically finds an
+optimal timetable, given enough time. Bettinelli et al., 2015 remarked that the ILP
+could run for days without return though and Monolithic was thus only suitable
+for modest sized or trivial problems. Only three problems (comp01, comp05 and
+comp11) from the 14 released at the time were solved within 40 CPU units, where 1
+CPU unit ≈ 780 seconds. Monolithic nonetheless proved useful in identifying lower
+bounds for the benchmark, and inspired several developments. By discounting certain
+violations by setting their weights to zero, two variants derived by the same authors
+(Burke et al., 2010) were capable of obtaining better lower bounds on a majority
+of instances, at an order of magnitude speed-up. Other proposed simplifications
+included aggregating equivalent rooms in order to reduce the quantity of variables
+which, as pointed out in Cacchiani et al., 2013, could be exponential in number.
+Embedding the ILP within a heuristic framework so as to locate an area of promising
+solutions before ‘diving in’ was another improvement suggested by Burke et al., 2010.
+In later work (Burke et al., 2012), cuts were suggested to narrow the search bounds
+— the simplest example of this being the tightening of the upper bound of iC ∈ Z to
+mwd(C).
+In Cacchiani et al., 2013, which also examined the ITC2007 track 3 benchmark,
+a strategy was proposed in which the main problem was partitioned into more
+manageable sub-problems. The fact that constraints S1 and S4 relate to the
+assignment of lectures to rooms, while S3 and S2 relate to time, suggested a natural
+decomposition. The authors found that a fully descriptive ILP gave competitive
+results when the sub-problems were small. In larger cases, a linear relaxation was
+imposed and a column generation procedure used to deliver a similar quality of results
+
+Most notably, lower bounds were improved for many instances, while some known
+upper bounds were mathematically proved to be optimal. Splitting the problem
+constraint entities along spatial vs. temporal lines echoed the approach of Lach and
+L¨ubbecke, 2012.
+A different form of problem partitioning was also exploited as a first step in
+the divide-and-conquer approach of Hao and Benlic, 2011. This decomposition was
+based on minimising the number of relaxed S3 constraints linking pairs of courses
+in distinct parts. It was created using a tabu search and refined by a perturbation
+phase, the two of which were called cyclically until some stopping criterion was met.
+In subsequent steps, lower bounds were obtained on the sub-problems by generic
+ILP solvers, before being summed to give a solution for the main problem.
+This effective melding of mathematical and metaheuristic techniques also
+proved successful in Lindahl et al., 2018. In the authors’ proposed matheuristic,
+termed a fix-and-optimise approach, a mixed integer program solver explored a large
+neighbourhood in which a subset of the variables were fixed. This was inspired by
+the ‘corridor’ method (Sniedovich and Voß, 2006) of solving smaller sub-problems by
+exact methods. The technique currently holds the best known result for one instance
+in the ITC 2007 track 3 benchmark and was highly competitive across the remainder.
+On the whole, while standalone integer or mixed integer programs can exactly
+describe a problem, in practise they are most useful for proving bounds on the
+optimum. Constraint satisfaction programming, discussed in the next section, focuses
+not on an explicit objective function, but instead on finding consistent assignments
+that meet the specified problem constraints.
+
+
+
+2.3.1.5 Constraint Satisfaction Programming
+In a constraint satisfaction programming (CSP) formulation, conditions are placed
+on variables, thereby constraining their values to some finite feasible domain. An
+assignment of values to all variables represents a solution in which every constraint
+is satisfied. Yoshikawa et al., 1996 described a constraint relaxation problem solver
+(COASTOOL) applied to a high school timetabling problem, while Deris et al., 1999
+used CSP in combination with a genetic algorithm to address the UCTP, before
+furthering the research in Deris et al., 2000. Other notable contributions include
+Zhang and Lau, 2005. One of the most prominent examples though can be found
+in the UniTime software as mentioned in Section 2.2.7. This is an open source
+solver for UCTPs. Conceived in 2001 at Purdue University, its first phase allows the
+modelling of a problem instance by constraint programming primitives (constraints,
+variables and values). Operating an iterative forward search algorithm, UniTime
+differentiates itself from traditional local search methods by including incomplete
+(partially assigned yet internally feasible) solutions within its search space. Some
+evident benefits of this are:
+1. A heuristic-guided local search that includes partial solutions is generally more
+efficient, with respect to response time, than a systematic one that only allows
+fully formed solutions.
+2. The system can stop, start or continue from any given feasible solution, no
+matter the level of its incompleteness.
+3. An otherwise feasible timetable with missing lectures is more meaningful and
+interpretable than a fully assigned timetable with multiple hard constraint
+violations.
+4. Built-in backtracking means the system does not suffer from the so-called ‘early
+mistake problem’. Any decision suspected to lead to a dead-end in a partial
+solution can be undone 1.
+n this constructive phase, cycling is prevented by the use of conflict-based
+statistics (CBS) (M¨uller et al., 2004). CBS is a data structure that records previously
+encountered conflicts between assignment variables, along with their frequencies.
+Conceptually similar to the tabu list (discussed in a later section), CBS helps steer
+the search away from potentially detrimental regions. Unlike the aforementioned
+approach of Kampke et al., 2019, UniTime waits for a complete solution to be found
+before entering its second phase. This is a minor distinction, however. The more
+important commonality is the emergence of a multi-phase system in which rule-based
+construction precedes optimisation. For UniTime, optimisation is achieved through a
+recursive chain of metaheuristics: Hill climbing, great deluge and simulated annealing.
+UniTime was a finalist in all three tracks of the ITC2007 and the winner of two.
+Although finer algorithmic details such as neighbourhoods and parameter settings
+were redefined for each problem domain, the underlying principles were shown to be
+encouragingly robust.
+
+
+
+
+2.3.1.6 Logic Programming
+While CSP involves finding solutions that satisfy a set of constraints, logic program-
+ming provides a framework for expressing and solving such problems through logical
+relationships, predicates and the leveraging of powerful inference mechanisms. One
+well-known framework is Answer Set Programming (ASP) — an approach based on
+a declarative logic paradigm (Marek and Truszczynski, 1999, Niemel¨a, 1999). It is
+only in recent years that ASP has been applied to the UCTP, however.
+A simple ASP logic program, P , is made up of rules, facts and constraints.
+Rules are of the mathematical form:
+Where letters symbolise classical first-order logic atoms, which may be predic-
+ates on one or more variables. Facts and constraints are defined by expressions that
+are empty on the right or left of the implication sign, respectively. A typical ASP
+workflow consists of three stages:
+1. Modelling. In which the problem is formalised and declared for the parser.
+2. Grounding. In which variables are eliminated.
+3. Solving. In which the ‘stable models’, or eponymous ‘answer sets’, are generated
+search space. Programs may have any number of answer sets, with the case of none
+implying no feasible solution.
+In a similar vein to Figure 2.5, Figure 2.6 shows a simplified timetabling example
+based on the Petersen graph, which has 10 nodes and 15 pairwise constraints. To
+find a 3-vertex colouring — one solution of which is shown in Fig. 2.7 — the program
+in Listing 2.1 could be used. Lines 1-7 define the graph by way of node and edge
+predicates, while line 9 accounts for the three colours. Line 11 specifies that exactly
+one colour should be applied to each node and line 13 is a constraint stating that
+adjacent nodes must have different colours.
+1 node (1..10) .
+2
+3 edge (1 ,2) . edge (1 ,6) . edge (1 ,5) . edge (2 ,1) . edge (2 ,3) . edge (2 ,7) .
+4 edge (3 ,2) . edge (3 ,4) . edge (3 ,8) . edge (4 ,3) . edge (4 ,5) . edge (4 ,9) .
+5 edge (5 ,1) . edge (5 ,4) . edge (5 ,10) . edge (6 ,1) . edge (6 ,8) . edge (6 ,9) .
+6 edge (7 ,2) . edge (7 ,9) . edge (7 ,10) . edge (8 ,3) . edge (8 ,6) . edge (8 ,10) .
+7 edge (9 ,4) . edge (9 ,6) . edge (9 ,7) . edge (10 ,5) . edge (10 ,7) . edge (10 ,8) .
+8
+9 col ( r ) . col ( b ) . col ( g )
+10
+11 1 { colour (X , C ) : col ( C ) } 1 : - node ( X ) .
+12
+13 : - edge (X , Y ) , colour (X , C ) , colour (Y , C ) .
+Listing 2.1: A reductive timetabling problem expressed by Answer Set Programming.
+The expressive power of ASP has been growing as further semantic construc-
+tions, many vital for modelling the UCTP, are supported. These include conditional
+literals, cardinality constraints, aggregates, choice rules, weights and arithmetic op-
+erators, as well as blanks such as in the predicate penalty( , ,P) which are used
+to sum across all values of the first two elements of the tuple. Popular off-the-shelf
+solver Clingo features optimisation commands #maximise and #minimise, which
+could be employed with the example above like so: #minimise[penalty( , ,P) =
+P] to find a UCTP solution with the lowest soft constraint violation cost.
+Banbara et al., 2013 describe an ASP program which was tested against 57
+problem instances in the ITC2007 track 3 formulation, using each of the UD1-UD5
+configurations. On the 57 × 5 = 286 problems from the sets named in Section 2.2.4,
+the previously best known bounds were matched or bettered for 175 problems, while
+optimality was proved for 46.
+Some benefits of logic programming are readily apparent. ASP enables a
+compact formulation that is human-readable. There is high ‘elaboration tolerance’
+owing to the way rules, facts and constraints are independently declared — meaning
+that activating, deactivating or switching UCTP constraints is easy. The on-going
+and rapid development of grounders, solvers and monolithic hybrids has also shown
+the potential for extensibility, as in Clingo’s priority level multi-objective optimiser
+(Banbara et al., 2019). Furthermore, logic programming obviates the need for the
+parameter tuning required by some metaheuristics. Yet there are still design choices
+to be taken. Clingo offers users a choice of search strategies, such as backtracking
+(Ward and Schlipf, 2010) and conversion to a Boolean satisfiability (SAT) problem.
+Different configurations of these strategies were tested in Banbara et al., 2013 with
+mixed results.
+Perhaps the biggest issue concerns the timeouts that result from excessively
+large ground programs. In Banbara et al., 2013, problem instance EA03 (consisting
+of 145 courses, 65 rooms in 9 buildings, 65 curricula, 3,207 unavailability constraints,
+and 1,350 room constraints) was unsolvable under formulation UD5, due to a combin-
+atorial explosion of clauses. One particular soft constraint, TravelDistance, caused
+the ground program to blow up to 7.9GB in size (versus 70MB with TravelDis-
+tance omitted) while EA07 caused similar issues. Likewise, in Banbara et al., 2019,
+UUMCAS A131 on UD5 exceeded the available memory limit of 20GB and a large
+instance of erlangen* could not be grounded in a day. Such issues speak to the
+impracticality of pure exact approaches for large-scale UCTP problems.
+The following two sections move the discussion on to the field of metaheuristics,
+beginning with single solution based strategies.
+
+
+
+
+2.3.2 Single-solution-based metaheuristics
+Single-solution-based metaheuristics are approximation approaches, in which a
+single solution (a timetable, in this context) is iteratively refined by low-level heuristic
+operators until some termination criteria is met (Bianchi et al., 2009). Through
+the informed design and paramaterisation of both the operators and acceptance
+criteria, a path is navigated through the search space and the algorithm converges
+on solutions of high, if not optimal, quality. A key feature of many metaheuristics is
+their stochastic element, which enables disparate regions of the search space to be
+accessed through random (or partly random) exploration. Regions of the landscape
+thought to contain promising solutions can then be exploited further.
+2.3.2.1 Local search
+Local search is based on exploring nearby solutions as defined by some neighbourhood
+structure. The simplest form is random search. Given a starting timetable, a new
+solution is sampled from its neighbourhood, evaluated, and accepted if and only if it
+lowers the solution cost. Hill climbing is similar, except that the neighbourhood is
+assessed exhaustively and the most improving solution is chosen. A known drawback
+of local search is its tendency to get stuck in local optima, in which better solutions
+exist elsewhere but are not reachable through the immediate neighbourhood. Local
+search is therefore more commonly used in conjunction with other techniques in order
+to fine-tune solutions. Examples include Joudaki et al., 2011, which incorporated
+local search in the form of a memetic algorithm, and Yang and Jat, 2011 and Shahvali
+et al., 2011, both of which proposed enhanced genetic algorithms with local search
+capabilities
+
+
+2.3.2.2 Tabu search
+In order to avoid repetition or cycling during such a search, a list of prohibited
+moves from the recently-visited solution space can be maintained. This is known
+as tabu search. A critical feature of tabu search for the UCTP is the choice of
+neighbourhood, which is used to determine the candidate list of next possible moves.
+In the multi-phase tabu approach of Alvarez-Valdes et al., 2002, two neighbourhoods
+of interest were studied2. A solution x was a neighbour of x′ if and only if:
+1. Simple move: x can be reached from x′ by the reassignment of exactly one
+lecture in x′ to a new period.
+2. Swap: x can be reached from x′ by swapping the places of exactly two lectures
+in x′.
+The authors found that the type of neighbourhood was the most significant
+factor affecting performance, ahead of other design choices such as the size of the tabu
+list or candidate list. Of the neighbourhoods tested, simple move gave the poorest
+quality results, which was explained by its move set being limited to only temporal
+(period) moves and not spatial (rooms). The search landscape it induced suffered
+from disconnectedness, meaning simple move can be thought of primarily as an
+intensifying move. This result highlighted the importance of offsetting intensification
+with sufficient diversification.
+Aladag et al., 2009 attempted to improve the balance between the two by
+proposing additional neighbourhoods, mixed 1 and mixed 2, that combined elements
+of the original simple move and swap:
+1. mixed 1 : If, after a predetermined number of applications of simple move, an
+improved local optimum has not been found, the search relocates to the best
+swap neighbour of the current best local optimum.
+2. mixed 2 : Simple move and swap are treated as a union rather than individually,
+thereby expanding the pool from which the candidate list is formed. The authors
+noted that evaluating entire neighbourhoods was expensive. Therefore, only
+one random move by each lecture was carried out. By implication, the final
+candidate list was the same length as the number of lectures.
+The best results were achieved by mixed 1 and simple move, both of which
+were significantly superior to the other neighbourhoods as well as a random baseline.
+The good performance of simple move appeared to contradict the findings of Alvarez-
+Valdes et al., 2002. However, the authors’ inclusion of a local optima escape
+mechanism showed that, with this addition, a simple intensifying neighbourhood can
+deliver good results over a long term search. The plots of objective cost vs iteration
+number showed a series of spikes where the search jumped from one local optimum
+in order to descend a different basin of attraction. mixed 1 conferred a similar type
+of benefit in the sense that its fall-back operator, swap, was more diversifying.
+The relatively poor performance of mixed 2 raises an interesting question
+about the structuring of composite neighbourhoods. A promising alternative to the
+set union is a token ring approach. This was defined in di Gaspero and Schaerf,
+2003 as follows: Given a pool of neighbourhoods N1 . . . Nq, The input solution is
+operated on by Ni in the predetermined sequence i = 1 . . . q, with each Ni working
+on the output produced by Ni−1. i = q is followed by i = 1 so that the sequence is
+circular. The global best is cached and the cycle is broken when a fixed number of
+non-improving rounds have been completed. In di Gaspero and Schaerf, 2003, the
+notation N1 ▷ · · · ▷ Nq was suggested. An empirical comparison between the set
+union and token ring configurations was carried out by L¨u et al., 2011, on a pool
+{N1, N2}. N1 was simple move. N2 was an ‘advanced’ neighbourhood — KempeSwap
+— adopted from the adaptive tabu search method of L¨u and Hao, 2010. The move
+was defined by the interchange of two Kempe chains. In the context of a timetable
+as a graph of lectures and their conflicts (as per Figure 2.5), a Kempe chain is a
+connected component of nodes in the subgraph that is induced by nodes belonging
+to two periods (or colours). The results in L¨u et al., 2011 suggest that a token ring
+approach is superior to a set union, and that the order of operators at the start of
+the ring cycle was immaterial.
+Other structures and elementary neighbourhood operators have been proposed
+for tabu search that are more aggressive, more nuanced and/or more targeted
+towards improving a particular objective. Awad et al., 2022 described four such
+neighbourhoods, two of which not only enforced feasibility but also mandated the
+lowest-cost move. Exploration was encouraged by stochastic selection. While results
+did not improve upon the best known for the chosen benchmark (11 problems from
+the Socha et al. 2002 set), the algorithm performed competitively against other
+metaheuristics. Aspiration criteria were declared in order to provide exceptions to
+the strict prohibitions of the tabu list, and the list itself was dynamically sized. Awad
+et al., 2022 remarked on the difficulty of fine tuning the parameters that control
+these aspects of a tabu approach.
+Besides parameter tuning, another routinely confounding issue, identified
+in L¨u and Hao, 2010, is that of computational complexity. While the authors’
+aforementioned Kempe chain move was useful in affecting large, feasibility-preserving
+perturbations, handling Kempe chains (or other complex topologies) can be expensive,
+meaning the move could only be used sparingly. The authors mitigated this with a
+‘reduction’ technique, which estimated the goodness, using the period-based sub-cost,
+to decide whether a full execution of KempeSwap was worth calling or not. This
+is one example of an efficiency saving that can help make complex operators more
+attractive, and will be explored further in later chapters.
+
+
+2.3.2.3 Iterated Local Search
+Improving a solution using local search operators, before applying larger perturbations
+to escape local optima traps is known as iterated local search (ILS). In fact, in L¨u and
+Hao, 2010, an ILS scheme was adaptively combined with the tabu search. Their
+findings empirically demonstrated that the judicious integration of metaheuristics,
+and indeed the balancing of large and small moves, can produce a more powerful
+optimiser compared to the use of a single technique in isolation.
+Parameterisation of η (the ILS perturbation strength) was noted as being
+crucial. When set too high, each iterative jump behaves as a random restart. Too
+low a value, meanwhile, will not provide an escape from the current local optimum.
+A related parameter, q > η, was also used. This represented a number of the
+most highly-penalised lectures, η of which were then selected probabilistically and
+reassigned by a sequence of η randomly chosen (but feasible) moves. In this way,
+parameters q and η strongly influenced diversification levels. Using the original
+stopping conditions of the ITC2007 track 3 benchmark, this hybrid system improved
+or matched the best known results at the time over all 21 comp* instances.
+
+2.3.2.4 Simulated Annealing
+Pure ILS manages the exploration/exploitation balance in timetabling optimisation
+by alternating between incremental and larger moves. Another differing but promising
+approach is simulated annealing (SA), which has delivered strong results on both
+artificial and real world UCTP problems (Akbulut, 2024). Inspired by the annealing
+process in metallurgy — in which a heated metal is slowly cooled in order to reduce
+defects and achieve a more ordered, stable and desirable crystalline structure — SA
+permits the occasional inferior solution based on a probabilistic acceptance criteria.
+Aycan and Ayav, 2008 offered a proof of concept for SA on a real world problem
+from the Izmir Institute of Technology with nine hard constraints. The perturbation
+of a solution, x, led to a new solution xnew, which was accepted if and only if:
+((δ ≤ 0) or e−δ/v < rand[0, 1]) (2.4)
+Where δ = eval(x′) − eval(x), and v is a ‘temperature’, which decreased over
+time according to a geometric cooling schedule. With only this standard SA design,
+the authors were able to reduce the departmental timetable cost from 5,011,800 (for
+a manually prepared version) to just 3,600.
+Across recent SA approaches, a few commonalities stand out. Firstly, the multi-
+phase model is prominent. Three distinct stages were used by Lewis, 2008a in solving
+the post-enrolment problem. At each stage, constraints satisfied in the previous stage
+could not be violated. A different three-stage strategy — closer resembling that of
+L¨u and Hao, 2010 — was adopted by Song et al., 2018. Initialisation by heuristic was
+followed by intensification by SA (using a constructive heuristic-inspired operator)
+and diversification by perturbation. The latter two phases operated in the iterative
+style of ILS and resulted in feasible solutions for 58 of the ‘Sixty Instances’ problems,
+including for three of the ‘largest’ instances that had, up to that point, proved elusive
+(Lewis and Paechter, 2006).
+Some authors prefer to view the intertwining of intensification and diversific-
+ation as a single ‘improvement’ phase, as distinct from the constructive stage, as
+described in the two-phase SA algorithms of Goh et al., 2019 and Goh et al., 2020.
+Another recurrent theme, in relation to small neighbourhoods, is the predominance
+of the single lecture move and swap operators (or subtle variations thereof), as seen
+in Ceschia et al., 2012 and others. Many novelties have arisen too, some specific to
+SA and others with general applicability. In Geiger, 2012, the probabilistic element
+of SA was substituted for a deterministic ‘threshold accepting’ test, which built
+upon ideas by Kirkpatrick et al., 1983 and Dueck and Scheuer, 1990. Solutions that
+worsened the objective were permitted up to a given threshold, while an element
+of randomness was retained within the constructive perturbation operator. Geiger,
+2012 achieved fourth place in the ITC2007 track 3 competition.
+In Tarawneh et al., 2013, an SA with memory was proposed, in which previously
+rejected solutions could be recalled to aid in local optima escape at low temperatures.
+The two popular neighbourhoods were also joined by a third, wherein the highest-cost
+timeslot (as summed over all days of the week) was swapped en masse with a new,
+random one. The approach was competitive with contemporaneous ITC2007 results.
+Perhaps one of the most interesting novelties in SA optimisers is the integration
+of machine learning to improve contextual awareness. Bellio et al., 2016 derived
+a linear regression model between (easily extracted) features of the instance and
+the search parameters. The training data was produced by the generator of Lopes
+and Smith-Miles, 2010 with heavy post hoc manual filtering. Goh et al., 2019,
+meanwhile, applied reinforcement learning techniques to the task of obtaining suitable
+neighbourhood structures. Six new best results were found for the ITC2007 track 2.
+Finally, in Goh et al., 2020, which introduced periodic ‘reheating’ of the temperature
+to encourage exploration, two preliminary runs were undertaken. The information
+learned from these was leveraged in order to improve the efficiency of the subsequent
+runs. Helped by these savings, the approach delivered seven new mean best and
+three new best results across a set of standard benchmarks.
+2.3.2.5 Variable Neighbourhood Search
+Variable Neighbourhood Search (VNS) was born out of a recognition that a local
+minimum under one neighbourhood structure may not be a local minimum under
+another (Mladenovi´c and Hansen, 1997). Consisting of two main phases — shaking
+and local search — this metaheuristic, which can be deterministic or stochastic, is
+centred around a pool of neighbourhoods. Early work on VNS for the UCTP by
+Abdullah et al., 2005 led to the development of a ‘randomized iterative improvement
+with a composite neighboring algorithm’ (RIICN) in Abdullah et al., 2007. More
+recently, Vianna et al., 2020 proposed a hybrid of VNS and tabu search for a real
+world example from Federal Fluminense University. Each iteration started with a
+solution, x, and a neighbourhood, k. A random neighbouring solution, xnew, was
+chosen and then improved through local search. If this refinement was better than x
+then it was accepted, otherwise k was shuffled to the next neighbourhood in the pool.
+The authors reported that, consistent with numerous other metaheuristic studies
+previously discussed, the hybrid outperforms either of its individual components. As
+a whole, the system was deemed both good enough and flexible enough to be put to
+real world use.
+Almeida et al., 2023 proposed a hybrid VNS that included an adaptive large
+neighbourhood search and guided local search. A novel instance decomposition
+technique was used, whereby the problem was broken down by curricula. At a certain
+threshold of non-improvement, difficult constraint groups were re-weighted and the
+search re-focused on improving for those, potentially at the expense of others —
+thereby allowing moves that worsened the overall quality. The extended approach
+found high quality solutions faster than the native VNS.
+
+2.3.3 Population-based metaheuristics
+An alternative to the single-solution-based metaheuristic is one with a population of
+solutions. This offers a number of advantages. A population search is often more
+robust and less sensitive to initial conditions. Wide areas of the search space can
+be explored simultaneously, leading to the discovery of the best timetable. The
+drawbacks include higher computational load, slower convergence speed and often
+additional parameters that require tuning. In this section, the most relevant and
+important methods are reviewed, including swarm intelligence.
+2.3.3.1 Genetic Algorithm
+A subclass of evolutionary algorithms (EAs), genetic algorithms (GAs) are iterative
+procedures inspired by the biological process of natural selection. GAs have been
+known to perform well on non-convex fitness landscapes, both single and multi-
+objective problems, and also lend themselves well to parallelisation. This makes
+them well-suited for NP -hard, combinatorial optimisation tasks. Algorithm 2 shows
+a simple GA, as successfully adapted with additional local search for the timetabling
+problem in Psarra and Apostolou, 2023.
+arious flavours of GA have been conceived for the UCTP, which differ in one
+or more of the fundamental components discussed below.
+Representation Within the optimiser, solution timetables must be encoded in
+a consistent way. In GAs, this is a phenotype-to-genotype mapping, in which each
+solution is represented as a chromosome. For theoretical as well as practical reasons,
+it is desirable that the entire space of feasible solutions can be represented and that
+there is little or no redundancy in the genotype space. Thus, the mapping is typically
+bijective. Its domain may encompass part or all of the infeasible solution space too,
+in the case where an algorithm permits individuals to evolve through infeasibility in
+order to reach a better final solution.
+An intelligent choice of representation is a convenient mechanism by which
+to implicitly enforce hard constraints. Abouelhamayed et al., 2017 recounted a
+popular encoding for certain UCTP formulations (seen in Akkan and G¨ulc¨u, 2018
+amongst others) which consisted of a 2-D array of rooms vs. weekly periods with
+the gene values in cells denoting the ID of an assigned lecture. However, it was
+noted by the authors that clumsy design can also narrow the represented search
+space by inadvertently enforcing hard constraints that are not present in the problem
+description. An example given was a lecture that alternates every two weeks, which
+the aforementioned array had no means of encoding. The proposed alternative to
+cater for this requirement was a 1-D array. Two identically sized vectors, with indices
+corresponding to the set of unique lecture IDs, were concatenated. The value for
+an index in the first half of the resultant array encoded the period to which that
+particular lecture had been assigned, while a value for the same index in the second
+half encoded the associated room.
+Chinnasri et al., 2012 also employed a flattened 1-D array, but constructed of
+a sequence of indices corresponding to the periods, repeated |R| times. Into these
+positions were placed tuples Subject, Lecturer, Student, Type of subject, ID which
+were drawn from a fixed pool. In Sutar and Bichkar, 2016, a conceptually similar yet
+complementary approach is found. Here, the period indices were repeated over the
+number of classes rather than rooms, and the value inserted into the chromosome
+was instead a room, teacher tuple. Such tuples were often indivisible ‘blocks’,
+which proved useful for preserving a priori (known or established) associations from
+one generation to the next. In contrast, some practitioners prefer a 2-D matrix to
+enable shuffling of variable values that may not be fixed in blocks. In Asiyaban and
+Mousavinasab, 2012, values encoding the teacher, period and room were stored in a
+column of length 3 whose matrix row index corresponded to the associated course
+event. For UCTP formulations with higher variable dimensionality, 3-D matrices
+have also appeared in the literature (Sigl et al., 2012).
+As the UCTP is, at its heart, a permutation problem, encoding designs com-
+monly feature integer rather than binary values, as they complement better the type
+of operators used. In addition, integer values eschew problems such as the ‘Hamming
+cliff’ that can cause issues when manipulating bit-strings (Wang et al., 2018). It
+is worth noting that all of the representation styles discussed above are forms of
+direct encoding, as these predominate in the literature. Some examples of indirect
+encodings for GAs on the UCTP can be found in Paechter et al., 1998 and Chaudhuri
+and De, 2010.
+Operators GAs are built on a set of operators, usually selection, crossover and
+mutation, each of which performs a different role in driving the search. Relying
+on traditional operators alone (for example single-point crossover) may not be
+appropriate for the UCTP and result in offspring that are consistently less fit than
+their parents or, in the worst case, invalid. Chinnasri et al., 2012 noted that careful
+design, application and parameterisation of operators are therefore critical for GA
+performance in this context. The authors provided a comparison of three different
+crossover operators — partially matched (PMX), order (OX) and cycle (CX).
+Figure 2.8 shows a worked example of PMX, which begins with the uniform
+random selection of two crossover points. These delimit the matching area common
+to both parents, which is shaded in grey in the top block. The intermediate stage
+involves a position-by-position swap of alleles within the matching area, which can
+lead to unwanted duplicate values in outer positions (shaded again in grey, in the
+middle block). To resolve this issue, these values are then switched with their
+counterparts outside of the matching area, as shown in the bottom block. This
+completes offspring A and B.
+
+Parent A 9 4 1 2 6 5 8 3 10 7
+Parent B 6 1 7 8 5 10 2 9 4 3
+Intermediate A 9 4 7 8 5 5 8 3 10 7
+Intermediate B 6 1 1 2 6 10 2 9 4 3
+Offspring A 9 4 7 8 5 6 2 3 10 1
+Offspring B 5 7 1 2 6 10 8 9 4 3
+Figure 2.8: An illustration of the partially matched crossover (PMX) operator. Within
+a randomly selected matching area, alleles 1, 2 and 6 in Parent A are swapped with 7, 8
+and 5 in Parent B respectively. To eradicate duplicates, 5, 8 and 7 in Intermediate A are
+swapped with 6, 1 and 2 in Intermediate B to produce the final offspring.
+Parent A 9 4 1 2 6 5 8 3 10 7
+Parent B 6 1 7 8 5 10 2 9 4 3
+Intermediate B 1 H H 7 8 5 10 H 9 4 3
+Intermediate B 2 8 5 H H H 10 9 4 3 7
+Offspring B 8 5 1 2 6 10 9 4 3 7
+Figure 2.9: An illustration of the order crossover (OX) operator generating Offspring B.
+Alleles 1, 2 and 6 (taken from the matching area in Parent A) are replaced in Parent B
+by ‘holes’, H. A leftwards sliding mechanism repositions the ‘holes’ to the matching area,
+where they are filled by 1, 2 and 6.
+Order crossover, shown in Figure 2.9, begins in the same fashion as PMX.
+However, in the first intermediate step the alleles within the matching area of Parent
+A are removed wherever they occur in Parent B, leaving ‘holes’ in the genome denoted
+by H. A sliding motion is applied to the remaining values — which in the given
+example is leftwards from the second crossover point. The holes are thus maneuvered
+into the matching area, where they can then be filled by the equivalently positioned
+gene values from Parent A. The second offspring is generated by swapping the roles
+of the parents.
+Through their respective mechanisms, PMX has a tendency to respect absolute
+positions of alleles, whereas OX favours relative positions.
+Figure 2.10 illustrates cycle crossover. As its name implies, CX initiates by
+looking for a cycle — from a randomly chosen gene in Parent A to itself. Permitted
+moves are from gene n in Parent A to gene n in Parent B, and from allele m in
+Parent B to allele m in Parent A. In this example, the starting gene is gene 1, and a
+Parent A 9 4 1 2 6 5 8 3 10 7
+i ↓ v ↓ vi ↓ ii ↓ iii ↓ viii ↓ iv ↓ vii ↓
+Parent B 6 1 7 8 5 10 2 9 4 3
+Cycle 9→ 6→ 5→ 10→ 4→ 1→ 7→ 3→ 9
+Intermediate A 9 4 1 H 6 5 H 3 10 7
+Offspring A 9 4 1 8 6 5 2 3 10 7
+Figure 2.10: An illustration of the cycle crossover (CX) operator generating Offspring A.
+Starting with gene 1 in Parent A, a cycle through the alleles of both parents is found. The
+steps of the cycle are denoted by the numerals i to viii. All alleles that are not part of this
+cycle are replaced in Parent A by ‘holes’, H, which are then filled by 8 and 2 from Parent
+B.
+cycle of length 8 is found. All alleles in this cycle are preserved in position, while the
+remaining genes are replaced with ‘holes’, as seen in Intermediate A. Finally ‘holes’
+are filled by the corresponding gene values from Parent B. Parent roles are switched
+to generate Offspring B.
+The authors ran a grid search over mutation and crossover rate for a problem
+based on a department of Rangsit University in Thailand. In conclusion, OX was
+deemed to be the most successful operator in obtaining feasible solutions, while CX
+surpassed it in finding perfect (zero violation) solutions, on average. However, the
+discrepancy in results was not marked, and success was highly dependent on the
+aforementioned parameters in addition to the number of generations used.
+In Yu and Sung, 2002, a modified PMX, known as sector-based PMX, was
+conceived, in which the 2-D matrix encoding was divided into ‘sectors’ according
+to variable type and size. Randomly generated blocks then defined the active
+crossover regions. Akkan and G¨ulc¨u, 2018 varied this approach by using a a period-
+based PMX. In both of these cases (as well as Kohshori et al., 2012, Asiyaban
+and Mousavinasab, 2012, Assi et al., 2018 and others), the potential for crossover
+to induce infeasibility was acknowledged, and different remedies were suggested.
+Yu and Sung, 2002 used a ‘check and repair’ routine. Noting that five of the hard
+constraints were automatically satisfied by virtue of the representation, the remaining
+two were handled by reassigning conflicting lectures while considering the effects
+on all constraints. The repair here was deterministic but others, such as Sutar and
+Bichkar, 2016, have included a probabilistic element. Akkan and G¨ulc¨u, 2018 on the
+other hand, posited the existence of a trade-off between the flexibility of an operator
+and the subsequent need for chromosome repair. The authors also found that the
+quality of offspring mended by a complex repair procedure was not significantly
+better than that of its parents. This, and the time-intensive nature of explicit repair,
+led the authors to dispense with the repair function entirely. An efficient feasibility
+checker was embedded within the PMX operator instead.
+Along with sector-based PMX, other crossover operators tailored to the UCTP
+— namely day, students, conflict-based — were tested by Lewis and Paechter, 2002.
+A key idea motivating all of these operators was that certain sub-timetables, or
+‘blocks’ within the main timetable, may be worth preserving due to their positive net
+contribution to the wider solution quality. Conflict-based crossover, in which blocks
+of assigned lectures with high student commonality were prioritised for preservation,
+was reported to have the highest relative success.
+Like crossover, standard mutation operators have been adapted in various ways
+for the UCTP. Abouelhamayed et al., 2017 described three that, used in combination,
+affected different behaviours in the GA:
+1. The chosen chromosome is replaced, wholesale, with a randomly generated one,
+in order to promote exploration of the space.
+2. The chromosome is replaced with the currently highest rated solution. As
+a countervailing measure to the first operator, this nudges the GA towards
+making more incremental changes.
+3. All genes are fixed, except one whose value is varied across all of its possible other
+values. With each change, the fitness is tested. The procedure loops through
+all genes before returning the mutation with the largest fitness improvement.
+Numbers 1 and 2 begin by discarding the chromosome, while the third works
+directly on it as a form of local search more akin to the moves discussed throughout
+Section 2.3.2. Mutation as local search is indeed a common theme in the literature.
+While traditional mutation is entirely random, Sutar and Bichkar, 2016 stated that
+room / teacher clashes can easily be introduced without careful restriction. In the
+‘informed genetic algorithm’ of Suyanto, 2010, two aspects were considered in order
+to overcome this. Firstly, which lecture/s were mutated, and secondly, to where.
+Conflict-causing lectures were prioritised in a first stage, and only feasible places
+were made available for their reassignment. In a second stage, the mutator was
+configured to be sensitive to its effect on soft constraints as well, meaning that it
+played a active role in ‘guiding’ the search towards higher quality individuals. Forms
+of guided mutation were also used successfully in Yousef et al., 2017, Assi et al.,
+2018 and Yusoff and Roslan, 2019, with the latter adopting a hill climbing approach
+wherein only fitness-improving mutations were accepted. Understanding the tension
+between overly-prescriptive perturbation operators and the need for randomised
+exploration remains an important and open area of research.
+Selection This tension is also present in the selection operator, which determines
+the solutions that are put forward for breeding. A regime that is too rigidly elitist
+can cause premature convergence to sub-optimal solutions by compromising the
+population diversity. On the other hand, if selection pressure is too low then little
+improvement is made from one generation to the next.
+Yousef et al., 2017 listed some of the most popular selection techniques —
+stochastic uniform sampling, roulette wheel, tournament, and stochastic uniform
+selection — before arguing in favour of ‘gender selection’. In this approach, the
+population is sorted according to fitness, with the top and bottom halves being
+labelled as female and male respectively. A default tournament size of four is run
+to pair male individuals with female. These pairs are then bred, ensuring that each
+couple includes one parent with high fitness and another with relatively low fitness,
+thus promoting diversity.
+Other selection operators in other GAs mentioned include standard roulette
+wheel (Assi et al., 2018), linear scaling plus roulette wheel (Sutar and Bichkar,
+2016) and tournament with elitism (Yusoff and Roslan, 2019). It is important to
+remember that the effectiveness of a selection operator is dependent on the interplay
+between problem type, instance characteristics and parameter settings. While the
+key concerns — diversity preservation, sufficient pressure for timely convergence, and
+efficiency — are common across UCTP formulations, no one size operator fits all.
+Approaches to fitness evaluation Broadly, fitness tends to be defined as the sum
+of soft constraint violations (SCV), with the following adaptations also appearing in
+the literature:
+1. Where the GA is restricted to feasible solutions either by representation or
+repair, the SCV is used. However, its weights wi may be user-defined or, in
+the case of Yusoff and Roslan, 2019, determined by a survey asking timetable
+end users to rank various soft constraints in order of desirability. As soft
+constraints are themselves based on qualitative human preferences, some re-
+searchers incorporate fuzzy logic in order to deal with uncertainties in definition
+and inter-constraint conflicts. Kohshori et al., 2012, like Asiyaban and Mousav-
+inasab, 2012, defined a fuzzy set membership function μi bounded between
+0 and 1. The fitness was then the sum of the products of μ and w over all
+soft constraint violations. In Al-Ashhab and Abdulrahman, 2018, functionality
+resembling that of UniTime software is seen. Any entity such as a day, period
+or room can be given an explicit priority penalty.
+2. Where the GA is permitted to enter infeasible regions, the violation of a hard
+constraint can be assigned an arbitrarily large penalty, which is added to the
+SCV. The idea ensures that, while the GA can traverse a wider search space
+between disconnected regions, infeasible solutions are ultimately evolved out of
+the population by virtue of their poor fitness. In Abouelhamayed et al., 2017,
+the minimum penalty for a hard violation was guaranteed to be greater than
+the maximum possible sum of soft constraint violations, meaning that feasible
+solutions were always superior.
+Operationally, GA is a powerful framework for the UCTP, particularly so when
+hybridised with local search methods (Ilyas and Iqbal, 2015). Augmenting GAs (or
+evolutionary algorithms more generally) with individual learning procedures gave
+birth to a category known as the memetic algorithm (MA). Jat and Shengxiang
+2008 and Joudaki et al., 2011 applied MAs to the original Paechter benchmark.
+The former found that including two types of local search operator vastly improved
+performance when compared to just one. The latter then equalled or bettered results
+for 9 out of 11 problems (as compared to Jat and Shengxiang, 2008 and 6 other
+competitors) by embedding a simulated annealing process. GAs have also been used
+not as direct timetable solvers but as a distinct phase in a multi-phase algorithm.
+Xiang et al., 2024 used a GA to cluster courses into sets by leveraging graph coloring
+techniques, before a second tabu phase was used to then optimise the solutions.
+From a software engineering perspective, there are many options for efficient
+parallelisation of both GAs and MAs across CPU cores or stream processors in the
+GPU. In the GPU-based GA of Yousef et al., 2017 for example, the fitness function
+evaluation was parallelised, due to its relative high complexity, the independence
+between individual solutions, and the large data parallelism required.
+Other design aspects of timetabling GAs, such as initialisation, operator rates
+and crowding measures will be discussed further in Chapter 4
+
+
+2.3.3.2 Ant Colony Optimisation
+First described by Dorigo, 1992, ant colony optimisation (ACO) is inspired by the
+collaborative behaviour of ants in seeking out the most efficient path between colony
+and food source. If an instance of the UCTP can be represented by a graph of
+nodes and edges, then a tour through this graph can encode a solution. This is
+referred to as the construction graph. Just like representation in a GA, choices
+about its design can impact greatly upon the metaheuristic performance. When
+virtual ants complete such tours probabilistically, an amount of artificial pheromone
+is deposited on the tour edges in proportion to the goodness of the solution found. At
+the same time, pheromone values are universally reduced by ‘evaporation’ after each
+iteration. Edges with boosted pheromone levels naturally become more attractive
+to subsequent virtual ants, and this positive feedback loop drives convergence to a
+good solution. The information encoded by pheromones is sometimes referred to as
+stigmergic information.
+One of the first applications of ACO to the UCTP is found in Rossi-Doria
+et al., 2003. In this study, ACO was one of five algorithms compared by researchers
+from the Metaheuristic Network project. The authors reported that an ACO variant
+known as ant colony system (ACS) performed competitively on small benchmark
+problem instances, but was outperformed by tabu search, genetic algorithm, simulated
+annealing and iterated local search on medium sized problems. Another of the most
+consistently cited and successful variants of ACO besides ACS is the MAX-MIN ant
+system (MMAS) (Stutzle and Hoos, 1999), which was applied to the UCTP by Socha,
+2002 as an unofficial entry to the first ITC. Pertinent points from these approaches
+and others will be reviewed in greater depth as background material in Chapter 3.
+2.3.3.3 Particle Swarm Optimisation
+Another nature-inspired approach that takes advantage of emergent population
+behaviour is particle swarm optimisation (PSO). Particles, or individuals, each
+maintain a vector position and a velocity. The former represents a solution in
+n-dimensional decision space, while the latter designates the direction for further
+exploration. Through the coordinated movements of its members, the population
+mimics the social dynamics of a swarm of insects or a flock of birds. PSO exhibits
+good resilience to local optima while converging towards solutions of high fitness.
+The hybrid PSO of Chen and Shih, 2013 — tested on a real world UCTP —
+reported an interesting finding. A swap operator (described as an ‘interchange’) was
+inserted as a local search enhancement to the basic PSO. This was found to be a
+strong contributor to performance, irrespective of other factors such as constriction
+factor, learning factors, inertia and parameter values.
+Later, Imran Hossain et al., 2019 pointed out that PSO was originally conceived
+for continuous optimisation problems, in which mathematical operators could be
+applied to floating point representations. Previous work (including Shiau, 2011 and
+the aforementioned Chen and Shih, 2013) was cited in which discrete timetabling
+variables had been transformed into this domain. Instead of changing their Khulna
+University problem to fit the PSO framework, however, Imran Hossain et al., 2019
+took the converse approach, modifying the algorithm. A sequence of swaps of
+differing types was adapted for velocity, while selective search and forceful swap with
+repair were deployed for constraint handling. Over the sequence of swap types, if
+an intermediate solution bettered the final one, then the former was used. In terms
+of parameterisation, the population size was also deemed to be of high importance,
+with the steepest improvement seen over the range 0-150 and lesser gains thereafter.
+
+2.3.3.4 Other nature-inspired algorithms
+PSO is one metaheuristic that emulates phenomena from the natural world but, as
+mentioned in Chen et al., 2021, several other types have been applied to the UCTP.
+Amongst this plethora of metaphor-based approaches, S¨orensen, 2015 argues that
+true novelty or distinction is hard to discern. Nonetheless, some of these efforts can
+at least corroborate past findings, or at best offer domain-specific components or
+adaptations to inspire future work. Three examples follow:
+In Turabieh et al., 2010, another swarm-based approach was proposed (‘intelli-
+gent fish’), in which the search space was dynamically partitioned into regions that
+were either empty, crowded or non-crowded. In empty areas, steepest descent was
+used. In crowded areas, the great deluge algorithm (Dueck, 1993) was used, with
+an estimated quality derived from a Nelder-Mead simplex algorithm (Nelder and
+Mead, 1965). In non-crowded areas, great deluge was once again used, but with an
+estimated quality defined by either the best current solution or the central point of
+the non-crowded space. Traditional single lecture move and swap operators were
+used to perturb solutions.
+In Sabar et al., 2012, a comparison was made between the original honey bee
+mating algorithm (HBMO) (Abbass, 2001b, Abbass, 2001a) and a version modified
+for educational timetabling (HBMO-ETP). In a honey bee approach, queen drone
+bees are analogous to the best-found solution, broods to incumbent solutions, worker
+bees to new trial solutions, and mating to the crossover operator as found in GAs. A
+form of elitism pervades the algorithm, as the genetic material carried by the queen
+s invoked in every iteration. Premature convergence was prevented in HBMO-ETP
+by forbidding the repeat use of genetic material from any one drone.
+Abuhamdah et al., 2014 developed a population based local search (PS-LS)
+approach based on gravitational emulation local search (GELS) Webster, 2004. Single-
+direction and all-direction force were utilised for searching, while MPCA-ARDA
+(multi-neighbourhood particle collision algorithm and adaptive randomized descent
+algorithm) were embedded. This was in order to off-set the exploitative shortcomings
+of the core population based method.
+The three approaches above were all tested on the Socha dataset, enabling a
+direct comparison. Hybridised variants consistently outperformed base algorithms
+in the case of both HBMO and PB-LS, while the greatest number of best results
+overall was achieved by PB-LS.
+
+2.3.4 Multi-agent systems
+The population-based methodologies discussed above involve sets of individual solu-
+tions that are largely passive and uncommunicative. A distributed multi-agent
+framework has also been the subject of UCTP research. In such a system, intelligent
+agents may, for example, collaborate and exchange information through a shared
+language, and negotiate for resources in order to resolve conflicts and force a solution.
+Drawing on observations of real world timetabling practises at the University of Mari-
+bor, Strnad and Guid, 2007 argued that such an approach has a concrete theoretical
+foundation. A multi-agent simulation can handle multiple allocation requests made
+by stake-holders in the problem such as teachers, students or even abstractions such
+as courses. In a loose thematic parallel to the honey bee metaheuristic, these different
+entities are reflected by agents who are specialised in particular tasks. Srinivasan
+et al., 2011 suggested that some characteristics should be common to all agents,
+however: 1. Autonomy, 2. Intelligence, 3. Reaction, 4. Pro-action, 5. Learning, 6.
+Mobility, 7. Cooperation. As indicated by point 1, there is no central control, rather
+agents interact asynchronously according to queuing, round robin or interleaved
+queuing rules. A detailed survey of multi-agent timetabling approaches prior to 2014
+can be found in Babaei and Hadidi, 2014, while Nouri and Driss, 2016 Houhamdi
+et al., 2019 are more recent contributions to the literature.
+2.3.5 Novel intelligent methods
+So far in this chapter, a progression of techniques have been traced that are, to
+various extents, well-established. These span classical mathematical forms through
+to metaheuristic search. While accepting there is no precise demarcation to the term;
+‘novel intelligent methods’ refers to new ideas, adaptive combinations of traditional
+ones, or the inclusion of an element of learned behaviour or artificial intelligence.
+Some of the approaches falling under this umbrella are outlined below
+2.3.5.1 Hybrid algorithms/heuristics
+Many novel approaches seek to compensate for the weakness of a certain heuristic
+by combining it with others, often executing base heuristics in a phased or layered
+approach (Kostuch, 2005). Some examples of this have already been touched upon
+and a fuller review can be found in Ilyas and Iqbal, 2015.
+A good example of a hybrid solver using an as yet unmentioned technique,
+case-based reasoning (CBR), at its core, can be found in Grech and Main, 2005.
+CBR relies on a priori domain knowledge. It works on the principle that previously
+discovered solutions to similar problems can inform a new solution to the problem at
+hand. Large amounts of memory are requisitioned to store old solutions in a ’case
+base’. From there, four operational steps — retrieve, reuse, revise, retain — are
+deployed in sequence. The novelty offered by the authors was the incorporation of a
+GA into the ‘revise’ stage. The GA was able to learn and apply beneficial mutations
+in order to improve the health of the retrieved solutions. These were then retained
+as part of the CBR life cycle.
+Two other hybrid approaches are of particular interest to this thesis as they
+produced the vast majority of the best known results for the ITC track 3 bench-
+mark (reproduced in Table 2.3). Abdullah and Turabieh, 2012 employed a hybrid
+genetic algorithm with tabu search, whose movement through the search space was
+determined by a sequence of large neighbourhood operators. The algorithm leveraged
+information from its own search history to bias the choice of operators in favour of
+those with a high percentage of success. Kiefer et al., 2017, meanwhile, embedded an
+adaptive large neighbourhood search within a simulated annealing framework. Sev-
+eral destroy-repair operators were used. Both of these highly successful approaches
+used large neighbourhood structures and exhibited dynamic, adaptive behaviour,
+exploiting past knowledge to inform future decisions. The cumulative power of
+integrated metaheuristics is also a common feature and key strength.
+A note of caution though was sounded in Feutrier et al., 2023, in which a
+hybrid local search method (comprised of sequential hill climbing, great deluge and
+simulated annealing) was broken down into its constituent components. Ablation
+testing and irace were used to determine the best ratios of deployment. The authors
+found that in the optimal configurations, some components had been deactivated
+completely. Great deluge alone was enough, on occasion, to surpass the original
+hybrid in performance. These results emphasised the need for sensitive tuning in
+hybridised solvers.
+
+determined by a sequence of large neighbourhood operators. The algorithm leveraged
+information from its own search history to bias the choice of operators in favour of
+those with a high percentage of success. Kiefer et al., 2017, meanwhile, embedded an
+adaptive large neighbourhood search within a simulated annealing framework. Sev-
+eral destroy-repair operators were used. Both of these highly successful approaches
+used large neighbourhood structures and exhibited dynamic, adaptive behaviour,
+exploiting past knowledge to inform future decisions. The cumulative power of
+integrated metaheuristics is also a common feature and key strength.
+A note of caution though was sounded in Feutrier et al., 2023, in which a
+hybrid local search method (comprised of sequential hill climbing, great deluge and
+simulated annealing) was broken down into its constituent components. Ablation
+testing and irace were used to determine the best ratios of deployment. The authors
+found that in the optimal configurations, some components had been deactivated
+completely. Great deluge alone was enough, on occasion, to surpass the original
+hybrid in performance. These results emphasised the need for sensitive tuning in
+hybridised solvers.
+2.3.5.2 Hyper-heuristics
+Hyper-heuristics depart from the convention of searching the solution space. Instead,
+they operate at a higher level of abstraction, searching the heuristic space in order
+to select the best low-level heuristics, or combination thereof, to suit a particular
+problem. In practise, this is achieved by adapting and/or combining promising
+components of known heuristics, or generating new ones. CBR can be employed as a
+point of reference and a measure of the success of previously found solutions.
+In Pillay, 2016, four categories of hyper-heuristic were defined: 1. Selection
+constructive, 2. Selection peturbative, 3. Generation constructive, 4. Generation
+peturbative. In all cases, the first word describes whether the low-level heuristics
+are chosen or created, while the second word describes the nature of their action.
+‘Constructive’ implies the type of heuristics in Section 2.3.1.2 such as saturation
+degree, while ‘peturbative’ refers to mutation operators
+Ahmed et al., 2015 designed nine low-level heuristics for a high school problem,
+seven of which were mutational and the remainder constraint-specific hill climbers.
+At each iteration, a formula was used to rate the heuristics according to three
+factors {f1, f2, f3}. f1 measured the previous performance, both in terms of time
+efficiency and impact on objective cost. f2 related to the pairwise dependencies
+between heuristics, while f3 recalled the time passed since the last invocation. The
+authors reported that this adaptive framework performed better than either a fully
+deterministic or probabilistic equivalent.
+Aside from this high school solver, Pillay, 2016 noted that hyper-heuristics
+have predominantly been tested on the examination track of educational timetabling.
+However, an application to the ITC2007 track 3 can be found in Habashi and Yousef,
+2018. An add-delete list of variable length was compiled at each step and lectures
+assigned, fixed or reassigned accordingly. The approach generated superior initial
+solutions when compared to three nearest competitors.
+The most promising aspect of hyper-heuristics is their ability to generalise
+better over unseen problem instances than a prescribed heuristic or metaheuristic
+can (Obit, 2010). However, careful operator design and parameterisation is still
+crucial to performance.
+
+Ahmed et al., 2015 designed nine low-level heuristics for a high school problem,
+seven of which were mutational and the remainder constraint-specific hill climbers.
+At each iteration, a formula was used to rate the heuristics according to three
+factors {f1, f2, f3}. f1 measured the previous performance, both in terms of time
+efficiency and impact on objective cost. f2 related to the pairwise dependencies
+between heuristics, while f3 recalled the time passed since the last invocation. The
+authors reported that this adaptive framework performed better than either a fully
+deterministic or probabilistic equivalent.
+Aside from this high school solver, Pillay, 2016 noted that hyper-heuristics
+have predominantly been tested on the examination track of educational timetabling.
+However, an application to the ITC2007 track 3 can be found in Habashi and Yousef,
+2018. An add-delete list of variable length was compiled at each step and lectures
+assigned, fixed or reassigned accordingly. The approach generated superior initial
+solutions when compared to three nearest competitors.
+The most promising aspect of hyper-heuristics is their ability to generalise
+better over unseen problem instances than a prescribed heuristic or metaheuristic
+can (Obit, 2010). However, careful operator design and parameterisation is still
+crucial to performance.
+2.3.6 Multi/many-objective approaches
+In all of the methodologies discussed so far, the cost of a solution timetable has
+been quantified by a single value — typically a weighted sum of constraint violations.
+Under this scalarised approach, optimisers are by definition single-objective. Datta
+et al., 2007, however, criticised this use of weights, and hence the scalar objective, as
+arbitrary. Selecting numeric weights for incommensurable objectives, such as the
+desires of teachers vs. students, is inherently subjective. Moreover, constraints can
+conflict with one another, either directly or obliquely. A scalar cost cannot capture
+this intricate interplay, and thus obscures the more granular qualities of a timetable.
+In this context, single-objective solvers necessarily suffer from lossy information.
+Multi-objective optimisation addresses this by presenting solution cost as a
+vector comprising a number of individual objective costs, or ‘scores’. These can either
+be simple constraint violation sums, or derived values representing more intangible
+properties, such as the conflicting teacher and student satisfaction scores in Ariyazand
+et al., 2022. The Pareto dominance relation can then be used to define a partial
+ordering on these vectors. Rather than returning a single best timetable, in the
+multi-objective case, a set of solutions is generated that are mutually non-dominating.
+These sketch out an approximation to the true Pareto front and help illustrate the
+intrinsic trade-offs between different objectives. A more detailed background on the
+multi-objective treatment of the UCTP, including its relative merits, demerits, and
+a review of previous approaches, is included as part of Chapter 4.
+
+
+
+
+2.4 State of the art
+The algorithms developed later in this thesis are based around the ITC2007 track 3
+formulation, and so it is to these benchmark results that the most attention is paid
+when considering the progression of the state of the art. The majority of authors
+have followed a single-objective treatment, as prescribed by the competition rules.
+The five original finalists were M¨uller, 2009, Lu et al., Atsuta et al., 2008 Geiger,
+2008 and Clark et al., 2008, from which the multi-phase constraint-based solver of
+M¨uller, 2009 was declared the winner. The ‘benchmark analysis’ section in Gozali
+and Fujimura, 2020 features an incomplete, but more recent, list of ITC2007 results,
+while Ceschia et al., 2023 includes the most up-to-date state of the art results. The
+majority of the overall best known results under the original timeout are shared
+between Abdullah and Turabieh, 2012 and Kiefer et al., 2017 (whose methods are
+described in Section 2.3.5.1). Lindahl et al., 2018 (discussed in Section 2.3.1.4)
+retains the best known result for comp09. For ease of reference all of these cost values
+are reproduced in Table 2.3, alongside the tightest currently known lower and upper
+bounds on the optima. The bounds have been contributed by various authors either
+using mathematical techniques or search methods with large iteration budgets.
+
+
+
+
+
+
+
+2.5.1 Formulations
+A distinction has been drawn between artificial UCTP benchmarks that are widely
+used, and individual problems that may have been studied by just one researcher.
+As real world problems can be quirky or even unique, the goal of standardisation is
+to present challenging problems that preserve generality without over-simplification.
+Ceschia et al., 2023 surveyed six such educational timetabling problem bench-
+marks. The authors noted with interest that the chronology corresponded with
+growing levels of complexity. The recent ITC2019, for example, incorporated ele-
+ments of earlier post-enrolment and curriculum-based models, making it a rich,
+customisable dataset. Despite this undeniable trend towards increased intricacy and
+nuance, the authors make the case that earlier benchmarks have not yet exhausted
+their purpose. Many instances in ITC2007 have been solved to optimality, but these
+problems remain a useful test bed for landscape analysis, computational efficiency
+and theoretical investigation. Not least of all, the volume of past work and published
+results (which presently eclipses that for ITC2019) enables robust comparisons to be
+drawn for novel algorithms. A potential downside is the over-fitting of an algorithm to
+a particular benchmark, restricting its usefulness. However, concepts from successful
+approaches (such as the style of metaheuristic, or the profile of a cooling schedule)
+can provide valuable insights into how to tackle a wider range of bespoke, real world
+problems, thus building a bridge between theory and practise. Another benefit
+of standardisation (and the international competitions) is to provide a focal point
+for the research community and encourage collaboration and cross-pollination of
+ideas. Some approaches have also crossed domain boundaries within the timetabling
+taxonomy in Figure 1.1. GAs, applied to the examination problem by Colorni et al.,
+1992, are now popular for course timetabling, for example.
+We acknowledge enduring issues around both constraint modelling and timetable
+quality measures. A good illustration of the (perhaps) unintended consequences
+of strict constraint definitions is the CurriculumCompactness vs. Windows
+distinction from Section 2.2.4. While hard constraints are mostly straight-forward to
+formalise, soft constraints such as these can be more intricate and difficult to define
+appropriately. In some cases, dependencies or other inter-variable relationships may
+be required. A subjective aspect may exist, which is also true of timetable quality
+measures/costs. Ranking the relative importance or attributing weights to different
+objectives is not an exact science. Solvers without hard-coded weights can offer some
+relief here, as well as the multi-objective approach, which does not rely on a scalarised
+objective at all. The latter is an evident gap in the field as the vast majority of
+UCTP research has taken a single-objective stance (Ceschia et al., 2023). Another
+avenue ripe for exploration is the inclusion of more ‘intangible’ objectives. Limited
+examples of these can be found, such as M¨uhlenthaler and Wanka, 2016 and Akkan
+and G¨ulc¨u, 2018, who devised metrics for ‘fairness’ and ‘robustness’ respectively, but
+most researchers persist with the prescribed objectives. Additional holistic objectives
+such as these lend themselves well to a bi- or multi-objective treatment, in which an
+approximation to the Pareto front can then reveal the extant trade-offs.
+2.5.2 Solvers: A thematic summary
+Across the myriad approaches applied to the UCTP, many thematic contrasts are in
+evidence. The pursuit of optimality — the exact solution — has fallen out of favour,
+with approximation techniques now more prevalent. While metaheuristics cannot
+guarantee optimality like a pure mathematical model can, the latter has proven
+impractical for navigating the immense search spaces induced by departmental-sized
+problems. A potential trade-off in quality is thus considered acceptable. Chen
+et al., 2021 remarked that techniques from operational research may be effective
+for generating feasible solutions, but remain cumbersome for further optimisation.
+The legacy of this is reflected in the popularity of solvers with multiple phases. The
+sequencing strategy can vary, with some authors assigning periods first and rooms
+second. Others address the hard constraints first before optimising over the soft
+constraints — a method that has proved highly successful.
+Concentrating on metaheuristics for university timetabling, a meta-study by
+Bashab et al., 2020 gave an insight into the frequency of use of various types. A
+sample of 131 papers published between 2009-2020 (a period of increasing interest in
+the field) is broken down in Figure 2.11. Nature-inspired methods are prominent,
+while genetic algorithms and hybrids, between them, make up nearly half of the total.
+In terms of hybrids, we have discussed the compositing of exact and inexact methods,
+as well as the mixing of metaheuristics that complement each others’ strengths.
+One conclusion is that a carefully designed hybrid can out-perform its constituent
+components, resulting in an extraordinarily powerful search.
+The topology of this search space is partly dependent on the encoding scheme.
+This review focused on direct style encodings, whose popularity is explainable by a
+number of factors. Their interpretation is highly intuitive (for example representing
+a day of the week by an integer from 0 to 4, or 1 to 5). It is easy to ‘bake in’ the
+satisfaction of certain hard constraints using appropriate variable ranges. Similarly,
+the design of genetic and other operators is much simplified. For these reasons, a
+direct encoding is adopted in the technical work that follows. It is recognised however
+that indirect encodings can offer greater expressiveness with regard to complex
+constraints, acting as timetable ‘builders’, much like the constructive heuristic rule
+sets discussed previously.
+In terms of constraint handling, a range of perspectives have emerged on the
+question of strict enforcement vs. full relaxation. Allowing movement through the
+infeasible space, subject to harsh penalties, can be a useful way to reconcile the two.
+Aiming for strict enforcement can be problematic due to the nature of the operators
+and the desire to avoid expensive repair mechanisms. Alvarez-Valdes et al., 2002
+pointed out the difficulties in navigating the search space using overly simple moves.
+
+Assignments that may be good in one respect for a lecture may also be impossible
+due to the clashes induced between rooms or other entities.
+The scope and size of perturbation moves is equally important. The success of
+adaptive algorithms that can call on a variety of neighbourhood structures suggests
+that both large and small moves have a role to play. The work of Yusoff and Roslan,
+2019 also indicates that a guided mutator can aid convergence better than pure
+random mutation can. There is a danger, however, in being overly prescriptive and
+stifling exploration. Achieving the right balance also requires the prudent setting of
+budgets and other relevant parameters.
+Optimisers can indeed be sensitive to individual parameter values or combin-
+ations thereof. Systems with fewer settings to tune, or those that have adaptive
+hyper-parameter tuning, are therefore naturally attractive. A trend is also evident
+towards problem agnosticism in solver design. Instances in the ITC2007 bench-
+mark vary from large and heavily constrained (comp05) to moderately easy to solve
+(comp11). A versatile and reliable optimiser ought to perform consistently across
+this diversity of problems without the need for explicit re-tuning.
+It has also been seen how both stochastic and deterministic processes can
+coexist or be nested within components of an optimiser. Both are present within
+certain constructive heuristics, where the ordering (and hence choice) of lecture
+is deterministic at each step, while the assignment period itself is left to chance.
+Evolutionary algorithms, by their nature, incorporate randomness. Consideration
+must be given then to the variance of the performance measure across multiple
+repetitions of such an algorithm. Low deviation from the mean is preferred as this
+allows stronger claims to be made about the expected performance.
+It is implied by various authors (Bashab et al., 2020, Wahid and Hussin, 2017,
+Abdelhalim and El Khayat, 2016) that run time is not of paramount concern in the
+field of timetabling. While automation-enhanced efficiency is laudable, universities
+often prepare a timetable weeks or months in advance of a new term. In many
+cases, running an optimiser for days (or longer) is unlikely to cause practical issues.
+A notable exception to this is when the full requirements of the timetable are not.
+
+known or may be subject to repeated changes over time, which is addressed in the
+later work on robustness. For the fair comparison of algorithms, the ITC2007 rules
+mandate the use of a single CPU core. In a real world use case though, independent
+runs of stochastic algorithms can be parallelised across multiple CPU cores and
+the best result returned. Further, the use of GPU-based programming has been
+mentioned as an avenue for future inquiry. Evolutionary approaches are tailor-made
+for parallelisation (across fitness functions or populations, for example) and could
+benefit from the high core count and multiple thread execution of a GPU.
+It is probably no coincidence then that population-based approaches have
+often been preferred over single-solution / trajectory-based alternatives. If a slower
+convergence rate and extra computational burden are deemed acceptable, then
+population-based solvers can offer advantages. Global exploration is particularly
+important in complex landscapes, and populations are generally more resilient with
+regard to local optima traps. Maintaining a population also means a diversity of
+possible solutions can be supplied to a decision maker without advance knowledge of
+his or her preferences.
+Finally, it is recognised that some published procedures or commercial solvers
+for timetabling incorporate (or require) a manual override for adjustments. These
+are generally referred to as interactive or semi-automatic solvers. In real-world
+applications, human intervention may prove useful in managing a timetable in the
+face of unforeseen changes that occur during a semester. Understanding what makes
+a timetable robust to such changes in the first place though is an interesting area of
+open research and could potentially increase the functionality of a fully automatic
+solver. The work presented in Chapters 4 and 5, in which robustness is ultimately
+incorporated into a many-objective solver, is premised on this very scenario.
+In dissecting the UCTP trends in the literature, it is apparent that some
+methodologies show greater promise than others over a wider range of formulations.
+No single approach or algorithm is consistently superior, however.
+In the chapter that follows, a review is provided of a popular metaheuristic
+— ACO, which ranked highly in Figure 2.11 — and an implementation known as
+
+MAX-MIN ant system is developed. In particular, research is carried out into
+how performance is affected by the order of course/lecture assignment and whether
+beneficial permutations can be predicted through learning. Chapter 4 then presents
+and develops a many-objective approach, in which individual soft constraint violations
+are treated as individual objectives. This work is built upon in the subsequent Chapter
+5, in which ideas of diversity in the genotype space, additional perturbation operators
+and, finally, a robustness objective are investigated. Chapter 6 summarises the thesis
+and provides directions for future work.

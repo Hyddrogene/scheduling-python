@@ -1,0 +1,4 @@
+digraph {
+	"" [fillcolor=black height=1 shape=circle style=filled width=1]
+	"" [color=black fillcolor=white height=0.5 shape=diamond style=filled width=0.5]
+}

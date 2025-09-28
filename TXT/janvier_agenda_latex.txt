@@ -1,0 +1,328 @@
+\begin{center}
+\section*{Janvier 2023}
+\end{center}
+\newcolumntype{B}[1]{>{\columncolor{red!30}\raggedright}m{#1}}
+\newcolumntype{G}[1]{>{\columncolor{green!30}\raggedright}m{#1}}
+            {
+            \setlength\LTleft{-1.2cm}
+            \begin{longtable}{|c|B{7cm}|G{7cm}|}
+            \hline
+            Jour & \centering Corentin  & \centering Bryan  
+            \tabularnewline
+\hline
+\endhead
+\textit{Dimanche 1 Janvier}&%%%%%%%%%%%% Corentin %%%%%%%%%%
+\begin{itemize}
+\item exemple
+\end{itemize}
+&%%%%%%%%%%% Bryan %%%%%%%%%
+\begin{itemize}
+\item exemple
+\end{itemize}
+\tabularnewline
+\hline
+\textit{Lundi 2 Janvier}&%%%%%%%%%%%% Corentin %%%%%%%%%%
+\begin{itemize}
+\item exemple
+\end{itemize}
+&%%%%%%%%%%% Bryan %%%%%%%%%
+\begin{itemize}
+\item exemple
+\end{itemize}
+\tabularnewline
+\hline
+\textit{Mardi 3 Janvier}&%%%%%%%%%%%% Corentin %%%%%%%%%%
+\begin{itemize}
+\item exemple
+\end{itemize}
+&%%%%%%%%%%% Bryan %%%%%%%%%
+\begin{itemize}
+\item exemple
+\end{itemize}
+\tabularnewline
+\hline
+\textit{Mercredi 4 Janvier}&%%%%%%%%%%%% Corentin %%%%%%%%%%
+\begin{itemize}
+\item exemple
+\end{itemize}
+&%%%%%%%%%%% Bryan %%%%%%%%%
+\begin{itemize}
+\item exemple
+\end{itemize}
+\tabularnewline
+\hline
+\textit{Jeudi 5 Janvier}&%%%%%%%%%%%% Corentin %%%%%%%%%%
+\begin{itemize}
+\item exemple
+\end{itemize}
+&%%%%%%%%%%% Bryan %%%%%%%%%
+\begin{itemize}
+\item exemple
+\end{itemize}
+\tabularnewline
+\hline
+\textit{Vendredi 6 Janvier}&%%%%%%%%%%%% Corentin %%%%%%%%%%
+\begin{itemize}
+\item exemple
+\end{itemize}
+&%%%%%%%%%%% Bryan %%%%%%%%%
+\begin{itemize}
+\item exemple
+\end{itemize}
+\tabularnewline
+\hline
+\textit{Samedi 7 Janvier}&%%%%%%%%%%%% Corentin %%%%%%%%%%
+\begin{itemize}
+\item exemple
+\end{itemize}
+&%%%%%%%%%%% Bryan %%%%%%%%%
+\begin{itemize}
+\item exemple
+\end{itemize}
+\tabularnewline
+\hline
+\textit{Dimanche 8 Janvier}&%%%%%%%%%%%% Corentin %%%%%%%%%%
+\begin{itemize}
+\item exemple
+\end{itemize}
+&%%%%%%%%%%% Bryan %%%%%%%%%
+\begin{itemize}
+\item exemple
+\end{itemize}
+\tabularnewline
+\hline
+\textit{Lundi 9 Janvier}&%%%%%%%%%%%% Corentin %%%%%%%%%%
+\begin{itemize}
+\item exemple
+\end{itemize}
+&%%%%%%%%%%% Bryan %%%%%%%%%
+\begin{itemize}
+\item exemple
+\end{itemize}
+\tabularnewline
+\hline
+\textit{Mardi 10 Janvier}&%%%%%%%%%%%% Corentin %%%%%%%%%%
+\begin{itemize}
+\item exemple
+\end{itemize}
+&%%%%%%%%%%% Bryan %%%%%%%%%
+\begin{itemize}
+\item exemple
+\end{itemize}
+\tabularnewline
+\hline
+\textit{Mercredi 11 Janvier}&%%%%%%%%%%%% Corentin %%%%%%%%%%
+\begin{itemize}
+\item exemple
+\end{itemize}
+&%%%%%%%%%%% Bryan %%%%%%%%%
+\begin{itemize}
+\item exemple
+\end{itemize}
+\tabularnewline
+\hline
+\textit{Jeudi 12 Janvier}&%%%%%%%%%%%% Corentin %%%%%%%%%%
+\begin{itemize}
+\item exemple
+\end{itemize}
+&%%%%%%%%%%% Bryan %%%%%%%%%
+\begin{itemize}
+\item exemple
+\end{itemize}
+\tabularnewline
+\hline
+\textit{Vendredi 13 Janvier}&%%%%%%%%%%%% Corentin %%%%%%%%%%
+\begin{itemize}
+\item exemple
+\end{itemize}
+&%%%%%%%%%%% Bryan %%%%%%%%%
+\begin{itemize}
+\item exemple
+\end{itemize}
+\tabularnewline
+\hline
+\textit{Samedi 14 Janvier}&%%%%%%%%%%%% Corentin %%%%%%%%%%
+\begin{itemize}
+\item exemple
+\end{itemize}
+&%%%%%%%%%%% Bryan %%%%%%%%%
+\begin{itemize}
+\item exemple
+\end{itemize}
+\tabularnewline
+\hline
+\textit{Dimanche 15 Janvier}&%%%%%%%%%%%% Corentin %%%%%%%%%%
+\begin{itemize}
+\item exemple
+\end{itemize}
+&%%%%%%%%%%% Bryan %%%%%%%%%
+\begin{itemize}
+\item exemple
+\end{itemize}
+\tabularnewline
+\hline
+\textit{Lundi 16 Janvier}&%%%%%%%%%%%% Corentin %%%%%%%%%%
+\begin{itemize}
+\item exemple
+\end{itemize}
+&%%%%%%%%%%% Bryan %%%%%%%%%
+\begin{itemize}
+\item exemple
+\end{itemize}
+\tabularnewline
+\hline
+\textit{Mardi 17 Janvier}&%%%%%%%%%%%% Corentin %%%%%%%%%%
+\begin{itemize}
+\item exemple
+\end{itemize}
+&%%%%%%%%%%% Bryan %%%%%%%%%
+\begin{itemize}
+\item exemple
+\end{itemize}
+\tabularnewline
+\hline
+\textit{Mercredi 18 Janvier}&%%%%%%%%%%%% Corentin %%%%%%%%%%
+\begin{itemize}
+\item exemple
+\end{itemize}
+&%%%%%%%%%%% Bryan %%%%%%%%%
+\begin{itemize}
+\item exemple
+\end{itemize}
+\tabularnewline
+\hline
+\textit{Jeudi 19 Janvier}&%%%%%%%%%%%% Corentin %%%%%%%%%%
+\begin{itemize}
+\item exemple
+\end{itemize}
+&%%%%%%%%%%% Bryan %%%%%%%%%
+\begin{itemize}
+\item exemple
+\end{itemize}
+\tabularnewline
+\hline
+\textit{Vendredi 20 Janvier}&%%%%%%%%%%%% Corentin %%%%%%%%%%
+\begin{itemize}
+\item exemple
+\end{itemize}
+&%%%%%%%%%%% Bryan %%%%%%%%%
+\begin{itemize}
+\item exemple
+\end{itemize}
+\tabularnewline
+\hline
+\textit{Samedi 21 Janvier}&%%%%%%%%%%%% Corentin %%%%%%%%%%
+\begin{itemize}
+\item exemple
+\end{itemize}
+&%%%%%%%%%%% Bryan %%%%%%%%%
+\begin{itemize}
+\item exemple
+\end{itemize}
+\tabularnewline
+\hline
+\textit{Dimanche 22 Janvier}&%%%%%%%%%%%% Corentin %%%%%%%%%%
+\begin{itemize}
+\item exemple
+\end{itemize}
+&%%%%%%%%%%% Bryan %%%%%%%%%
+\begin{itemize}
+\item exemple
+\end{itemize}
+\tabularnewline
+\hline
+\textit{Lundi 23 Janvier}&%%%%%%%%%%%% Corentin %%%%%%%%%%
+\begin{itemize}
+\item exemple
+\end{itemize}
+&%%%%%%%%%%% Bryan %%%%%%%%%
+\begin{itemize}
+\item exemple
+\end{itemize}
+\tabularnewline
+\hline
+\textit{Mardi 24 Janvier}&%%%%%%%%%%%% Corentin %%%%%%%%%%
+\begin{itemize}
+\item exemple
+\end{itemize}
+&%%%%%%%%%%% Bryan %%%%%%%%%
+\begin{itemize}
+\item exemple
+\end{itemize}
+\tabularnewline
+\hline
+\textit{Mercredi 25 Janvier}&%%%%%%%%%%%% Corentin %%%%%%%%%%
+\begin{itemize}
+\item exemple
+\end{itemize}
+&%%%%%%%%%%% Bryan %%%%%%%%%
+\begin{itemize}
+\item exemple
+\end{itemize}
+\tabularnewline
+\hline
+\textit{Jeudi 26 Janvier}&%%%%%%%%%%%% Corentin %%%%%%%%%%
+\begin{itemize}
+\item exemple
+\end{itemize}
+&%%%%%%%%%%% Bryan %%%%%%%%%
+\begin{itemize}
+\item exemple
+\end{itemize}
+\tabularnewline
+\hline
+\textit{Vendredi 27 Janvier}&%%%%%%%%%%%% Corentin %%%%%%%%%%
+\begin{itemize}
+\item exemple
+\end{itemize}
+&%%%%%%%%%%% Bryan %%%%%%%%%
+\begin{itemize}
+\item exemple
+\end{itemize}
+\tabularnewline
+\hline
+\textit{Samedi 28 Janvier}&%%%%%%%%%%%% Corentin %%%%%%%%%%
+\begin{itemize}
+\item exemple
+\end{itemize}
+&%%%%%%%%%%% Bryan %%%%%%%%%
+\begin{itemize}
+\item exemple
+\end{itemize}
+\tabularnewline
+\hline
+\textit{Dimanche 29 Janvier}&%%%%%%%%%%%% Corentin %%%%%%%%%%
+\begin{itemize}
+\item exemple
+\end{itemize}
+&%%%%%%%%%%% Bryan %%%%%%%%%
+\begin{itemize}
+\item exemple
+\end{itemize}
+\tabularnewline
+\hline
+\textit{Lundi 30 Janvier}&%%%%%%%%%%%% Corentin %%%%%%%%%%
+\begin{itemize}
+\item exemple
+\end{itemize}
+&%%%%%%%%%%% Bryan %%%%%%%%%
+\begin{itemize}
+\item exemple
+\end{itemize}
+\tabularnewline
+\hline
+\textit{Mardi 31 Janvier}&%%%%%%%%%%%% Corentin %%%%%%%%%%
+\begin{itemize}
+\item exemple
+\end{itemize}
+&%%%%%%%%%%% Bryan %%%%%%%%%
+\begin{itemize}
+\item exemple
+\end{itemize}
+\tabularnewline
+\hline
+    \caption{Agenda Janvier}
+
+    \label{tab:Janvier2023}
+\end{longtable}
+}

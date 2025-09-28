@@ -1,0 +1,16 @@
+L1,L2,L3,M1,M2 v
+->
+
+symétrie  v
+
+speical bench  v
+bench is group of class modulo date v
+decalage des jours ne marche pas bien  v
+tube de varaible de jour permettant de poser des contraintes de cardinalité v
+
+constrainte spécial v
+
+arg_sort + cumulative v
+disjunctive double pour soft disjunctive v
+soft_all_equal v
+soft all different v 

@@ -1,0 +1,168 @@
+\documentclass[runningheads]{llncs}
+%\documentclass[article]
+
+\usepackage[T1]{fontenc}
+\def\doi#1{\href{https://doi.org/\detokenize{#1}}{\url{https://doi.org/\detokenize{#1}}}}
+%
+\usepackage{graphicx}
+% Used for displaying a sample figure. If possible, figure files should
+% be included in EPS format.
+%
+% If you use the hyperref package, please uncomment the following line
+% to display URLs in blue roman font according to Springer's eBook style:
+% \renewcommand\UrlFont{\color{blue}\rmfamily}
+%
+\usepackage{listings}
+\lstset{language=Pascal}
+%\usepackage{siunitx}
+\usepackage[utf8]{inputenc}
+\usepackage{fancyvrb} % for "\Verb" macro
+\usepackage{tikz}%dessin
+\usepackage{enumitem}%jolie enum
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{stmaryrd}%llbracket,rrbracket
+%\usepackage{amsthm}
+\usepackage{mathtools}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage[table]{xcolor}
+\usepackage{multirow}
+
+\usepackage{comment} 
+\usepackage[french,onelanguage,ruled,vlined]{algorithm2e}%algo
+\usepackage{colortbl}
+\usepackage{tikz-3dplot}
+\usetikzlibrary{3d}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true
+}
+\usepackage{array}
+
+\usepackage{booktabs} %mid
+\usepackage{longtable} % Include the longtable package
+
+\usepackage{tabularx}
+
+\usepackage{transparent}
+\usepackage{float}
+\usepackage{subcaption}% pour aligner les figures
+\usepackage[justification=centering]{caption}
+\usepackage{todonotes}
+%\usepackage{arydshln}%draw dash lines tabular
+%%%package problematique
+\newcommand{\cdashline}[1]{ \arrayrulecolor{red}\hline \arrayrulecolor{black}}
+\newcommand{\hdashline}[1]{ \arrayrulecolor{red}\hline \arrayrulecolor{black}}
+
+\newcommand{\nfois}[2]{%
+    \\[-0.75em]%
+    \foreach \i in {1,...,#1}{%
+        &% Ajout de l'ampersand pour chaque itération
+    }%
+    \multicolumn{#2}{c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]%
+}%
+
+
+\usepackage{array}
+\usepackage{diagbox}
+
+\usepackage{lscape}
+
+\usepackage{rotating}
+
+\newlist{constraintenum}{enumerate}{2}
+\setlist[constraintenum,1]{label=C\arabic* :,leftmargin=1.5cm}
+\setlist[constraintenum,2]{label= \arabic*)}
+
+\newcommand{\coco}[1]{\todo[inline,color=orange!40]{#1 -- Corentin}}
+\newcommand{\davidg}[1]{\todo[inline,color=green!40]{#1 -- David.G}}
+\newcommand{\davidl}[1]{\todo[inline,color=blue!40]{#1 -- David.L}}
+\newcommand{\vincent}[1]{\todo[inline,color=red!40]{#1 -- Vincent}}
+\newcommand{\marc}[1]{\todo[inline,color=yellow!40]{#1 -- Marc}}
+
+% Configuration du style pour le code Prolog
+\lstdefinestyle{PrologStyle}{
+    language=Prolog,
+    basicstyle=\small\ttfamily,
+    keywordstyle=\bfseries\color{blue},
+    %identifierstyle=\color{red},
+    commentstyle=\itshape\color{gray},
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    stepnumber=1,
+    numbersep=5pt,
+    backgroundcolor=\color{white},
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=4,
+    captionpos=b,
+    breaklines=true,
+    breakatwhitespace=true,
+    escapeinside={(*@}{@*)},
+}
+
+
+\usepackage[style=numeric,sorting=none]{biblatex}
+\addbibresource{references.bib}
+\date{\today}
+
+ % \usepackage{atbegshi}
+
+ % \AtBeginShipout{%
+ %   \ifnum\value{page}=32%
+ %     \AtBeginShipoutNext{\AtBeginShipoutDiscard}%
+ %   \fi
+ % }
+
+\begin{document}
+\include{commands}
+
+%Langage and features models for classes for educationnal timeatbling problems and
+\title{A Rule Language and Feature Model for Educational Timetabling\thanks{Supported by a research grant from Université d'Angers.}}
+%
+%\titlerunning{Abbreviated paper title}
+% If the paper title is too long for the running head, you can set
+% an abbreviated paper title here
+%
+\author{
+Corentin Behuet \and
+Vincent Barichard \and
+David Genest \and
+Marc Legeay \and
+David Lesaint
+%First Author\inst{1}\orcidID{0000-1111-2222-3333} \and
+%Second Author\inst{2,3}\orcidID{1111-2222-3333-4444} \and
+%Third Author\inst{3}\orcidID{2222--3333-4444-5555}
+}
+%
+\authorrunning{C. Behuet et al.}
+% First names are abbreviated in the running head.
+% If there are more than two authors, 'et al.' is used.
+%
+\institute{%Princeton University, Princeton NJ 08544, USA \and
+%Springer Heidelberg, Tiergartenstr. 17, 69121 Heidelberg, Germany
+%\email{lncs@springer.com}\\
+%\url{http://www.springer.com/gp/computer-science/lncs} \and
+%ABC Institute, Rupert-Karls-University Heidelberg, Heidelberg, Germany\\
+Univ Angers, LERIA, SFR MATHSTIC, F-49000 Angers, France \\
+\email{\{firstname.lastname\}@univ-angers.fr}}
+%
+\maketitle              % typeset the header of the contribution
+
+\input{0-abstract}
+\section{Introduction}
+\input{1-introduction}
+\input{2-schema}
+\input{3-feature-model}
+\input{3-state-of-art}
+\input{5-instance-experiments}
+\input{6-conclusion}
+
+\printbibliography
+
+\appendix
+\input{appendix}
+
+\end{document}

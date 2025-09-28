@@ -1,0 +1,86 @@
+Portail MPC : <version en ligne>(25/05/2022)
+P1:
+M*PC-(PC,M)
+-Analyse élémentaire 1 [maths]
+-Algèbre élémentaire 1 [maths]
+
+MPC-PC
+-Analyse élémentaire* 1 [maths]
+-Algèbre élémentaire* 1 [maths]
+
+Les 3
+-Physique des ondes [physique]
+-Mécanique 1 [physique]
+-Atomistique 1 [chimie]
+-Introduction à la chimie 1 [chimie]
+-Anglais
+-EEO
+
+P2:
+M*PC-(PC,M)
+-Analyse élémentaire 2 [maths]
+-Algèbre élémentaire 2 [maths]
+
+MPC-PC
+-Analyse élémentaire* 2 [maths]
+-Algèbre élémentaire* 2 [maths]
+
+Les 3
+-Mécanique 2 [physique]
+-Électrocinétique 1 [physique]
+-Atomistique 2 [chimie]
+-Introduction à la chimie 2 [chimie]
+-Cinétique [chimie]
+-Anglais 
+-EEO
+//=========================================
+P3:
+M*PC-M
+-Fondements d’analyse 1 [maths]
+-Géométrie du plan [maths]
+-Arithmétique dans Z [maths]
+-Oraux de mathématiques [maths]
+
+M*PC-PC && MPC-PC
+-Fondements d’analyse pour PC 1 [maths]
+-Electrostatique 1 [physique]
+-Fondements de l’optique [physique]
+-Equilibres acido-basiques [chimie]
+-Chimie organique 1 [chimie]
+
+Les 3
+-Anglais
+-3PE
+
+P4:
+
+M*PC-M
+-Fondements d’analyse 2 [maths]
+-Géométrie de l’espace [maths]
+-Arithmétique des polynômes [maths]
+-Oraux de mathématiques [maths]
+
+M*PC-PC && MPC-PC
+-Fondements d’analyse pour PC 2 [maths]
+-Instruments d’optique [physique]
+-Electrocinétique 2 [physique]
+-Equilibres précipitation / complexation [chimie]
+-Chimie organique 2 [chimie]
+
+Les 3
+-Anglais
+-3PE
+
+P5:
+M*PC-M
+-Algorithmique Python + Projet pour PC [maths/info]
+
+M*PC-PC && MPC-PC
+-Electrostatique 2 [physique]
+-Mécanique 3 [physique]
+-Découverte expérimentale de la Physique [physique]
+-Analyses et dosages [chimie]
+-Chimie organique 3 [chimie]
+
+Les 3
+-Culture numérique [info]

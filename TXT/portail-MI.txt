@@ -1,0 +1,52 @@
+Portail MI : <version en ligne>(25/05/2022)
+P1:
+-Analyse élémentaire 1 [maths]
+-Algèbre élémentaire 1 [maths]
+-Algorithmique 1 [info]
+-bases d'informatique 1 [info]
+-Anglais 1
+-EEO
+
+P2:
+-Analyse élémentaire 2 [maths]
+-Algèbre élémentaire 2 [maths]
+-Algorithmique 2 [info]
+-Bases d'informatique 2 [info]
+-EEO
+-Anglais 2
+//=================
+P3:
+MI-I
+-Fondements de l'informatique 1 [info]
+-Développement web 1 [info]
+
+MI-M
+-Fondement d'analyse 1 [maths]
+-Géométrie du plan [maths]
+-Oraux de mathématiques [maths]
+
+Les 2
+-Arithmétique dans Z [maths]
+-Algorithmique 3 [info]
+-Anglais
+-3PE
+
+P4:
+MI-I
+-Algorithmique 4 [info]
+-Fondements de l’informatique 2 [info]
+-Bases de données 1 [info]
+MI-M
+-Fondements d’analyse 2 [maths]
+-Géométrie de l’espace [maths]
+-Arithmétique des polynômes [maths]
+-Oraux de mathématiques [maths]
+
+Les 2
+-Développement Python
+-Anglais 
+-PE
+
+P5:
+-Concrétisation
+-Culture Numérique

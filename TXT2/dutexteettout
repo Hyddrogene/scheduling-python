@@ -1,0 +1,23 @@
+Besides, %Since no assumption is made on the computing task, 
+{\UTP} instances may be used to repair timetables, complete partial timetables or generate full solutions. 
+
+Similarly to the schema proposed in \cite{2018muller,ITC2019} for the international timetabling competition ({\ITC}), 
+the {\UTP} model is predicated on a multi-scale schedule horizon (i.e., weeks, weekdays and daily slots), a mixed set of resources (i.e., students, student groups, rooms and teachers), and a hierarchical course structure (i.e., course parts, part classes and class sessions). In our approach however, class sessions are considered as first-class objects that must be scheduled individually alongside resources. %For full flexibility, 
+The scheduling scheme is based on cumulative resources and multi-resource sessions 
+but may be adapted to each instance using entity properties and maps. 
+Specifically, 
+sessions are cast as single-resource %tasks 
+(e.g., face-to-face lectures) or multi-resource tasks (e.g., hybrid sessions) %using multiplicity marking 
+by quantifying the needed resources. 
+%In either case, 
+The resources allowed for a session follow from the distribution that is given over courses (i.e., registered students) and course parts (i.e., designated teachers and rooms). 
+The volumes of sessions are themselves configurable for teachers (i.e., sessions quota per course part) but pre-determined for students (i.e., mandatory session attendance per class) while rooms may be reused at will. %within course part boundaries. 
+No limits apply on simultaneous resource usage but for rooms whose hosting capacity must match %cumulated 
+class size. 
+As for session scheduling, start time grids are configurable in each course part and 
+the model simply requires full session sequencing in each class. 
+Any resource may therefore be assigned simultaneous or overlapping sessions  (e.g., joint sessions, optional tutoring) and disjunctive rules may be enforced as needed to prevent parallelism or cast unit resources. 
+%are subject to class-scoped global sequencing constraints 
+Lastly, the model sections students into classes (each part of a requested course is mandatory) and supports subgroup inclusion constraints between classes. 
+%TODO last sentence on groups: 
+Note that student groups are considered a by-product of student sectioning and as such may only be listed in the solution component. 

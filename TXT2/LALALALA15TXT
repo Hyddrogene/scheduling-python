@@ -1,0 +1,15 @@
+
+la première donnée pour un emploi du temps est le calendrier.
+En effet on va voir la période de planning avec une date initla te etune date de fin.
+celui ci est décomposé en plusieurs semaine, cahque semaine es décompsé en jour.
+puis ensuite les jours sont alors décomopsé en différentes oint temporelle, uls pvuent représenter des poitns toutes les minutes, ou alors toutes ls 5 minutes et poruquoi pas toute les heures .
+selon le cas chosis on aura des journées durant respectivment 1140 point tempore, ou alors 255 point tmporel ou encore 24 point temporelle.
+C'est cette granulité de point temporelle quoitiden qui donne la densité de 'lhoriozn mtperolle.
+ennf et si('l la densité est faible alors on aura moins de temoirelle, et tandis que avec plus de densité on aura danvatge de point tmeporelle.
+Avoir beaucoup de point temporelle permet de'être plus précis, mais peut être meme trop précis.
+On peut se représenter cette durée comme lécart entre 2 pints temproelle sucesffi (toutes les 1 minutes) ou plus
+
+
+Cette horizon peut être relatif ou absolue
+
+L'élément calendar représente cette apsets temorelle en effecturant avec les donénes siasies entre un produit cartésein donannt laors le"horizon tmeporelle de celui-ci.

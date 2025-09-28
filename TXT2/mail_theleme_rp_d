@@ -1,0 +1,39 @@
+Bonjour,
+Pour la thèse nous avons donc comme objectif d'avoir un systéme permettant de résoudre un problème d'emplois du temps, cependant une fois une solution construite il faut la maintenir viable dans le temps c'est le mécanisme de réparation.
+Nous avons donc 2 grande étape dans ce projet, une première qui est la déclaratione et la résolution d'un problème d'emplois du temps et une seconde qui est l'aspect réparation.
+Pour la premièer partie il s'agit d'avoir un langage de déclaration permettant de décrire le problème d'emplois du temps (contraintes, effectif, cours etc.) à soumettre au programme, et ensuite il faut que le programme soit capable de l'interpréter pour le résoudre.
+Une fois une solution produite un ensemble d'aléa vont arriver ponctuellement et pour qu'un emplois du temps reste stable dans le temps il faut avoir un ensemble d'outils permettant de réparer une solution sans trop la dégrader pour qu'elle reste plaisante pour tous le monde.
+Jusqu'a aujourd'hui nous avons avancé sur la première partie tandis que nous commencons à nous penché sur l'aspect algorithmique de la seconde.
+
+Voici donc en quelques points l'avancement sur le sujet de thèse :
+
+(1) Une version très étendue de notre langage de modélisation de problèmes d'EDT est implémentée en XML pour coder les instances.
+(2) Un outil permettant de convertir toute instance au format XML vers des formats ad-hocs pour nos solveurs est implémenté.
+(3) La L3 info 2nd semestre et L1 MI/MPC périodes 1 à 2 est encodée.
+(4) Un modèle en programation par contraintes pour résoudre le problème permettant de produire un EDT pour la L1 MI/MPC en période 1. La plupart des règles et contraintes connues ont été modélisées et sont satisfaites.
+(5) 1 article a été soumis et accepté à la conférence nationale JFPC et 1 article a été soumis et accepté à la conférence internationale PATAT dédiée à la problématique EDT.
+
+Et donc le travail en cours et à venir porte sur plusieurs points essentiels :
+Il faut décrire le cadre formel dans lequel va se placer la réparation et les algorithmes qui vont fonctionner derrière, et il y a aussi un travail à fournir sur la formulation des critères d'optimisations sur la réparation ou l'optimisations des  .
+à court terme :
+
+(1) Tester le passage à l'échelle lorsqu'on va empiler sur une même période plusieur
+s formations pour voir jusqu'où le solver peut tenir et régler le solver pour le guider vers des EDT qui soient un peu mieux distribués sur la semaine.
+On se focalise sur la discipline info pour la modélisation des formations restantes (P1/S1 pour la L2 jusqu'au M2) afin de réduire le temps de modélisation et de gagner en confiance sur la robustesse du système à co-gérer licences et masters.
+(2) Concevoir un algortihme décrivant l'espace de relaxation et les opérateurs utiles pour le travail sur la réparation/révision.
+(3) Gérer automatiquement les "irrégularités" du type Campus Day ou jours fériés.
+
+Sur le plus long terme :
+
+(4) Pouvoir gérer toutes les irrégularités (absence d'enseignant, sinistre dans une salle, etc.) et, de manière plus générale, développer un mode révision/réparation pour adapter les EDT en temps réel ou lors des phases de construction.
+(5) Gérer les contraintes d'optimisations liés aux préférences et aux conforts des solutions produites.
+
+De manière adjacente à ces travaux une autre approche de résolution par contraintes est produites par mes encadrants de thèse, nous avons pu avoir quelques stagiaires sur des sujets de stage lié au dévelopement d'une interface de saisie des contraintes de l'emploi du temps, un autre sur la visualisation des solutions produites par nos outils, une autre permettant d'exectuter de tests pour voir les différences sur les solutions, mise en place d'une API pour la communication entre les outils ou encore un autre sur la comparaison de notre langage de modélisation avec un autre déjà existant (mais étant spécifique aux université anglo-saxonne).
+De plus sur le serveur du LERIA nous avons mis en place une base de donnée permemttant de stocké les données relative à nos emplois du temps.
+Cependant pour ce qui la récupération des données et la mise en production il s'agit plus de la DDN qui s'occupe des outils actuelles.
+
+
+Cordialement,
+
+
+https://www.youtube.com/watch?v=rUCvEAdqzlI

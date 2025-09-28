@@ -1,0 +1,6 @@
+Le calcul d'emplois du temps universitaire est un problème d'optimisation combinatoire complexe tant dans sa modélisation que sa résolution.
+Nous présentons une approche par contraintes qui englobe la constitution de groupes, la distribution des salles et enseignants, leur allocation et l'ordonnancement des séances.
+Cette approche se fonde sur un langage dédié à base de règles (UTP) permettant de modéliser les différentes entités et contraintes d'une instance.
+Les instances UTP sont encodées en XML et un parseur convertit les règles en contraintes dans un format JSON compatible avec les solveurs MiniZinc et CHR.
+Nous présentons ici le modèle MiniZinc pour la classe UTP et des expérimentations préliminaires réalisées sur des instances réelles issues du système universitaire francais.
+

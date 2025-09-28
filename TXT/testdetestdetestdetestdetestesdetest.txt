@@ -1,0 +1,12 @@
+petiot aurégane
+
+/home/etud/timetabling/instances/benchmarks/instance_solve/ua_l1-l2_p1-p6_l3info_m1info-s1_m2info-s1-s2_v1_extension_v2.json /home/etud/timetabling/instances/benchmarks/instance_for_visualisation/ua_l1-l2_p1-p6_l3info_m1info-s1_m2info-s1-s2_v1_bis.xml /home/etud/test_strategie_v2.json
+
+
+/home/etud/eclipse-workspace/Constraint_model/instance/ua_l1-l2_p1-p6_l3info_v5_hard_extension_v2.json /home/etud/timetabling/instances/benchmarks/instance_solve/ua_l1-l2_p1-p6_l3info_v5_hard.xml /home/etud/timetabling/src/choco/choco_strategie/testdestratégie.json
+
+/home/etud/timetabling/instances/benchmarks/instance_solve/ua_l1-l2_p1-p6_l3info_m1info-s1_m2info-s1-s2_v1_extension_v2.json /home/etud/timetabling/instances/benchmarks/instance_solve/ua_l1-l2_p1-p6_l3info_m1info-s1_m2info-s1-s2_v1.xml /home/etud/test_strategie_v2.json
+
+
+problème apprentissage ramondec jellyfish
+monte carlo procdure

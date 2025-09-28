@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <link rel="stylesheet" href="charge.css">
+    <meta charset="UTF-8" />
+    <title>Page de Beta</title>
+</head>
+
+<body>
+<script>
+var docTitle = document.title;
+window.addEventListener("blur",()=>{document.title = "Revieeeens :(";});
+window.addEventListener("focus",()=>{document.title = docTitle;});
+</script>
+<div class="custom-loader"></div>
+<div>
+<input type="range" id ="r" />
+<input id="t">
+<div id ="d"></div>
+
+<script>
+r.oninput = c;
+function c(){
+    t.value = this.value;
+    d.innerText = this.value;
+}
+</script>
+
+</div>
+<!--<div>    
+    <ul>
+        <li>
+            <a href="vehicules-anciens/vehicules-anciens.html">Véhicules anciens</a>
+        </li>
+        <li><a href="chanson/chanson.html#last">Chanson</a></li>
+        <li><a href="surfing/surfing.html">Surfin' UA</a></li>
+        <li>
+            <a href="https://www.univ-angers.fr/fr/index.html">Université d'Angers</a>
+        </li>
+    </ul>
+</div>
+-->
+<div class="feedback">
+    <button class="btn" >submit</button>
+</div>
+<script>
+var btn = document.querySelector(".btn");
+var position;
+btn.addEventListener("mouseover",function(){position ? (position = 0) : (position = 150);
+btn.style.transform = 'translate('+position+'px,0px)';
+btn.style.transition = "all 0.3s ease";
+})
+</script>
+
+<div class="feedback2">
+    <input id="ch" />
+    <br/>
+    <button class="btn2" onclick="getClicked()" >SUBBBB</button>
+</div>
+<script>
+function getRandomInt(max) {
+  return Math.floor(Math.random() * max);
+}
+var btn2 = document.querySelector(".btn2");
+var position1;
+var position2;
+var position3;
+var max = 350;
+var tt = document.querySelector("#ch").value; 
+btn2.addEventListener("mouseover",function(){
+tt = document.querySelector("#ch").value; 
+if (tt == "") {
+// console.log(tt);
+position1 = getRandomInt(max);
+position2 = getRandomInt(max);
+position3 = getRandomInt(360);
+btn2.style.transform = 'translate('+position1+'px,'+position2+'px)';
+btn2.style.transition = "all 0.1s ease";
+btn2.style.transform += "rotate("+position3+"deg)";
+}
+});
+
+document.querySelector("#ch").addEventListener("mouseover",function(){
+btn2.style.transform = "rotate(0deg)";});
+
+function getClicked(){
+tt = document.querySelector("#ch").value; 
+    alert("valeur "+tt+" ne sers à rien\n");
+}
+</script>
+
+
+    <!--<div class="circle">
+        <ul>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>-->
+    
+    
+<div>
+    <button  onclick="getClicked()" data-text="Awesome" class="buttonslide" >
+        <span class="actual-text">
+        &nbsp;La classe &nbsp;</span>
+        <span class="hover-text" aria-hidden="true" >
+        &nbsp;La classe &nbsp;</span>
+    </button>
+</div>
+
+<p>Cette boîte utilisera des transitions pour width, height, background-color, transform.
+   Survolez cette boîte pour voir l'effet.</p>
+<div class="box"></div>
+
+
+</body>
+
+</html>

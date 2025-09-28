@@ -1,0 +1,70 @@
+%------------------------------------------------------------
+%------------------------------------------------------------
+\subsection{Etat de l'art}
+\label{2022_JFPC/etat_art}
+Nous dressons ici une comparaison du langage {\UTP} et du cadre de représentation {\ITC} implémenté en {\XML} \cite{2018muller,ITC2019}.
+
+Les deux approches se distinguent d'abord par la modélisation des programmes (ordonnancements) possibles par classe.
+Le langage {\UTP} définit chaque classe par une simple séquence de séances de durée égale et le problème consiste à programmer chaque séance.
+Le schéma {\ITC} %, quant à lui, 
+procède en extension et associe différents programmes à chaque classe (élément {\texttt{times}} du schéma).
+Le problème se ramène alors au choix d'un programme par classe
+où chaque programme est figé et se définit par la répétition sur plusieurs semaines d'un planning hebdomadaire comportant une ou plusieurs séances de durée égale, placées sur différentes journées et partageant le même créneau quotidien.
+Les deux représentations ne se réduisent pas l'une à l'autre.
+Par exemple, {\UTP} ne peut modéliser une classe dont les séances sont de durées variables.
+A l'inverse, {\ITC} ne peut modéliser une classe programmée sur différents créneaux quotidiens.
+Toutefois, certains programmes d'intérêt pratique se représentent dans l'une ou l'autre approche en contraignant classes et séances de manière appropriée.
+Par exemple, une classe hebdomadaire devant se rencontrer sur le même créneau se modélise en combinant des contraintes \texttt{\SAMEDAILYSLOT}, \texttt{\WEEKLY} et \texttt{\FORBIDDENPERIOD}.
+L'implémentation d'une méthode de réduction plus complète %(par exemple, par le biais de prédicats dédiés) 
+est en cours d'étude.
+
+Pour ce qui concerne l'organisation hiérarchique des cours, 
+{\ITC} introduit un niveau intermédiaire modélisant un choix de configuration par cours (élément {\texttt{configuration}}).
+Chaque cours possède une ou plusieurs configurations qui sont indépendantes quant à leur décomposition en parties, classes et séances. 
+Le schéma {\ITC} impose simplement qu'un étudiant inscrit à un cours assiste à toutes les parties d'une seule configuration, deux étudiants pouvant être associés à des configurations différentes. %\davidg{On ne dit rien à propos de UTP à ce propos. En ne disant rien, on laisse à penser que ceci ne peut pas être pris en compte dans UTP. Je sais bien qu'on est "serrés" donc pas forcément nécessaire de prendre en compte cette remarque. }
+Ce concept n'est pas intégré dans la version actuelle du langage {\UTP}.
+Pour ce qui concerne les ressources, le langage {\UTP} représente explicitement les enseignants à l'instar des salles alors qu'{\ITC} ne modélise que les salles.
+Il permet aussi d'allouer différentes ressources aux séances d'une même classe 
+%(et en particulier de spécifier le service d'enseignement de chaque intervenant)
+alors que le schéma {\ITC} impose qu'une même salle leurs soit allouée.
+En outre, {\UTP} autorise des séances multi-ressources alors qu'{\ITC} est restreint aux séances mono-salles.
+
+Les deux languages de contraintes %proposés %dans {\UTP} et {\ITC} 
+se démarquent aussi l'un de l'autre. 
+D'une part, les prédicats {\ITC} s'appliquent aux classes alors que
+les prédicats {\UTP} s'appliquent à des ensembles de séances quelconques - et en particulier à des séances individuelles - qui peuvent être conditionnés au choix des ressources allouées. 
+D'autre part, le langage de règles et de sélecteurs {\UTP} permet de contraindre n'importe quelle classe de ressources ou d'éléments de cours de manière concise et plus adaptée pour l'expression des besoins.
+
+Enfin, le schéma {\ITC} prescrit une résolution du problème par optimisation combinatoire en intégrant une fonction coût pondérant 4 critères qui pénalisent respectivement les choix de créneaux et de salles pour les classes, les violations de contraintes et le chevauchement de séances par étudiant.
+Dans sa version actuelle, le langage {\UTP} traite le problème comme un problème de satisfaction de contraintes dures.
+L'intégration de contraintes souples et la possibilité d'aggréger pénalités ou préférences, que ce soit dans des contextes de construction ou de réparation de solution, est à l'étude.
+
+%Student groups 
+% near-identical course structure: no course configuration element
+% no time elements in UTP classes. Alternative class times are fixed in ITC
+% OK time elements in extension -> unusitable for loosely constrained class programs
+% OK impossible to express k weekly slots with different starting slots. In UTP: use sameWeeklySlot with masks.
+% OK impossible to enforce different constraints bettwen first period of a course (amorcage) and the rest => ok for us with masks
+% KO: times with different #sessions and session length. 
+% => solution per session (vs per class) : slot + romms + teachers
+
+
+%Sectioning:: as itc (parent class)
+%Ressources
+%- rooms: travel in ITC => using constraint travel in UTP.
+%- new: teachers.
+%- students: no change.
+%- OK groups. Admin and computational needs.
+%- Domain constraints
+%- by default, all resources are cumultative (explain). Avec contrainte (disjunctive):: no overlap on romms/etc. 
+%- allowed slot (applies to all sessions of a part's classes) : ITC via time elements. Adequate for "grid systems". 
+%- allowed rooms and allowed teachers (worklaod per part = prescribed number of sessions)
+%- single or multi-room/teacher session in UTP.
+%- possibly different resources between sessions of a class (unless addiiotnal rules:: sameRoom, sameTeacher, ...)
+%Rules language
+%- ITC: class-level constraints vs session-level constraints on UTP
+%- Labelling: simplifies constraint expression to look up entities
+%Solution
+%seul ajout: group-to-class and student-to-group
+%Résolution: UTP == SAT vs Opt/gestion prefs => pas de priorites, pondérations, etc
+%

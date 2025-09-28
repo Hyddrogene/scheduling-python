@@ -1,0 +1,192 @@
+### 1. Introduction
+L'emploi du temps scolaire est un problème classique d'optimisation qui a été largement étudié en raison de son importance pratique et théorique. Il consiste à programmer un ensemble de réunions classe-enseignant dans une période de temps prédéterminée, en satisfaisant des exigences de différents types. Étant donné la nature combinatoire de ce problème, résoudre des instances de taille moyenne et grande de planification scolaire de manière optimale est une tâche difficile. Lorsque les ressources sont limitées, il est souvent difficile de trouver même une solution faisable. Plusieurs techniques ont été développées dans la littérature pour aborder le problème de l'emploi du temps des écoles secondaires. Étant donné que l'utilisation de méthodes exactes, telles que les techniques de programmation mathématique, est considérée comme impraticable pour résoudre de grandes instances du monde réel, les métaheuristiques et les métaheuristiques hybrides sont les approches de solution les plus utilisées. Dans cet article, nous proposons un modèle de flux multi-commodités pour le problème de l'emploi du temps scolaire. De plus, nous appliquons la décomposition de Dantzig-Wolfe au modèle proposé, proposons un algorithme de génération de colonnes, et présentons des résultats expérimentaux sur des instances bien connues du problème. Les résultats montrent que les bornes inférieures obtenues grâce à notre approche sont serrées et peuvent être générées plus rapidement que les approches précédentes rapportées dans la littérature.
+
+### 2. Revue de la littérature
+Une tâche commune à toutes les institutions éducatives est de fournir une affectation des classes qui combine enseignants, étudiants, salles et périodes (ou créneaux horaires) pour obtenir un emploi du temps faisable, satisfaisant des exigences de différentes natures.
+
+Habituellement, les exigences sont séparées en exigences dures et souples. Par exigences dures, nous entendons celles qui doivent être satisfaites, tandis que les exigences souples peuvent être violées, mais devraient être satisfaites dans la mesure du possible. Les exigences souples peuvent avoir différents niveaux d'importance et sont souvent en conflit les unes avec les autres, de sorte qu'il peut être impossible de toutes les satisfaire en même temps. Typiquement, la qualité d'une solution est directement associée à la satisfaction des exigences souples. Plus les exigences souples sont satisfaites, ce qui peut être pris en compte différemment selon le niveau auquel chacune appartient, meilleure est considérée la solution.
+
+La qualité est un attribut critique de la solution car, une fois l'emploi du temps établi, il déterminera l'utilisation des ressources physiques et la routine quotidienne de plusieurs personnes, possiblement des milliers, pour une longue période qui est généralement d'environ un an. En raison de la répétition, même des problèmes mineurs peuvent se transformer en problèmes majeurs au fil du temps, affectant directement la qualité du travail des enseignants, l'apprentissage des étudiants et les dépenses de l'institution.
+
+Les problèmes de planification éducative ont de nombreuses variantes proposées dans la littérature, et l'ensemble des objectifs et des exigences dépend principalement du contexte de l'application, de l'institution et du lieu où elle se trouve (Drexl & Salewski, 1997; Post et al., 2014). Bien qu'il existe plusieurs variantes, les problèmes de planification éducative sont généralement regroupés en trois classes : la planification scolaire, la planification des cours et la planification des examens (Schaerf, 1999). Dans les deux cas de planification scolaire et de cours, l'objectif est de construire un emploi du temps hebdomadaire. Cependant, dans la planification scolaire, un ensemble de classes doit être assigné à des créneaux horaires, tandis que dans la planification des cours, un ensemble de cours universitaires doit être programmé en évitant les chevauchements de cours avec des étudiants communs. Enfin, dans le problème de l'examen, un ensemble d'examens doit être réparti sur un horizon temporel en évitant les chevauchements pour les étudiants.
+
+Dans notre étude actuelle, nous nous concentrons sur le problème de la planification scolaire. Ce problème est apparu pour la première fois dans la littérature scientifique dans les années 60 (Gotlieb, 1963) et depuis, il a attiré une attention croissante. La variante la plus basique du problème consiste à programmer un ensemble d'événements classe-enseignant (ou réunions) de telle sorte qu'aucun enseignant (ni classe) ne soit requis dans plus d'une leçon à un moment donné. Ce problème de base peut être résolu en temps polynomial par un algorithme de flux de réseau à coût minimal (de Werra, 1971). Cependant, dans les applications du monde réel, les enseignants peuvent être indisponibles à certaines périodes. Si cette contrainte est prise en compte, le problème de l'emploi du temps résultant est NP-complet (Even, Itai, & Shamir, 1975).
+
+En fait, la plupart des problèmes de planification du monde réel apparaissent comme des problèmes d'optimisation combinatoire appartenant à la classe NP-difficile. Pour cette raison, des chercheurs du monde entier ont étudié ces problèmes et plusieurs techniques différentes ont été développées. Étant donné que l'utilisation de méthodes exactes, telles que les techniques de programmation mathématique, est considérée comme impraticable pour résoudre des instances réelles moyennes et grandes, les métaheuristiques et les métaheuristiques hybrides sont les approches de solution les plus utilisées. Pour une vue d'ensemble actualisée de ces approches, nous renvoyons le lecteur à l'enquête de Pillay (2014).
+
+Bien que les groupes de recherche partagent des intérêts similaires, avant 2011, la majorité des publications dans la littérature rapportaient des résultats axés sur la résolution de variantes spécifiques de problèmes de leur pays avec des cas de test dépendant de l'application (souvent indisponibles). Cette méthodologie, historiquement, rendait difficile la comparaison des résultats entre les différentes approches de solution (Schaerf & Gaspero, 2001). Pour tenter de surmonter ces problèmes, lors des dernières éditions de la Conférence internationale sur la pratique et la théorie de la planification automatisée (PATAT), un groupe de chercheurs en planification des emplois du temps des lycées a développé un format basé sur XML, appelé XHSTT (Post et al., 2012; 2014), pour exprimer les problèmes de différents pays de manière unifiée et il a été largement accepté par la communauté de recherche. Récemment, son utilisation a été promue lors de la troisième compétition internationale de planification (ITC-2011) qui a testé différentes méthodes sur des instances provenant de plusieurs pays (Post, Gaspero, Kingston, McCollum, & Schaerf, 2016). Les problèmes qui peuvent être représentés dans le format XHSTT sont généralement appelés problèmes généralisés de planification des emplois du temps des lycées, ci-après dénommés GHSTP.
+
+Depuis l'ITC-2011, plusieurs approches heuristiques ont été développées pour résoudre le GHSTP. Cependant, aucune méthode connue n'est capable de trouver des solutions exactes pour des instances non triviales du problème en un temps raisonnable. Dans Kristiansen, Sørensen et Stidsen (2014), une formulation en programmation linéaire en nombres entiers a été proposée pour le GHSTP, ce qui constitue la meilleure approche exacte pour le problème à notre connaissance. Parmi les 38 instances, pour 10 d'entre elles, une solution avec un coût nul est déjà connue, ce qui définit une solution optimale selon la définition de XHSTT. Gurobi a été utilisé pour exécuter les autres 28 instances, et seules quatre petites instances ont été résolues dans le délai de 86 400 secondes (1 jour) par exécution. Aucune méthode exacte basée sur des bornes inférieures n'a été proposée jusqu'à présent spécifiquement conçue pour résoudre le GHSTP. Outre l'estimation de la qualité des solutions heuristiques, une bonne borne inférieure est une exigence de base pour la mise en œuvre de procédures efficaces basées sur la méthode branch-and-bound.
+
+Dans cet article, au lieu de traiter l'ensemble du GHSTP, nous nous concentrons sur le CTTPCR (problème de planification des cours et des enseignants avec des exigences de compacité), qui est un sous-problème du GHSTP modélisant un lycée typique brésilien, et comprend toutes les instances brésiliennes considérées dans l'ITC-2011. Contrairement aux problèmes provenant de la majorité des autres pays, le CTTPCR a un espace de recherche plus contraint puisque tous les enseignants sont préassignés à chaque événement, et l'affectation des salles n'est pas requise.
+
+La principale contribution de notre travail est double. Contrairement aux modèles traditionnels de planification des lycées, nous proposons un modèle de flux multi-commodités pour le CTTPCR. De plus, nous proposons également un algorithme de génération de colonnes pour résoudre la relaxation linéaire de la décomposition de Dantzig-Wolfe appliquée au modèle de flux multi-commodités afin de fournir rapidement des bornes inférieures solides pour le problème. Ces nouvelles bornes inférieures sont importantes pour évaluer la qualité des solutions obtenues avec des approches heuristiques pour le CTTPCR, ainsi que pour les méthodes conçues pour le GHSTP. En plus d'être plus rapide et plus simple que les approches précédentes publiées dans la littérature, notre génération de colonnes s'adapte mieux aux grandes instances. De plus, de nouvelles meilleures born
+
+es ont été fournies pour les cinq instances CTTPCR de la première ronde de l'ITC-2011. En les utilisant, nous avons pu prouver l'optimalité de la solution de deux instances ouvertes de cette compétition.
+
+Le reste de cet article est organisé comme suit. La section 2 présente quelques travaux connexes sur le CTTPCR. La section 3 présente formellement le problème abordé dans cette étude, la notation utilisée pour le représenter, et une formulation en programmation linéaire mixte. La section 4 présente une décomposition de Dantzig-Wolfe pour le problème, un algorithme de génération de colonnes pour le résoudre, ainsi que deux stratégies d'accélération. La section 5 présente les résultats expérimentaux en considérant 12 instances réelles en comparaison avec les approches précédentes. Enfin, la section 6 présente nos principales conclusions et un aperçu des travaux futurs.
+
+
+### 2. Travaux connexes
+
+Le CTTPCR a été défini pour la première fois par Souza et Maculan (2000), qui ont proposé la première formulation en PLNE pour ce problème, ainsi qu'un ensemble d'instances qui est devenu un banc d'essai de base utilisé jusqu'à aujourd'hui. Ils ont montré qu'il était impraticable à l'époque de résoudre les instances du banc d'essai avec un solveur PLNE à usage général.
+
+Du côté heuristique, Souza, Ochi et Maculan (2003) ont proposé une métaheuristique hybride, appelée GTS-II, pour résoudre les instances du CTTPCR. La GTS-II utilise une heuristique constructive gloutonne aléatoire pour construire une solution initiale qui est ensuite affinée par une recherche tabou. Comme leur recherche tabou inclut également des solutions non réalisables dans l'espace de recherche, elle a été équipée d'une procédure qui est invoquée périodiquement pour tenter de restaurer la faisabilité de la solution actuelle. Dans les travaux de Santos, Ochi et Souza (2005), une recherche tabou avec des stratégies de diversification a été proposée pour résoudre le CTTPCR. Leurs expériences ont montré que la recherche tabou proposée surpassait significativement la GTS-II. De plus, les auteurs ont montré empiriquement que la stratégie de diversification proposée peut améliorer la robustesse de la recherche tabou.
+
+Santos, Uchoa, Ochi et Maculan (2012) ont proposé de nouveaux modèles PLNE, ainsi qu'un algorithme de génération de coupes et de colonnes (CCG) en utilisant des coupes de Fenchel (Boyd, 1994), fournissant, pour la première fois, de fortes bornes inférieures pour les instances du CTTPCR. Ce travail est considéré comme une référence car il a établi une base fiable pour évaluer la qualité des solutions heuristiques.
+
+Récemment, nous avons proposé un nouveau modèle PLNE pour le CTTPCR (Dorneles, Araújo, & Buriol, 2012) et développé une approche hybride qui combine une heuristique de fixation-et-optimisation avec une procédure de descente à voisinage variable (Dorneles, Araújo, & Buriol, 2014). Nous avons pu prouver l'optimalité des solutions pour la majorité des instances testées et, à notre connaissance, la méthodologie présentée fournit les résultats les plus avancés pour le problème.
+
+### 3. Définition et modélisation du problème
+
+Dans cette section, nous introduisons une nouvelle formulation compacte en PLNE pour le problème d'emploi du temps des classes et des enseignants avec des exigences de compacité (CTTPCR). Le problème considère un ensemble de classes \( C \) et un ensemble d'enseignants \( T \). Une classe \( c \in C \) est un groupe d'étudiants suivant le même cours et ayant une disponibilité totale. L'objectif du problème est de construire un emploi du temps pour une semaine, généralement organisée en un ensemble de jours \( D \), chaque jour étant divisé en un ensemble de périodes \( P \). Nous appelons "créneau horaire" une paire composée d'un jour et d'une période de cours, \( (d, p) \), où \( d \in D \) et \( p \in P \), et où toutes les périodes ont la même durée. Les enseignants \( t \in T \) peuvent être indisponibles à certains créneaux horaires.
+
+L'entrée principale du problème est un ensemble d'événements qui doivent être programmés. Typiquement, un événement est une réunion entre un enseignant \( t \) et une classe \( c \) pour traiter un sujet particulier dans une salle donnée. Dans cet article, nous désignons un événement par une paire \( (t, c) \). Le paramètre \( H_{tc} \) détermine la charge de travail d'un événement \( (t, c) \), c'est-à-dire le nombre de leçons qui doivent être enseignées par l'enseignant \( t \) pour la classe \( c \). De plus, chaque événement définit comment les leçons sont réparties sur une semaine en demandant un nombre de doubles leçons, en limitant le nombre de leçons par jour et en définissant si les leçons enseignées le même jour doivent être consécutives.
+
+Un emploi du temps réalisable a un créneau horaire assigné à chaque leçon d'événements satisfaisant les exigences strictes \( H1 \)–\( H6 \) ci-dessous :
+- **H1** La charge de travail de chaque événement doit être respectée.
+- **H2** Un enseignant ne peut pas être programmé pour plus d'une leçon dans une période donnée.
+- **H3** Les leçons ne peuvent pas être enseignées à la même classe dans la même période.
+- **H4** Un enseignant ne peut pas être programmé à une période où il/elle est indisponible.
+- **H5** Le nombre maximum de leçons quotidiennes de chaque événement doit être respecté.
+- **H6** Deux leçons du même événement doivent être consécutives lorsqu'elles sont programmées le même jour, si cela est requis par l'événement.
+
+Outre la faisabilité concernant les contraintes strictes, autant que possible des exigences souples \( S1 \)–\( S3 \) énoncées ci-dessous doivent être satisfaites :
+- **S1** Éviter les périodes d'inactivité des enseignants. Une période d'un enseignant est considérée inactive si elle/il a des leçons assignées avant et après cette période le même jour.
+- **S2** Minimiser le nombre de jours travaillés pour les enseignants. Dans ce contexte, un jour de travail signifie un jour où l'enseignant a au moins une leçon assignée.
+- **S3** Fournir le nombre de doubles leçons demandées par chaque événement.
+
+Nous proposons un modèle de flux de multicommodités pour le CTTPCR dans lequel les arcs représentent les transitions de périodes de temps dans un graphe de réseau particulier. Cette approche a été inspirée par le travail de Steinzen, Gintner, Suhl et Kliewer (2010), où les auteurs utilisent également des arcs pour représenter les transitions de temps pour le problème intégré de programmation des véhicules et des équipages avec plusieurs dépôts. Dans le modèle, chaque enseignant est représenté par une commodité. Cela signifie que déterminer l'emploi du temps des enseignants revient à trouver un chemin dans un graphe de réseau approprié. Formulons formellement ce réseau comme un graphe acyclique dirigé \( G = (V, A) \), où \( V \) est un ensemble de nœuds et \( A \) est un ensemble d'arcs. Bien que toutes les commodités partagent le même ensemble de nœuds, y compris les mêmes nœuds source et puits, chaque commodité considère seulement un sous-ensemble donné d'arcs \( A_t \subseteq A \). La Fig. 1 présente une illustration du graphe \( G \) où tous les types d'arcs sont montrés pour une commodité donnée \( t \). La figure est composée de jours (rectangles arrondis verticaux) et de périodes d'un jour (bandes horizontales). Chaque bloc de jour a des rectangles ombrés verticaux liés aux activités de chaque classe (deux classes sont considérées dans l'exemple). Nous décrivons ensuite les types d'arcs de \( G \) :
+- **Arcs de leçon** : utilisés pour indiquer quels créneaux horaires sont assignés à un enseignant et une classe donnés. Les arcs de leçon sont généralement partagés entre les commodités et ont une capacité unitaire associée pour s'assurer qu'ils sont utilisés uniquement par une seule commodité (enseignant) à la fois. De plus, pour chaque arc de leçon \( a \in A_t \) est associée une étiquette \( S_t^a \) qui représente la durée (en périodes) de la leçon représentée par l'arc. Les arcs de leçon sont appelés arcs de leçon unique lorsque \( S_t^a = 1 \), et arcs de double leçon lorsque \( S_t^a = 2 \). Dans la figure, les arcs de leçon sont tous des arcs courbes à l'intérieur d'un bloc de jour et à l'intérieur du rectangle ombré lié à une classe.
+- **\( W_t \) est l'ensemble des arcs de période inactive**. Ces arcs sont utilisés pour identifier les périodes d'inactivité pour chaque enseignant \( t \). Un coût \( \omega \) est associé à chaque arc de période inactive. Dans la figure, les arcs de période inactive sont tous des arcs droits à l'intérieur d'un bloc de jour, en dehors des rectangles ombrés liés aux classes.
+- **Ensembles \( Q^{-}_t \) et \( Q^{+}_t ** : ensembles d'arcs auxiliaires appelés respectivement arcs d'entrée et arcs de sortie. Les arcs d'entrée sont tous les arcs entrant dans un bloc de jour, les arcs de sortie sont ceux sortant d'un bloc de jour.
+- **\( Y_t \) est l'ensemble des arcs de jour travaillé**. Ces arcs sont utilisés pour calculer le nombre de jours travaillés pour un enseignant \( t \). Un coût \( \gamma \) est associé à chaque arc de jour travaillé. Dans la figure, pour chaque jour, le nœud de tête de l'arc de jour travaillé correspond au nœud de queue de chaque arc d'entrée pour ce jour.
+- **\( B_t \) est l'ensemble des arcs de jour de congé**. Ces arcs sont utilisés lorsqu'un enseignant \( t \) n'enseigne aucune leçon un jour donné. Ce sont les arcs situés à la base inférieure de la figure. Leurs nœuds de queue sont les mêmes que pour les arcs de jour travaillé.
+
+Chaque chemin dans le réseau est composé d'un flux binaire désigné par la variable \( x_t^a \), où \( t \in T \) et \( a \in A_t \). Chaque chemin commence à partir du nœud source, alterne entre différents types d'arcs, se terminant au nœud puits, comme montré dans la Fig. 2.
+
+Nous présentons ensuite une formulation en programmation linéaire mixte pour le CTTPCR, désignée ci-après par \( F_1 \). Pour plus de commodité, la notation complète utilisée dans la formulation est présentée dans le Tableau 1.
+
+\[ \text{Minimiser} \quad \sum_{t \in T} \left( \sum_{c \in C} \delta g_{tc} + \sum_{a \in W_t} \omega x_{ta} + \sum_{a \in Y_t} \gamma x_{ta} \right) \tag{1} \]
+
+Sous les contraintes
+\[ \sum_{a \in A^{+}_{tv}} x_{ta} - \sum_{a \in A^{-}_{tv}} x_{ta} = b_v \quad \forall t \in T, v \in V \tag{2} \]
+
+\[ \sum_{t \in T} \sum_{a \in A_{tcdp}} x_{ta} \leq 1 \quad \forall c \in C, d \in D, p \in P \tag{3} \]
+
+\[ \sum_{a \in \bigcup_{d \in D, p \in P} A_{tcdp}} S_{ta} x_{ta} = H_{tc} \quad \forall t \in T, c \in C \tag{4} \]
+
+\[ \sum_{a \in \bigcup_{p \in P} A_{tcdp}} S_{ta} x_{ta} \leq L_{tc} \quad \forall t \in T, c \in C, d \in D \tag{5} \]
+
+\[ \sum
+
+_{a \in \bigcup_{p \in P} A_{tcdp}} x_{ta} \leq 1 \quad \forall t \in T, c \in C, d \in D, h = 1 \tag{6} \]
+
+\[ g_{tc} \geq M_{tc} - \sum_{a \in G_{tc}} x_{ta} \quad \forall t \in T, c \in C \tag{7} \]
+
+\[ \sum_{a \in Y_t} x_{ta} \geq Y'_t \quad \forall t \in T \tag{8} \]
+
+\[ x_{ta} \in \{0, 1\} \quad \forall t \in T, a \in A_t \tag{9} \]
+
+\[ g_{tc} \geq 0 \quad \forall t \in T, c \in C \tag{10} \]
+
+La fonction objective minimise la violation des contraintes souples. L'ensemble de contraintes de conservation de flux (2) assure que l'afflux total est égal à l'écoulement total de chaque nœud (sauf source et puits), pour une commodité donnée \( t \). L'ensemble de contraintes (3) assure que la capacité unitaire des arcs de leçon soit respectée. On peut noter que la structure d'un problème de flux de multicommodités est représentée par les ensembles de contraintes (2) et (3) et par les deux premières parties de la fonction objective (1). Cette structure est seulement capable de répondre aux exigences \( H2 \), \( H3 \), \( H4 \), \( S1 \) et \( S2 \). Pour modéliser les exigences restantes, nous avons inclus des contraintes supplémentaires et la dernière composante de la fonction objective. L'ensemble de contraintes (4) assure que la charge de travail de chaque événement est respectée. L'ensemble de contraintes (5) assure que le nombre maximum de leçons quotidiennes pour chaque événement est respecté. L'ensemble de contraintes (6) assure que les leçons du même événement sont programmées en séquence en permettant l'utilisation d'un seul arc par jour. Cette contrainte est activée seulement quand \( h = 1 \). L'ensemble de contraintes (7) calcule le nombre de doubles leçons dans la solution. L'ensemble de contraintes (8) établit une borne inférieure pour le nombre minimum de jours travaillés pour chaque enseignant. Cette borne inférieure a été proposée par Souza (2000) et est calculée selon l'équation (11).
+
+\[ Y'_t = \max \left\{ \left\lceil \frac{\sum_{t \in T} \sum_{c \in C} H_{tc}}{|P|} \right\rceil, \max_{t \in T, c \in C} \left\{ \left\lceil \frac{H_{tc}}{L_{tc}} \right\rceil \right\} \right\} \quad \forall t \in T \tag{11} \]
+
+En utilisant \( Y'_t \), on peut obtenir une borne inférieure simple et peu coûteuse en calcul (LBγ) pour le CTTPCR comme défini dans l'équation (12).
+
+\[ LBγ = \sum_{t \in T} Y'_t γ \tag{12} \]
+
+### 3.1. Coupures supplémentaires
+
+Bien que la formulation \( F1 \) soit adaptée pour représenter le CTTPCR, en raison de la structure du réseau, elle permet éventuellement la construction de chemins insignifiants qui surestiment le coût des solutions sous-optimales. La Fig. 3 illustre trois cas dans lesquels des chemins insignifiants pourraient se produire. Dans le Cas 1, le chemin de flux traverse le composant de jour en utilisant un seul nœud. Étant donné que le chemin ne contient aucun arc de leçon, l'arc de jour travaillé est utilisé inutilement pour accéder au composant de jour. Dans le Cas 2, le coût de la solution est surestimé car un arc de période inactive est mal utilisé. Idéalement, un arc de période inactive ne devrait pas apparaître dans un chemin lorsqu'il succède à un arc d'entrée ou précède un arc de sortie. Dans le Cas 3, deux leçons simples sont enseignées en séquence pour la même classe, alors qu'utiliser un arc de double leçon serait plus approprié. Cette situation ne peut se produire que lorsque l'exigence \( H6 \) n'est pas prise en compte, c'est-à-dire \( h = 0 \). Sinon, elle est déjà évitée par l'ensemble de contraintes (6). Pour éviter ces cas, nous pouvons renforcer notre formulation avec l'ajout de quelques ensembles de contraintes de coupure valides (13)–(16). L'ensemble de contraintes (13) interdit le Cas 1, les ensembles de contraintes (14) et (15) interdisent le Cas 2, et l'ensemble de contraintes (16) interdit le Cas 3.
+
+\[ x_{ti} + x_{tj} \leq 1 \quad \forall t \in T, v \in V, i \in Q^{-}_t \cap A^{-}_{tv}, j \in Q^{+}_t \cap A^{+}_{tv} \tag{13} \]
+
+\[ x_{ti} + x_{tj} \leq 1 \quad \forall t \in T, v \in V, i \in Q^{-}_t \cap A^{-}_{tv}, j \in W_t \cap A^{+}_{tv} \tag{14} \]
+
+\[ x_{ti} + x_{tj} \leq 1 \quad \forall t \in T, v \in V, i \in Q^{+}_t \cap A^{+}_{tv}, j \in W_t \cap A^{-}_{tv} \tag{15} \]
+
+\[ x_{ti} + x_{tj} \leq 1 \quad \forall t \in T, c \in C, d \in D, p \in P, i \in A_{tcdp}, j \in A_{tcdp+1}, M_{tc} > 0, p < |P|, S_{ti} = S_{tj} = 1, h = 0 \tag{16} \]
+
+
+### 4. Génération de colonnes appliquée au problème
+
+En appliquant les principes de décomposition de Dantzig-Wolfe (Dantzig & Wolfe, 1960) à la formulation compacte \(F_1\), nous pouvons obtenir une formulation alternative pour le CTTPCR, dénommée problème maître (PM). Dans cette formulation, définie par les équations (17) à (20), soit \(J_t\) l'ensemble de tous les chemins possibles pour un enseignant \(t\) qui satisfont toutes les exigences strictes sauf \(H3\). Pour chaque chemin \(j \in J_t\) est associé un coût non négatif \(K_{tj}\) concernant la satisfaction des exigences souples. De plus, nous définissons une variable binaire \(\lambda_{tj}\) qui indique si le chemin \(j\) est sélectionné par l'enseignant \(t\).
+
+\[ \text{Minimiser} \quad \sum_{t \in T} \sum_{j \in J_t} K_{tj} \lambda_{tj} \tag{17} \]
+
+Sous les contraintes
+\[ \sum_{j \in J_t} \lambda_{tj} = 1 \quad \forall t \in T \tag{18} \]
+
+\[ \sum_{t \in T} \sum_{j \in J_t} \sum_{a \in A_{tcdp}} \bar{x}_{taj} \lambda_{tj} \leq 1 \quad \forall c \in C, d \in D, p \in P \tag{19} \]
+
+\[ \lambda_{tj} \in \{0, 1\} \quad \forall t \in T, j \in J_t \tag{20} \]
+
+Dans une mise en œuvre directe, une procédure de génération de colonnes commence par un problème maître rempli avec un ensemble restreint de colonnes, appelé ici problème maître restreint (RMP). À chaque itération, le RMP est résolu et ses variables duales sont utilisées pour évaluer de nouvelles colonnes en résolvant des sous-problèmes. Lors de la résolution de chaque sous-problème (problème de tarification), les colonnes avec un coût réduit négatif sont ajoutées au RMP. Cette procédure est répétée jusqu'à ce qu'aucune colonne avec un coût réduit négatif ne soit trouvée. Dans notre cas, nous considérons le RMP défini par les équations (21) à (25).
+
+\[ \text{Minimiser} \quad \sum_{t \in T} \left( \sum_{j \in J_t} K_{tj} \lambda_{tj} + \epsilon_t z_t \right) \tag{21} \]
+
+Sous les contraintes
+\[ \sum_{j \in J_t} \lambda_{tj} + z_t = 1 \quad \forall t \in T \tag{22} \]
+
+\[ \sum_{t \in T} \sum_{j \in J_t} \sum_{a \in A_{tcdp}} \bar{x}_{taj} \lambda_{tj} \leq 1 \quad \forall c \in C, d \in D, p \in P \tag{23} \]
+
+\[ \lambda_{tj} \ge 0 \quad \forall t \in T, j \in J_t \tag{24} \]
+
+\[ z_t \ge 0 \quad \forall t \in T \tag{25} \]
+
+Notez que les variables sont continues et leurs limites supérieures sont implicites par l'ensemble de contraintes (22). De plus, nous avons choisi de commencer l'ensemble initial de colonnes en introduisant une variable artificielle \(z_t\) pour chaque enseignant, pénalisée par un coût élevé dans la fonction objective. Comme souligné par Lübbecke et Desrosiers (2005), assigner arbitrairement un coût trop élevé aux variables artificielles peut ralentir la convergence de la génération de colonnes. Ainsi, afin de maintenir la pénalisation aussi basse que possible, nous avons défini le coût \(\epsilon_t\) selon l'équation (26)
+
+\[ \epsilon_t = \delta \sum_{c \in C} M_{tc} + \omega \max(0, |P| - 2)|D| + \gamma |D|. \tag{26} \]
+
+Le coût \(\epsilon_t\) est égal à la somme de trois parties qui correspondent, respectivement, aux limites supérieures des coûts des contraintes souples \(S1\), \(S2\) et \(S3\). En d'autres termes, \(\epsilon_t\) est une limite supérieure triviale pour le coût d'un chemin d'enseignant \(K_{tj}\).
+
+Après avoir résolu le RMP, l'étape suivante consiste en un schéma de tarification multiple, où le sous-problème \(P_t\) est résolu pour chaque \(t \in T\). Les équations (27) à (35) présentent la formulation de \(P_t\) :
+
+\[ P_t = \begin{cases} 
+\text{Minimiser} \quad R_t = \sum_{c \in C} \delta g_{tc} + \sum_{a \in Y_t} \gamma x_{ta} + \sum_{a \in W_t} \omega x_{ta} \\
+- \sum_{c \in C} \sum_{d \in D} \sum_{p \in P} \sum_{a \in A_{tcdp}} \sigma_{cdp} x_{ta} - \pi_t \tag{27} 
+\end{cases}
+\]
+
+Sous les contraintes
+\[ \sum_{a \in A^{+}_{tv}} x_{ta} - \sum_{a \in A^{-}_{tv}} x_{ta} = b_v \quad \forall v \in V \tag{28} \]
+
+\[ \sum_{a \in \bigcup_{d \in D, p \in P} A_{tcdp}} S_{ta} x_{ta} = H_{tc} \quad \forall c \in C \tag{29} \]
+
+\[ \sum_{a \in \bigcup_{p \in P} A_{tcdp}} S_{ta} x_{ta} \leq L_{tc} \quad \forall c \in C, d \in D \tag{30} \]
+
+\[ \sum_{a \in \bigcup_{p \in P} A_{tcdp}} x_{ta} \leq 1 \quad \forall c \in C, d \in D, h = 1 \tag{31} \]
+
+\[ g_{tc} \geq M_{tc} - \sum_{a \in G_{tc}} x_{ta} \quad \forall c \in C \tag{32} \]
+
+\[ \sum_{a \in Y_t} x_{ta} \geq Y'_t \tag{33} \]
+
+\[ x_{ta} \in \{0, 1\} \quad \forall a \in A_t \tag{34} \]
+
+\[ g_{tc} \ge 0 \quad \forall c \in C \tag{35} \]
+
+En supposant \(\pi_t\) et \(\sigma_{cdp}\) comme variables duales associées respectivement aux ensembles de contraintes (22) et (23), le coût réduit \(R_t\) est défini par l'équation (27). Enfin, observe que les ensembles de contraintes restants, à savoir (28)-(35), sont analogues à ceux présentés dans \(F_1\).
+
+### 4.1. Stratégies d'accélération
+
+En comparant l'effort informatique attendu pour résoudre les problèmes maître et de tarification, il est facile de prédire que le goulot d'étranglement de tout le processus de génération de colonnes réside dans la résolution du problème de tarification \(P_t\). En plus d'être un problème entier, \(P_t\) doit également répondre à la majorité des exigences du CTTPCR. Nous recourons à un solveur PLNE pour le résoudre, cependant, on peut noter que même en utilisant un solveur PLNE de pointe, résoudre \(P_t\) jusqu'à l'optimalité peut encore prendre du temps. Ceci est particulièrement notable concernant la résolution des instances moyennes et grandes du problème. Ainsi, pour accélérer la résolution de \(P_t\) avec un solveur PLNE, nous proposons les deux stratégies décrites ci-dessous.
+
+La première stratégie repose sur le principe que toute colonne avec un coût réduit négatif contribue à améliorer la valeur objective du problème maître restreint. Par conséquent, \(P_t\) n'a pas besoin d'être résolu exactement à chaque itération puisque cela n'est obligatoire qu'à la dernière. Avec cela en tête, nous concevons notre algorithme de génération de colonnes pour fonctionner en deux phases séquentielles (I et II). En phase I, au lieu de résoudre un sous-problème jusqu'à l'optimalité, nous arrêtons le solveur dès qu'il trouve une solution réalisable prouvée être à une distance donnée \(\alpha\) de l'optimalité. Lorsqu'aucune solution avec \(R_t < 0\) ne peut être générée en utilisant la valeur actuelle de \(\alpha\), l'algorithme passe à la phase II où \(\alpha\
+
+) est fixé à zéro et, par conséquent, les sous-problèmes sont résolus jusqu'à l'optimalité.
+
+La deuxième stratégie d'accélération consiste à résoudre une version relaxée de \(P_t\), ici désignée par \(P'_t\), où les contraintes d'intégralité ne sont appliquées que pour les variables associées aux arcs d'entrée et de sortie. En d'autres termes, cela signifie que \(P'_t\) est capable de déterminer précisément les premières et dernières périodes de leçon pour chaque jour de travail d'un enseignant. Cependant, à la suite de la relaxation, il peut ne pas être possible d'identifier exactement dans quelle classe une leçon doit être donnée, comme illustré dans la Fig. 4.
+
+Bien que l'on perde certaines informations, la relaxation diminue considérablement le nombre de variables entières du sous-problème. Alors que \(P_t\) a un grand nombre de variables entières qui dépend du nombre d'événements, \(P'_t\) utilise seulement \(|Q^{-}_t \cup Q^{+}_t| \times |D| = 2|P| \times |D|\) variables binaires. Dans les instances pratiques, \(|D|\) est typiquement limité à 6 (du lundi au samedi) et \(|P|\) dépasse rarement 20, même dans les écoles proposant des programmes à la journée complète. En ce sens, il est sûr de dire que, pour des besoins pratiques, le nombre de variables entières de \(P'_t\) est contraint entre 12|P| et 240 pour toute instance réelle.
+
+Enfin, il est important de souligner que même avec \(P'_t\) étant moins restrictif que \(P_t\), comme nous le montrons plus loin dans les résultats informatiques, les deux problèmes trouvent souvent la même valeur objective, c'est-à-dire \(R'_t \approx R_t\). En conséquence, la borne inférieure obtenue par la génération de colonnes utilisant \(P'_t\) est très proche de celle obtenue en utilisant \(P_t\). Nous nous référons à la méthode de génération de colonnes qui utilise \(P_t\) dans l'étape de tarification sous le nom de Génération de Colonnes avec Tarification Entière (IPCG), tandis que la version qui utilise \(P'_t\) est identifiée comme Génération de Colonnes avec Tarification Relaxée (RPCG).
+
+
+### Évaluation de l'algorithme
+
+Pour évaluer l'algorithme, nous avons utilisé les instances présentées dans le Tableau 2. Dans ce tableau, les deux premières colonnes présentent l'identifiant de l'instance et le nom. Étant donné que leurs noms sont longs, nous utilisons les identifiants pour raccourcir les références tout au long du texte. Les instances sont divisées en deux ensembles. Les instances 1 à 7 composent l'ensemble-1 et sont disponibles depuis le dépôt (LABIC, 2008). L'exigence (H6) n'est pas prise en compte dans ce groupe d'instances. Les instances A, D, E, F, G, de l'ensemble-2, sont des versions différentes des instances 1, 4, 5, 6, 7, respectivement. Elles diffèrent principalement en deux aspects : dans l'ensemble-2, les enseignants sont disponibles à toutes les périodes, et l'exigence (H6) est prise en compte. Ces modifications ont rendu les instances plus difficiles. L'ensemble-2 comprend toutes les instances utilisées lors du premier tour de la Troisième Compétition Internationale de Planification des Cours 2011 (ITC, 2011) que notre modèle peut traiter. Elles font partie de l'archive XHSTT-2012 disponible à l'adresse suivante : [archive XHSTT-2012](https://www.utwente.nl/ctit/hstt/archives/XHSTT-2012/XHSTT-2012-separate_instances.zip). D'autres instances disponibles dans cette archive tiennent compte des exigences que le CTTPCR ne gère pas, telles que l'affectation des ressources, les événements liés et les événements avec plusieurs enseignants. Nous avons utilisé les versions originales des instances (premier tour de l'ITC2011), car certaines d'entre elles ont été modifiées après la compétition. Les colonnes |D| et |P| indiquent le nombre de jours et de périodes, respectivement, tandis que les colonnes |T|, |C| et |E| présentent le nombre d'enseignants, de classes et d'événements, respectivement, où \(E = \{(t, c) : t \in T, c \in C, H_{tc} > 0\}\). Les colonnes \((t, c) \in E M_{tc}\) et \((t, c) \in E H_{tc}\) présentent le total des doubles leçons requises et la charge de travail totale, respectivement. La colonne \(LB_{\gamma}\) présente une borne inférieure simple calculée selon l'équation (12). La colonne BKV présente les meilleures valeurs connues pour ces instances, toutes obtenues par Dorneles et al. (2014) sauf pour les instances E et G. Les meilleures valeurs connues pour les instances E et G ont été obtenues dans ce travail en utilisant la même approche de réparation et d'optimisation proposée dans Dorneles et al. (2014) mais avec une limite de temps de 10 heures. Les valeurs de solution rapportées dans la colonne BKV ont été calculées de la même manière que tous les travaux précédents sur le CTTPCR, c'est-à-dire en utilisant la fonction objective définie dans la formulation \(F_1\). Cependant, dans l'ITC-2011, les valeurs des solutions ont été rapportées avec une fonction objective différente en utilisant le validateur HSEVal. La colonne BKVitc présente les valeurs fournies par HSEval pour les meilleures solutions connues de l'ensemble-2. Les cellules de l'ensemble-1 sont remplies de « - » car les instances 1 à 7 n'ont pas été testées dans l'ITC-2011. La seule différence entre les valeurs des solutions calculées par \(F_1\) et HSEVal est que ce dernier n'inclut pas la valeur de \(LB_{\gamma}\) comme partie du coût de la solution, c'est-à-dire \(BKVitc = BKV - LB_{\gamma}\).
+
+Les sections suivantes ont pour but de présenter les résultats des algorithmes et modèles présentés dans ce travail, ainsi que de les comparer avec les résultats de l'état de l'art pour ce problème.

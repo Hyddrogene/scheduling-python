@@ -1,0 +1,135 @@
+
+====== 3.2.3 Assignation de Ressource
+**S'applique à** : Événements  
+**Point d'application** : Ressource d'événement  
+
+Une contrainte d'assignation de ressource pénalise les ressources événementielles qui ne se voient pas attribuer de ressources. Plus précisément, la déviation en un point d'application (une ressource d'événement avec le rôle approprié) est la somme des durées des sous-événements de l'événement correspondant qui ne sont pas affectés à une ressource. Le coût de cette contrainte est donné par :
+
+---
+
+====== 3.2.4 Assignation de Temps
+**S'applique à** : Événements  
+**Point d'application** : Événements  
+
+La contrainte d'assignation de temps pénalise les sous-événements qui ne se voient pas attribuer de temps. La déviation en un point d'application est la durée totale des sous-événements issus d'un événement spécifique qui ne sont pas affectés à un créneau horaire.
+
+---
+
+====== 3.2.5 Fractionnement des Événements
+**S'applique à** : Événements  
+**Point d'application** : Événements  
+
+Une contrainte de fractionnement des événements impose des limites sur le nombre de sous-événements pouvant être dérivés d'un événement donné, ainsi que sur leur durée. Soit les paramètres \(Bamount_c \in N\) et \(Bamount_c \in N\) qui représentent respectivement le nombre minimum et maximum de sous-événements utilisés pour un événement donné. Et soit \(Bdur_c \in N\) et \(Bdur_c \in N\) les durées minimale et maximale qu'un sous-événement peut avoir pour un événement donné.
+
+Le coût de cette contrainte est déterminé par le nombre de sous-événements dont la durée est inférieure à \(Bdur_c\) ou supérieure à \(Bdur_c\), ainsi que par la différence entre le nombre de sous-événements et \(Bamount_c\), s'il est inférieur ou supérieur à cette valeur. Les contraintes suivantes sont alors imposées :
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+====== 3.2.5 Distribution des sous-événements
+**S'applique à** : Événements  
+**Point d'application** : Événements
+
+Les contraintes de distribution des sous-événements fixent des limites sur le nombre de sous-événements pouvant être dérivés d'un événement. Soit \(D_c \in N\) la durée des sous-événements à laquelle cette contrainte s'applique, et soit \(B_c\) le nombre minimum et \(B_c\) le nombre maximum de sous-événements de durée \(D_c\) pouvant être dérivés d'un événement donné.
+
+---
+
+====== 3.2.6 Préférences de ressources
+**S'applique à** : Événements  
+**Point d'application** : Ressources d'événement
+
+Cette contrainte définit qu'une ressource d'événement a des préférences pour certaines ressources spécifiques. La déviation est calculée en prenant toutes les ressources solution dérivées de la ressource d'événement qui sont affectées à une ressource qui ne fait pas partie des ressources préférées, et en additionnant la durée des sous-événements où ces ressources sont utilisées. Soit \(r \in c\) une ressource préférée.
+
+---
+
+====== 3.2.7 Préférences de temps
+**S'applique à** : Événements  
+**Point d'application** : Événements
+
+Comme la contrainte de préférences de ressources, les événements peuvent également avoir des préférences pour certains créneaux horaires. La déviation est calculée pour chaque événement en additionnant la durée de tous les sous-événements assignés à un créneau horaire qui ne fait pas partie des créneaux préférés. La contrainte a une propriété de durée optionnelle, notée \(D_c \in N_0\). Si cette propriété est spécifiée, seuls les sous-événements d'une durée \(D_c\) sont pris en compte. Soit \(t \in c\) un créneau horaire préféré.
+
+---
+
+====== 3.2.8 Éviter le fractionnement des affectations
+**S'applique à** : Groupes d'événements  
+**Point d'application** : Groupes d'événements
+
+Chaque ressource solution ne peut se voir affecter qu'une seule ressource. Cependant, lorsqu'un événement est fractionné en sous-événements, chacune de ses ressources d'événement est fractionnée en plusieurs ressources solution, et une ressource différente peut être affectée à chacune de ces ressources solution. Cette contrainte pénalise l'affectation de ressources différentes à ces ressources solution. La contrainte examine toutes les ressources solution dérivées des ressources d'événement et calcule le nombre de ressources distinctes qui leur sont attribuées, en ignorant les ressources non affectées. La déviation est la différence par rapport à 1. La variable \(k_{c,eg,r} \in \{0, 1\}\) prend la valeur 1 si l'événement \(e\) est affecté à la ressource \(r\) selon la contrainte de fractionnement \(c\), et 0 sinon.
+
+---
+
+====== 3.2.9 Répartition des événements
+**S'applique à** : Groupes d'événements  
+**Point d'application** : Groupes d'événements
+
+La contrainte de répartition des événements a une déviation pour chaque groupe de temps \(tg \in c \in \overline{C}\). Soient \(B_{c,tg}\) et \(B_{c,tg}\) les nombres minimum et maximum de sous-événements d'un événement donné pouvant être placés dans le groupe de temps \(tg\) de la contrainte \(c\). La déviation pour chaque groupe de temps est donnée par la différence par rapport à \(B_{c,tg}\).
+
+---
+
+====== 3.2.10 Lier les événements
+**S'applique à** : Groupes d'événements  
+**Point d'application** : Groupes d'événements
+
+Une contrainte de liaison des événements spécifie que certains événements doivent être affectés aux mêmes créneaux horaires. Pour chaque événement d'un groupe d'événements donné, nous construisons l'ensemble des créneaux où les sous-événements sont planifiés (pas seulement les horaires de début). La déviation est ensuite le nombre de créneaux apparaissant dans au moins un de ces ensembles mais pas dans tous. La variable \(o_{e,t} \in \{0, 1\}\) prend la valeur 1 si au moins un sous-événement de l'événement \(e \in c \in \overline{C}\) est affecté au créneau \(t \in T\), et 0 sinon. La variable \(l_{eg,t} \in \{0, 1\}\) prend la valeur 1 si au moins un événement du groupe \(eg \in c\) est affecté au créneau \(t \in T\), et 0 sinon.
+
+---
+
+====== 3.2.11 Ordonnancer les événements
+**S'applique à** : Paires d'événements  
+**Point d'application** : Paires d'événements
+
+Une contrainte d'ordre des événements spécifie que les créneaux affectés à deux événements doivent être ordonnés de sorte que le premier événement se termine avant que le second ne commence. Les paramètres \(B_c \in N\) et \(B_c \in N\) représentent respectivement le nombre minimum et maximum de créneaux qui peuvent séparer les deux événements. Soit \((e, e') \in c\) une paire d'événements à laquelle cette contrainte s'applique. La variable \(h_{last}^e \in N\) représente le numéro ordinal du dernier créneau affecté à un sous-événement de l'événement \(e\), et la variable \(h_{first}^{e'} \in N\) représente le numéro ordinal du premier créneau affecté à un sous-événement de l'événement \(e'\). La déviation est alors donnée par la différence entre ces deux nombres, si elle dépasse \(B_c\) ou est inférieure à \(B_c\).
+
+---
+
+====== 3.2.12 Éviter les conflits
+**S'applique à** : Ressources  
+**Point d'application** : Ressources
+
+Ces contraintes spécifient que certaines ressources ne doivent pas avoir de conflits, c'est-à-dire qu'elles ne doivent pas être affectées à deux ou plusieurs événements simultanément. La contrainte produit un ensemble de déviations à chaque point d'application (chaque ressource). Chaque fois qu'une ressource est affectée à deux ou plusieurs ressources solution, une déviation est calculée, égale au nombre de ressources solution moins un.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Voici la traduction en français du texte :
+
+---
+
+====== 3.2.13 Éviter les périodes non disponibles
+**S'applique à** : Ressources  
+**Point d'application** : Ressource
+
+Une contrainte **Éviter les périodes non disponibles** spécifie que certaines ressources ne sont pas disponibles pour tous les événements à certains moments. La déviation correspond au nombre de périodes non disponibles durant lesquelles la ressource est affectée à au moins un événement. \(t \in c\) désigne qu'une période \(t\) est indisponible pour la contrainte \(c \in \overline{C}\).
+
+---
+
+====== 3.2.14 Limiter les périodes d'inactivité
+**S'applique à** : Ressources  
+**Point d'application** : Ressources
+
+Une ressource est inactive à un moment \(t \in tg\) par rapport à un groupe de temps \(tg\) si elle n'est pas affectée à un sous-événement à ce moment, mais est occupée à un moment précédent et à un moment suivant dans ce même groupe de temps. La contrainte **Limiter les périodes d'inactivité** impose des limites au nombre de périodes d'inactivité qu'une ressource peut avoir. Les variables \(h_{first}^{r,tg} \in N\) et \(h_{last}^{r,tg} \in N\) indiquent respectivement le numéro ordinal du premier et du dernier moment où la ressource \(r \in R\) est occupée dans le groupe de temps \(tg\). Soit \(|tg|\) le nombre de moments dans le groupe de temps \(tg\). La variable \(h_{r,tg} \in N\) désigne le nombre de périodes d'inactivité de la ressource \(r \in R\) dans le groupe de temps \(tg \in TG\).
+
+Pour chaque ressource concernée par la contrainte, la déviation est calculée de la manière suivante : on calcule le nombre total de périodes d'inactivité pour tous les moments \(tg \in c\) et on détermine de combien cette valeur totale est inférieure au minimum \(B_c \in N\) ou dépasse le maximum \(B_c \in N\). La déviation est alors la somme de ces écarts.
+
+---
+
+====== 3.2.15 Regrouper les périodes d'activité
+**S'applique à** : Ressources  
+**Point d'application** : Ressources
+
+Une contrainte **Regrouper les périodes d'activité** limite le nombre de groupes de temps durant lesquels une ressource peut être occupée. La déviation est donnée par la différence entre le nombre de groupes de temps durant lesquels la ressource est occupée et le minimum \(B_c \in N\) ou le maximum \(B_c \in N\). \(tg \in c\) désigne un groupe de temps auquel cette contrainte s'applique.
+
+---
+
+====== 3.2.16 Limiter les périodes d'activité
+**S'applique à** : Ressources  
+**Point d'application** : Ressources
+
+Les contraintes **Limiter les périodes d'activité** imposent des limites au nombre de moments où une ressource peut être occupée dans certains groupes de temps. Ces contraintes produisent un ensemble de déviations à chaque point d'application, une pour chaque groupe de temps donné. Les déviations sont calculées en fonction de l'écart entre le nombre de périodes d'occupation dans un groupe de temps donné et le minimum \(B_c \in N\) ou le maximum \(B_c \in N\).
+
+---
+
+====== 3.2.17 Limiter la charge de travail
+**S'applique à** : Ressources  
+**Point d'application** : Ressources
+
+La charge de travail d'une ressource dans une solution est donnée par \(W_{e,se,er} = \frac{D_{se} \cdot L_{er}}{D_e}\), où \(L_{er} \in N\) est la charge de travail de la ressource événementielle \(er\). La valeur est un nombre à virgule flottante. Une contrainte **Limiter la charge de travail** impose des limites à la charge de travail totale des ressources affectées à certaines ressources. La déviation de cette contrainte est la différence entre la charge de travail totale des ressources assignées à cette ressource et le minimum \(B_c \in N\) ou le maximum \(B_c \in N\), arrondie à l'entier supérieur.
+

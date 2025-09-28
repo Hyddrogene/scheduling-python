@@ -1,0 +1,430 @@
+% please place your own definitions here and don't use \def but
+% \newcommand{}{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% VOCABULARY
+\newcommand{\timepoint}{time point}
+\newcommand{\timepoints}{time points}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% ACRONYMS
+\newcommand{\acronym}[1]{{\texttt{#1}}}
+
+\newcommand{\CHR}{\acronym{CHR}}
+\newcommand{\C}{\acronym{C}}
+\newcommand{\CPP}{\acronym{C++}}
+\newcommand{\CSS}{\acronym{CSS}}
+\newcommand{\DZN}{\acronym{DZN}}
+\newcommand{\FLATZINC}{\acronym{Flatzinc}}
+\newcommand{\GECODE}{\acronym{Gecode}}
+\newcommand{\JSON}{\acronym{JSON}}
+\newcommand{\JAVA}{\acronym{Java}}
+\newcommand{\LISP}{\acronym{Lisp}}
+\newcommand{\MINIZINC}{\acronym{MiniZinc}}
+\newcommand{\PROLOG}{\acronym{Prolog}}
+\newcommand{\XML}{\acronym{XML}}
+\newcommand{\CHRPP}{\acronym{CHR++}}
+\newcommand{\CHOCO}{\acronym{CHOCO}}
+
+\newcommand{\ASP}{\acronym{ASP}}
+\newcommand{\BACP}{\acronym{BACP}}
+\newcommand{\CASP}{\acronym{CASP}}
+\newcommand{\CBTT}{\acronym{CB-TT}}
+\newcommand{\CP}{\acronym{CP}}
+\newcommand{\COP}{\acronym{COP}}
+\newcommand{\CSP}{\acronym{CSP}}
+\newcommand{\DSL}{\acronym{DSL}}
+\newcommand{\DTD}{\acronym{DTD}}
+\newcommand{\ETT}{\acronym{ETT}}
+\newcommand{\HTT}{\acronym{HTT}}
+\newcommand{\ITC}{\acronym{ITC}}
+\newcommand{\MIP}{\acronym{MIP}}
+\newcommand{\NP}{\acronym{NP}}
+\newcommand{\PETT}{\acronym{PE-TT}}
+\newcommand{\RCPCSP}{\acronym{RCPCSP}}
+\newcommand{\SAT}{\acronym{SAT}}
+\newcommand{\UTP}{\acronym{UTP}}
+\newcommand{\TAP}{\acronym{TAP}}
+\newcommand{\XHSTT}{\acronym{XHSTT}}
+\newcommand{\XSD}{\acronym{XSD}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% UTP BUILT-IN TYPES
+\newcommand{\SLOT}{H}
+
+\newcommand{\COURSES}{\Gamma}%{C^{*}}
+\newcommand{\COURSE}{C}
+\newcommand{\PART}{P}
+\newcommand{\CLASS}{K}
+\newcommand{\SESSION}{S}
+
+\newcommand{\STUDENT}{U}
+\newcommand{\GROUP}{G}
+\newcommand{\TEACHER}{T}
+\newcommand{\ROOM}{R}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% UTP TYPES
+\newcommand{\TYPE}{\mathcal{E}}
+\newcommand{\ENTITY}{E}
+\newcommand{\EMAP}{F}
+
+\newcommand{\LABEL}{\mathcal{L}}
+\newcommand{\RANK}{\mathcal{O}}
+\newcommand{\SELECTOR}{Q}
+% \newcommand{\SELECTOR}{\mathcal{Q}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% UTP PROPERTIES
+\newcommand{\proptype}[2]{#1^{#2}}
+\newcommand{\prop}[3]{\proptype{#1}{#2}_{#3}}
+
+\newcommand{\week}{w}
+\newcommand{\weekday}{d}
+\newcommand{\dailyslot}{m}
+\newcommand{\WEEK}{W}
+\newcommand{\WEEKDAY}{D}
+\newcommand{\DAILYSLOT}{M}
+
+\newcommand{\SESSIONEX}{\SESSION^{(e)}}
+\newcommand{\SESSIONINC}{\SESSION^{(i)}}
+
+
+\newcommand{\PARTALLOWEDSLOT}{d}
+\newcommand{\SESSIONDURATION}{length}
+\newcommand{\SESSIONRANK}{rank}
+\newcommand{\SESSIONSRANKED}{O}
+\newcommand{\CLASSPARENTS}{parents}
+\newcommand{\CLASSCAPACITY}{size}
+\newcommand{\ROOMCAPACITY}{capacity}
+\newcommand{\ROOMMANDATORY}{mandatory}
+\newcommand{\ROOMVIRTUAL}{virtual}
+\newcommand{\ROOMSVIRTUAL}{V}
+\newcommand{\ROOMDISJUNCTIVE}{disjunct}
+\newcommand{\PARTMULTIROOM}{multi}
+\newcommand{\PARTSMULTIROOM}{M}
+\newcommand{\PARTSMULTITEACHER}{W}
+
+\newcommand{\PARTREQUIREDROOM}{K^+}%{K^*}
+
+
+\newcommand{\PARTTEACHERDEMAND}{team}
+\newcommand{\PARTTEACHERDEMANDMIN}{min\_lecturer}
+\newcommand{\PARTTEACHERDEMANDMAX}{max\_lecturer}
+
+\newcommand{\PARTMULTIROOMMIN}{min\_rooms}
+\newcommand{\PARTMULTIROOMMAX}{max\_rooms}
+
+\newcommand{\PARTTEACHERSESSIONS}{service}
+
+\newcommand{\partallowedslots}[1]{\prop{\PARTALLOWEDSLOT}{\SESSION,\SLOT}{#1}}
+\newcommand{\sessionduration}[1]{\prop{\SESSIONDURATION}{\SESSION}{#1}}
+\newcommand{\sessionrank}[1]{\prop{\SESSIONRANK}{\SESSION}{#1}}
+\newcommand{\sessionranked}{\prop{\SESSIONSRANKED}{}{}}
+%\newcommand{\sessionranked}[2]{\prop{\SESSIONRANK}{\SESSION\times\SESSION}{#1,#2}}
+\newcommand{\classparents}[1]{\prop{\CLASSPARENTS}{\CLASS,\CLASS}{#1}}
+\newcommand{\classcapacity}[1]{\prop{\CLASSCAPACITY}{\CLASS}{#1}}
+\newcommand{\roomcapacity}[1]{\prop{\ROOMCAPACITY}{\ROOM}{#1}}
+\newcommand{\mandatoryrooms}[1]{\prop{\ROOMMANDATORY}{\PART}{#1}}
+\newcommand{\virtualroom}[1]{\prop{\ROOMVIRTUAL}{\ROOM}{#1}}
+\newcommand{\virtualrooms}{\ROOMSVIRTUAL}
+\newcommand{\roomdisjunctive}[1]{\prop{\ROOMDISJUNCTIVE}{\ROOM}{#1}}
+\newcommand{\disjunctiverooms}{D}%{\ROOMDISJUNCTIVE}
+\newcommand{\multiroompart}[1]{\prop{\PARTMULTIROOM}{\PART}{#1}}
+\newcommand{\multiroomparts}{\PARTSMULTIROOM}
+\newcommand{\partteachermultiplicity}[1]{\prop{\PARTTEACHERDEMAND}{\PART}{#1}}
+\newcommand{\partteacherservice}[1]{\prop{\PARTTEACHERSESSIONS}{{\TEACHER}\times{\PART}}{#1}}
+
+
+\newcommand{\partteachermultiplicitymin}[1]{\prop{\PARTTEACHERDEMANDMIN}{\PART}{#1}}
+\newcommand{\partteachermultiplicitymax}[1]{\prop{\PARTTEACHERDEMANDMAX}{\PART}{#1}}
+\newcommand{\multiteacherparts}{\PARTSMULTITEACHER}
+
+\newcommand{\multiroompartmin}[1]{\prop{\PARTMULTIROOMMIN}{\PART}{#1}}
+\newcommand{\multiroompartmax}[1]{\prop{\PARTMULTIROOMMAX}{\PART}{#1}}
+
+\newcommand{\SIZE}{size}
+
+\newcommand{\headcount}[1]{\prop{\SIZE}{\GROUP}{#1}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% UTP MAPS
+\newcommand{\maptype}[2]{d^{#1,#2}}
+\newcommand{\dmaptype}[2]{\underline{d}^{#1,#2}}
+\newcommand{\umaptype}[2]{\overline{d}^{#1,#2}}
+
+\newcommand{\map}[3]{\maptype{#1}{#2}_{#3}}
+
+\newcommand{\umap}[3]{\umaptype{#1}{#2}_{#3}}
+\newcommand{\dmap}[3]{\dmaptype{#1}{#2}_{#3}}
+
+\newcommand{\mape}[3]{\maptype{#1}{#2}[#3]}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% UTP PREDICATES
+
+\newcommand{\ATMOSTDAILY}{at\_most\_daily}%Obsolete
+\newcommand{\ATMOSTWEEKLY}{at\_most\_weekly}%Obsolete
+\newcommand{\TRAVEL}{travel}%Obsolete
+\newcommand{\FORBIDDENPERIOD}{forbidden\_period}%Obsolete
+\newcommand{\TEACHERDISTRIBUTION}{teacher\_distribution}%Obsolete
+\newcommand{\WEEKLY}{weekly}%Obsolete
+
+%\newcommand{\NOOVERLAP}{no-overlap}
+%PAS START !! CAR SINON ON DOIT LE REPETER, ON EVITE DE CHANGER POUR LE RANGE ON GARDE LE S
+\newcommand{\ADJACENTROOMS}{adjacent\_rooms}
+\newcommand{\ALLOWEDGRIDS}{allowed\_grids}
+\newcommand{\ALLOWEDROOMS}{allowed\_rooms}
+\newcommand{\ALLOWEDSLOTS}{allowed\_slots}
+\newcommand{\ALLOWEDTEACHERS}{allowed\_teachers}
+\newcommand{\ASSIGNROOMS}{assign\_rooms}
+\newcommand{\ASSIGNSLOT}{assign\_start}
+%\newcommand{\ASSIGNSLOT}{assign\_slot}
+\newcommand{\ASSIGNTEACHERS}{assign\_teachers}
+\newcommand{\COMPACTNESS}{compactness}
+%\newcommand{\DIFFERENTDAILYSLOT}{different\_daily\_slot}
+\newcommand{\DIFFERENTDAILYSLOT}{different\_daily\_start}
+
+\newcommand{\DIFFERENTDAY}{different\_day}
+\newcommand{\DIFFERENTROOMS}{different\_rooms}
+%\newcommand{\DIFFERENTSLOT}{different\_slot}
+\newcommand{\DIFFERENTSLOT}{different\_starts}
+\newcommand{\DIFFERENTTEACHERS}{different\_teachers}
+\newcommand{\DIFFERENTWEEK}{different\_week}
+\newcommand{\DIFFERENTWEEKDAY}{different\_weekday}
+%\newcommand{\DIFFERENTWEEKLYSLOT}{different\_weekly\_slot}
+\newcommand{\DIFFERENTWEEKLYSLOT}{different\_weekly\_start}
+\newcommand{\FORBIDDENROOMS}{forbidden\_rooms}
+\newcommand{\FORBIDDENSLOTS}{forbidden\_slots}
+\newcommand{\FORBIDDENTEACHERS}{forbidden\_teachers}
+\newcommand{\GAP}{gap}
+\newcommand{\GAPARG}[1]{#1\_\GAP{}}
+
+\newcommand{\NOOVERLAP}{no\_overlap}
+\newcommand{\NOOVERLAPARG}[1]{\NOOVERLAP(#1)}
+\newcommand{\PAIRWISENOOVERLAP}{pairwise\_no\_overlap}
+\newcommand{\PERIODIC}{periodic}
+\newcommand{\REQUIREDROOMS}{required\_rooms}
+\newcommand{\REQUIREDTEACHERS}{required\_teachers}
+%\newcommand{\SAMEDAILYSLOT}{same\_daily\_slot}
+\newcommand{\SAMEDAILYSLOT}{same\_daily\_start}
+\newcommand{\SAMEDAY}{same\_day}
+\newcommand{\SAMEROOMS}{same\_rooms}
+%\newcommand{\SAMESLOT}{same\_slot}
+\newcommand{\SAMESLOT}{same\_start}
+
+\newcommand{\SAMESTUDENTS}{same\_students}
+\newcommand{\SAMETEACHERS}{same\_teachers}
+\newcommand{\SAMEWEEKDAY}{same\_weekday}
+%\newcommand{\SAMEWEEKLYSLOT}{same\_weekly\_slot}
+\newcommand{\SAMEWEEKLYSLOT}{same\_weekly\_start}
+
+\newcommand{\SAMEWEEK}{same\_week}
+\newcommand{\SEQUENCED}{sequenced}
+\newcommand{\WORKLOAD}[1]{#1\_workload}
+
+\newcommand{\predicatName}{\mathit{constraint}}
+
+
+
+%allocation\_group
+%assign
+%domain\_class\_group
+%domain\_class\_room
+%domain\_session\_teacher
+%part\_schedule
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% CP VARIABLES
+\newcommand{\vartype}[2]{x^{#1,#2}}
+\newcommand{\var}[3]{\vartype{#1}{#2}_{#3}}
+
+%% AUXILIARY VARIABLES
+\newcommand{\CLASSSIZE}{size}
+\newcommand{\ROOMUSE}{use}
+%\newcommand{\SESSIONEND}{end}
+
+\newcommand{\classsize}[1]{\prop{\CLASSSIZE}{}{}(#1)}%{\CLASS}{#1}}
+\newcommand{\roomuse}[4]{y_{#1,#2,#3,#4}}
+%\newcommand{\roomuse}[4]{\prop{\ROOMUSE}{}{}(#1,#2,#3,#4)}
+%\newcommand{\sessionend}[1]{\prop{\SESSIONEND}{}{}(#1)}%{\SESSION,\SLOT}{#1}}
+
+%% AUXILIARY VARIABLES REIFYING CONSTRAINTS
+\newcommand{\DISJOINT}{split}
+\newcommand{\disjoint}[2]{\prop{\DISJOINT}{}{}(#1,#2)}%{\SESSION\times\SESSION}{#1#2}}
+\newcommand{\disjointroom}[3]{\prop{\DISJOINT}{}{}(#1,#2,#3)}%{\SESSION\times\SESSION}{#1#2}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Maths
+\newcommand{\BOOLEAN}{\mathbb{B}}
+\newcommand{\NATURAL}{\mathbb{N}}
+\newcommand{\myset}[1]{\{#1\}}
+\newcommand{\mycard}[1]{|#1|}
+\newcommand{\setunion}[3]{\cup_{#1 \in #2}#3}
+\newcommand{\setintersection}[3]{\cap_{#1 \in #2}#3}
+\newcommand{\setpartition}[3]{\disjunion{#1 \in #2}#3}
+\newcommand{\denote}[1]{\llbracket #1\rrbracket}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Minizinc syntaxe
+
+% \newcommand{\forallmzn}{\text{forall }}
+% \newcommand{\arrowmzn}{\text{->}}
+% \newcommand{\inmzn}{\text{ in }}
+% \newcommand{\wmzn}{\text{ where }}
+% \newcommand{\arraymzn}[1]{\text{#1}}
+% \newcommand{\funcmzn}[1]{\text{#1}}
+% \newcommand{\gconst}[1]{\text{#1}}
+% \newcommand{\const}{\text{constraint  }}
+% \newcommand{\subsetmzn}{\text{ subset }}
+% \newcommand{\summzn}{\text{sum }}
+% \newcommand{\divmzn}{\text{ div }}
+% \newcommand{\modmzn}{\text{mod }}
+% \newcommand{\intermzn}{\text{ intersect }}
+% \newcommand{\equimzn}{\text{<=>}}
+% \newcommand{\leqmzn}{\text{>=}}
+% \newcommand{\geqmzn}{\text{<=}}
+
+%% Minizinc
+\newcommand{\forallmzn}{\text{forall}}
+\newcommand{\arrowmzn}{\texttt{ -> }}
+\newcommand{\inmzn}{\text{ in }}
+\newcommand{\wmzn}{\text{ where }}
+\newcommand{\arraymzn}[1]{\text{#1}}
+\newcommand{\funcmzn}[1]{\text{#1}}
+\newcommand{\gconst}[1]{\text{#1}}
+\newcommand{\const}{\text{constraint  }}
+\newcommand{\subsetmzn}{\text{ subset }}
+\newcommand{\summzn}{\text{sum}}
+\newcommand{\divmzn}{\text{ div }}
+\newcommand{\modmzn}{\text{ mod }}
+\newcommand{\intermzn}{\text{ intersect }}
+\newcommand{\equimzn}{\text{<=>}}
+\newcommand{\leqmzn}{\texttt{>=}}
+\newcommand{\gqmzn}{\texttt{<}}
+\newcommand{\lqmzn}{\texttt{>}}
+\newcommand{\geqmzn}{\texttt{<=}}
+\newcommand{\neqmzn}{\texttt{!=}}
+\newcommand{\landmzn}{\text{ /\textbackslash \, }}
+\newcommand{\lormzn}{\text{ \textbackslash /}}
+\newcommand{\existmzn}{\text{exists}}
+\newcommand{\notmzn}{\text{not}}
+
+
+%% Minizinc 
+
+
+\newcommand{\xgroup}{\text{x\_groups}}
+\newcommand{\xstudent}{\text{x\_group}}
+\newcommand{\xroom}{\text{x\_rooms}}
+\newcommand{\xteacher}{\text{x\_lecturers}}
+\newcommand{\xslot}{\text{x\_slot}}
+
+%% CHR syntax
+\newcommand{\xslotstart}{\text{x\_slot\_start}}
+\newcommand{\xslotend}{\text{x\_slot\_end}}
+\newcommand{\arraychr}[1]{\text{#1}}
+\newcommand{\funcchr}[1]{\text{#1}}
+\newcommand{\ctchr}[1]{\texttt{#1}}
+\newcommand{\chrprop}{\Rightarrow}
+\newcommand{\chrsimpl}{\Leftrightarrow}
+
+
+%%MIP
+\newcommand{\varmip}[3]{x_{#1,#2,#3}}
+\newcommand{\varsequenced}[2]{ord_{#1,#2}}
+\newcommand{\varquad}[4]{\vartype{#1}{#2}_{#3,#4}}
+
+%%MATHS
+%
+\newcommand{\inv}[1]{#1\raisebox{1.15ex}{$\scriptscriptstyle-\!1$}}
+%\newcommand{\inv}[1]{#1}
+
+%\newcommand{\inv}[1]{#1^{\raisebox{.2ex}{$\scriptscriptstyle-\!1$}}}
+
+\newcommand{\piinv}[1]{\inv{\pi}(#1)}
+
+\newcommand{\EDT}{emplois du temps}
+
+
+\makeatletter
+\def\moverlay{\mathpalette\mov@rlay}
+\def\mov@rlay#1#2{\leavevmode\vtop{%
+   \baselineskip\z@skip \lineskiplimit-\maxdimen
+   \ialign{\hfil$\m@th#1##$\hfil\cr#2\crcr}}}
+\newcommand{\charfusion}[3][\mathord]{
+    #1{\ifx#1\mathop\vphantom{#2}\fi
+        \mathpalette\mov@rlay{#2\cr#3}
+      }
+    \ifx#1\mathop\expandafter\displaylimits\fi}
+\makeatother
+
+\newcommand{\cupdot}{\charfusion[\mathbin]{\cup}{\cdot}}
+\newcommand{\sqcupdot}{\charfusion[\mathbin]{\sqcup}{\cdot}}
+\newcommand{\bigcupdot}{\charfusion[\mathop]{\bigcup}{\cdot}}
+\newcommand{\sqbigcupdot}{\charfusion[\mathop]{\bigcup}{\sqcupdot}}
+\newcommand{\cupemptysetsq}{\charfusion[\mathop]{\bigcup}{\emptyset}}
+%\newcommand{\disjunion}{\dot{\sqbigcupdot\limits_\cdot}}
+\newcommand{\disjunion}{\cupdot}
+\newcommand{\uexists}{\exists!}
+
+%\cupdot \dot{\cup} \sqcup \sqcupdot
+
+%%%%%%% COLOR
+\newcommand{\grayrow}{\rowcolor[gray]{0.9}}
+
+
+
+%%%%%%%%%FEATURES
+\newcommand{\courses}{courses}
+\newcommand{\coursehierarchy}{course-hierarchy}
+\newcommand{\event}{event}
+
+\newcommand{\timing}{timing}
+\newcommand{\fullperiod}{full-period}
+\newcommand{\fullweek}{full-week}
+\newcommand{\singleweek}{single-week}
+
+\newcommand{\scheduling}{scheduling}
+\newcommand{\nooverlap}{no-overlap}
+\newcommand{\sameduration}{same-duration}
+\newcommand{\synchronous}{modular}
+
+\newcommand{\hosting}{hosting}
+\newcommand{\noroom}{no-room}
+\newcommand{\singleroom}{single-room}
+\newcommand{\multiroom}{multi-room}
+\newcommand{\roomcapacityfeat}{room-capacity}
+\newcommand{\noneexclusive}{none-exclusive}
+\newcommand{\allexclusive}{all-exclusive}
+\newcommand{\someexclusive}{some-exclusive}
+
+\newcommand{\teaching}{teaching}
+\newcommand{\noteacher}{no-teacher}
+\newcommand{\singleteacher}{single-teacher}
+\newcommand{\multiteacher}{multi-teacher}
+\newcommand{\teacheroverlap}{session-overlap}
+\newcommand{\service}{service}
+
+\newcommand{\attending}{attending}
+\newcommand{\studentoverlap}{session-overlap}
+\newcommand{\sectioning}{sectioning}
+
+\newcommand{\aspects}{crosscutting}
+\newcommand{\availability}{calendar}
+\newcommand{\periodicity}{regularity}
+\newcommand{\sessiondistribution}{orchestration}
+\newcommand{\travel}{workload}
+\newcommand{\adjacency}{logistics}
+\newcommand{\resourcedistribution}{resourcing}
+
+
+
+
+\newcommand{\medcirc}{\text{\raisebox{0.25ex}{\large$\circ$}}}
+\newcommand{\medbullet}{\text{\raisebox{0.25ex}{\large$\bullet$}}}

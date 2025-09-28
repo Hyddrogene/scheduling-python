@@ -1,0 +1,21 @@
+https://www.fun-mooc.fr/fr/cours/recherche-reproductible-principes-methodologiques-pour-une-science-transparente/
+FUN MOOC
+Recherche reproductible : principes méthodologiques pour une sci…
+Ce Mooc propose des principes méthodologiques pour une science ouverte et transparente. Il aborde de manière pratique la prise de notes
+
+"" le document computationnel
+
+"" la réplicabilité des analyses.
+
+https://acp-iaro-school.sciencesconf.org/
+
+https://www.youtube.com/c/Socratica (c'est des conseils surtout pour les étudiants mais beaucoup s'appliquent très bien au phd)
+
+https://www.youtube.com/channel/UCFqXmQ56-Gp1rIKa-GoAJvQ (un ancien doctorant)
+
+https://www.youtube.com/channel/UCHyVYHSYzWbWwf8z1Vbi6Ug  (une doctorante)
+
+il y a la vidéo 
+https://www.youtube.com/watch?v=f4SFtnfF3_Q
+
+sinon dans le MOOC de recherche reproductible il y a des bons conseils (parce que si dans 2-3 ans vous êtes pas foutu de relancer le code que vous avez fait en 1ere année vous aurez l'air cons)

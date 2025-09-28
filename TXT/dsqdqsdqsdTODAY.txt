@@ -1,0 +1,233 @@
+apsetc coarsing  reformulation de modele
+aspetc encodage des informations manquante
+verifier le parser et le json pour passer au autres
+solution xml restructurer 
+information manquante
+aspect implicite des regles -> pour les rendres explicictes
+repasser sur les regles
+contraintes de domaine et d'affectations
+propager dans le solver
+reformulation via les alloweds slot, contrainte min gap, consecutive room en complement génrateur
+contriante no overlaap
+integrer symbole mzn
+
+[26 novembre 2021]
+le masque donne l'ordre-> deterministe
+formalisation probleme de filtrage
+filtre penser rajout dans le group bykc
+sémantique des regles graphiquement 
+
+ranger le git 
+
+Site avec le depot gitHub
+Explicite regle implicite
+
+[1 decembre 2021 9h30]
+
+Ordre importante dans  certains cas
+Double ordre -> verifier nos contrainte séances qu'elles attendent
+travel time
+ATTENTION LES PROFS DOIVENT ETRE TOUS CONSOMMER
+1seule séance qui s'appuie sur toute les salles, tous les grouoes ensembles 1 seule enseignantssamesession
+1 classe peut avoir lieu sur plusieurs classe -> notion de groupe multiple-> groupes insécables ? 
+On pars du principe que c'est inséacalbe, probleme modelisation TPN -> une seule classe qui regroupe tous les étudiants, coté salle liste les salles 
+Une classe peut être sécable et se derouler sur plusieurs salles. 2 groupes tjrs dans la meme salle
+sameSlot tjrs terrible
+VERIFIER LA FUSION -> (le script bug pas mal)
+physiquement dans des salles-> distribution sur les salles
+savoir ou est un enseignant-> AFFÉCTÉ À UN APHI POUR LES MÉDÉCINE
+capacité covid -> salle G101 covid et distanciel || overlap -> faire en sorte que l'un des deux sois occupé et pas l'autre (no overlapp)
+rendre cela sécable poiur le cas distanciel ?? L1 + present que les L2 etc....
+solution on écrit quoi ? ni le groupe ni l'étudiant -> la class à lieu etc. 
+distrubition pas anectodique-> chaque groupe temps de déplacement suffisant
+on s'arrete à la classe 
+groupe examen <> groupe cours
+calcule dans le pire des cas ? -> perte des solutions ? 
+cette hybridation est assez complexe à géré
+permet de délimité les solutions
+interactions controler 
+explorer idée pire cas (latitude après examen, juste avant de manger) rajouter une brique en mzn qui garantisse les permutations
+format garder pour patat pour le momentgarantir une bonne solution -> ingénérie choisir +adapté
+densité de cours exprimer en minute -> atmost* , proportions de cours
+event après patate -> lunch time via cours
+min gap -> ensemble  de student -> filter de label TP
+assign ou allocate -> assign toutes les ressources
+rajouter des contraintes de 
+virer contraintes
+flag pour dire journalier-> DANS LE NOM ? Choisis dans le nom
+document latex avec un tableau pour les contraintes
+revoir les names des fichiers XMl
+mettre sur le site la dtd
+usp_timetabling_dtd -> en ligne sur star treck
+parent une seul parent -> donc pas de V cf Marc MP verfifier
+rajouter des tirets OK
+vrirer la réunion de rentrée :''''( OK
+programmationa vec 2m OK
+
+{lundi 6 décembre 13h30 -> étudiant de M2 presente projet} : 
+
+
+[vendredi 15 décembre ]
+ etat:
+retouche parser + modification du mzn -> range etc !
+retouche sur le fusion de xml car gros problème !
+Modification importante sur la contrainte not\_consecutive
+réflexion aspect tactique et résolution
+Rendre la séparation + claire
+prise de note du projet m1-m2.
+Modification tiret + ecriture et accent + passage d'un fichier fonctionne pb consistence
+
+
+réunion :
+
+relancer Nathalie Baumer -> pas avant janvier
+url biblio
+cotienne version precise shéma
+article +verbeaux
+strucutre principale précis
+avoir une version formal et une autre pas forcémzent
+On décrit le problème sans trop insister
+grmaticale lire xsd
+code public -> si instance outils reproduction
+ONA 10000 instance
+PUBLIC -> release
+lien fichier markodiwn
+source + doc evolue pas de manière concomitente
+versionning du site et solver
+un public-> complexe toussa \/ 2 en mm temps
+versionning des logicielsGPL 3.O
+Vincent pas super d'accord 
+
+-> tout sur timetabling crise de reproductibilité
+fork -> bof mm commit tout moche
+fork et pull request
+CHANGEMENT DE NOM
+dossier juste web
+description du sujet
+petit paragraphe
+rules 
+    rule
+    présentation tabulaire des UTT predicat constraint catalogue
+    univeristy servi proobleme plaling
+    ordre alphabetique
+    mini table des matières
+    tableau formel  des exemples
+un fragment xml
+insertion de formule
+
+[15 mercredi Décembre 9h30]
+
+ajouter des séances sur le pouce
+curiculum based
+sortir donc les contraintes implicite
+rajouter fragement php verif doublon
+vérfieri que les contriantes s'appliquant sur des tableaux de taille 1>= renvoie true cf all equal
+vérifier la syntaxe de sequenced et remttre et all equal 
+lunch time le midi
+passé ensuite un élément de itc vers chez nous
+2 exemples de rules un produit cartesien et l'autre sans
+il est touvert !!! catalogue à pars
+a usp probleme
+variante de temps sur le xml
+id taille 10, 5 ACDI g1 et 18 ACDI spécialité
+ca compile le projet des M2
+
+[4 Janvier 2022 15h30]
+
+fusionner les 2 bibs finir modif de contraintes + presentation
+
+[7 janvier 2022 15h30]
+Exxperimentation instanvce L3 -> expliquer instance réel
+preciser machine-> run
+resultat
+presentation et analyse -> discuter et tout pas le moment-> un résultat et une solution cohérente time exec stat ram et tout , volumétrie de l'arbre discursif mesure ? par ex distribution séance sur le temps, dispersion produire des solutions , m  is pour la suite autres contraintes etc stratégie affecte solution abordé qualité par la suite
+
+etat de l'art -> comparaison ITC les supportes de TIC et ce qu'on supporte pas / à terme  un outils de conversion
+compilateur ITc USP -> L3 sujet  convertir des benchs et grosse campagnes expérimentations M1 
+
+gnérateur xml/json -> recoder from scratch expliquer algo 
+Parser + language random -> sortis en extensions
+
+base de donnée -> M2 finir la BDD 
+listing des différents problème et l'intégré 
+parlé de figer l'emplois du temps
+stratégie séquntielle
+dureté etc arité conditionnel
+
+[15h30 11 janvier 2022]
+
+- Rédaction du papier PATAT et de son organisation
+  -> Réunion prévue vendredi 14/01 à 15h30 pour discuter des caractéristiques ITC afin de le comparer à UTP
+- Stages L3/M1 :
+  * Conversion XML ITC vers UTP (M1)
+  * Générateur de contraintes UTP à partir des règles (L3)
+  * Feuille de services (L3)
+  * Définition des API de BdD et conversion XML ( ? )
+- Point de vigilance sur les stages/TER/Concrétisation : Mettre un mécanisme dans l'Orchestration qui permette de définir un "encadrement" (dissocier les heures services des heures EDT/réservation de salle).
+Prochaine réunion hebdomadaire le 18/01 à 15h30 (G208 / Discord ?).
+
+[15h30 14 janvier 2022]
+
+
+[15h30 20 janvier 2022]
+
+contrainte etc.
+
+changer le tableau en fin de papier
+tableau séparé
+faire tourner la L3
+
+[15h30 25 janvier 2022]
+
+5 un itès d'enseignement, recupéré info maquette -> allowed truc en edt, recupérer modèle d'entité, parties rules -> appliqué règles communes (ultérieurment), séquencement de tp tranquille
+l1,L2,L3 M1,M2
+
+problème weekly -> mode souple chaud bloque tardivement
+modèle CHR(latitude semaine)
+
+
+[15h30 27 janvier 2022]
+
+JFPC 1er mars -> CFP article direct en anglais pour conf extérieur (Coco prendre PATAT et traduire Francais) coté PPC (plusieurs thème combinatoire t modélisation CSP, Application modèlisation + nouveau modèle)
+PATAT 23 mars (modèliser instance PATAT en +) 
+ArXiv : présentation du modèle
+
+nouvelle instance + pour JFPC. 
+Ou traitement + fin des heuristiques
+
+insisté + ppc pour PATAT
+
+Coco: process faltezinc -> vérif (+ time chaque partie) + anonymiser les profs 
+
+ gonflé papier JFPC  mm contenue -> consuera
+ revéfirifier les modèles -> contraintes
+ 
+ JFPC Recupérer fchier style latex
+ 
+ Stage L3 : 1Affichage emplois du temps pas viser intégration, découpage d'instance, parser minizinc , refactor parser, BDD -> XML, générateur conrainte UTP à partir des régles, feuille service L3
+ stage M1 : 1parser minizinc, 1conversion ITC 
+ -> MArc
+ - Conférences :
+  * JFPC (deadline 1er mars) : papier PATAT actuel traduit (peut-être sans certaines parties puisque trop long ?)
+  * PATAT (deadline 23 mars) : papier PATAT actuel + expérimentations
+  * ArXive : spec du XML, en parallèle
+- Stages :
+  * Réunion avec les M2 semaine prochaine
+  * Stages M1 à proposer :
+    - Génération d'instance aléatoire et conversion XML
+    - Conversion ITC - UTP
+  * Stage L3 à proposer :
+    - Visualisation Web de solution via fichier solution XML
+- Expérimentations :
+  * L3
+  * L1-I ? Récupérer les données sur CELCAT - Contraintes à faire aléatoirement
+  * L2-I ?
+- Modélisation :
+  * Les sessions sont implicitement ordonnées dans une classe !
+  
+  [11h 16février 2022]
+  Séparé les built in des prédicats 
+  mon langae de prédicat -> solution et modele puis modele regle
+  modèle génére en extension sous format json -> pouvant etre lue par nos solveur
+[LONG TIME]
+Event programable

@@ -1,0 +1,159 @@
+Le langage UTP caractérise la classe des problèmes d'emplois du temps qui se distinguent par différents paramétrages et configurations du modèle d'entités et différents choix de prédicats pour poser règles et contraintes.
+Le langage ayant été conçu de manière concomittante au modèle de caractéristiques présenté au chapitre 4,
+la classe UTP recouvre, en un certain sens, les variantes de problèmes exprimables dans le modèle.
+
+Chaque caractéristique, à l'exception des sous-caractéristiques de "crosscutting", se formule en effet par une assertion logique qui peut être trivialement testée sur les données de n'importe quelle instance UTP. Chaque assertion ne contraint qu'un fragment des données d'instance (p. ex. bornes sur le nombre de salles autorisées par séance, exclusivité intégrale des séances). Les sous-caractéristiques de "crosscutting" correspondent quant à elle à l'utilisation ou non de certains types de prédicats (p.ex. prédicats tels "allowed_grids" et "allowed_slots" pour la caractéristique "calendar").
+
+Nous présentons dans ce qui suit les différentes assertions formalisant les caractéristiques du modèle.
+Nous comparons ensuite le langage UTP à d'autres schémas de modélisation sur la base du modèle de caractéristiques.
+
+
+
+
+
+
+
+Tu peux rajouter 1 sous-section « 5.5.1 Formulation de caractéristiques pour instances UTP » avant cette phrase et le tableau.
+
+
+
+
+
+Le tableau 1.5 regroupe les tableaux … en formalisant ou en verbalisant chaque caractéristique à partir des données ou des prédicats d’instance UTP.
+
+
+
+
+
+
+
+[C’est pas du texte :] Chaque formule se scinde en 2 : la partie quantification (forall, exists, etc), puis l’assertion. Il faut mettre un « : » à la fin de la partie quantification plutôt qu’une virgule 
+
+
+
+
+
+Je ne comprends pas : \Gamma est l’ensemble des cours.
+Il faut ecrire (attention aux « : » et parenthèses et utiliser \leftarrow plutot que « \forall x » pour bien distinguer quantification et assertion:
+
+\forall X,Y \in {(C,P),(P,K),(K,S)}:
+(x\in X \leftarrow |d_x^{X,Y}}|>0)
+/\
+(y\in Y \leftarrow => |d_y^{Y,X}}|=1)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+« course-hierarchy » se formule par une contrainte vérifiant la décomposition de chaque cours en modalités, de chaque modalités en classes, et de chaque classes en séances. 
+
+
+
+
+
+
+
+
+« event » se formule par une contrainte testant l’existence d’un cours qui n’exige aucun enseignant ou aucun groupe d’étudiants. 
+
+
+
+
+
+
+« full-period » se formule par une contrainte testant si la séquence de semaines de l’horizon est bien une plage de semaines consécutives. 
+
+
+
+
+
+« no-overlap » teste, pour toute paire de séances s_i\neq s_j et chacune des paires d’horaires de démarrage hi<hj sur une même journée (hi mod … =), que s_i se termine nécessairement avant sj (si + length <= sj). Le cas échéant, deux séances ne peuvent démarrer qu’en même temps ou bien être strictement séquencées dans le temps.
+
+
+
+
+
+« same-duration » se teste trivialement en vérifiant l’égalité des durées des séances.
+
+
+
+
+
+« modular » se teste en comparant les écarts entre horaires de démarrage de séances. A dénote l’ensemble des écarts positifs possibles entre horaires de démarrage et gcd(A) leur plus grand commun diviseur. Le test consiste à vérifier si ce PGCD correspond au plus petit des écarts et est différent de 1.
+
+
+
+
+
+
+
+« no-room », « single-room » et « multi-room » testent l’existence d’une modalité de cours dont le nombre de salles autorisées par séance obéit aux valeurs attendues.
+
+
+
+
+
+
+
+
+
+
+« room-capacity » teste si l’une des salles a une capacité bien définie.
+
+
+
+
+
+
+
+«a ll-excluive », « none-exclusive » et « some-exclusive » sont des tests sur la nullité des ensembles de séances exclusives et de séances inclusives.
+
+
+
+
+
+Reprendre la même formulation que pour no-room, single-room .. ci-dessus.
+
+
+
+
+Attention, voir correction dans le tableau. C’est une vraie contrainte.
+
+« no-overlap » est vérifiée si toute paire de séances assignées à un enseignant ne se chevauchent jamais, autrement dit, tout enseignant est traité comme une ressource disjonctive. Il s’agit ici d’une contrainte d’emploi du temps portant sur les variables de décisions relatives aux séances d’enseignants et aux horaires de démarrage. Cette contrainte peut s’exprimée plus directement en instanciant le prédicat no-overlap pour chaque enseignant avec l’ensemble de ses séances élibiligles.
+
+
+
+
+« service » fixe le nombre de séances à assurer par enseignant par modalité de cours.
+
+
+
+
+« session-overlap » pour les groupes d’étudiants est le pendant de « session-overlap » pour les enseignants et admet une formulation similaire (voir ci-dessus).
+
+
+
+
+n’admet pas de formulation unique, les schémas de sectionnement d’effectifs variant selon les types d’établissement et de formations.
+
+
+
+Chaque sous-caractéristique de « crosscutting » liste les prédicats du catalogue qui servent à poser constraintes et règles qui lui « correspondent ». Par exemple, …
+
+« full-week » et « single-week » sont des tests trivaux sur le nombre de journées programmables par semaine et le nombre de semaines respectivement.
+
+
+
+ne modélisent pas les services d’enseignement et imposent une préaffectation des enseignants aux séances. 

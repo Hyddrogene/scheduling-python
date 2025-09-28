@@ -1,0 +1,19 @@
+sameStart(c1,..,cn) -> sameDailySlot(c1,...,cn)
+sameTime(c1,..,cn) -> during(c1,...,cn) : les séances plus petites ont lieu pendant les plus grandes
+sameDays(c1,..,cn) -> sameWeekDays(c1,..,cn) : inclusion de la plus petite journée dansla plus grande
+sameWeeks(c1,..,cn) -> sameWeeks(c1,..,cn) : toutes les séances ont lieu les même semaine
+sameRoom(c1,..,cn) -> sameRooms(c1,..,cn)
+differentTime(c1,..,cn) -> dijunctiveDaily(c1,..,cn) : virtual notOverlap utile pour faire tourner les profs qui  pas toujours les mêmes commence cours à 8h -> disjunctiveDaily si cours sur la même journée alors pas en même temps
+differentDays(c1,..,cn) -> disjointWeekDays(c1,..,cn)
+differentWeeks(c1,..,cn) -> disjointWeek(c1,..,cn)
+differentRoom(c1,..,cn) -> disjointRooms(c1,..,cn)
+overlap(c1,..,cn) -> overlap(c1,..,cn) l'une commence pendant l'entre ou l'une se termine pendant l'autre (c'est pareil)
+notOverlap(c1,..,cn) -> disjunctive(c1,..,cn) 
+sameAttendees(c1,..,cn) -> travelTime(c1,..,cn,M) : M matrice temps entre differentes Rooms -> dijunctive modulo temps de trajet subsumes disjunctive 
+precedence(c1,..,cn) -> sequenced(c1,..,cn): (mask ="1") && ordre tuple important
+workDay(c1,..,cn, s) -> workLoad(c1,..,cn,s,u): s = volume de temps, u unité de temps exprimé && se rapporte à l'unité de temps supérieur
+minGap(c1,..,cn, s) -> minGap(c1,..,cn,s,u) : s = volume de temps, u unité de temps exprimé , gap entre 2 séances le mm jour 
+maxDays(c1,..,cn, d) -> maxWeekDays(c1,..,cn, d) : d = nombre max de days recouvert par la classe
+maxDayLoad(c1,..,cn, s) -> atMostDaily(c1,..,cn,f,l c) : f = first créneaux qui commence l'intervalle (1..1339), l = last créneaux qui finit l'intervalle observé(2..1440), c = count  compteur 
+maxBreaks(c1,..,cn,m ,s ) -> maxBreaks(c1,..,cn, r, c): m = taille du trou, c = nombre occurence  -> evite les trous dans une journée en évitant d'avoir des trous trop grand dans la journée (trou considérer si taille m et on doit en avoir max s)
+maxBlock(c1,..,cn,m , s) -> maxBlock(c1,..,cn, m ,s): m = taille d'un block, s =  cours séparé par une durée s -> evite d'avoir des blocks de cours consécutifs ayant une durée au + de s entre eux de dépasser une taille m (s permet de détécter les blocks et m de limité leur taille) [atMostConsecutive ?]

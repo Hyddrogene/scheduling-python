@@ -1,0 +1,32 @@
+%------------------------------------------------------------
+%------------------------------------------------------------
+\section{Conclusion and perspectives}
+\label{sec:conclusion}
+We introduced in this paper a domain-specific language for university course timetabling. 
+The language allows to model a wide variety of curriculum-based timetabling problems
+such as those encountered in French universities. 
+%This is particularly the case in French universities where students are divided into groups that attend all the courses they are registered for.
+It provides support for typical timetabling entities (students, sessions, teachers, rooms, etc.) and features (student sectioning, resource distribution, session scheduling, resource allocation) and includes a rules language to easily express constraints (sequencing, periodicity, etc.).
+Rules allow to target any subset of domain entities and sessions and enforce timetabling-specific predicates.
+
+We used the language to encode a real instance (Bachelor courses of a French university) and 
+implemented a tool chain to convert the \XML\ instance files into solver-compatible formats.
+In order to validate our approach, we implemented a \CSP\ model capable of solving \UTP\ instances. 
+We implemented this \CSP\ model in \MINIZINC\ and \CHR\ and produced solutions for the considered instance.
+
+%We believe that the \UTP\ language is the first link in a chain of processes whose purpose is to create a timetable that can evolve according to the random events occurring during the period on which it is built.
+
+%We are currently working on improving the second link, which consists of building the timetable from scratch. 
+
+We are currently working on different extensions of the language and the back-end solvers.
+First, we intend to represent preferences and priorities in order to support timetable optimization and repair tasks.
+Second, the current {\CP} models may be improved using dedicated scheduling constraints, search strategies and heuristics and take advantage of model simplication and reformulation techniques.
+Another objective is to improve scalability by testing our solvers on large-scale instances aggregating different curriculae or converted from academic benchmarks.
+Lastly, we intend to investigate the revision of timetables to manage unexpected events (e.g.  unavailability of a teacher, late registration of students) or to support incremental solution construction. 
+
+%The \UTP\ language makes it possible to model a problem ex nihilo, but also makes it possible to amend an existing model by adding constraints when an event occurs (e.g. unexpected unavailability of a teacher, late registration of students). 
+%Even if the \UTP\ language allows to express these random events, the \CSP\ and \CHR models must take them in order to calculate new solutions. Moreover, they must do so in an incremental and dynamic way in order to respond to the succession of events that may occur over the period of application of the schedule. 
+%It is after having dealt with this last link that the resolution methods will make it possible to solve the problem of designing and updating a timetable as it occurs in everyday life.
+
+
+%\davidl{CP dur : pas d'optimisation. En parler en intro / conclusion ? -> extension du catalogue de prédicat et de l'aspect optimisation plus tard}

@@ -1,0 +1,40 @@
+%------------------------------------------------------------
+%------------------------------------------------------------
+\subsection{Experimentations}
+\label{sec:experimentations}
+
+% 
+% Expérimentations Timetabling :
+% -> Présentation des instances / résultats
+% -> Différentes heuristiques ?
+% -> Mesure sur la "qualité" des solutions (les solutions entre CHR et MZN peuvent être différentes)
+% 
+We carried out preliminary experiments on a real-life instance modeling the second semester of the last year of Bachelor in Computer Sciences at Université d'Angers (available at \cite{uspSite}).
+The main objective was to validate the solvers and assess their ability to generate solutions in a reasonable time. 
+
+% Présentation de l'instance L3 : (TODO: vérifier les chiffres)
+The instance contains 5 mandatory courses and 2 courses to choose among 4 additional courses.
+The instance thus consists of 9 courses decomposed into 24 parts, 45 classes and 241 sessions.
+Courses are taught during 12 weeks, 5 days a week (Monday to Friday), where each day is divided into 1440 slots.
+At the Faculty of Sciences of Université d'Angers, course sessions last 1h and 20 minutes or 2 hours and start at regular intervals every 90 minutes starting at 8h00 and finishing at 19h50.
+The 90 minutes interval includes a 10 minutes break
+%and there are 8 course slots: from 08:00 to 19:50, every 90 minutes.
+%Note that there is a 10 minutes break between every course 
+allowing students and lecturers to change rooms.
+%Following this time grid, the instance has 3 lengths of sessions: 80 and 170 slots representing 1 and 2 course slots respectively ; some courses last 120 minutes, in this case they have to start or end on the grid.
+
+The instance contains 8 rooms, 12 lecturers and 67 students. % prepartitioned into 4 groups. %, 12 lecturers and 8 rooms.
+In our case, student sectioning was performed in advance and prepartitioned the students into 4 groups.
+Lecturers are either course owners involved in all the parts of a course (lecture, tutorial and lab) or tutors that are involved in labs of different courses.
+There are 47 rules defined in the instance: 13 \texttt{\WEEKLY{}}, 17 \texttt{\SEQUENCED{}}, 2 \texttt{\SAMESLOT{}}, 5 \texttt{\SAMEWEEK{}}, 5 \texttt{\SAMEROOMS{}} and 5 \texttt{\SAMETEACHERS{}}.
+The 47 rules were flattened into 216 constraints and the order of 1000 decision variables.
+
+% quel types de règles : orchestration, restriction de salles, etc.
+
+% Présentation des caractéristiques techniques :
+The \MINIZINC{} and \CHR{} solvers presented in Section~\ref{sec:model} were used to solve the instance with an Intel Core i7-10875H 2.30GHz.
+Both solvers generate a valid solution in less than 5 seconds.
+The solutions are different due to the two resolution strategies but compliant with 
+%the solution from the \MINIZINC{} (resp. \CHR{}) 
+each solver %is valid with the \CHR{} (resp. \MINIZINC{}) solver, 
+which shows the convergence of both models and solvers.

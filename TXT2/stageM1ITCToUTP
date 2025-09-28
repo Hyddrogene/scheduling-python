@@ -1,0 +1,19 @@
+ITC 2019 -> base d'un schéma cousu main
+graduellement pour bien répondre nos formations -> propre schéma
+étudier la conversion entre itc et UTP
+certaine instance codable dans les 2
+convertisseurs entre les 2
+
+
+finir parser
+réalignement-> sur les papiers / semantique des prédicats weekly et sequenced, virer les tuples/-> instance 
+découpage des contraintes
+solver possibilité travailler eclater
+commentaire stat instance
+commentaire sur les comsétiques
+
+peridodicity
+minGap
+maxGap
+sameWeeklySlot
+les cores constriant sont comme les autres

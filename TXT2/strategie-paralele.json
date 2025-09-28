@@ -1,0 +1,118 @@
+{
+  "time_out": "40s",
+    "core_constraint": [
+      "implicite_sequenced_sessions",
+      "teacher_service",
+      "disjunctive_teacher",
+      "disjunctive_group",
+      "disjunctive_room",
+      "size_of_multiroom",
+      "bench_class_equilibrate"
+    ],
+    "user_constraint": [
+      "sameRooms",
+      "sameTeachers",
+      "allowedPeriod",
+      "forbiddenPeriod",
+      "weekly",
+      "sameWeek",
+      "assignRoom",
+      "forbiddenRooms",
+      "sameWeekDay",
+      "differentWeekDay",
+      "differentSlots",
+      "disjunct",
+      "sameWeeklySlot",
+      "differentWeek",
+      "sameSlot",
+      "sameSlots",
+      "periodic",
+      "sequenced"
+    ],
+    "deactivate_rules": [{"rules": "", "comment": "Contrainte de test   input_order"}],
+
+  "vars": [ 
+    {"x_room": [{"rank": "*"}, "first_fail", "indomain_random"]},
+    {"x_rooms": [{"rank": "*"}, "input_order", "indomain_min"]},
+    {"x_teacher": [{"rank": "*"}, "first_fail", "indomain_min"]},
+    {"x_teachers": [{"rank": "*"}, "first_fail", "indomain_min"]},
+    {"x_slot": [{"id": "EEO*"}, "first_fail", "indomain_min"]},
+    {"x_slot": [{"label": "REPAS*"}, "first_fail", "indomain_min"]},
+    {"x_slot": [{"rank": "1-5"}, "first_fail", "indomain_min<30>"]},
+    {"x_slot": [{"rank": "6-*"}, "first_fail", "indomain_min"]}
+  ],
+  "restart" : {"type":"geometric","seuil": 100,"factor":1.5,"max":500},
+  "search" : "default" ,
+  "enabled_feature_model": true,
+
+  "parallelization": {
+    "enabled":false,
+    "num_threads": 5, 
+    "branches": [
+      {
+        "name": "Classique_Branch",
+        "type" : "classic",
+        "vars": "default",
+        "restart": "default",
+        "comment": "Utilise la stratégie définie dans 'default_search_strategy_config'"
+      },
+
+
+      {
+        "name": "Classique_Branch-2",
+        "type" : "lastconflict",
+        "vars": [ 
+    {"x_room": [{"rank": "*"}, "first_fail", "indomain_random"]},
+    {"x_rooms": [{"rank": "*"}, "input_order", "indomain_min"]},
+    {"x_teacher": [{"rank": "*"}, "first_fail", "indomain_min"]},
+    {"x_teachers": [{"rank": "*"}, "first_fail", "indomain_min"]},
+    {"x_slot": [{"id": "*"}, "first_fail", "indomain_min<50>"]}],
+        "restart": {"type":"geometric","seuil": 10,"factor":1.01,"max":500},
+        "comment": "Utilise la stratégie définie dans 'default_search_strategy_config'"
+      },
+      {
+        "name": "Classique_Branch-3",
+        "type" : "lastconflict",
+        "vars": [ 
+    {"x_slot": [{"rank": "*"}, "first_fail", "indomain_min<80>"]},
+    {"x_room": [{"rank": "*"}, "first_fail", "indomain_random"]},
+    {"x_rooms": [{"rank": "*"}, "input_order", "indomain_min"]},
+    {"x_teacher": [{"rank": "*"}, "first_fail", "indomain_min"]},
+    {"x_teachers": [{"rank": "*"}, "first_fail", "indomain_min"]},
+
+  ],
+        "restart":  {"type":"geometric","seuil": 1,"factor":1.001,"max":500},
+        "comment": "Utilise la stratégie définie dans 'default_search_strategy_config'"
+      },
+      
+            {
+        "name": "Classique_Branch-4",
+        "type" : "COS",
+        "vars": [ 
+    {"x_slot": [{"rank": "*"}, "first_fail", "indomain_min<80>"]},
+    {"x_room": [{"rank": "*"}, "first_fail", "indomain_random"]},
+    {"x_rooms": [{"rank": "*"}, "input_order", "indomain_min"]},
+    {"x_teacher": [{"rank": "*"}, "first_fail", "indomain_min"]},
+    {"x_teachers": [{"rank": "*"}, "first_fail", "indomain_min"]},
+
+  ],
+        "restart":  {"type":"geometric","seuil": 10,"factor":1.01,"max":500},
+        "comment": "Utilise la stratégie définie dans 'default_search_strategy_config'"
+      },
+            {
+        "name": "Classique_Branch-5",
+        "type" : "greedy",
+        "vars": [ 
+    {"x_slot": [{"rank": "*"}, "first_fail", "indomain_min<80>"]},
+    {"x_room": [{"rank": "*"}, "first_fail", "indomain_random"]},
+    {"x_rooms": [{"rank": "*"}, "input_order", "indomain_min"]},
+    {"x_teacher": [{"rank": "*"}, "first_fail", "indomain_min"]},
+    {"x_teachers": [{"rank": "*"}, "first_fail", "indomain_min"]},
+
+  ],
+        "restart":  {"type":"geometric","seuil": 10,"factor":1.01,"max":500},
+        "comment": "Utilise la stratégie définie dans 'default_search_strategy_config'"
+      }
+    ]
+  }
+}

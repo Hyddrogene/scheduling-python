@@ -1,0 +1,72 @@
+Le schéma {\UTP} découpe la modélisation %modele
+d'une instance d'emploi du temps en 3 
+composants %fragment 
+syntaxiques qui sont un modèle d'entités, un ensemble de règles et une solution.
+%The {\UTP} schema splits the modeling of a timetabling instance into three syntactic components, namely, an entity model, a rules set and a solution.
+Le modèle d'entités définit l'horizon de temps, les cours et les ressources de l'instance. 
+Cela encode la compatibilité des ressources avec des éléments de cours, la capacité des ressources, %et les flux
+les contraintes de séquencement de séances et la répartition des étudiants en groupes.
+%
+%The entity model defines the schedule horizon, courses and resources of the instance. It also encodes core %domain and cardinality
+%compatibility, capacity and flow 
+%constraints relating to session scheduling, resource allocation, and student sectioning.
+%Rules express additional constraints meant to capture stakeholder requirements on particular aspects of the problem.
+%
+Les règles expriment des contraintes supplémentaires destinées à capturer les exigences des différentes entités sur des aspects particuliers du problème.
+%
+%To this end, the schema provides a catalog of timetabling-specific constraint predicates and embeds a rules language to apply predicates on chosen entities.
+%
+Pour cela, le schéma fournit un catalogue de contraintes spécifiques au problème d'emploi du temps et un langage de règles pour appliquer les prédicats sur les entités sélectionnées.
+%
+%The solution component includes a list of choices made for some or all of the decisions at stake (e.g., start time of a session).
+L'élément solution contient une liste de décisions qui peuvent être totalement ou partiellement effectuées pour des entités (e.g. le créneau d'une séance).
+%
+%Note that rules set and solution components may be omitted. 
+%
+L'ensemble de règles et l'élément solution peuvent être omis si non nécessaire.
+% Besides, the listed solution is not required to be consistent with the constraints enforced by the entity model or the rules set.
+% This allows to tackle subproblems using separate instances and to support timetable generation or repair tasks.
+
+%The rules language has generative semantics in the sense that each rule is the intensional representation of a collection of constraints sharing the same predicate.
+
+Le langage de règles a une sémantique générative dans le sens où chacune des règles est une représentation en intention d'une collection de contraintes qui partage le même prédicat.
+%
+%{\UTP} instances may therefore be compiled into lower-level representations that lists all constraints and whose format is tailored to back-end solvers.
+%
+Les instances {\UTP}  peuvent alors être compilées dans des formats en extension qui sont des représentations bas-niveau sous forme de liste de contraintes dans un format lisible pour les solveurs.
+
+%The schema is currently implemented as an {\XML} language.
+%It comes with a parser that converts instances into {\JSON} and {\DZN} formats %({\Minizinc} input data format) 
+%and can flatten rules into constraint collections or leave them as is.
+%The detailed XML syntax and alternative formats are beyond the scope of this paper and may be found in \cite{USPsite}.
+
+Le schéma est actuellement implémenté en {\XML}. Il est accompagné d'un parser capable de convertir une instance au format {\JSON} ou {\DZN}, et génère une collection de contraintes à partir des règles. % capable décomposer les règles sous forme de collection de contrainte. 
+%
+Le détail de la syntaxe {\XML} et des formats alternatif dépassent le cadre de cet article et sont disponibles sur \cite{USPsite}.
+%{\UTP} predicates and the entity meta-model may be directly implemented as a constraint-based model in any {\CP} language.
+%Instantiating such a model simply requires listing all constraints and entities in a compatible format.
+%{\UTP} instances are thus compilable into {\CP} instances by .
+ 
+%motivate design choices 
+%We introduce below the conceptual model,
+%provide set-theoretic semantics for the rules language, 
+%and highlight differences with related work.
+%the catalog of predicates 
+% and the rules language.
+%We also motivate design choices
+% introduce the catalog of predicates,
+% and describe the generative semantics of the rules language.
+
+
+%Nous introduisons maintenant le modèle conceptuel, fournissons une sémantique de la théorie des ensembles  pour le langage de règle, et soulignons les différences avec des travaux similaires.
+
+% The {\UTP} schema splits the modeling of timetabling problem instances into three components, namely, an entity model, a rules set and a solution.
+% It embeds a specific language to declare rules on entities based on a %predefined 
+% catalog of timetabling-specific predicates.
+% Each rule is an intensional representation of a collection of constraints applying to different entities.
+% {\UTP} instances may thus be compiled to lower-level representations that explicitly declare all constraints and whose format is compatible with {\CP} languages.
+% We provide below an informal description of the syntactic components
+% %including the {\UTP} constraint predicate catalog
+% (the detailed XML syntax of the schema may be found in \cite{USPsite}),
+% motivating design choices and describing the generative semantics of the rules language,
+% and we highlight differences with related work.

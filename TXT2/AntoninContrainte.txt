@@ -1,0 +1,393 @@
+DifferentDays - 1158  -> UTP disjoinWeekDay
+files: 27
+ agh-ggos-spr17.xml
+ muni-fspsx-fal17.xml
+ bet-spr18.xml
+ agh-ggis-spr17.xml
+ pu-d5-spr17.xml
+ muni-fi-fal17.xml
+ bet-fal17.xml
+ nbi-spr18.xml
+ pu-proj-fal19.xml
+ iku-fal17.xml
+ pu-d9-fal19.xml
+ pu-c8-spr07.xml
+ muni-fi-spr17.xml
+ yach-fal17.xml
+ muni-pdfx-fal17.xml
+ pu-llr-spr17.xml
+ agh-fal17.xml
+ tg-fal17.xml
+ iku-spr18.xml
+ tg-spr18.xml
+ muni-fsps-spr17.xml
+ agh-fis-spr17.xml
+ muni-pdf-spr16.xml
+ muni-fi-spr16.xml
+ bet-sum18.xml
+ pu-llr-spr07.xml
+
+DifferentRoom - 17 -> UTP disjointRoom /\ sameRoom
+files: 4
+ bet-spr18.xml
+ bet-fal17.xml
+ pu-proj-fal19.xml
+ muni-fi-spr17.xml
+
+DifferentTime - 47 -> UTP virtual notOverlap utile pour les profs faire tourner les profs qui ont pas toujours cours à 8h -> disjunctiveDaily juste une suffit
+files:
+ bet-fal17.xml
+ pu-proj-fal19.xml
+ pu-d9-fal19.xml
+ pu-c8-spr07.xml
+ pu-llr-spr17.xml
+ pu-llr-spr07.xml
+
+DifferentWeeks - 1347 -> sameWeekssss -> toutes les séances ont lieu les même semaine disjointWeeksssss
+files:
+ muni-fspsx-fal17.xml
+ muni-fsps-spr17c.xml
+ muni-pdf-spr16c.xml
+ muni-pdfx-fal17.xml
+ muni-pdf-spr16.xml
+
+MaxBlock - 197 -> parametre S  -> atMostConsecutive -> m,s
+files:
+ bet-spr18.xml
+ muni-fi-fal17.xml
+ bet-fal17.xml
+ muni-pdf-spr16c.xml
+ muni-fi-spr17.xml
+ muni-pdfx-fal17.xml
+ muni-pdf-spr16.xml
+ muni-fi-spr16.xml
+
+MaxBreaks - 207 -> maxBreak -> evite les trous dans une journée en évitant d'avoir des trous trop grand dans la journée (trou considérer si taille m et on doit en avoir max s)
+files:
+ agh-ggos-spr17.xml
+ agh-h-spr17.xml
+ agh-ggis-spr17.xml
+ pu-d5-spr17.xml
+ pu-proj-fal19.xml
+ pu-d9-fal19.xml
+ pu-llr-spr17.xml
+ agh-fal17.xml
+ agh-fis-spr17.xml
+
+MaxDayLoad - 194 -> atMostDaily
+files:
+ agh-h-spr17.xml
+ muni-fi-fal17.xml
+ bet-fal17.xml
+ pu-proj-fal19.xml
+ muni-pdf-spr16c.xml
+ pu-d9-fal19.xml
+ muni-fi-spr17.xml
+ yach-fal17.xml
+ muni-pdfx-fal17.xml
+ agh-fal17.xml
+ tg-spr18.xml
+ muni-pdf-spr16.xml
+ muni-fi-spr16.xml
+
+MaxDays - 152 -> maxWeekDays -> pour les classes donnée elle doivent toutes être sur max un certain nombre de jour
+files:
+ agh-ggos-spr17.xml
+ agh-h-spr17.xml
+ bet-spr18.xml
+ agh-ggis-spr17.xml
+ muni-fi-fal17.xml
+ bet-fal17.xml
+ muni-fi-spr17.xml
+ muni-pdfx-fal17.xml
+ agh-fal17.xml
+ agh-fis-spr17.xml
+
+MinGap - 389 -> minGap g , permimetre
+files:
+ muni-fspsx-fal17.xml
+ bet-spr18.xml
+ mary-spr17.xml
+ pu-d5-spr17.xml
+ bet-fal17.xml
+ nbi-spr18.xml
+ pu-proj-fal19.xml
+ pu-d9-fal19.xml
+ pu-c8-spr07.xml
+ yach-fal17.xml
+ muni-pdfx-fal17.xml
+ pu-llr-spr17.xml
+ agh-fal17.xml
+ mary-fal18.xml
+ muni-pdf-spr16.xml
+ bet-sum18.xml
+ pu-llr-spr07.xml
+
+NotOverlap - 6574 -> disjunctive 
+files:
+ agh-h-spr17.xml
+ muni-fspsx-fal17.xml
+ bet-spr18.xml
+ muni-fsps-spr17c.xml
+ lums-fal17.xml
+ mary-spr17.xml
+ pu-cs-fal07.xml
+ agh-ggis-spr17.xml
+ pu-d5-spr17.xml
+ lums-spr18.xml
+ muni-fi-fal17.xml
+ bet-fal17.xml
+ nbi-spr18.xml
+ pu-proj-fal19.xml
+ muni-pdf-spr16c.xml
+ iku-fal17.xml
+ pu-d9-fal19.xml
+ pu-c8-spr07.xml
+ muni-fi-spr17.xml
+ yach-fal17.xml
+ muni-pdfx-fal17.xml
+ pu-llr-spr17.xml
+ agh-fal17.xml
+ tg-fal17.xml
+ iku-spr18.xml
+ tg-spr18.xml
+ muni-fsps-spr17.xml
+ wbg-fal10.xml
+ mary-fal18.xml
+ agh-fis-spr17.xml
+ muni-pdf-spr16.xml
+ muni-fi-spr16.xml
+ bet-sum18.xml
+ pu-llr-spr07.xml
+
+Overlap - 17 -> overlap contrainte sur les bornes
+files:
+ iku-fal17.xml
+
+Precedence - 6096 -> sequenced nensemble de sessions ; masque 1
+files:
+ agh-ggos-spr17.xml
+ agh-h-spr17.xml
+ muni-fspsx-fal17.xml
+ bet-spr18.xml
+ muni-fsps-spr17c.xml
+ mary-spr17.xml
+ agh-ggis-spr17.xml
+ pu-d5-spr17.xml
+ muni-fi-fal17.xml
+ pu-proj-fal19.xml
+ muni-pdf-spr16c.xml
+ iku-fal17.xml
+ pu-d9-fal19.xml
+ pu-c8-spr07.xml
+ muni-fi-spr17.xml
+ muni-pdfx-fal17.xml
+ pu-llr-spr17.xml
+ agh-fal17.xml
+ iku-spr18.xml
+ tg-spr18.xml
+ muni-fsps-spr17.xml
+ mary-fal18.xml
+ agh-fis-spr17.xml
+ muni-pdf-spr16.xml
+ muni-fi-spr16.xml
+
+SameAttendees - 27568 -> dijunctive modulo temps de trajet
+files:
+ agh-ggos-spr17.xml
+ lums-sum17.xml
+ agh-h-spr17.xml
+ muni-fspsx-fal17.xml
+ bet-spr18.xml
+ muni-fsps-spr17c.xml
+ lums-fal17.xml
+ mary-spr17.xml
+ pu-cs-fal07.xml
+ agh-ggis-spr17.xml
+ pu-d5-spr17.xml
+ lums-spr18.xml
+ muni-fi-fal17.xml
+ bet-fal17.xml
+ nbi-spr18.xml
+ pu-proj-fal19.xml
+ muni-pdf-spr16c.xml
+ iku-fal17.xml
+ pu-d9-fal19.xml
+ pu-c8-spr07.xml
+ muni-fi-spr17.xml
+ yach-fal17.xml
+ muni-pdfx-fal17.xml
+ pu-llr-spr17.xml
+ agh-fal17.xml
+ tg-fal17.xml
+ iku-spr18.xml
+ tg-spr18.xml
+ muni-fsps-spr17.xml
+ wbg-fal10.xml
+ mary-fal18.xml
+ agh-fis-spr17.xml
+ muni-pdf-spr16.xml
+ muni-fi-spr16.xml
+ bet-sum18.xml
+ pu-llr-spr07.xml
+
+SameDays - 4522 -> sameWeekDayssssss  || inclusion de la plus petite journée dansla plus grande
+files:
+ agh-ggos-spr17.xml
+ agh-h-spr17.xml
+ muni-fspsx-fal17.xml
+ bet-spr18.xml
+ muni-fsps-spr17c.xml
+ lums-fal17.xml
+ mary-spr17.xml
+ agh-ggis-spr17.xml
+ pu-d5-spr17.xml
+ muni-fi-fal17.xml
+ bet-fal17.xml
+ nbi-spr18.xml
+ pu-proj-fal19.xml
+ muni-pdf-spr16c.xml
+ iku-fal17.xml
+ pu-d9-fal19.xml
+ pu-c8-spr07.xml
+ muni-fi-spr17.xml
+ yach-fal17.xml
+ muni-pdfx-fal17.xml
+ pu-llr-spr17.xml
+ agh-fal17.xml
+ tg-fal17.xml
+ iku-spr18.xml
+ tg-spr18.xml
+ muni-fsps-spr17.xml
+ mary-fal18.xml
+ agh-fis-spr17.xml
+ muni-pdf-spr16.xml
+ muni-fi-spr16.xml
+ bet-sum18.xml
+ pu-llr-spr07.xml
+
+SameRoom - 3429 -> sameRoom
+files:
+ agh-ggos-spr17.xml
+ agh-h-spr17.xml
+ muni-fspsx-fal17.xml
+ bet-spr18.xml
+ muni-fsps-spr17c.xml
+ mary-spr17.xml
+ pu-cs-fal07.xml
+ agh-ggis-spr17.xml
+ pu-d5-spr17.xml
+ muni-fi-fal17.xml
+ bet-fal17.xml
+ pu-proj-fal19.xml
+ muni-pdf-spr16c.xml
+ iku-fal17.xml
+ pu-d9-fal19.xml
+ pu-c8-spr07.xml
+ muni-fi-spr17.xml
+ yach-fal17.xml
+ muni-pdfx-fal17.xml
+ pu-llr-spr17.xml
+ agh-fal17.xml
+ iku-spr18.xml
+ tg-spr18.xml
+ muni-fsps-spr17.xml
+ mary-fal18.xml
+ agh-fis-spr17.xml
+ muni-pdf-spr16.xml
+ muni-fi-spr16.xml
+ bet-sum18.xml
+ pu-llr-spr07.xml
+
+SameStart - 603 -> sameDailySlot
+files:
+ bet-spr18.xml
+ pu-d5-spr17.xml
+ bet-fal17.xml
+ pu-proj-fal19.xml
+ muni-pdf-spr16c.xml
+ iku-fal17.xml
+ pu-d9-fal19.xml
+ pu-c8-spr07.xml
+ pu-llr-spr17.xml
+ iku-spr18.xml
+ muni-pdf-spr16.xml
+ bet-sum18.xml
+ pu-llr-spr07.xml
+
+SameTime - 1736 -> during
+files:
+ agh-ggos-spr17.xml
+ agh-h-spr17.xml
+ muni-fspsx-fal17.xml
+ bet-spr18.xml
+ muni-fsps-spr17c.xml
+ lums-fal17.xml
+ mary-spr17.xml
+ pu-cs-fal07.xml
+ agh-ggis-spr17.xml
+ pu-d5-spr17.xml
+ muni-fi-fal17.xml
+ bet-fal17.xml
+ nbi-spr18.xml
+ pu-proj-fal19.xml
+ muni-pdf-spr16c.xml
+ iku-fal17.xml
+ pu-d9-fal19.xml
+ pu-c8-spr07.xml
+ muni-fi-spr17.xml
+ muni-pdfx-fal17.xml
+ pu-llr-spr17.xml
+ agh-fal17.xml
+ tg-fal17.xml
+ iku-spr18.xml
+ tg-spr18.xml
+ muni-fsps-spr17.xml
+ mary-fal18.xml
+ agh-fis-spr17.xml
+ muni-pdf-spr16.xml
+ muni-fi-spr16.xml
+
+SameWeeks - 51 -> sameWeeksssssss
+files:
+ agh-ggos-spr17.xml
+ agh-h-spr17.xml
+ muni-fspsx-fal17.xml
+ muni-fsps-spr17c.xml
+ muni-fi-spr17.xml
+ muni-pdfx-fal17.xml
+ agh-fal17.xml
+ agh-fis-spr17.xml
+ muni-fi-spr16.xml
+
+WorkDay - 2511 -> workLoad -> s valeur, unité de s 
+files:
+ agh-ggos-spr17.xml
+ agh-h-spr17.xml
+ muni-fspsx-fal17.xml
+ bet-spr18.xml
+ muni-fsps-spr17c.xml
+ mary-spr17.xml
+ agh-ggis-spr17.xml
+ pu-d5-spr17.xml
+ muni-fi-fal17.xml
+ bet-fal17.xml
+ pu-proj-fal19.xml
+ muni-pdf-spr16c.xml
+ iku-fal17.xml
+ pu-d9-fal19.xml
+ pu-c8-spr07.xml
+ muni-fi-spr17.xml
+ muni-pdfx-fal17.xml
+ pu-llr-spr17.xml
+ agh-fal17.xml
+ tg-fal17.xml
+ iku-spr18.xml
+ muni-fsps-spr17.xml
+ mary-fal18.xml
+ agh-fis-spr17.xml
+ muni-pdf-spr16.xml
+ muni-fi-spr16.xml
+ bet-sum18.xml
+ pu-llr-spr07.xml
+

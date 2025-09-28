@@ -1,0 +1,2 @@
+service_teacher("teacher2","cours-1-pCM",10).
+:- service_teacher(T,P,N) ,part_sessions(P,S), #sum{S,T: assigned(S,_,T)} > N.

@@ -1,0 +1,159 @@
+\begin{table}[!t]
+\begin{center}
+\rowcolors{1}{gray!25}{white}
+%\begin{tabular}{|r>{\columncolor{gray!25}}l|}
+%\begin{tabular}{|ll|}
+\begin{tabular}{|l|l|}
+%\begin{tabular}{ll}
+
+
+\hline
+$\week$                                 & number of weeks
+dividing the scheduling horizon
+%in $\SLOT$\\
+\\%in $\SLOT$\\
+$\weekday$                               & number of weekdays
+making a week \\
+$\dailyslot$                              &  number of daily slots
+making a 24-hour day% in $\SLOT$
+%DAILY SLOT M pour minute
+\\
+$\WEEK =\myset{1,\ldots\week}$
+&  range of weeks 
+\\
+$\WEEKDAY =\myset{1,\ldots\weekday}$
+&  range of weekdays 
+\\
+$\DAILYSLOT =\myset{1,\ldots\dailyslot}$
+&  range of daily slots 
+\\
+$\SLOT=\myset{1,\ldots\week\times\weekday\times\dailyslot}$
+%$\SLOT$                                  
+&  range of \timepoints{} (schedule horizon)
+%defining the scheduling horizon
+\\\hline
+$\COURSE$%\subseteq\ENTITY$
+                                            &  courses
+\\
+$\PART$%\subseteq\ENTITY$
+                                            &  course parts
+\\
+$\CLASS$%\subseteq\ENTITY$
+                                            &  part classes
+\\
+$\ROOM$%\subseteq\ENTITY$
+                                            &  rooms
+\\
+$\TEACHER$%\subseteq\ENTITY$
+                                            &  teachers
+\\
+$\STUDENT$%\subseteq\ENTITY$
+                                            &  students
+\\
+$\GROUP$%\subseteq{\ENTITY}$
+                                            &  groups of students
+
+% \\
+% $\ENTITY$                                   & the entities
+\\\hline
+$\COURSES=\myset{\COURSE}$%\subseteq\ENTITY$
+                                            &  course domain
+\\
+$\TYPE=\myset{\COURSES,\COURSE,\PART,\CLASS,\ROOM,\TEACHER,\STUDENT,\GROUP}
+$                                           &  types of entities
+\\
+${\ENTITY}=\setunion{X}{\TYPE}{X}$          &  set of entities
+\\
+$\map{X}{Y}{i}\subseteq{Y}, X \in \myset{\COURSES,\COURSE,\PART,\CLASS}$
+                                            &  set of entities of type $Y$ tied to entity $i$ of type $X$
+\\
+$\map{X}{Y}{i}\subseteq{Y}, X \in \myset{\ROOM,\TEACHER,\STUDENT,\GROUP}$
+                                            &  set of entities of type $Y$ associated with entity $i$ of type $X$
+\\
+% \\\hline
+${\LABEL}\subseteq2^{{\ENTITY}}$            &  labels
+\\\hline
+% $\SESSION$                                  & the class sessions
+% \\
+$ \SESSIONEX$% \subseteq \SESSION $
+                                            &  exclusive class sessions 
+\\
+$ \SESSIONINC$% \subseteq \SESSION $
+                                            &  inclusive class sessions 
+\\
+$\SESSION=\SESSIONEX\disjunion\SESSIONINC$  &  class sessions
+\\
+$\partallowedslots{s}\subseteq{\SLOT}$      &  start times allowed for session $s$
+\\
+$\map{\SESSION}{X}{s}\subseteq{X}$
+                                            &  set of entities of type $X$ tied to session $s$
+\\
+$\map{X}{\SESSION}{i}\subseteq{\SESSION}$
+                                            &  set of sessions tied to entity $i$ of type $X$
+% \\
+% %UP
+% $\umap{X}{\SESSION}{i}\subseteq{\SESSION},\; X\in\{\ROOM, \TEACHER\}$
+%                                             & the set of sessions allowed for, or tied to, entity $i$ of type $X$
+\\
+%DOWN
+$\dmap{X}{\SESSION}{i}\subseteq{\SESSION}$
+                                            &  set of sessions required by resource entity $i$ of type $X$
+\\
+%$\disjunctiverooms\subseteq{\ROOM}$         & the set of disjunctive rooms
+%\\
+\hline
+$\multiroompartmin{p}\in{\NATURAL}$          &  min number of rooms usable by each session of part $p$
+%whether course part $p$ is multi-room or not
+\\
+$\multiroompartmax{p}\in{\NATURAL}$          &  max number of rooms usable by each session of part $p$
+% whether course part $p$ is multi-room or not
+\\
+%$\partteachermultiplicity{p}\in{\NATURAL}$  & the number of lecturers usable by each session of part $p$
+%\\
+$\partteachermultiplicitymin{p}\in{\NATURAL}$  &  min number of lecturers usable by each session of part $p$
+\\
+$\partteachermultiplicitymax{p}\in{\NATURAL}$  &  max number of lecturers usable by each session of part $p$
+\\
+$\headcount{g}\in{\NATURAL}$               &  headcount of group $g$
+\\
+$\classcapacity{k}\in{\NATURAL}$            &  headcount of class $k$
+\\
+%$\multiteacherparts\subseteq{\PART}$           & the multi-teacher parts
+%\\
+%$\partteacherservice{l,p}\in{\NATURAL}$     & the number of sessions %required by lecturer $l$ in part $p$
+%\\
+$\roomcapacity{r}\in{\NATURAL}$             &  capacity of room $r$
+\\
+$\sessionduration{s}\in{\SLOT}$             &  duration of session $s$
+\\
+$\sessionrank{s}\in{\NATURAL^*}$            &  rank of session $s$ in its class
+\\
+$\partteacherservice{t,p}\in{\NATURAL}$     &  number of sessions required by teacher $t$ in part $p$
+%\\
+%$\sessionranked\subseteq{\SESSION\times\SESSION}$ & the pairs of sessions with consecutive ranks in a class
+%\\
+%$\sessionranked\subseteq{\SESSION\times\SESSION}$ & the pairs of sessions with consecutive ranks in a class
+%$\classparents{k}\subseteq{\CLASS}$          & the parent classes of class $k$ if any
+%\\
+%\\
+%$\virtualroom{r}\in{\BOOLEAN}$              & whether room $r$ is virtual or not
+%\\
+%$\virtualrooms\subseteq{\ROOM}$             & the virtual rooms
+\\\hline
+%$\PARTREQUIREDROOM \subseteq \CLASS$          & the classes requiring at least one room
+% \\
+%$\multiroomparts\subseteq{\PART}$           & the multi-room parts
+%\\
+%$\mandatoryrooms{p}\subseteq{\ROOM}$        & the mandatory rooms of part $p$
+%\\
+%
+%
+%$\multiroompart{p}\in{\BOOLEAN}$            & whether course part $p$ is multi-room or not
+%\\
+%\\\hline
+\end{tabular}
+\caption{Core data model.}
+\label{table:entity-model}
+\end{center}
+\end{table}
+%TODO \todo{for future work: the type graph/relation and its closure should be re-included in the text, and defined in the table and the maps `d` in the table explicitly restricted to pairs of the closed relation}

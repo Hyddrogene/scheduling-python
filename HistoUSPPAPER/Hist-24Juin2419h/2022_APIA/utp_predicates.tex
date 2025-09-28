@@ -1,0 +1,126 @@
+\begin{table*}[!ht]
+\resizebox{\textwidth}{!}{%
+\centering
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{Name}               & \textbf{Arity} & \textbf{Parametric} & \textbf{Semantics}\\ \hline
+
+%assign\_slot               & 1         & yes   & Assign a slot or slot tuple to a session\\ \hline
+%assign\_room               & 1         & yes   & Assign a set of room to session in entry\\ \hline
+
+%allocation\_group           & 1        & no    & Domain allocation for class with group in the solution\\ \hline
+%part\_schedule              & 1        & no    & Allowed start time slots for sessions\\ \hline
+%domain\_class\_group        & 1        & no    & Allowed groups for classes (solution input)\\ \hline
+%domain\_session\_teacher    & 1        & no    & Allowed teachers for sessions\\ \hline
+%domain\_class\_room         & 1        & no    & Allowed rooms for sessions\\ \hline
+
+{\SAMEDAILYSLOT}            & 1         & no    & Sessions start on the same daily slot\\ \hline
+{\SAMEWEEKDAY}              & 1         & no    & Sessions start on the same weekday\\ \hline
+{\SAMEWEEKLYSLOT}           & 1         & no    & Sessions start on the same weekly slot\\ \hline
+{\SAMEWEEK}                 & 1         & no    & Sessions start the same week\\ \hline
+{\SAMEDAY}                  & 1         & no    & Sessions start the same day\\ \hline
+{\SAMESLOT}                 & 1         & no    & Sessions start at the same time\\ \hline
+{\FORBIDDENPERIOD}          & 1         & yes   & Sessions cannot start in the time period\\ \hline
+{\ATMOSTDAILY}              & 1         & yes   & The number of sessions scheduled in the daily period is upper-bounded\\ \hline
+{\ATMOSTWEEKLY}             & 1         & yes   & The number of sessions scheduled in the weekly period is upper-bounded\\ \hline
+%implicit\_sequenced\_sessions & 1 & \multicolumn{4}{|c|}{no} & All sessions in classes are sequenced\\ \hline
+{\SEQUENCED}                & $\geq2$   & no    & Sessions are sequenced\\ \hline
+{\WEEKLY}                   & 1         & no    & Sessions are weekly \\ \hline
+
+{\NOOVERLAP}                & 1         & no    & Sessions cannot overlap\\ \hline
+{\TRAVEL}                   & 1         & yes   & Travel time is factored in if sessions hosted in the rooms\\ \hline
+
+{\SAMEROOMS}                & 1         & no    & Sessions are hosted in the same room(s)\\ \hline
+{\SAMESTUDENTS}             & 1         & no    & Sessions are attended by the same student(s)\\ \hline
+{\SAMETEACHERS}             & 1         & no    & Sessions are taught by the same teacher(s)\\ \hline
+
+{\ADJACENTROOMS}            & 1         & yes   & Sessions are hosted in the adjacent rooms\\ \hline
+
+{\TEACHERDISTRIBUTION}      & $\geq2$   & yes   & Distributes teacher workload over classes\\ \hline
+
+\end{tabular}
+}
+\caption{Catalog of {\UTP} predicates}
+\label{tab:predicate_catalog}
+\end{table*}
+
+
+% 
+% \newcolumntype{M}[1]{>{\raggedright}m{#1}}
+%\begin{table}[!h]
+%    \centering
+%    \begin{tabular}{|l|M{2cm}|*{7}{c|}}
+%        \hline
+%        \multirow{2}{4em}{Name} & \multirow{2}{4em}{Entity} & \multirow{2}{1cm}{Arity} & \multicolumn{4}{|c|}{Parameter} & \multirow{2}{6em}{Conditional} & \multirow{2}{10em}{Explication}   \\
+%        \cline{4-7}
+%           & & &name& type& number& type & &    \\
+%        \hline
+%
+%
+%assign\_slot & All & max 1 & slot & max 1 & min 1 & slots  & yes & Assign a slot or slot tuple to a session\\ \hline
+%
+%allocation\_group&Part& max 1  & \multicolumn{4}{|c|}{no}  & no  & Domain allocation for class with group in the solution\\ \hline
+%
+%assign\_room  & Course, Part, Class, Sessions, Teacher, Student &max 1 &rooms &  1 & min 1 &room & yes & Assign a set of room to session in entry\\ \hline
+%
+%\multirow{2}{6.5em}{at\_most\_daily} & \multirow{2}{2cm}{Course, Part, Class, Teacher, Room, Student }& \multirow{2}{4em}{max 1} &count & 1 & 1 & slot &\multirow{2}{4em}{ yes} &\multirow{2}{4em}{ Limit a number of session in intervalle } \\ 
+%\cline{4-7}
+%  & & &first& 1& 1& slot & &    \\
+%  \cline{4-7}
+%  & & &last& 1& 1& slot & &    \\
+%\hline
+%at\_most\_weekly & Course, Part, Class, Teacher, Room, Student & max 1 & count &  1 & 1 & slot & yes & Limit a number of session in intervalle \\ \hline
+%
+%connected\_room &  Course, Part, Class, Teacher, Room, Student & max 1 & roomChain & min 1  & min 2 & room [ordered]  & yes & Session need connected rooms \\ \hline
+%
+%disjunctive\_group & Student & max 1 & \multicolumn{4}{|c|}{no} & yes & A group cant have overlap of 2 sessions  \\ \hline
+%
+%disjunctive\_room & Room   & max 1 & \multicolumn{4}{|c|}{no} & yes & A room cant host 2 sessions at same moment  \\ \hline
+%
+%disjunctive\_teacher & Teacher & max 1 & \multicolumn{4}{|c|}{no} & yes & A teacher cant gives  classes at same moment\\ \hline
+%
+%domain\_class\_group & Class & max 1 & \multicolumn{4}{|c|}{no} & no & A subset of group to classes (need solution)\\ \hline
+%
+%domain\_session\_teacher & Session & max 1 & \multicolumn{4}{|c|}{no} & no & A subset of teacher for sessions\\ \hline
+%
+%domain\_class\_room &Class & max 1 & \multicolumn{4}{|c|}{no} & no & A subset of room for class \\ \hline
+%
+%\multirow{2}{5.5em}{forbidden\_slot} & \multirow{2}{4em}{All} & \multirow{2}{4em}{max 1} & first & 1 & 1& slot & \multirow{2}{4em}{yes} & \multirow{2}{4em}{A session cant take slot in intervalle} \\
+%  \cline{4-7}
+%  & & &last& 1& 1& slot & &    \\
+%\hline
+%
+%implicite\_sequenced\_sessions & Class & max 1 & \multicolumn{4}{|c|}{no} & no & All sessions in classes are sequenced\\ \hline
+%
+%\multirow{2}{9em}{not\_consecutive\_rooms} &\multirow{2}{2cm}{ Course, Part, Class, Teacher, Student} &\multirow{2}{4em}{ max 1} & minGap & 1 & 1 & slot & \multirow{2}{4em}{yes} & \multirow{2}{4em}{If 2 sessions have rooms in tuple then need a gap of mingap to walk from one the other} \\ 
+%  \cline{4-7}
+%  & & &rooms& 2 & min 1 & room,label & &   \\
+%\hline
+%
+%part\_schedule & all & max 1 & \multicolumn{4}{|c|}{no}  & yes & we allowed time part value\\ \hline
+%
+%same\_daily\_slot & all & min 1 & \multicolumn{4}{|c|}{no} & yes & all slots of  selected sessions  are equal to the same daily slot \\ \hline
+%
+%same\_day  & all & min 1 & \multicolumn{4}{|c|}{no} & yes & all slots of  selected sessions  are equal to the same day \\ \hline
+%
+%same\_rooms & Course, Part, Class, Session, Teacher, Student  & min 1 & \multicolumn{4}{|c|}{no} & yes & all set rooms of  selected sessions  are equal \\ \hline
+%
+%same\_slots & all  & min 1 & \multicolumn{4}{|c|}{no} & yes & all slots of  selected sessions  are equal \\ \hline
+%
+%same\_teachers & Course, Part, Class, Session, Room, Student  & min 1 & \multicolumn{4}{|c|}{no} & yes & all set teachers of  selected sessions  are equal \\ \hline
+%
+%same\_week & all & min 1& \multicolumn{4}{|c|}{no} & yes & all slots of  selected sessions  are equal to the same week \\ \hline
+%
+%same\_weeklyday & all & min 1 & \multicolumn{4}{|c|}{no} & yes & all slots of  selected sessions  are equal to the same weekly day \\ \hline
+%
+%same\_weeklyslot & all & min 1 & \multicolumn{4}{|c|}{no} & yes & all slots of  selected sessions  are equal to the same weekly slot \\ \hline
+%
+%sequenced & Course, Part, Class, Session & min 1 & \multicolumn{4}{|c|}{no} & no & Sessions are ordered in the horizon slot (i.e i < j slot[session[i]] < slot[session[j]] \\ \hline
+%
+%teacher\_repartition & Class & min 2& class & min 2 & 1 & option  & no & repartition of teacher into a differentes classes of part \\ \hline
+%
+%weekly & Course, Part, Class, Session & min 1& \multicolumn{4}{|c|}{no} & no & A session tuple is weekly \\ \hline
+%    \end{tabular}
+%    \caption{Catalog of {\UTP} predicates}
+%    \label{tab:catalog_constraint}
+%\end{table}

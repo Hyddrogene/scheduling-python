@@ -1,0 +1,43 @@
+\section{Core Computational Model}
+\label{appendix:core-model}
+\UTP{} instances are cast as hard constraint satisfaction problems.
+We present here a formal specification of the constraint-based model for the entity schema.
+This core model only formulates the built-in constraints %of the schema
+that apply to any instance,
+leaving out the constraints generated from instance-specific rules.
+% \subsubsection{Core Variables}
+% \label{sec:core-variables}
+
+Table~\ref{table:core-variables} lists the core decision variables of the model
+and includes auxiliary variables for notational convenience.
+All, except temporal variables, are cast as set variables. 
+
+\input{appendix-core-model-variables-table}
+
+
+
+% \subsubsection{Core Constraints}
+% \label{sec:core-constraints}
+Table~\ref{table:core-constraints} formulates the core constraints of the model.
+Note that some statements reify primitive constraints (e.g., set memberhsip) as implicit pseudo-boolean variables. 
+
+Constraint~\ref{ctr:auxiliary} establishes the relationship between the start time of a session and its start points on the 3 time scales.
+~\ref{ctr:allowedslots} restricts the start time of a session to the allowed start points.
+Constraint ~\ref{ctr:nooverlap2days} ensures that every session starts and ends on the same day.
+%\todo{@corentin je reviens sur equation (3) : mettre l'opérateur `div` - on est pas sur les réels - à la condition que ce soit correct.}
+Constraint~\ref{ctr:ranksequenced} sequences the sessions of a class based on ranks. 
+~\ref{ctr:allowedrooms} models the sets of possible and required rooms for a session as set inclusion constraints.
+~\ref{ctr:allowedteachers} is the counterpart for teachers.
+~\ref{ctr:cardinalmultiroom} and ~\ref{ctr:cardinalmultiteacher} set the bounds on the number of rooms and teachers per session.  
+\ref{ctr:serviceteacher} models the service constraint for each teacher measured in number of sessions.
+Constraints \ref{ctr:roomuse} and \ref{ctr:cumulativeroomcapacity}
+model the cumulative capacity of rooms
+and address the 3 hosting scenarios discussed in Section~\ref{sec:entity-schema}
+(multi-room exclusive, single-room exclusive and single-room inclusive sessions).
+\ref{ctr:roomuse} ensures any (single- or multi-room) exclusive session allocated to a room
+virtually fulfills the room capacity and hence has exclusive use of it.
+Otherwise, the total headcount of the inclusive session(s) occupying the room at any time must not exceed its capacity. 
+Constraint~\ref{ctr:cumulativeroomcapacity} models the capacity demand of each session, be it single- or multi-rooms, and ensures its allocated room(s) meet the demand.
+%\todo{@corentin faire les contraintes manquantes, les étiqueter dans l'ordre du texte et placer les références dans le texte FAIT service enseignant ?}
+
+\input{appendix-core-model-constraints-table}

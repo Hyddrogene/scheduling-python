@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <link rel="stylesheet" href="charge.css">
+    <meta charset="UTF-8" />
+    <title>Page de Beta</title>
+</head>
+
+<body>
+<script>
+var docTitle = document.title;
+window.addEventListener("blur",()=>{document.title = "Revieeeens :(";});
+window.addEventListener("focus",()=>{document.title = docTitle;});
+</script>
+
+<div class="feedback2">
+    <input id="ch" />
+    <br/>
+    <button class="btn2" onclick="getClicked()" >SUBBBB</button>
+</div>
+<script>
+function getRandomInt(max) {
+  return Math.floor(Math.random() * max);
+}
+var btn2 = document.querySelector(".btn2");
+var position1;
+var position2;
+var position3;
+var max = 350;
+var tt = document.querySelector("#ch").value; 
+btn2.addEventListener("mouseover",function(){
+tt = document.querySelector("#ch").value; 
+if (tt == "") {
+// console.log(tt);
+position1 = getRandomInt(max);
+position2 = getRandomInt(max);
+position3 = getRandomInt(360);
+btn2.style.transform = 'translate('+position1+'px,'+position2+'px)';
+btn2.style.transition = "all 0.1s ease";
+btn2.style.transform += "rotate("+position3+"deg)";
+}
+});
+
+document.querySelector("#ch").addEventListener("mouseover",function(){
+btn2.style.transform = "rotate(0deg)";});
+
+function getClicked(){
+tt = document.querySelector("#ch").value; 
+    alert("valeur "+tt+" ne sers à rien\n");
+}
+</script>
+
+
+</body>
+
+</html>

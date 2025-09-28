@@ -1,0 +1,136 @@
+Parfait, parlons du **DNS** de manière claire, son rôle exact et comment l’observer sur Linux.
+
+---
+
+# **1. Rôle du DNS (Domain Name System)**
+
+### a) Fonction principale
+
+Le DNS est comme un **annuaire téléphonique du Web** : il traduit les **noms de domaine lisibles par l’homme** en **adresses IP lisibles par les machines**.
+
+Exemple :
+
+```
+www.example.com → 93.184.216.34
+```
+
+* Le navigateur **ne comprend que les adresses IP** pour contacter le serveur.
+* Le DNS permet d’utiliser des noms faciles à mémoriser.
+
+### b) Étapes de résolution
+
+1. Le navigateur vérifie s’il a déjà l’adresse IP en cache (local ou système d’exploitation).
+2. Sinon, il envoie une requête à un **serveur DNS** (souvent fourni par votre FAI ou configuré manuellement comme 8.8.8.8 pour Google).
+3. Le serveur DNS répond avec l’IP correspondante.
+4. Le navigateur peut ensuite établir la connexion TCP/HTTPS avec cette IP.
+
+### c) Types de DNS
+
+* **DNS récursif** : reçoit une requête et fait tout le chemin pour trouver l’IP finale.
+* **DNS autoritaire** : contient les informations officielles pour un domaine spécifique.
+
+---
+
+# **2. Vérifier et utiliser le DNS sous Linux**
+
+### a) Vérifier la configuration actuelle
+
+La configuration DNS est souvent dans le fichier :
+
+```
+/etc/resolv.conf
+```
+
+Exemple :
+
+```bash
+cat /etc/resolv.conf
+```
+
+Sortie typique :
+
+```
+nameserver 192.168.1.1
+nameserver 8.8.8.8
+```
+
+* `nameserver` indique l’adresse du serveur DNS utilisé par le système.
+
+---
+
+### b) Tester la résolution DNS
+
+1. **ping** un domaine :
+
+```bash
+ping www.google.com
+```
+
+* Le terminal résout le nom en IP avant d’envoyer les paquets.
+
+2. **nslookup** (outil classique) :
+
+```bash
+nslookup www.example.com
+```
+
+Sortie typique :
+
+```
+Server:         8.8.8.8
+Address:        8.8.8.8#53
+
+Non-authoritative answer:
+Name:   www.example.com
+Address: 93.184.216.34
+```
+
+3. **dig** (outil plus complet) :
+
+```bash
+dig www.example.com
+```
+
+Sortie simplifiée :
+
+```
+;; ANSWER SECTION:
+www.example.com.    3600    IN    A    93.184.216.34
+```
+
+* `A` : type d’enregistrement DNS pour l’adresse IPv4.
+* Le temps `3600` correspond au TTL (Time To Live) avant que le cache expire.
+
+---
+
+### c) Astuces
+
+* Pour tester un autre serveur DNS :
+
+```bash
+dig @8.8.8.8 www.example.com
+```
+
+* Vérifier le cache DNS :
+
+```bash
+systemd-resolve --status
+```
+
+* Pour vider le cache DNS (utile si la résolution est erronée) :
+
+```bash
+sudo systemd-resolve --flush-caches
+```
+
+---
+
+💡 **Résumé concret** :
+Le DNS est la traduction **nom → IP** qui permet au navigateur de savoir où envoyer les requêtes. Sous Linux, `ping`, `nslookup` et `dig` sont les outils principaux pour **observer et tester** cette résolution.
+
+---
+
+Si tu veux, je peux te faire un **schéma simple montrant la requête DNS depuis ton navigateur jusqu’au serveur DNS et retour**, ce qui aide beaucoup à visualiser le processus.
+
+Veux‑tu que je fasse ce schéma ?
+

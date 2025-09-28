@@ -1,0 +1,124 @@
+faire la bulle pour Vincent
+
+finir mes équations de ouf
+
+mettre dans une table tous çaaaa
+
+
+changer le input data-> truc plus mathématique et tyableau de variable-> xgroup tect declarations mzn
+
+
+ajouter les citations
+    -> papier etat de l'art
+    -> récup ref de ce papier la
+    
+    *
+    
+    
+    global constraint catalog sodeim
+//=============================
+
+Corentin occurence session
+forall (u_1,u_2 in U where u_1 < u_2)(
+( student_courses[u_1] != student_courses[u_2] ) ->( x_groups[u_1] != x_groups[u_2] ) )
+//=============================
+    \begin{table*}[!ht]
+\resizebox{\textwidth}{!}{%
+\centering
+\begin{tabular}{|ll|}
+\hline
+$\const \STUDENT == \funcmzn{array\_union}(\xgroup)$
+%{\STUDENT}=\bigsqcup\limits_{g\in\GROUP}^{}{\var{\GROUP}{\STUDENT}{g}}
+\label{ctr:grouppartition} & (\refstepcounter{countConstraint})\\
+%
+$\forallmzn(u,u' \inmzn \STUDENT \wmzn u < u')(
+( \arraymzn{student\_courses}[u] == \arraymzn{student\_courses}[u'] ) \arrowmzn ( \xgroup[u] != \xgroup[u'] ) $& (2)\label{ctr:studentgrouping}\\
+%
+$\forallmzn(u \inmzn \STUDENT, g \inmzn \GROUP)(u \inmzn g \arrowmzn \funcmzn{student\_parts}(u) == \funcmzn{group\_parts}(g))$& (3)\\
+%
+$\forallmzn(k \inmzn \CLASS, k' \inmzn \funcmzn{class\_parent}(k))(\funcmzn{class\_group}(k) \subsetmzn \funcmzn{class\_group}(k'))$ & (4)\\
+%
+$\forallmzn(k \inmzn \CLASS)(\arraymzn{  class\_capacity}[k] \geq \summzn(g \inmzn \GROUP)( \funcmzn{ bool2int}(g \inmzn \funcmzn{class\_group}(k) * \funcmzn{card}(\funcmzn{group\_students(g)})))$ & (5)\\
+%
+$\forallmzn(s \inmzn \SESSION)(\xroom \subsetmzn \arraymzn{part\_rooms}[\funcmzn{session\_part}(s)])$&(6)\\
+%
+$\forallmzn(s \inmzn \SESSION)(\xteacher \subsetmzn \arraymzn{part\_teachers}[\funcmzn{session\_part}(s)]) \label{ctr:allowedrteachers}$ & (7) \\
+%
+$\forallmzn(k \inmzn \CLASS)(((\arraymzn{part\_room\_use}[\funcmzn{class\_part}(k)]==\text{none}) \Longleftrightarrow (\xroom[k] == \{\})) $&\\
+%
+\multicolumn{1}{|c}{$\land ((\arraymzn{part\_room\_use}[\funcmzn{class\_part}(k)]==\text{single}) \arrowmzn (\funcmzn{card}(\xroom[k]) == 1))  $}&\\
+%
+\multicolumn{1}{|c}{$\land((\arraymzn{part\_room\_use}[\funcmzn{class\_part}(k)]==\text{multiple}) \arrowmzn (\funcmzn{card}(\xroom[c])>=1))) \label{ctr:multiroom}$}
+& (8)\\
+%
+$\forallmzn(s \inmzn \SESSION))( \funcmzn{card}(\xteacher[s]) == \funcmzn{teacher\_per\_session}[s]) \label{ctr:multiteacher}$ & (9)\\
+%
+$\forallmzn(p \inmzn \PART,t \inmzn \arraymzn{part\_teachers}[p])(\summzn{}(s \inmzn \funcmzn{part\_sessions}(p))(\funcmzn{bool2int}(t \inmzn \xteacher[s])) * \arraymzn{part\_teacher\_service}[p,t])\label{ctr:partteacherservice} $& (10)\\
+%
+$\forallmzn(k \inmzn \CLASS)(\xroom[k] \subsetmzn \arraymzn{part\_rooms}[\funcmzn{class\_part}(k))$\label{ctr:allowedsrooms} & (11)\\
+%
+$\forallmzn(s \inmzn \SESSION)(\xteacher[s] \subsetmzn \arraymzn{part\_teachers}[\funcmzn{session\_part}(s)])$ \label{ctr:allowedsteacher} & (12)\\
+%
+$\forallmzn(p \inmzn \PART)(\forallmzn(s \inmzn \funcmzn{part\_sessions}(p))($&\\
+   \multicolumn{1}{|c}{$ (\funcmzn{slot\_week}(\xslot[s]) \inmzn \arraymzn{part\_weeks}[p]) \land$}&\\
+   \multicolumn{1}{|c}{$ (\funcmzn{slot\_weekday}(\xslot[s]) \inmzn \arraymzn{part\_days}[p]) \land$}&\\
+   \multicolumn{1}{|c}{$ (\funcmzn{slot\_dayslot}(\xslot[s]) \inmzn \arraymzn{part\_dailyslots}[p])))$}& (13)\label{ctr:allowedsslot}\\
+%
+$\forallmzn(s \inmzn \SESSION)((\xslot[s] - 1) \divmzn nr\_slots\_per\_day = (\xslot[s] + \funcmzn{session\_length}(s) - 1) \divmzn nr\_slots\_per\_day)$& (14)\label{ctr:nopreemption}\\
+%
+$\forallmzn(s,s' \inmzn \SESSION \wmzn \funcmzn{rank}(s)<\funcmzn{rank}(s') )(\xslot[s]+\funcmzn{session\_length}(s) \leq \xslot[x']) $& (15)\label{ctr:classsequencing}\\
+%
+$\forallmzn( k \inmzn \CLASS \wmzn \funcmzn{is\_multi\_room\_class}(k)))(\forallmzn(r \inmzn \funcmzn{class\_rooms}(k))($&\\
+%
+\multicolumn{1}{|r}{$\funcmzn{dijunctive}([\xslot[s] | s \inmzn \funcmzn{room\_sessions}(r)],[\funcmzn{bool2int}(r \inmzn \xroom[s])* \funcmzn{session\_length}(s) | s \inmzn \funcmzn{room\_sessions}(r)  ])))$} & (16) \label{ctr:multiroomscheduling}\\
+%
+$\forallmzn(s \inmzn \SESSION)(\forallmzn(r \inmzn \funcmzn{session\_rooms}(s) \wmzn \funcmzn{bool2int}(r \inmzn \xroom[s]))($&\\
+%
+\multicolumn{1}{|c}{$\arraymzn{room\_capacity}[r] \geq sum(g \inmzn \funcmzn{session\_group}(s))(\funcmzn{card}(\arraymzn{group\_students}[g]))))$} &(17)\label{ctr:cumulativeroomcapacity}\\
+%
+$\forallmzn(k \inmzn \CLASS \wmzn \funcmzn{is\_class\_mandatory\_room}(k))(\xroom[k] \intermzn \funcmzn{class\_mandatory}[k] != \{\})$& (18) \label{ctr:cumulativeroomcapacity}\\
+$\forallmzn(k \inmzn \CLASS \wmzn \funcmzn{is\_multi\_room\_class}(k))( \summzn(r \inmzn \arraymzn{class\_room}[k])($&\\
+%
+$\funcmzn{bool2int}(r \subsetmzn \xroom[k]) * \arraymzn{room\_capacity}[r]) \geq \summzn(g \inmzn \arraymzn{class\_group}[k])(\funcmzn{card}(\arraymzn{group\_students}[g]))$& (19)
+\label{ctr:multiroomcapacity}\\
+%
+$\forallmzn(r \inmzn \ROOM)(\funcmzn{cumulative}($&\\
+%
+\multicolumn{1}{|c}{$[\xslot[s] | s \inmzn \funcmzn{room\_sessions}(r)],[\funcmzn{bool2int}(r \inmzn \xroom[s])* \funcmzn{session\_length}(s) | s \inmzn \funcmzn{room\_sessions}(r)  ],$}&\\
+%
+\multicolumn{1}{|c}{$[1| s \inmzn \funcmzn{room\_session}(r)],room\_max\_use[r])))$}& (20)\label{ctr:roomuse}\\
+%
+\forallmzn(t \inmzn \TEACHER)(\funcmzn{cumulative}( & \\
+%
+\multicolumn{1}{|c}{$[\xslot[s] | s \inmzn \funcmzn{teacher\_sessions}(t)],[\funcmzn{bool2int}(t \subsetmzn \xteacher[s])* \funcmzn{session\_length}(s) | s \inmzn \funcmzn{teacher\_sessions}(t)],$}&\\
+%
+\multicolumn{1}{|c}{$[1| s \inmzn \funcmzn{teacher\_sessions}(t)],teacher\_max\_use[t])))$}& (21) \label{ctr:teacheruse}\\
+%
+$\forallmzn(g \inmzn \GROUP)(\funcmzn{cumulative}($&\\
+%
+\multicolumn{1}{|c}{$[\xslot[s] | s \inmzn \funcmzn{group\_sessions}(g)],[\funcmzn{session\_length}(s) | s \inmzn \funcmzn{group\_sessions}(g)],$}&\\
+%
+\multicolumn{1}{|c}{$[1| s \inmzn \funcmzn{group\_sessions}(g)],group\_max\_use[g])))$}&(22)\label{ctr:groupuse}\\
+%
+$\FORBIDDENPERIOD((e,S'),h,h') = \forallmzn(i \inmzn S')((\xslot[i] < h) \land  (\xslot[i]>h')) $& (23)\label{ctr:forbiddenperiod}\\
+%
+$\SAMEWEEKDAY((e,S')) = \forallmzn(i,j \inmzn S' \wmzn i<j)($&\\
+\multicolumn{1}{|c}{$(\xslot[i] \divmzn nr\_weekly\_slots) == (\xslot[j] \divmzn nr\_weekly\_slots))$} & (24) \label{ctr:sameweekday}\\
+%
+$\SAMEROOMS((e,S')) = \forallmzn(s_1,s_2 \inmzn S' \wmzn s_1<s_2)($&\\
+%
+\multicolumn{1}{|c}{$\xroom[\funcmzn{session\_class}(s_1)] == \xroom[\funcmzn{session\_class}(s_2)])$ }& (25)\\
+%
+$\SEQUENCED((e\_1,S\_1),(e\_2,S\_2)) = \forallmzn(i \inmzn S\_1,j \inmzn S\_2)(
+\xslot[i]+\funcmzn{session\_length}(i) \leq \xslot[j])$ & (26) \label{ctr:sequenced} \\
+%
+$\DISJUNCTIVE((e\_1,S\_1))= \funcmzn{disjunctive}([\xslot[s]|s \inmzn S\_1 ],$&\\
+%
+\multicolumn{1}{|c}{$[\funcmzn{session\_length}(s)*\funcmzn{bool2int}(s \inmzn \funcmzn{session\_belong2entity}(s,e\_1))|s \inmzn S\_1])$} & (27)\label{ctr:disjointunconditional}\\
+\hline
+\end{tabular}
+}
+\caption{Contrainte tablo}
+\label{table:contrainte-tab}
+
+\end{table*}

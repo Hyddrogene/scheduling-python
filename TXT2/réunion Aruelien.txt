@@ -1,0 +1,116 @@
+les groupes -> programme mip effectif fictif  (première approximation) 
+
+petite pompe générant le sectionnemet ^des groupes langages.
+
+
+
+
+probleme période insécable
+
+
+
+
+Symbole P1 temps à temps...
+
+
+
+
+cours double étape poru séance marginale qui sont en P1-P2 
+
+
+
+hroaire de réunion hebdomadaire
+
+
+cluster P1-P2 avec des 0-1
+
+période par modalité? apprise 
+
+
+
+:- tester avec les isntances ayant eu une solution. virere les autres.
+etster mes algo sans FM et avec première version réduite du FM.
+testerr avec des semaines courtes réécriture se la simplfications cumulatives.
+
+
+aémliorer le génrateur d'instance
+langage de sésuncement des étudidants
+
+ALNS pour CHRPP
+
+scénario donneé réel partant du principe qu'ils vpulaient faire ça.
+remapping -> calendirer académqiur pour évider les deltas (donnée maquete)
+
+
+règle : allowedSlot     ok
+        allowedTeacher  ok
+        allowedRoom     ok {list elimité mais à agrandir}
+        nrRoom          ok
+        nrTeacher       ok
+        
+        periodic        intra modality > complexe || mono modality 
+        séanceparsemaine chaud
+        differentDay  // reperage okay 
+        differentTeacher
+        differentTeacher 
+        sameSlot   //-> ok
+        
+        
+        sameSlot ok
+        sequenced ok
+        
+        
+        service -> à corriger
+
+        
+        differentTeacher
+périodique chelou permettatn de faire une periodique sur le meme trou 
+
+
+contrainte de donnée
+
+
+
+
+REUNION 15 SEPTEMBRE
+
+(web scrapping)
+
+allowedSlot -> période maquette (P1 P2 etc.)-> rétromoélisation 
+TP -> 6101 pool de slalle meme taille par batiment.
+
+compter pourcent de periodique ? voir un calcul pour ça
+
+
+CM:1 avant TP:1
+
+voir combien font un CM avant un TP
+plus d'élément que l'autre sa passe
+
+
+22 SEPTEMBRE 2025
+
+
+Agent IA ? terme diffent bloc 
+module pilote
+
+2 modules : 
+retropmodlelisation (staging)
+apelle API 
+
+module service (dynamique, sectionnement réalisé)[année n-1 + modificationde maquette]{quantitatif donc ça va}
+
+
+module maquette (modifciation de structure)
+module salle
+module prof (delta)
+module etudaint (inscription orientation)
+module parcours ? ? donnée maquette (P3 pex pour L1 mi)
+
+
+
+pilote
+
+
+
+

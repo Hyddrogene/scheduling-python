@@ -1,0 +1,126 @@
+### 1. Introduction
+
+Dans le cadre des activités de cours, la planification des cours dans une université est une tâche complexe et souvent difficile en raison de l'allocation des cours, des enseignants et des salles utilisées pour les cours, afin de s'assurer qu'il n'y a pas de conflit avec l'emploi du temps des cours, des enseignants et des autres salles pendant une période de planification. De plus, les changements dans les horaires des enseignants compliquent souvent l'allocation du temps et la recherche de salles disponibles pour planifier des changements temporaires. Dans ce cas, les activités de cours prévues devraient être réalisées selon un emploi du temps prédéterminé si elles peuvent être correctement gérées [1, 2].
+
+Les problèmes rencontrés lors de la préparation de l'emploi du temps des cours incluent la difficulté d'allouer les cours avec l'enseignant et sa salle de manière à éviter les conflits et à ajuster le nombre de participants en fonction de la capacité de la salle de classe. De plus, les changements temporaires dans l'emploi du temps des cours en raison de l'absence d'un enseignant rendent souvent difficile la recherche de salles disponibles pour les cours de remplacement [3], [4]. Face à ces problèmes, il est nécessaire d'appliquer des algorithmes dans la préparation de l'emploi du temps des cours pour faciliter le processus de création de l'emploi du temps.
+
+### 2. Revue de la littérature
+
+#### 2.1. Planification
+
+La planification est l'activité d'allocation de ressources ou de machines existantes pour exécuter un ensemble de tâches dans une certaine période. Selon Ambuhi, la planification a deux significations, à savoir :
+a. La planification en tant que fonction de prise de décision. La planification est un processus de détermination d'un emploi du temps.
+b. La planification en tant que théorie. La planification est un ensemble de principes, de modèles, de techniques et de conclusions logiques dans la prise de décision. La planification fait partie du contrôle du flux de production.
+
+Selon Ambuhi, si la planification est constante, alors l'ordre de travail approprié réduira le temps de flux et le travail moyen en cours. Les décisions prises en matière de planification incluent le séquencement, l'heure de début et le temps de travail, ainsi que la séquence des opérations pour le routage. Les problèmes de planification surviennent souvent lorsqu'il y a un ensemble de tâches simultanées, tandis que l'équipement est limité [3].
+
+Une définition plus générale de la planification est l'affectation d'un ensemble d'événements (cours) à un ensemble limité de ressources au fil du temps pour répondre aux contraintes définies. Ces contraintes peuvent être catégorisées en contraintes strictes et contraintes souples, où les contraintes strictes ont une priorité plus élevée que les contraintes souples. Il y a deux limitations dans la préparation des emplois du temps des cours, à savoir : les contraintes strictes (qui doivent être respectées) et les contraintes souples (qui doivent être tentées d'être respectées). Les contraintes strictes sont des limites qui doivent être appliquées à la planification des cours et doivent être respectées. Une solution ne peut être considérée comme valide que si elle ne viole aucune contrainte stricte [5, 6].
+
+Les contraintes strictes courantes dans la planification des cours sont les suivantes :
+a. Un enseignant ne peut enseigner qu'à un endroit à un moment donné.
+b. Un étudiant ne peut assister à des cours qu'à un endroit à la fois.
+
+Contrairement aux contraintes strictes, les contraintes souples sont des contraintes qui ne peuvent pas toujours être respectées dans le processus de formation des emplois du temps, mais même si elles ne doivent pas être respectées, l'emploi du temps résultant doit essayer autant que possible de répondre aux exigences des contraintes souples. Voici quelques exemples de contraintes souples dans la planification des cours :
+a. Les enseignants peuvent demander des horaires spécifiques pour leurs cours.
+b. L'emplacement de l'emploi du temps pour l'heure demandée par l'enseignant est ajusté aux priorités de l'enseignant [7-9].
+
+#### 2.2. Algorithme génétique
+
+L'algorithme génétique est un algorithme de recherche heuristique basé sur le mécanisme de l'évolution biologique. Dans cet algorithme, les techniques de recherche sont effectuées simultanément sur plusieurs solutions possibles, en d'autres termes, cet algorithme peut aider à fournir la meilleure et la plus rapide solution à un problème qui a de nombreuses solutions possibles connues sous le nom de population. Les individus dans une population sont appelés chromosomes. Ce chromosome est une solution encore sous forme de symbole. La population initiale est construite de manière aléatoire, tandis que la population suivante est le résultat de l'évolution des chromosomes à travers une itération appelée génération [10-13].
+
+**Composants des algorithmes génétiques** : Il y a six composants principaux contenus dans l'algorithme génétique, à savoir :
+1. Techniques de codage
+2. Procédure d'initialisation (générer une population initiale)
+3. Fonction d'évaluation
+4. Sélection
+5. Opérateur génétique
+
+
+### 3. Méthode de recherche
+
+Les étapes du processus de création d'un emploi du temps en utilisant des algorithmes génétiques sont présentées dans la Figure 1. Le chromosome utilisé pour produire l'individu initial dans ce système est le suivant :
+
+Les chromosomes de l'emploi du temps contiennent les informations suivantes :
+1) Liste des cours (m),
+2) Salle (r),
+3) Temps (w).
+
+La structure du tableau des chromosomes de l'emploi du temps sur le nouveau chromosome est : [m, r, w]. La liste des gènes de cours comprend des données sur les codes des cours, les noms des cours, les crédits, les enseignants et les noms des programmes d'études. Le gène de la salle comprend le nom de la salle et sa capacité. Quant au gène du temps, il comprend les heures et les jours.
+
+### 4. Résultats et discussion
+
+L'application des algorithmes génétiques commence par la formation de la population initiale, les limites de planification, les contraintes souples, et les composants de GA. Le composant GA est divisé en étapes suivantes :
+
+#### 4.1. Technique de codage
+
+Les gènes présentés ici sont sous forme de tableaux de nombres réels. Les paramètres utilisés dans chaque chromosome sont une liste des cours (m), la salle (r) et le temps (w). Ainsi, chaque chromosome est rempli de données [(m, r, w)].
+
+#### 4.2. Initialisation de la population initiale
+
+Lors du processus d'initialisation de la population initiale, une population est générée aléatoirement. Par exemple, les chromosomes générés comme emploi du temps seront de 4 chromosomes en 1 génération en utilisant 10 données expérimentales de liste de cours (m) et de temps (w), provenant du programme d'études en informatique.
+
+#### 4.3. Évaluation des chromosomes
+
+L'évaluation des chromosomes est une étape pour calculer la valeur de fitness d'un chromosome initialisé dans le processus précédent. Pour déterminer la valeur de fitness, la valeur de planification générée par la fonction de fitness représentera le nombre de contraintes violées. Ainsi, dans le cas de la planification des cours, plus le nombre de violations produites est faible, meilleure sera la solution. Pour les violations qui se produisent s'il y a un conflit sur les enseignants, une valeur de +5 sera donnée, et un conflit sur les salles sera donné une valeur de +1. Pour éviter une valeur de fitness infinie, le nombre total de toutes les violations sera augmenté de 1. La meilleure valeur de fitness standard pour cette planification est de 1, où une valeur de fitness sur le chromosome = 1 signifie que les résultats de la solution optimale obtenus n'ont trouvé aucun conflit dans un emploi du temps.
+
+Calcul de la valeur de fitness avec la formule du chromosome, (n) = 1 + (BBD + BBR)
+- Fk1 : 1 + 1 (+5) + 2 (+1) = 8
+- Fk2 : 1 + 1 (+5) + 1 (+1) = 7
+- Fk3 : 1 + 2 (+5) + 1 (+1) = 12
+- Fk4 : 1 + 1 (+5) + 1 (+1) = 7
+
+Total Fitness = Fk1 + Fk2 + Fk3 + Fk4 = 8 + 7 + 12 + 7 = 34
+
+Description :
+- BBD = Total des conflits sur les enseignants
+- BBR = Total des conflits sur les salles
+- n = Séquence des chromosomes
+- Fk = Fitness des chromosomes
+
+#### 4.4. Sélection
+
+Cette étape de sélection consiste à sélectionner le meilleur chromosome où les chromosomes les plus adaptés ont une probabilité plus élevée d'être sélectionnés pour la génération suivante. Pour calculer la valeur de probabilité de chaque chromosome, on peut voir comme suit :
+- Pk1 = Fk1/(Total fitness) = 8/34 = 0,23
+- Pk2 = Fk2/(Total fitness) = 7/34 = 0,21
+- Pk3 = Fk3/(Total fitness) = 12/34 = 0,35
+- Pk4 = Fk4/(Total fitness) = 7/34 = 0,21
+
+Total Probability = Pk1 + Pk2 + Pk3 + Pk4 = 0,23 + 0,21 + 0,35 + 0,21 = 1
+
+Description :
+- Pk = Probabilité des chromosomes
+- Fk = Fitness des chromosomes
+
+Chromosome 1 = [(1,1,7),(2,3,2),(3,4,1),(4,5,9),(5,2,19),(6,6,1),(7,3,7),(8,3,8), (9,3,7),(10,2,13)].
+Chromosome 2 = [(1,1,7),(2,3,2),(3,4,1),(4,5,9),(5,2,19),(6,6,1),(7,3,7),(8,3,8), (9,3,7),(10,2,13)].
+Chromosome 3 = [(1,3,1),(2,5,15),(3,3,2),(4,2,16),(5,1,2),(6,4,15),(7,6,1),(8,2,3), (9,5,19),(10,4,13)].
+Chromosome 4 = [(1,2,19),(2,1,2),(3,3,1),(4,5,20),(5,6,3),(6,3,1),(7,1,20),(8,4,2), (9,5,15),(10,5,15)].
+
+#### 4.5. Croisement
+
+À cette étape, un croisement est effectué en croisant deux chromosomes. Cette technique utilise la méthode du point de coupure unique, qui consiste à choisir aléatoirement une position du chromosome parent, puis à échanger des sous-chromosomes. Dans ce processus, la probabilité de croisement (Pc) contrôlera l'opérateur de croisement dans chaque génération de la population de croisement. La probabilité de croisement (Pc) utilisée est de 75 % ou 0,75. Plus la valeur (Pc) est grande, plus le nouveau chromosome apparaîtra rapidement dans la population, mais si (Pc) est trop grande, les chromosomes candidats à la meilleure solution peuvent disparaître plus rapidement dans la génération suivante. Si le nombre aléatoire généré est inférieur à la probabilité de croisement (Pc), un croisement sera effectué.
+
+Génère des nombres aléatoires dans la plage (0 - 1).
+- Chromosome 1 = 0,65
+- Chromosome 2 = 0,81
+- Chromosome 3 = 0,50
+- Chromosome 4 = 0,69
+
+Ainsi, les parents sélectionnés seront croisés, à savoir le chromosome 1, le chromosome 3 et le chromosome 4. Les règles de croisement sont effectuées de manière aléatoire en suivant les parents précédemment sélectionnés. Le processus de croisement peut être vu comme suit :
+- Chromosome 1 >< Chromosome 3
+- Chromosome 3 >< Chromosome 4
+- Chromosome 4 >< Chromosome 1
+
+#### 4.6. Mutation
+
+À partir du résultat du calcul, la meilleure valeur de fitness pour la nouvelle population en une génération est obtenue, le chromosome 4 étant le meilleur emploi du temps car il a une valeur de fitness proche de 1. Le résultat de l'emploi du temps à partir du meilleur chromosome, le chromosome 4, peut être vu dans le tableau suivant (Tableau 1).
+
+### 5. Conclusion et recommandations
+
+#### 5.1. Conclusion
+
+La planification dans le programme d'études en informatique de l'Université Muhammadiyah de Banjarmasin a mis en œuvre la méthode GA. D'après les résultats obtenus, il existe encore un conflit de salles dans le chromosome 4, en raison du nombre restreint de chromosomes initiaux et de générations générées. Si la population initiale et le nombre de générations augmentent, il y aura plus de variations dans les chromosomes, ce qui mènera à la solution la plus optimale, à savoir le chromosome avec une valeur de fitness = 1, indiquant qu'il n'y a pas de conflit dans les emplois du temps.
+
+#### 5.2. Recommandations
+
+Il devrait y avoir des expériences utilisant d'autres techniques dans les opérateurs de sélection, de croisement et de mutation. Cela permettrait de comparer l'utilisation des techniques pour chaque opérateur afin de trouver la technique la plus optimale.

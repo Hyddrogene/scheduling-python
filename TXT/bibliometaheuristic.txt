@@ -1,0 +1,38 @@
+Voici quelques autres bibliothèques de métaheuristiques :
+
+PyGMO : bibliothèque de métaheuristiques pour Python, avec une grande variété d'algorithmes d'optimisation évolutionnaire, ainsi que des outils pour la modélisation, la simulation et l'analyse de données.
+
+MOEA Framework : une bibliothèque de métaheuristiques pour Java qui fournit une interface générique pour la conception et l'exécution de différents algorithmes de recherche multi-objectifs.
+
+Shiny : une bibliothèque de métaheuristiques pour R qui fournit des outils pour la modélisation, la simulation et l'optimisation de systèmes complexes.
+
+JMetal : une bibliothèque de métaheuristiques pour Java qui fournit une implémentation de nombreux algorithmes d'optimisation évolutionnaire pour résoudre des problèmes mono-objectifs et multi-objectifs.
+
+OptaPlanner : une bibliothèque de métaheuristiques pour Java qui fournit une solution open source pour la planification de problèmes complexes, tels que la planification de tournées, la planification de production, etc.
+
+OpenAI Gym : une bibliothèque pour Python qui fournit des outils pour l'apprentissage par renforcement et l'optimisation de politique de décision. Elle inclut plusieurs environnements de simulation pour les problèmes de contrôle et d'optimisation.
+
+Ces bibliothèques sont très utilisées par les scientifiques, les ingénieurs et les programmeurs pour résoudre une grande variété de problèmes d'optimisation dans différents domaines
+.
+
+Bien sûr, voici quelques bibliothèques de métaheuristiques :
+
+Metaheuristics.jl : une bibliothèque de métaheuristiques en Julia avec une grande variété d'algorithmes, notamment des algorithmes génétiques, des essaims de particules, des algorithmes de recuit simulé, etc.
+
+DEAP : une bibliothèque de métaheuristiques en Python pour l'optimisation évolutionnaire qui prend en charge les algorithmes génétiques, la programmation évolutive, l'optimisation par essaim de particules, etc.
+
+OptaPlanner : une bibliothèque de planification en Java pour la résolution de problèmes d'optimisation combinatoire, qui utilise des métaheuristiques telles que les algorithmes génétiques, la recherche locale, etc.
+
+JMetal : une bibliothèque de métaheuristiques en Java pour la résolution de problèmes d'optimisation multi-objectif, qui comprend plusieurs algorithmes évolutionnaires tels que NSGA-II, MOEA/D, SPEA2, etc.
+
+MetaOptimize : une bibliothèque de métaheuristiques en C++ avec une grande variété d'algorithmes évolutionnaires tels que les algorithmes génétiques, les algorithmes de recuit simulé, les essaims de particules, etc.
+
+Evolving Objects : une bibliothèque de métaheuristiques en C++ qui fournit une plate-forme pour la mise en œuvre et l'évaluation d'algorithmes évolutionnaires pour la résolution de problèmes d'optimisation combinatoire.
+
+PSO-Lib : une bibliothèque de métaheuristiques en C++ pour les essaims de particules, qui contient plusieurs variantes de l'algorithme de base ainsi que des extensions pour les problèmes multi-objectifs.
+
+Il en existe bien sûr d'autres, mais ceux-ci sont des exemples courants de bibliothèques de métaheuristiques.
+
+
+cbehuet
+un53gi9B*

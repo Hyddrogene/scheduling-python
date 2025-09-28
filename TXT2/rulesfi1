@@ -1,0 +1,99 @@
+    <rules>
+        <!-- Regle CM TD -->
+
+        <rule>
+            <sessions groupBy="class" sessionsMask="1,5,9,12,15" > 
+                <filter type="part" attributeName="id" in="Fondements-informatique-1-CM-TD"/>
+            </sessions>
+            <constraint name="weekly" type="hard">
+            </constraint>
+        </rule>
+
+        <rule>
+            <sessions groupBy="class" sessionsMask="2,6,10,13,16" > 
+                <filter type="part" attributeName="id" in="Fondements-informatique-1-CM-TD"/>
+            </sessions>
+            <constraint name="weekly" type="hard">
+            </constraint>
+        </rule>
+
+        <rule>
+            <sessions groupBy="class" sessionsMask="3,7,11,14,17" > 
+                <filter type="part" attributeName="id" in="Fondements-informatique-1-CM-TD"/>
+            </sessions>
+            <constraint name="weekly" type="hard">
+            </constraint>
+        </rule>
+
+        <rule>
+            <sessions groupBy="class" sessionsMask="4,8" > 
+                <filter type="part" attributeName="id" in="Fondements-informatique-1-CM-TD"/>
+            </sessions>
+            <constraint name="weekly" type="hard">
+            </constraint>
+        </rule>
+
+        <rule>
+            <sessions groupBy="class" sessionsMask="1-4" > 
+                <filter type="part" attributeName="id" in="Fondements-informatique-1-CM-TD"/>
+            </sessions>
+            <constraint name="sameWeek" type="hard">
+            </constraint>
+        </rule>
+
+        <rule>
+            <sessions groupBy="part" sessionsMask="1" > 
+                <filter type="part" attributeName="id" in="Fondements-informatique-1-CM-TD"/>
+            </sessions>
+            <constraint name="sameWeek" type="hard">
+            </constraint>
+        </rule>
+
+        <rule>
+            <sessions groupBy="class">
+                <filter type="part" attributeName="id" in="Fondements-informatique-1-CM-TD"/>
+            </sessions>
+            <constraint name="sequenced" type="hard">
+            </constraint>
+        </rule>
+
+
+        <rule>
+            <sessions groupBy="class" sessionsMask="17">
+                <filter type="part" attributeName="id" in="Fondements-informatique-1-CM-TD"/>
+            </sessions>
+            <sessions groupBy="class" sessionsMask="1">
+                <filter type="part" attributeName="id" in="Fondements-informatique-1-CC"/>
+            </sessions>
+            <constraint name="sequenced" type="hard">
+            </constraint>
+        </rule>
+
+        <rule>
+            <sessions groupBy="class" sessionsMask="1">
+                <filter type="part" attributeName="id" in="Fondements-informatique-1-CC"/>
+            </sessions>
+            <sessions groupBy="class" sessionsMask="18">
+                <filter type="part" attributeName="id" in="Fondements-informatique-1-CM-TD"/>
+            </sessions>
+            <constraint name="sequenced" type="hard">
+            </constraint>
+        </rule>
+
+
+        <rule>
+            <sessions groupBy="class" >
+                <filter type="part" attributeName="id" in="Fondements-informatique-1-CM-TD"/>
+            </sessions>
+            <constraint name="sameTeachers" type="hard">
+            </constraint>      
+        </rule>
+
+        <rule>
+            <sessions groupBy="class" >
+                <filter type="part" attributeName="id" in="Fondements-informatique-1-CM-TD"/>
+            </sessions>
+            <constraint name="sameRooms" type="hard">
+            </constraint>      
+        </rule>
+    </rules>

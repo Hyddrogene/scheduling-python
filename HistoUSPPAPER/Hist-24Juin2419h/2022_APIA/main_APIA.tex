@@ -1,0 +1,170 @@
+\documentclass[french]{pfia}
+
+% ------------------------------------------
+% TITRE
+% ------------------------------------------
+
+\title{\textbf{
+%Un langage dédié pour le calcul par contraintes d'emplois du temps universitaires
+A domain-specific language for university timetabling
+}}
+\usepackage{tabularx}
+\usepackage{mathtools}
+\usepackage{url}
+\usepackage{stmaryrd}%for denotational brackets
+\usepackage{nccmath}
+\usepackage{todonotes}
+\include{commands}
+
+\newcommand{\davidg}[1]{\todo[inline,color=orange!40]{#1}}
+\newcommand{\davidl}[1]{\todo[inline,color=yellow!40]{#1}}
+\newcommand{\vincent}[1]{\todo[inline,color=blue!40]{#1}}
+\newcommand{\marc}[1]{\todo[inline,color=green!40]{#1}}
+\newcommand{\corentin}[1]{\todo[inline,color=pink]{#1}}
+
+% ------------------------------------------
+% AUTEUR(S)
+% ------------------------------------------
+
+% 1 auteur
+% \author{L. Auteur \\
+%  Organisme de rattachement, acronyme laboratoire}
+% \date{mél}
+ 
+% plusieurs auteurs 
+\author{Vincent Barichard, Corentin Behuet, David Genest, Marc Legeay, David Lesaint\\[6pt]
+%\fup{1} Organisme de rattachement 1, acronyme laboratoire 1\\
+Univ Angers, LERIA, F-49000 Angers, France \\
+%\fup{2} Organisme de rattachement 2, acronyme laboratoire 2\\
+%\fup{3} Organisme de rattachement 3, acronyme laboratoire 3\\
+}
+
+\date{
+\{prenom.nom\}@univ-angers.fr
+}
+
+\begin{document}
+
+\maketitle
+
+% ------------------------------------------
+% RÉSUMÉS ET MOTS-CLÉS
+% ------------------------------------------
+
+\begin{resume}
+%Le calcul d'emplois du temps universitaires est un problème d'optimisation combinatoire complexe tant dans sa modélisation que sa résolution. Peu de travaux se sont intéressés dans l'état de l'art aux particularités du système universitaire français et nous présentons dans ce cadre une approche par contraintes pour le calcul d'emplois du temps. Cette approche se fonde sur un langage dédié à base de règles, le schéma {\UTP}, permettant de modéliser les différentes entités et contraintes d'une instance. La résolution repose quant à elle sur un modèle générique développé en {\MINIZINC} ainsi qu'un parser qui permet de compiler toute instance {\UTP} dans un langage de programation par contraintes et de la résoudre par un solver de contraintes. Nous présentons quelques expérimentations préliminaires menées sur des instances réelles.
+
+La planification des cours universitaires est un problème d'optimisation combinatoire complexe, tant dans sa modélisation que dans sa résolution.
+Il recouvre plusieurs problèmes~: la répartition des étudiants, la planification des salles et des services d'enseignements, l'ordonnancement des cours et l'allocation des ressources.
+Dans cet article, nous présentons un langage dédié à base de règles, le langage \UTP{}, qui permet de modéliser les différentes entités et contraintes du problème.
+Nous comparons le langage \UTP{} à d'autres approches de résolution pour la construction d'emploi du temps.
+Comme preuve de concept, nous avons implémenté des modèles en programmation par contraintes et les avons expérimentés sur des instances réelles provenant d'une université française.
+\end{resume}
+
+\begin{motscles}
+Emploi du temps universitaire $\bullet$ Langage dédié $\bullet$ Programmation par contraintes 
+\end{motscles}
+
+%\begin{abstract}
+%The computation of university timetables is a complex combinatorial optimisation problem both in its modelling and its solution. Few works in the state of the art have focused on the particularities of the French university system and we present in this context a constraint-based approach for the computation of timetables. This approach is based on a dedicated rule-based language, the {\UTP} scheme, which allows to model the different entities and constraints of an instance. The resolution is based on a generic model developed in {\MINIZINC} as well as a parser that allows to compile any instance {\UTP} in a constraint programming language and to solve it by a constraint solver. We present some preliminary experiments conducted on real instances.
+%\end{abstract}
+
+% JFPC:
+%Le calcul d'emplois du temps universitaire est un problème d'optimisation combinatoire complexe tant dans sa modélisation que sa résolution.
+%Nous présentons une approche par contraintes qui englobe la constitution de groupes, la distribution des salles et enseignants, leur allocation et l'ordonnancement des séances.
+%Cette approche se fonde sur un langage dédié à base de règles ({\UTP}) permettant de modéliser les différentes entités et contraintes d'une instance.
+%Les instances \UTP{} sont encodées en \XML{} et un parseur convertit les règles en contraintes dans un format \JSON{} compatible avec les solveurs \MINIZINC{} et \CHR{}.
+%Nous présentons ici le modèle \MINIZINC{} pour la classe \UTP{} et des expérimentations préliminaires réalisées sur des instances réelles issues du système universitaire francais.
+
+\begin{abstract}
+University course timetabling is a complex combinatorial optimisation problem both in its modeling and its solving.
+It involves several problems\string: student sectioning, course staffing, room planning, class scheduling and resource allocation.
+In this paper we present a dedicated rule-based language, the \UTP{} language, which allows to model the different entities and constraints of the problem.
+We compare the \UTP{} language with other timetabling frameworks.
+As a proof of concept, we developed constraint programming solvers and performed experiments on real instances from a French university.
+\end{abstract}
+
+\begin{keywords}
+University Timetabling $\bullet$ Domain-Specific Language $\bullet$ Constraint Programming
+\end{keywords}
+
+% ------------------------------------------
+% CORPS DE L'ARTICLE
+% ------------------------------------------
+
+\input{introduction}
+\input{2022_APIA/utp_language}
+\input{utp_stateoftheart}
+\input{implementation}
+\input{conclusion}
+
+%\subsection{Travaux antérieurs}
+%
+%Les en-têtes sont également en 12 points gras.
+%
+%Il n'y a pas nécessairement d'espacement entre les paragraphes.
+%
+%Les références à la Bibliographie peuvent être de la forme
+% \cite{key:foo} o\`u \cite{foo:baz}.  Les numéros correspondent à
+% l'ordre d'apparition dans la bibliographie, pas dans le texte.
+% L'ordre alphabétique est conseillé.
+%
+%\subsubsection{Les autres éléments}
+%
+%Vous pouvez également utiliser des sous-sous-sections (comme c'est le cas ici). Taille 10 points, gras.
+%
+%Pour les figures, elles doivent être insérées à l'aide de l'environnement \verb|figure| et avoir une légende numérotée.
+%
+%L'inclusion d'images peut se faire à l'aide de la commande
+%\verb|\includegraphics|.
+%
+%Vous pouvez utiliser des listes d'éléments sans changer l'item (ici le tiret) :
+%\begin{itemize}
+%  \item item1
+%  \item item2
+%  \item ...
+%\end{itemize}
+%
+%Vous pouvez utiliser aussi l'environnement \verb|\paragraph|.
+%
+%\paragraph{Ce ceci est un paragraphe.} Remarquez que le titre du paragraphe se termine par un point, et qu'il n'est PAS numéroté.
+%
+%Essayez si possible de ne pas utiliser de subdivision supplémentaire dans votre article car il risquerait de perdre en lisibilité. 
+%\section{Pagination}
+%
+%Afin que l'éditeur puisse assembler vos contributions en un seul volume, veillez impérativement à :
+%\begin{itemize}
+%  \item ne PAS ajouter de numéros de page ;
+%  \item ne PAS changer les marges (ou tout autre élément de mise en page) ;
+%  \item d'une manière générale, ne PAS modifier le style fourni ou ne PAS lui ajouter des éléments de formatage qui changent le visuel, sinon votre contribution risque de ne pas être formatée de la même manière que celle des autres.
+%\end{itemize}
+%
+%En principe, les articles doivent faire au plus 8 pages.
+%
+%\section{Biblio}
+%
+%Dans la section suivante, vous voyez deux exemples de références. Si vous utilisez bib\TeX, alors spécifiez l'utilisation du style plain à l'aide de la commande habituelle : \verb|\bibliographystyle{plain}|.
+%
+\section*{Acknowledgments}
+%Ce travail est partiellement financé par le projet Thélème octroyé aux universités d'Angers et du Mans dans le cadre du PIA3.
+This work is partially funded by project Thélème granted to the universities of Angers and Le Mans under PIA3 program.
+%Les remerciements s'expriment juste avant la bibliographie, à l'aide d'une Section non numérotée.
+%
+%
+%\begin{thebibliography}{9}
+%\bibitem{foo:baz}
+%U. Nexpert,
+%{\em Le livre,}
+%Son Editeur, 1929.
+%\bibitem{key:foo}
+%I. Troiseu-Pami,
+% Un article intéressant,
+%{\em Journal de Spirou}, Vol. 17, pp. 1-100, 1987.
+%\end{thebibliography}
+
+
+\bibliographystyle{plain}
+\bibliography{ref_APIA}
+
+\end{document}
+

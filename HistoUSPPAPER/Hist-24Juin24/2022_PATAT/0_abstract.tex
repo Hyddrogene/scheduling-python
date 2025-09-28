@@ -1,0 +1,36 @@
+\begin{abstract}
+We present a domain-specific modeling language for a %broad 
+class of university timetabling problems ({\UTP}) 
+that involve course scheduling, resource allocation and student sectioning.
+%that reduce to hard %TODO hard?
+%constraint satisfaction problems.
+The {\UTP} language combines a formal domain model and a rules formalism to state constraints. %address common requirements. % relating to course scheduling, resource allocation and student sectioning. 
+The model is based on 
+a multi-scale schedule horizon (i.e., weeks, weekdays and daily slots),
+a hierarchical course structure (i.e., course parts, part classes and class sessions),
+and an extended set of resources (i.e., rooms, lecturers, students and student groups).
+Student groups must be formed to populate classes and class sessions are to be scheduled individually and allocated single or multiple rooms and lecturers.
+The model encodes sectioning constraints on classes, core scheduling constraints on sessions as well as compatibility, capacity and cardinality constraints on resource allocation. 
+%and the default session-to-resource assignment policy is to consider all resources as cumulative.
+Rules allow to state conjunctions of constraints on selected sets of entities and sessions using a catalog of timetabling predicates and a syntax to group, filter and bind entities and sessions.
+%Rules rely on a  constraints on using timetabling predicates and %a comprehension syntax a selector syntax to target specific sessions, resources and course elements.
+%Rules are built with timetabling predicates and filters to forge constraints on selected classes of resources or course elements. 
+%{\UTP} 
+As for implementation, the \UTP{} language is based on {\XML} 
+and %the language implementation includes 
+%an {\XML} schema % used to encode instances, 
+%and 
+comes with a tool chain that flattens rules into constraints and converts instances to solver-compatible 
+%{\JSON}
+formats. 
+We present here the abstract syntax of the \UTP{} language and alternative constraint programming models developed in {\MINIZINC} and {\CHR} %to generate solutions. 
+%%As an early proof of concept, we 
+%and report early 
+together with preliminary experiments on a real case study.
+%instances modeling undergraduate curricula in a french university.
+
+%Insert your abstract here. Include keywords, PACS and mathematical subject classification numbers as needed.
+\keywords{University Timetabling \and Domain-Specific Modeling Language \and Constraint Programming \and Resource Scheduling}
+% \PACS{PACS code1 \and PACS code2 \and more}
+%\subclass{MSC code1 \and MSC code2 \and more}
+\end{abstract}

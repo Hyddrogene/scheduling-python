@@ -1,0 +1,477 @@
+Les données relatives au programme des élèves et à leur organisation en classes et groupes sont exprimées dans un certain nombre de dispositions, généralement entre 4 et 6 au total. L'idée d'une disposition et son utilisation sont discutées par Lewis (1961) et les dispositions développées pour être utilisées avec cette méthode de planification des emplois du temps sont une évolution de celles présentées dans les livres de Lewis. En essence, la disposition est une déclaration du programme scolaire et de son organisation pour un groupe d'élèves, généralement un groupe annuel, par exemple, tous les élèves de la première ou d'une autre année de l'école.
+
+L'exemple du tableau 1 est une disposition pour la 3ème année d'une école polyvalente comptant 1060 élèves. Il y a 260 élèves en 3ème année. La colonne A de la disposition spécifie un besoin de 5 classes ou groupes en anglais, 2 en latin et 4 en commerce pour 6 périodes par semaine ; la colonne B spécifie un besoin de 4 classes ou groupes en anglais, 1 en travaux ménagers, 5 en matières techniques, 1 en couture et design, et 1 en 'X' qui représente un certain nombre de matières diverses et minoritaires ; les entrées dans les colonnes restantes peuvent être interprétées de la même manière.
+
+Seule, la disposition ne précise pas quelles classes ou groupes sont nécessaires à tout moment, bien que ces données puissent être ajoutées sous la disposition, comme illustré dans le tableau 1. Elle ne spécifie pas quels enseignants d'anglais, de latin et de commerce seront nécessaires dans la colonne A ni quelles salles, bien que ces données puissent être ajoutées sous certaines ou toutes les colonnes et n'affecteraient pas la formulation du problème ni ne nécessiteraient une quelconque modification de principe de la méthode de calcul.
+
+Les avantages pour le directeur d'exprimer ses besoins sous forme de dispositions ont été pleinement discutés par l'auteur (Lawrie 1968). Deux points seront mentionnés ici :
+
+1. Une disposition simplifie la planification des programmes et de l'organisation pour un groupe d'élèves en fournissant une notation compacte qui met en évidence les besoins en personnel par département et omet toute référence explicite aux classes ou à la manière dont les élèves sont regroupés en groupes d'une période à l'autre. La notation permet de traiter relativement facilement un groupe annuel comme une unité à des fins de planification des programmes, même dans les grandes écoles, et devrait donc aider à éviter la ségrégation en flux séparés qui se produit dans certaines écoles simplement en raison de la difficulté de planifier pour un grand groupe annuel dans son ensemble lorsque l'unité de planification est la classe.
+2. Une disposition permet de supprimer un certain nombre de détails lors de la planification. Ce qui est supprimé peut varier d'une disposition à l'autre. Dans le tableau 1, les classes de groupes dans un département noté 'X' apparaissent dans plusieurs colonnes, et les matières regroupées et étiquetées 'X' dans ce cas sont les matières non examinables occupant un temps minoritaire :
+   - Art
+   - Musique
+   - Éducation physique
+   - Éducation religieuse
+
+On peut penser qu'il est désavantageux que le planificateur d'emploi du temps doive produire une disposition pour le groupe annuel dans son ensemble puisque cela lui transfère la charge (qui pourrait apparemment être portée par l'ordinateur) de déterminer non seulement le programme et les regroupements, mais aussi le chevauchement des groupes (ou classes) dans différentes matières au cours de la semaine. Si un groupe annuel est divisé en 'flux' ou 'côtés' qui ne se mélangent pas pour une grande partie de la semaine, la disposition est une charge supplémentaire et sa spécification fixe la survenance simultanée de classes non liées qui pourraient bien rester indéterminées et à la disposition d'un programme informatique.
+
+D'autre part, si le groupe annuel n'est pas divisé en 'flux' ou 'côtés' mais est, comme le groupe annuel du tableau 1, réparti en différents sous-groupes d'élèves dans différentes colonnes de la disposition, la disposition devient nécessaire pour spécifier la politique éducative de l'école.
+
+Le tableau 2 illustre cinq dispositions décrivant les programmes et l'organisation d'une école polyvalente de six ans, désignée école B dans le tableau 5. Notez que les plans pour les années 5 et 6 sont combinés en une seule disposition et que la disposition du tableau 1 est identique à celle de la 3ème année dans le tableau 2. Une grande partie des détails des années 1 et 2 a été supprimée puisque la plupart des enseignements de ces années sont destinés à des classes de niveau mixte et pourraient être spécifiés dans la disposition de diverses manières. Plutôt que de le faire, il a été jugé préférable de reporter les décisions sur le chevauchement de telles classes dans l'emploi du temps à une étape ultérieure.
+
+Ce qui a été spécifié dans les dispositions de 1ère et 2ème année est :
+1. la manière dont les classes pratiques sont organisées et, en particulier, comment deux des périodes de Technique/Travaux ménagers sont utilisées par deux élèves de langues pour le latin.
+2. la manière dont les groupes en anglais et en mathématiques sont organisés. Il y a suffisamment de personnel dans l'école pour rendre possible la disposition la plus simple : la survenue simultanée de tous les groupes en anglais ou en mathématiques chaque année.
+
+Ce qui n'est pas spécifié est l'organisation du reste du programme qui comprend le français, l'histoire, la géographie, le latin (seules deux des cinq périodes de latin sont spécifiées dans l'une ou l'autre des dispositions), ainsi que les matières classées comme 'X'. Ce groupe plus large de matières est classé comme 'Y' dans les dispositions.
+
+Le tableau 3 montre les données du tableau 2 préparées pour une entrée informatique. Chaque colonne de chaque disposition donne lieu à une ligne dans le tableau 3 (en fait, Johnston et Wolfenden).
+
+### Tableau 2: Dispositions pour l'école B (une école de 6 ans avec 1 060 élèves)
+
+#### Disposition de 1ère année (150 élèves)
+| Colonne | Périodes | Groupes |
+| ------- | -------- | ------- |
+| A       | 6        | 5E      |
+| B       | 6        | 5M      |
+| C       | 2        | 20      |
+| D       | 20       | 4Sc     |
+| E       | 4        | 1H 5Y   |
+| F       | 2        | 2H      |
+| G       | 2        | 1T      |
+| H       | 2        | 2T      |
+| I       | 4        | 4Sc     |
+| J       | 2        | 2Lt     |
+
+#### Disposition de 2ème année (180 élèves)
+| Colonne | Périodes | Groupes |
+| ------- | -------- | ------- |
+| A       | 6        | 6E      |
+| B       | 4        | 8M      |
+| C       | 2        | 6Sc     |
+| D       | 2        | 3T      |
+| E       | 20       | 2T      |
+| F       | 6        | 5Y      |
+| G       | 2        | 2H      |
+| H       | 2        | 3H      |
+| I       | 2        | 1H      |
+| J       | 2        | 2T      |
+
+#### Disposition de 3ème année (260 élèves)
+| Colonne | Périodes | Groupes |
+| ------- | -------- | ------- |
+| A       | 6        | 5E      |
+| B       | 4        | 4E      |
+| C       | 2        | 2Lt     |
+| D       | 4        | 4C      |
+| E       | 5        | 5T      |
+| F       | 6        | 1DD     |
+| G       | 7        | 1C 1T   |
+| H       | 4        | 4X      |
+| I       | 2        | 2X      |
+| J       | 2        | 2X      |
+
+#### Disposition de 4ème année (260 élèves)
+| Colonne | Périodes | Groupes |
+| ------- | -------- | ------- |
+| A       | 6        | 4E 3Lt  |
+| B       | 6        | 3C 2T   |
+| C       | 6        | 5E      |
+| D       | 7        | 1H 3X   |
+| E       | 7        | 6F      |
+| F       | 4        | 1H 2X   |
+| G       | 4        | 2X      |
+| H       | 7        | 7M 2M   |
+| I       | 4        | 4Hi     |
+| J       | 4        | 4Ph     |
+
+Ces tableaux montrent comment les matières et les groupes d'élèves sont organisés sur la semaine. Les dispositions permettent de spécifier les politiques éducatives de l'école tout en offrant une flexibilité pour l'ajustement des emplois du temps selon les besoins spécifiques des élèves et des enseignants.
+
+
+### Liste des exigences
+
+Cette liste spécifie un certain nombre de périodes et le personnel nécessaire par département pour ces périodes. En bas du tableau 3, le nombre de membres du personnel enseignant dans chaque département est donné.
+
+Remarquez qu'il y a des écarts apparents entre les colonnes X et Y du tableau 3 et les groupes dans 'X' et 'Y' spécifiés dans les dispositions. Par exemple, la colonne I de la disposition de 3ème année dans le tableau 2 spécifie 3 classes ou groupes dans 'X' et pourtant la ligne 20 (la ligne correspondante) du tableau 3 spécifie 5 enseignants nécessaires dans le département X. L'explication est que les enseignants disponibles pour enseigner la matière notée 'X' viennent des départements de Musique, Art, Éducation Physique et Éducation Religieuse, et que lorsque certaines des matières enseignées par ces départements apparaissent explicitement dans la disposition, comme c'est le cas dans les colonnes H, I et J de la disposition de 3ème année dans le tableau 2, le nombre de personnel nécessaire pour enseigner ces matières est déduit du nombre disponible pour enseigner dans le département 'X' (ou, équivalemment, ajouté au nombre de groupes dans 'X' déjà spécifiés). L'effet des classes individuelles en Musique et en Art dans les colonnes mentionnées est inclus dans les lignes appropriées du tableau 3 (lignes 19, 20 et 21) en ajoutant 2 au besoin en personnel du département 'X' pour chaque ligne. Les écarts apparents dans la colonne Y ont la même explication.
+
+Notez également que les dispositions dans les tableaux 1 et 2 sont exprimées en termes de matières enseignées, tandis que le tableau 3 est exprimé en termes de besoins départementaux. Le lien entre ces deux est donné dans les paragraphes suivants.
+
+### Tableau 3
+
+Besoins en personnel pour chaque ligne de chaque disposition
+
+| Ligne | Département E | Département M | Département S | Département T | Département H | Département C | Département L | Département F | Département Z | Département U | Département A | Département X | Département Y |
+|-------|----------------|----------------|----------------|----------------|----------------|----------------|----------------|----------------|----------------|----------------|----------------|----------------|----------------|
+| 2     | 2              |                |                |                |                |                |                |                |                |                |                |                |                |
+| LIINI |                | 2              | 1              |                | 1              |                | 1              |                |                |                |                |                |                |
+| 2-1   | 1              |                |                | 1              |                |                |                |                |                |                |                |                |                |
+| I     | 1              | 2              |                |                | 1              | 1              | 2              |                |                |                |                |                |                |
+| 1123  |                | 2              | 3              | 2              | 1              | 5              |                |                |                |                |                | 2              | 3              |
+| 232   |                | 1              | 5              |                | 3              | 2              |                | 3              | 5              |                | 1              | 3              | 2              |
+| 155   | 1              |                |                | 5              | 2              | 1              | 4              |                |                | 1              |                |                |                |
+| 12-   | 2              |                |                |                |                | 1              |                | 2              | 2              |                |                |                |                |
+| 2I1   | 2              | 2              |                |                | 4              |                |                | 1              |                |                |                |                |                |
+| 4-    |                |                |                |                |                | 5              |                |                |                | 1              |                |                |                |
+| 5     |                | 2              | 1              | 6              |                |                |                |                |                | 1              |                |                |                |
+| 216   | 1              |                | 4              | 6              | 8              | 7              | 6              |                |                |                |                |                |                |
+| 146   | 2              | 6              | 8              | 7              |                | 6              | 5              | 4              | 4              | 1              | 3              |                | 3              |
+| 6876  | 1              | 3              |                |                | 1              | 1              |                | 2              | 3              | 1              |                |                |                |
+
+Les besoins en personnel sont présentés pour chaque département en fonction des différentes lignes des dispositions. Ces informations permettent de planifier efficacement la répartition des enseignants et des périodes d'enseignement nécessaires pour chaque matière et chaque classe.
+
+
+### Autres exigences de données
+
+Les données restantes à spécifier après la détermination des dispositions comprennent :
+1. Les chiffres du personnel par département.
+2. Les matières enseignées par les départements réels et notionnels.
+3. Les codes convenus à utiliser pour la présentation des entrées et l'impression des sorties.
+
+Dans l'école B, les effectifs et les matières enseignées par départements étaient les suivants :
+- Études modernes, Histoire, Géographie, Y
+- Musique, X, Y
+- Études modernes
+  - 8 enseignants
+
+- Musique
+  - 3 enseignants
+
+- Art, X, Y
+- Éducation physique
+  - 4 enseignants
+
+- EP, X, Y
+- Éducation religieuse
+  - 1 enseignant
+
+- Art
+  - 4 enseignants
+
+Remarquez que le nombre d'enseignants disponibles pour enseigner la matière notée 'X' est de 12, et que le nombre disponible pour enseigner la matière notée 'Y' est de 32.
+
+Les codes à une seule lettre suivants sont utilisés pour étiqueter les départements dans le tableau 3 et dans le tableau 4, qui est un 'emploi du temps provisoire' (défini dans la section suivante) pour l'école B, basé sur les dispositions du tableau 2.
+- E : Anglais
+- H : Travaux ménagers
+- Z : Études modernes
+- M : Mathématiques
+- C : Commerce
+- U : Musique
+
+### DEPARTEMENT
+| **DEPARTEMENT** | **NOMBRE DE PERSONNEL** | **MATIERES ENSEIGNEES** |
+|------------------|----------------------------|--------------------------|
+| Anglais          | 9                          | Anglais                  |
+| Mathématiques    | 9                          | Mathématiques            |
+| Sciences         | 9                          | Sciences générales, Physique, Chimie, Biologie |
+| Technique        | 6                          | Technique                |
+| Homecraft        | 4                          | Travaux ménagers, Couture et Design |
+| Commerce         | 4                          | Commerce, Organisation économique |
+| Classiques       | 3                          | Latin, Grec, Y           |
+| Langues Modernes | 9                          | Français, Allemand, Espagnol, Y |
+| Art              | 4                          | Art, X, Y                |
+| Éducation Physique| 4                          | EP, X, Y                 |
+| Éducation Religieuse| 1                        | Éducation religieuse, X, Y |
+
+Les codes suivants sont utilisés pour les départements dans les tableaux 3 et 4 :
+- S : Sciences
+- L : Classiques
+- T : Technique
+- F : Langues Modernes
+- A : Art
+- X : département 'X'
+- Y : département 'Y'
+
+### Formulation mathématique
+
+Une fois les dispositions obtenues, le problème de la construction de l'emploi du temps est traité en deux étapes.
+
+### Tableau 4
+Un emploi du temps provisoire pour les besoins du tableau 3 :
+
+| **PERIODES** | **Année 1** | **Année 2** | **Année 3** | **Année 4** | **Années 5 et 6** |
+|--------------|-------------|-------------|-------------|-------------|-------------------|
+| 1            | SY          | 5M          | 5M          | 5Y          | 5Y                |
+| 2            | 4S          | 4S          | 5Y          | 5M          | 5Y                |
+| 3            | 5Y          | 5Y          | 5Y          | 5M          | 5Y                |
+| 4            | 5Y          | 5Y          | SE          | SY          | SY                |
+| 5            | 2T          | 2T          | 2H          | 2H          | 3S                |
+| 6            | 5Y          | 5Y          | 8M          | 8M          | 5Y                |
+| 7            | 8M          | 68          | 38          | 5Y          | 5Y                |
+| 8            | 6E          | 6E          | 5Y          | 5Y          | 5Y                |
+| 9            | 6S          | 6S          | 2T          | 2T          | 3T                |
+| 10           | 1H          | 2T          | 3T          | 2H          | 3H                |
+| 11           | 2T          | 2T          | 2H          | 2H          | 2L                |
+| 12           | 2L          | 2F          | 4Z          | 4S          | 4S                |
+| 13           | 6S          | 6S          | 4S          | 4S          | 5E                |
+| 14           | 6M          | 6M          | 6M          | 6M          | 5T                |
+| 15           | 6M          | 4S          | 4S          | 4E          | 6M                |
+| 16           | 6M          | 2C          | 2C          | 2C          | 2C                |
+| 17           | 2C          | 4X          | 4X          | 4X          | 1H                |
+| 18           | 4X          | 1H          | 4T          | 4T          | 5T                |
+| 19           | 4X          | SZ          | SZ          | 2F          | 2F                |
+| 20           | 2F          | 5Z          | 4Z          | 4Z          | 1U                |
+
+Les exigences de personnel pour chaque ligne de chaque disposition sont présentées dans le tableau 3. Ces informations permettent de planifier efficacement la répartition des enseignants et des périodes d'enseignement nécessaires pour chaque matière et chaque classe.
+
+
+### Autres exigences de données
+
+Les données restantes à spécifier après la détermination des dispositions comprennent :
+1. Les chiffres du personnel par département.
+2. Les matières enseignées par les départements réels et notionnels.
+3. Les codes convenus à utiliser pour la présentation des entrées et l'impression des sorties.
+
+Dans l'école B, les effectifs et les matières enseignées par départements étaient les suivants :
+
+- **Études modernes, Histoire, Géographie, Y**
+  - 8 enseignants
+- **Musique, X, Y**
+  - 3 enseignants
+- **Art, X, Y**
+  - 4 enseignants
+- **Éducation physique**
+  - 4 enseignants
+- **Éducation religieuse**
+  - 1 enseignant
+
+Remarquez que le nombre d'enseignants disponibles pour enseigner la matière notée 'X' est de 12, et que le nombre disponible pour enseigner la matière notée 'Y' est de 32.
+
+Les codes à une seule lettre suivants sont utilisés pour étiqueter les départements dans le tableau 3 et dans le tableau 4, qui est un 'emploi du temps provisoire' (défini dans la section suivante) pour l'école B, basé sur les dispositions du tableau 2 :
+- E : Anglais
+- H : Travaux ménagers
+- Z : Études modernes
+- M : Mathématiques
+- C : Commerce
+- U : Musique
+
+### DEPARTEMENT
+| **DEPARTEMENT**       | **NOMBRE DE PERSONNEL** | **MATIERES ENSEIGNEES**                                                  |
+|----------------------|------------------------|-------------------------------------------------------------------------|
+| Anglais              | 9                      | Anglais                                                                 |
+| Mathématiques        | 9                      | Mathématiques                                                           |
+| Sciences             | 9                      | Sciences générales, Physique, Chimie, Biologie                          |
+| Technique            | 6                      | Technique                                                               |
+| Homecraft            | 4                      | Travaux ménagers, Couture et Design                                     |
+| Commerce             | 4                      | Commerce, Organisation économique                                       |
+| Classiques           | 3                      | Latin, Grec, Y                                                          |
+| Langues Modernes     | 9                      | Français, Allemand, Espagnol, Y                                         |
+| Art                  | 4                      | Art, X, Y                                                               |
+| Éducation Physique   | 4                      | EP, X, Y                                                                |
+| Éducation Religieuse | 1                      | Éducation religieuse, X, Y                                              |
+
+Les codes suivants sont utilisés pour les départements dans les tableaux 3 et 4 :
+- S : Sciences
+- L : Classiques
+- T : Technique
+- F : Langues Modernes
+- A : Art
+- X : département 'X'
+- Y : département 'Y'
+
+### Formulation mathématique
+
+Une fois les dispositions obtenues, le problème de la construction de l'emploi du temps est traité en deux étapes :
+1. Le chevauchement des dispositions entre elles de manière à ce que les restrictions de personnel ne soient pas violées à aucun moment de la semaine. Cela donne ce que l'on appelle un 'emploi du temps provisoire' illustré pour l'école B dans le tableau 4.
+2. La permutation de l'emploi du temps provisoire pour répondre aux exigences de répartition des classes et des ensembles dans diverses matières sur la semaine.
+
+Pour l'instant, seule la première de ces étapes a été programmée, et la formulation mathématique donnée ci-dessous ne concerne que cette étape.
+
+Nous définissons une disposition comme un ensemble de colonnes, une de chaque disposition, qui ne viole aucune restriction de personnel. Pour les cinq dispositions du tableau 2, par exemple, la colonne B de la disposition 1, la colonne F de la disposition 2, la colonne G de la disposition 3, la colonne B de la disposition 4 et la colonne E de la disposition 5 peuvent être vérifiées comme formant une disposition puisque le personnel total par département pour enseigner les classes ou ensembles spécifiés dans ces colonnes est, département par département, inférieur au personnel enseignant disponible. Le problème peut maintenant être vu comme celui de trouver autant de dispositions, pas nécessairement toutes différentes, qu'il y a de périodes dans la semaine. Cela a une formulation en programmation linéaire analogue aux problèmes de découpe discutés, par exemple, par Gilmore et Gomory (1961). Les contraintes qui doivent être satisfaites par toute solution sont que chaque colonne de chaque disposition doit apparaître le nombre de fois spécifié dans sa disposition.
+
+Formellement, nous supposons que toutes les dispositions possibles sont numérotées en série, et définissons pour chacune une variable entière, x, représentant le nombre d'occurrences de la jème disposition dans l'emploi du temps provisoire. Il y a donc autant de variables que de dispositions, disons N, et autant de contraintes, disons m, que le nombre total de colonnes dans les dispositions du problème (37 dans le cas du problème du tableau 2).
+
+Nous supposons que les colonnes des dispositions sont numérotées consécutivement à partir de 1 (colonne A de la disposition 1) jusqu'à m comme dans le tableau 3, et définissons :
+- \( b_i \) = le nombre d'occurrences de la colonne i spécifié dans sa disposition.
+  - \( i = 1, 2, ..., m \)
+- \( a_{ij} \) = 1 si la colonne i apparaît dans la disposition j, 0 sinon.
+  - \( i = 1, 2, ..., m \)
+  - \( j = 1, 2, ..., N \)
+
+### Tableau 4 (suite)
+| **PERIODES** | **Année 1** | **Année 2** | **Année 3** | **Année 4** | **Années 5 et 6** |
+|--------------|-------------|-------------|-------------|-------------|-------------------|
+| 21           | SE          | SY          | 5Y          | 5Y          | SE                |
+| 22           | SE          | SE          | 4S          | 4S          | 4S                |
+| 23           | 4S          | 4S          | 4S          | SE          | 5Y                |
+| 24           | 5Y          | 5Y          | 5M          | SE          | 5M                |
+| 25           | 4           | 4S          | 2T          | 2T          | 2T                |
+| 26           | IT          | 5Y          | 2H          | 2H          | 2H                |
+| 27           | 1H          | 2T          | IT          | 2H          | 1H                |
+| 28           | 2L          | 2L          | 5Y          | 6E          | 6E                |
+| 29           | 6E          | 8M          | 6S          | 5Y          | 5Y                |
+| 30           | 5Y          | 5Y          | 5Y          | 5Y          | 5Y                |
+| 31           | 5Y          | 5Y          | 8M          | 3S          | 8M                |
+| 32           | 8M          | 6E          | 5Y          | 5Y          | 3S                |
+| 33           | 6S          | 2T          | 1H          | 2T          | 1H                |
+| 34           | 2T          | 3T          | 3T          | 2H          | 3H                |
+| 35           | 2L          | 3H          | 2L          | 5T          | 4M                |
+| 36           | 4M          | 6X          | 6X          | 6X          | 5T                |
+| 37           | SE          | 6F          | SE          | SE          | SE                |
+| 38           | 4E          | ST          | 4E          | 4E          | 4E                |
+| 39           | 5T          | 6F          | 4S          | 4E          | 5T                |
+| 40           | 5E          | 6S          | 4S          | 5T          | 5T                |
+
+Les exigences de personnel pour chaque ligne de chaque disposition sont présentées dans le tableau 3. Ces informations permettent de planifier efficacement la répartition des enseignants et des périodes d'enseignement nécessaires pour chaque matière et chaque classe.
+
+
+### Les contraintes du problème
+
+Les contraintes du problème peuvent maintenant être écrites sous la forme suivante :
+
+\[ \sum a_{ij} x_j = b_i \quad \text{pour} \ i = 1, 2, \ldots, m \]
+
+La matrice des coefficients (\(a_{ij}\)) est, par définition, une matrice binaire (contenant uniquement des zéros et des uns) et comprend généralement entre 85 % et 90 % de zéros. On peut noter que :
+
+\[ \sum a_{ij} = \text{layout}_k \]
+
+puisque chaque arrangement contient une et une seule colonne de chaque disposition. Ainsi :
+
+\[ \sum a_{ij} = \text{le nombre de périodes dans la semaine} \]
+
+car la disposition spécifie une activité (colonne) pour chaque période de la semaine. Par conséquent, cela se réduit à :
+
+\[ \sum_{j=1}^N a_{ij} x_j = \sum_{\text{layout}_k} b_i \]
+
+Ainsi, les équations de contrainte ne sont pas indépendantes. Si l'on a K dispositions, K-1 des équations, une de chacune des K-1 dispositions, peuvent être omises.
+
+Bien qu'un ensemble de K-1 équations soit omis dans les exécutions de programmation linéaire, l'explication des détails de la méthode de calcul suppose que toutes les équations m sont présentes afin de simplifier l'exposition.
+
+Dans les problèmes typiques, le nombre de variables est grand et largement supérieur au nombre d'équations. Les détails de 4 problèmes récents provenant d'écoles réelles sont donnés dans le tableau 5.
+
+### Une fonction objectif
+
+Le plus souvent, les directeurs d'école spécifient ce qu'ils considèrent comme un bon emploi du temps en termes de répartition des classes et des ensembles dans les différentes matières au cours de la semaine, parfois aussi en termes de la répartition des périodes libres pour le personnel ou pour les élèves de terminale, et parfois en termes de la variété des matières chaque jour - pas trop ou trop peu de périodes quotidiennes de "matières académiques". Ces critères vaguement définis peuvent être pertinents pour la deuxième étape du calcul mentionnée ci-dessus, mais pas pour la première étape. À cette étape, nous nous intéressons uniquement aux solutions réalisables (entières), et c'est pourquoi la plupart des travaux récents ont omis une fonction objectif. Il est clair, cependant, que certains emplois du temps provisoires peuvent mener à de meilleurs emplois du temps permutés lors de la deuxième étape que d'autres, et l'objectif des procédures numériques décrites dans la section suivante a été de produire un certain nombre de solutions alternatives à la première étape.
+
+Dans les travaux antérieurs, la fonction objectif suivante était utilisée :
+
+\[ \max \sum c_j x_j \]
+
+où \(c_j\) était défini comme le minimum des valeurs \(b\) des colonnes dans l'arrangement \(j\) et est donc une borne supérieure pour \(x\). Cela tentait de privilégier, dans un emploi du temps provisoire, les arrangements qui pourraient se produire avec une multiplicité plus élevée, et donc de réduire le nombre de différents arrangements se produisant à un niveau non nul dans une solution. Une telle fonction objectif, cependant, a peu de rapport avec les critères normalement cités par les directeurs d'école et a été abandonnée en faveur de la production de plusieurs solutions alternatives (entières).
+
+### La méthode de calcul
+
+Dans la première version de la méthode, toutes les variables étaient générées avant l'exécution de la programmation linéaire, qui utilisait un code écrit en ALGOL pour l'ICL 1905, incorporant la méthode des formes entières de Gomory (Gomory, 1958) et utilisant la fonction objectif mentionnée ci-dessus.
+
+Dans la version actuelle de la méthode, les variables sont générées uniquement en fonction des besoins, aucune fonction objectif n'est utilisée, et la méthode des formes entières de Gomory, bien qu'encore incorporée, est complétée par une procédure ad hoc décrite ci-dessous, qui arrondit d'abord une solution rationnelle aux valeurs entières, puis complète la solution partielle ainsi obtenue en utilisant une procédure d'énumération. La méthode des formes entières a été conservée avec la procédure ad hoc bien qu'elle ne soit plus strictement nécessaire. Elle sert néanmoins de moyen de passer d'une solution faisable à une solution essentiellement différente et produit ainsi des points de départ différents pour la procédure ad hoc. Le programme de cette méthode est également en ALGOL, à l'exception de quelques procédures, dont une pour l'arithmétique entière à double longueur, écrite en PLAN. Elle a résolu avec succès un certain nombre de problèmes dont ceux listés dans le tableau 5 sont typiques.
+
+### Tableau 5
+**Données relatives aux écoles étudiées**
+| Écoles      | Nombre d'élèves | Nombre de personnel | Ratio Élèves/Enseignant | Nombre de dispositions | Nombre de lignes | Nombre total d'arrangements | Périodes d'enseignement disponibles | Périodes d'enseignement spécifiées dans les dispositions | Pourcentage de périodes d'enseignement disponibles spécifiées | Temps de calcul (minutes) |
+|-------------|------------------|---------------------|-------------------------|------------------------|------------------|-----------------------------|-----------------------------------|--------------------------------------------|--------------------------------------------|----------------------------|
+| BDG         | 1,060            | 74                  | 14.3                    | 5                      | 37               | 1,454                       | 2,960                             | 1,789                                      | 60.4                                       | 2.7                        |
+| W           | 700              | 45                  | 15.6                    | 5                      | 45               | 1,459                       | 1,890                             | 1,282                                      | 67.8                                       | 11.9                       |
+| Z           | 980              | 62                  | 15.8                    | 3                      | 28               | 210                         | 2,480                             | 1,208                                      | 48.7                                       | 1.3                        |
+| Y           | 490              | 31                  | 15.8                    | 4                      | 48               | 2,363                       | 1,395                             | 905                                        | 64.9                                       | 7.0                        |
+
+Ces données montrent la diversité des configurations scolaires et des exigences de planification, soulignant ainsi l'importance d'adapter les méthodes de programmation aux besoins spécifiques de chaque établissement.
+
+
+
+La matrice inverse de la base est conservée sous forme explicite en tant que matrice d'entiers, avec leur dénominateur commun, \(D\), conservé séparément. Les variables générées pour entrer dans la base sont numérotées dans l'ordre de leur entrée et leurs coefficients dans les contraintes du problème sont stockés de manière compacte avec les zéros omis.
+
+Le programme consiste en une procédure de Phase I à la fin de laquelle des coupes sont effectuées, une à la fois, à moins que la solution trouvée à la fin de la Phase I soit en entiers. Après chaque coupe, il y a un retour immédiat à la Phase I afin de restaurer la faisabilité primale. Les coupes sont effectuées jusqu'à ce que le programme se termine soit avec une solution entière en conséquence d'une coupe, soit après avoir obtenu suffisamment de solutions entières par l'utilisation de la procédure ad hoc qui est appelée avant chaque coupe.
+
+### Génération de variables
+
+En Phase I, les multiplicateurs du simplexe, \(\lambda_1, \lambda_2, \ldots\), sont disponibles à chaque itération et le problème de trouver la meilleure variable à entrer dans la base à l'itération suivante, considérée comme la variable ayant le coût réduit le plus négatif, est un problème de programmation linéaire en nombres entiers binaires. Nous définissons
+
+\[ y_i = \begin{cases} 
+1 & \text{si l'arrangement sélectionné implique la colonne i} \\
+0 & \text{sinon}
+\end{cases} \]
+
+pour \(i = 1, 2, \ldots, m\). Le problème est alors de
+
+\[ \min \sum w_i y_i \]
+
+sous réserve des contraintes
+
+\[ \sum_{i \in \text{layout}_k} y_i = 1 \]
+
+pour \(k = 1, 2, \ldots, K\) et 
+
+\[ \sum_{i=1}^{m} d_{ir} y_i \leq D_r \]
+
+pour \(r = 1, 2, \ldots, S\)
+
+où \(D_r\) est le nombre de personnel dans le \(r\)-ième département, \(d_{ir}\) est le nombre de personnel dans le \(r\)-ième département utilisé dans la colonne \(i\), et \(S\) est le nombre de départements dans l'école. \(D_r\) et \(d_{ir}\) sont tabulés pour l'école B dans le tableau 3 (S13).
+
+La méthode de solution employée pour ce sous-problème est une énumération partielle. Les contraintes
+
+\[ \sum_{i \in \text{layout}_k} y_i = 1 \]
+
+expriment la condition selon laquelle une seule ligne de chaque disposition peut être sélectionnée. Les lignes dans chaque disposition sont examinées dans l'ordre croissant de leurs valeurs \(\lambda_i\) et un schéma d'énumération est mis en place capable d'examiner toutes les combinaisons possibles de lignes, une de chaque disposition. Dans le cas du problème du tableau 3 où il y a 5 lignes dans la 1ère disposition, 6 dans la 2ème, et respectivement 10, 8, 8 lignes dans les 3ème, 4ème et 5ème dispositions, l'énumération complète impliquerait l'examen de \(5 \times 6 \times 10 \times 8 \times 8 = 19,200\) combinaisons de valeurs \(y_i\). Cependant, seules les combinaisons (arrangements) qui satisfont les contraintes (3) sont énumérées. De plus, la valeur de
+
+\[ \sum w_i y_i = \pi \]
+
+est calculée pour le premier arrangement trouvé, et la contrainte
+
+\[ \sum w_i y_i < \pi \]
+
+est alors ajoutée aux contraintes (3) de sorte que les branches avec une borne inférieure \(\pi\) n'ont pas besoin d'être examinées. Cette contrainte est successivement renforcée si d'autres arrangements sont trouvés avec des valeurs plus petites de \(\lambda_i\), jusqu'à ce que l'arrangement minimisant (2) ait été trouvé.
+
+Après que la Phase I ait été complétée et que la première coupe ait été effectuée, le problème de générer des variables pour entrer dans la base devient plus complexe. Il a la même forme que pendant la Phase I (avec des termes non linéaires supplémentaires dans la fonction objectif) et peut être résolu de la même manière. Il n'a pas été programmé et n'est pas discuté plus en détail ici. Dans la version actuelle de la méthode, seules les variables déjà générées à la fin de la Phase I sont utilisées pendant la dérivation des coupes et les ré-entrées requises à la Phase I.
+
+### La procédure ad hoc
+
+Cette procédure peut être utilisée après une procédure d'arrondissement pour obtenir une ou plusieurs solutions entières à partir de toute solution de base non négative et non entière. Elle a été développée car l'utilisation de la Méthode des Formes Entières à elle seule ne conduisait pas facilement à une solution entière. Les exécutions effectuées sur les problèmes les plus importants (par exemple, les écoles B, D et W) ont été autorisées à continuer jusqu'à ce que plusieurs coupes aient été effectuées et jusqu'à ce qu'un temps considérable se soit écoulé sans atteindre une solution entière. La même expérience a été répétée lorsque l'un de ces problèmes a été exécuté en utilisant deux codes ILP disponibles commercialement. Pour ces exécutions, toutes les variables du problème ont été générées avant d'utiliser les codes.
+
+L'utilité de la procédure dépend du fait que les coefficients des équations de contrainte sont tous non négatifs et que, si les valeurs de certaines variables sont fixées de manière à satisfaire l'une des équations, la valeur de toutes les variables restantes dans cette équation doit être nulle.
+
+Elle a un paramètre, \(q\), sous le contrôle de l'utilisateur. \(q\) est le nombre d'arrangements à trouver par la procédure ad hoc. Alternativement, puisque la somme des variables de base est \(N_t\), le nombre de périodes dans la semaine, la procédure d'arrondissement doit arrondir les variables de base aux valeurs entières jusqu'à ce que la somme des variables arrondies soit égale à \(N_t - q\). Typiquement, \(q\) a été fixé à 4, 5 ou 6.
+
+Supposons que les variables de certaines solutions de base non entières soient \(x_1, x_2, \ldots, x_m\). La procédure d'arrondissement arrondit ces valeurs à l'entier le plus proche, \(\text{int}[x_i]\), \(i = 1, 2, \ldots, m\), et se termine si
+
+\[ \sum \text{int}[x_i] \geq N_t - q \]
+
+Sinon, les parties fractionnaires sont examinées dans l'ordre décroissant de grandeur et les valeurs de variables correspondantes sont augmentées de 1 jusqu'à ce que la somme de ces valeurs arrondies soit égale à \(N_t - q\).
+
+Dénotez par \(\mathbf{b}^*\) le vecteur des termes constants obtenu lorsque les valeurs des variables arrondies sont substituées dans les équations de base (1) du problème. \(\mathbf{b}^*\) est comparé avec \(\mathbf{b}\), le vecteur des termes constants réels. Si \(\mathbf{b}^* \neq \mathbf{b}\) pour tout \(i\), la solution partielle obtenue par l'arrondissement ne peut pas être complétée en ajoutant des variables non négatives et la procédure ad hoc n'est pas entrée. Cependant, si \(\mathbf{b}^* = \mathbf{b}\) pour tout \(i\), la solution partielle peut être complétée en ajoutant des variables entières non négatives et la procédure ad hoc est entrée. Les contraintes pour lesquelles \(\mathbf{b}^* \neq \mathbf{b}\) peuvent être ignorées, de même que toutes les autres.
+
+
+### Variables ayant des coefficients non nuls dans ces contraintes
+
+Le problème restant est de trouver des solutions entières aux équations \( ax = b - b^* \).
+
+Le nombre de contraintes avec des termes constants non nuls est généralement environ la moitié du nombre de contraintes dans le problème original (pour \( q = 4, 5, 6 \) ; le nombre de variables qui peuvent avoir un niveau non nul est considérablement réduit ; et au lieu de devoir trouver une solution impliquant \( N_t \) arrangements (ou variables), seulement \( q \) arrangements doivent être trouvés.
+
+Ce problème peut être abordé facilement en utilisant une procédure d'énumération ou de branchement similaire dans sa logique à la procédure de génération des arrangements. C'est la procédure ad hoc qui fait partie du programme actuel. Il est important de noter que dans la génération des arrangements, les variables sur lesquelles on branche sont les \( y_i \). Dans la procédure ad hoc, les variables sur lesquelles on branche sont les \( x_i \), c'est-à-dire les arrangements eux-mêmes. Il convient également de noter qu'il n'y a pas de bornes à calculer dans la procédure ad hoc car il n'y a pas de fonction objective associée aux contraintes. Une branche particulière peut seulement être ignorée s'il peut être démontré qu'il n'existe pas de solutions réalisables le long de celle-ci. Comme dans le programme principal, les variables \( x_i \) sont générées au besoin.
+
+### Résultats
+
+Pendant l'été 1968, des problèmes de planification d'emploi du temps ont été examinés en détail dans quatre écoles secondaires complètes de six ans listées dans le tableau 5. Des mises en page ont été préparées en collaboration avec les directeurs des écoles (un ensemble de mises en page, pour l'école B, est montré dans le tableau 2), et un ou plusieurs emplois du temps provisoires ont été construits pour chaque école en utilisant le programme déjà décrit.
+
+Dans deux cas, les mises en page préparées initialement ont conduit au résultat "aucune solution réalisable" à la fin de la Phase I du programme, ce qui a conduit dans un cas (école D) à des modifications et des corrections des mises en page, et dans l'autre (école W), où une tentative était faite pour concevoir un programme et une organisation pour l'école en utilisant substantiellement moins d'enseignants qu'actuellement, à de petites augmentations du nombre de personnel spécifié comme étant disponible. Les mises en page ont été préparées comme indiqué ci-dessous.
+
+Un emploi du temps provisoire avait été formé. Dans l'école G, la première année est largement enseignée en groupes de niveaux mixtes, ce qui, selon eux, pouvait être intégré de diverses manières, contre un emploi du temps provisoire spécifié. La même raison (enseignement en groupes de niveaux mixtes) a conduit à la simplification des mises en page pour les années 1 et 2 dans l'école B.
+
+Il est intéressant de noter que la taille du problème de calcul qui se pose pour trouver un emploi du temps provisoire pour une école dépend plus de la complexité du programme et de l'organisation de l'école que de sa taille. Cela se voit clairement dans le tableau 5 où la plus petite école, W, nécessite plus de lignes pour exprimer ses besoins dans les années 1-4 que l'école B pour l'ensemble de ses 6 années. Les temps de calcul dans le tableau 5 excluent les temps passés dans la procédure ad hoc.
+
+Toutes les écoles étudiées avaient un ratio élève-enseignant relativement bas mais n'étaient pas plus simples à traiter pour cette raison, car les écoles ayant une bonne situation de dotation en personnel ont tendance à engager leur personnel pour autant d'enseignement (pour des classes plus petites) que les écoles moins bien dotées en personnel.
+
+La procédure ad hoc a été largement utilisée sur un nombre limité de problèmes et les résultats de certains tests sont tabulés dans le tableau 6. Les temps de calcul sont très variables, mais la moitié des 42 exécutions complétées ont pris 10 secondes ou moins. Les exécutions étaient terminées après que 10 solutions aient été trouvées, après que toutes les solutions aient été trouvées si le nombre de solutions était inférieur à 10, ou après qu'il ait été démontré qu'aucune solution n'existait.
+
+Certains temps de calcul étaient longs, mais comme la plupart des entrées dans la procédure ont produit plusieurs solutions rapidement, il semble raisonnable de fixer une limite supérieure, disons 20 secondes, au temps de calcul de la procédure et de revenir au programme principal après ce temps si aucune solution n'a été obtenue. Les temps de calcul diminuent à mesure que \( q \) diminue mais le nombre de solutions diminue également. Une bonne valeur pour \( q \) semblerait être 3 ou 4 si la procédure d'arrondissement était modifiée (comme cela pourrait être facilement le cas) pour garantir qu'elle produise toujours une solution partielle pour laquelle \( b^* \leq b \).
+
+### Tableau 6
+**Résultats de l'utilisation de la procédure ad hoc**
+
+| TEMPS DE CALCUL (s) | < 10 | 10 < < 20 | > 20 | INCONNU |
+|---------------------|------|-----------|------|---------|
+| NOMBRE DE CAS       | 22   | 9         | 7    | 4       |
+| \( q = 3 \)         | 4    | 5         | 4    | 5       |
+
+**ÉCOLE**
+
+| ÉCOLE  | ANNÉE 1 | ANNÉE 2 | ANNÉE 3 | ANNÉE 4 | ANNÉE 5 | ANNÉE 6 |
+|--------|---------|---------|---------|---------|---------|---------|
+| B      | L1      | L2      | L3      | L4      | L5      | -       |
+| D      | L1      | L2      | L3      | L4      | L3      | -       |
+| G      | L1      | L2      | L3      | -       | -       | -       |
+| W      | L1      | L2      | L3      | L4      | -       | -       |
+
+Les raisons pour omettre certaines années de l'étude étaient en partie éducatives et en partie pour simplifier le problème de calcul ultérieur. Par exemple, dans l'école D, seulement 40 élèves étaient impliqués en année 6 et il a été jugé que leurs besoins pourraient être mieux satisfaits après.
+
+### Remerciements
+
+L'auteur est reconnaissant au Scottish Council for Research in Education pour une subvention en soutien à ce travail, aux directeurs des écoles coopérant à l'étude, et à Miss S. J. Turner pour son aide dans la collecte des données et la programmation informatique.

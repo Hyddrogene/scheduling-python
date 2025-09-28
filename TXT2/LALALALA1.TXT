@@ -1,0 +1,62 @@
+Je trouve que c'est un peu confus. Je te fais une proposition que tu pourras remanier comme tu le souhaites :
+Dans ITC 2019, le problème du choix des horaires n'est pas considéré comme un problème d’ordonnancement, mais plutôt comme un problème d’affectation. Il s'agit de sélectionner un scénario parmi un ensemble de scénarios définis lors de la modélisation de l’instance.
+
+Chaque scénario regroupe toutes les informations nécessaires à la planification d’un cours. Un cours peut nécessiter plusieurs séances par semaine, et le scénario précise les jours ainsi que les horaires auxquels ces séances doivent avoir lieu, formant ainsi un planning hebdomadaire. Ce planning peut être répété plusieurs fois sur une période donnée, le scénario inclut donc également la liste des semaines durant lesquelles il doit être appliqué.
+En résumé, un scénario fixe, pour un cours donné, les jours et horaires où il doit avoir lieu sur la période considérée. Si un seul scénario était proposé, il serait très probable qu’il entre en conflit avec d’autres cours ou ressources. Il est donc essentiel de disposer de plusieurs scénarios et de sélectionner celui qui évite toute incompatibilité avec les autres choix effectués.
+
+Dans le format ITC 2019, un scénario est décrit à l’aide d’une balise TIME. Par la suite, nous désignerons par TIMES l’ensemble des balises TIME associées à un cours.
+
+%%%%%%%%%%%%%%%%%%%%%
+
+Dans ITC-2019, le choix des horaires est modélisé comme un problème d’affectation, et non d’ordonnancement. Il s’agit de sélectionner un scénario parmi un ensemble préétabli, défini lors de la modélisation de l’instance.  
+
+Chaque scénario regroupe toutes les informations nécessaires à la planification d’un cours. Il spécifie le nombre de séances par semaine, ainsi que les jours et l'horaire correspondants, formant ainsi un planning hebdomadaire. Ce planning peut être répété sur plusieurs semaines, le scénario incluant également donc également la liste des semaines où il s’applique.  
+
+Ainsi, un scénario fixe, pour un cours donné, les jours et l'horaire précis de ses séances sur la période considérée. Comme un seul scénario risquerait d'entrer en conflit avec d’autres cours ou ressources, plusieurs scénarios sont définis, permettant de choisir celui qui évite toute incompatibilité  avec les autres affectations.  
+
+Dans le format ITC-2019, un scénario est représenté par une balise TIME. Nous désignerons par TIMES l’ensemble des balises TIME associées à un cours.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Dans \ITCarg{2019}, le choix des horaires est modélisé comme un problème d’affectation, et non d’ordonnancement. Il s’agit de sélectionner un scénario parmi un ensemble préétabli, défini lors de la modélisation de l’instance.  
+
+Chaque scénario regroupe toutes les informations nécessaires à la planification d’un cours. Il spécifie le nombre de séances par semaine, ainsi que les jours et l'horaire correspondants, formant ainsi un planning hebdomadaire. Ce planning peut être répété sur plusieurs semaines, le scénario incluant également donc également la liste des semaines où il s’applique. Ainsi, un scénario fixe, pour un cours donné, les jours et l'horaire précis de ses séances sur la période considérée. Comme un seul scénario risquerait d'entrer en conflit avec d’autres cours ou ressources, plusieurs scénarios sont définis, permettant de choisir celui qui évite toute incompatibilité  avec les autres affectations.    
+
+Dans le format ITC-2019, un scénario est représenté par une balise \timeitc{}. Nous désignerons par \timeitcs{} l’ensemble des balises \timeitc{} associées à un cours.
+
+%%%%%%
+
+Le processus de configuration est régi par des contraintes qui capturent principalement les dépendances entre une \ftr{} et ses spécialisations. Ces dépendances se répartissent en quatre catégories principales. Dans ce cadre, les liens entre les \ftrs{} peuvent être représentés par des lignes pleines ou en pointillé, selon la nature de la relation établie.
+
+\begin{itemize}
+    \item \textbf{Obligatoire}: Si le nœud parent est présent, le nœud enfant doit être sélectionné, étiqueté par \tikz \draw[red] (0,0) circle (.9ex);.%•
+    \item \textbf{Optionnel}: Le nœud enfant peut être sélectionné si le parent est présent. L'exemple~\ref{fig:fm-cours-mandatory} présente une \ftr{} \ftrmk{cours} qui doit obligatoirement avoir un horaire, tandis que les enseignants et les salles sont optionnels.%◦.
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.3\linewidth]{img/FM_cours_exemple_mandatory.png}
+        \caption{Exemple d'un \featuremodelw{} avec une \ftr{} obligatoire et d'autres optionnelles}
+        \label{fig:fm-cours-mandatory}
+    \end{figure}
+    \item \textbf{Alternative (XOR)}: Si le nœud parent est présent, un seul des nœuds enfants doit être sélectionné, étiqueté par \begin{tikzpicture}[scale=0.2, baseline=-0.5ex]
+            \draw[black] (0,0) -- (1,1) -- (2,0) -- (1,-1) -- cycle;
+        \end{tikzpicture}. L'exemple~\ref{fig:fm-cours-modality} présente une \ftr{} \ftrmk{Modalité} qui est obligatoire et impose de choisir seulement une de ses spécialisations.%1.
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.2\linewidth]{img/FM_cours_modality.png}
+        \caption{Exemple d'un \featuremodelw{} avec des \ftrs{} alternatives}
+        \label{fig:fm-cours-modality}
+    \end{figure}
+    \item \textbf{Ou (OR)}: Si le nœud parent est présent, au moins un des nœuds enfants doit être sélectionné, étiqueté par \tikz \draw[black, fill=black] (0,0) circle (.9ex);. L'exemple~\ref{fig:fm-cours-mateirla} présente une \ftr{} \ftrmk{Matériel} optionnelle, offrant plusieurs spécialisations. Si on la sélectionne, alors il est obligatoire de choisir au moins une spécialisation.%+.
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.4\linewidth]{img/FM_cours_materiel.png}
+        \caption{Exemple d'un \featuremodelw{} avec des \ftrs{} Ou}
+        \label{fig:fm-cours-mateirla}
+    \end{figure}
+\end{itemize}
+
+
+
+

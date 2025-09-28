@@ -1,0 +1,32 @@
+%------------------------------------------------------------
+%------------------------------------------------------------
+\section{The {\UTP} language}
+\label{sec:schema}
+The {\UTP} language splits the representation of a timetabling instance into three syntactic components, namely, an entity model, a rules set and a solution. 
+We do not present here the {\XML} syntax and {\JSON} format used for encoding (see \cite{USPsite} for details).
+Rather, we provide an informal description of the components 
+and the type of features and requirements that may be factored in.
+We also provide set-theoretic semantics for the rules language and flattening process
+and present the catalog of {\UTP} predicates.
+
+%motivate design choices, 
+%and highlight differences with related work.
+
+%The entity model defines the schedule horizon, courses and resources of the instance and encodes core %domain and cardinality %compatibility, capacity and flow % distribution
+%constraints relating to session scheduling, resource allocation, and student sectioning.
+%Rules express additional constraints meant to capture stakeholder requirements on particular aspects of the problem.
+%To this end, the schema provides a catalog of timetabling-specific constraint predicates and embeds a rules language to apply predicates on chosen entities.
+%The solution component includes a list of choices made for some or all of the decisions at stake (e.g., start time of a session).
+%Note that rules set and solution components may be omitted. 
+%% Besides, the listed solution is not required to be consistent with the constraints enforced by the entity model or the rules set.
+%% This allows to tackle subproblems using separate instances and to support timetable generation or repair tasks.
+
+
+% Each rule is an intensional representation of a collection of constraints applying to different entities.
+% {\UTP} instances may thus be compiled to lower-level representations that explicitly declare all constraints and whose format is compatible with {\CP} languages.
+%{\UTP} instances may therefore be compiled into lower-level representations that lists all constraints and whose format is tailored to back-end solvers.
+
+\input{utp_entity_model}
+\input{utp_constraints}
+\input{utp_rules}
+\input{utp_solution}

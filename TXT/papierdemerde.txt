@@ -1,0 +1,159 @@
+Bonjour,
+
+Voici la traduction en français :
+
+I. TRAVAUX CONNEXES
+Un emploi du temps peut être défini de plusieurs manières. Aziz et Aizam [13] définissent un emploi du temps comme un tableau contenant toutes les données des événements et les informations sur ces événements, telles que le temps et le lieu. Alghamdi, Alhakami, Alsubait et Baz [14] définissent un emploi du temps comme un tableau de divers événements ou activités avec leur horaire. Zhu, Li et Li [7] définissent la planification comme un processus de distribution des activités parmi des ressources limitées (lieu et temps). Le problème de la planification peut être catégorisé comme un problème NP-complet, ce qui rend difficile de trouver la solution optimale générale [7].
+
+Le problème de la planification éducative est devenu le plus connu parmi les études sur la planification. Un problème de planification éducative est un problème combinatoire avec pour objectif d'assigner un certain nombre d'activités didactiques à une certaine salle dans certains créneaux horaires [3]. Les entités sont les cours, les enseignants, les salles et les étudiants inscrits [5]. La planification éducative peut être divisée en trois catégories : la planification des cours, la planification scolaire et la planification des examens [7]. La planification des cours consiste à assigner des enseignants et des cours à des créneaux horaires, des salles et d'autres installations [7]. La planification scolaire implique d'assigner des enseignants à des cours en fonction de leur spécialisation [7]. La planification scolaire peut aussi être appelée planification des cours basée sur le curriculum [7]. La planification des examens consiste à assigner des examens dans des salles et des créneaux horaires [7]. Plusieurs facteurs influencent la conception de la planification éducative, tels que le nombre de cours, le nombre moyen de cours par jour, le nombre cible de créneaux horaires libres par jour et les jours de congé ciblés dans une semaine [14].
+
+Il existe deux types de contraintes dans le problème de la planification : les contraintes strictes et les contraintes souples. Les contraintes strictes sont des contraintes ou des règles qui ne peuvent pas être violées [15]. Les contraintes souples sont des contraintes qui peuvent améliorer la performance de l'emploi du temps si elles ne sont pas violées [15]. Plusieurs contraintes strictes courantes sont les suivantes :
+- Un enseignant ne peut enseigner un cours qu'à un certain moment [3,16].
+- Un étudiant ne peut assister à plus d'un cours à la fois [5].
+- Le nombre de participants ne peut dépasser la capacité de la salle [3,5].
+- Le créneau horaire doit être effectué dans une certaine plage horaire [3].
+
+En attendant, il existe plusieurs contraintes souples utilisées dans plusieurs études de planification éducative. Ces contraintes souples sont les suivantes :
+- Il y a un nombre minimum de cours par jour pour les étudiants [5].
+- Il y a un nombre maximum de cours par jour pour les enseignants [5,6].
+- Les enseignants peuvent avoir des créneaux horaires d'enseignement préférés [16].
+- Les enseignants peuvent avoir un nombre minimum de jours travaillés [17].
+- Les enseignants peuvent avoir des salles de classe préférées [6].
+- Les derniers créneaux horaires de la journée devraient être évités [2].
+
+De nombreuses études ont été menées sur ce problème de planification éducative. Chaque étude est développée en fonction de ses circonstances spécifiques, de ses objectifs et de ses méthodes. La plupart des études utilisent des méthodes computationnelles, en particulier des méthodes métaheuristiques, pour trouver la solution optimale. Le tableau I montre les études récentes sur le problème de la planification éducative avec leurs objectifs et méthodes. Ces études ont été menées de 2016 à 2021. Elles sont présentées chronologiquement.
+
+Il y a plusieurs notes sur cette littérature présentée. Premièrement, la plupart des études sur le problème de la planification des cours ont été menées en interaction face à face entre les étudiants et les enseignants, de sorte que le nombre limité de salles physiques devient une contrainte. Deuxièmement, toutes ces études ont été menées dans un département ou une université afin que le système puisse dicter l'allocation des créneaux horaires.
+
+Sur la base de ces notes, ce travail propose un nouveau modèle de planification des cours en raison des circonstances spécifiques du programme national de cours communs. Ces circonstances ne se trouvent pas dans les études existantes sur la planification des cours. Premièrement, ce programme commun est dispensé en ligne. Deuxièmement, le système ne peut pas dicter les créneaux horaires pour les étudiants et les enseignants. Le processus de correspondance est effectué en fonction des créneaux horaires disponibles qui sont alloués par les étudiants et les enseignants. Troisièmement, les cours sont optionnels, de sorte que les étudiants peuvent choisir n'importe quel cours proposé dans le système et peuvent choisir plus d'un cours. Comme dans les études existantes, ce travail utilisera plusieurs techniques métaheuristiques pour optimiser la solution. Ces techniques seront comparées entre elles.
+
+
+Voici le tableau mis en forme :
+
+| **Authors** | **Objectives**                                                                 | **Methods**                                                                                  |
+|-------------|-------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------|
+| [4]         | Improve resources utilization                                                 | Genetic algorithm                                                                           |
+| [5]         | Minimize conflicts                                                            | Genetic algorithm                                                                           |
+| [8]         | Minimize penalty                                                              | Multi-objective genetic algorithm, hill climbing, simulated annealing                       |
+| [17]        | Minimize total sum of penalty points                                          | Mixed integer linear programming (MILP), large neighborhood search                          |
+| [10]        | Minimize clashes                                                              | Genetic algorithm, simulated annealing                                                      |
+| [6]         | Optimize resources                                                            | Genetic algorithm                                                                           |
+| [19]        | Minimize the number of classrooms                                             | Linear programming                                                                          |
+| [2]         | Minimize students’ maximum number of events per day, avoid the usage of the last timeslot of the day | Tabu search, variable neighborhood search                                                   |
+| [20]        | Improve accuracy                                                              | Genetic algorithm, supervised learning (regression and classification)                      |
+| [22]        | Maximize lecturers’ presence time and education quality                       | Three-stage heuristic algorithm                                                             |
+| [3]         | Minimize idle time                                                            | Genetic algorithm                                                                           |
+| [18]        | Reduce redundant workload, improve classroom seat utilization                 | Genetic algorithm, fuzzy pattern algorithm                                                  |
+| [21]        | Minimize soft constraints                                                     | Integer linear programming (ILP), branch-and-bound algorithm                                |
+
+Ce tableau présente les études récentes sur le problème de la planification éducative avec leurs objectifs et méthodes.
+
+
+
+
+
+
+
+III. MODÈLE PROPOSÉ
+Ce modèle se compose de plusieurs entités. Un étudiant est une personne qui suit un ou plusieurs cours. Un enseignant est une personne qui dispense des cours aux étudiants. Un cours est une unité d'enseignement dispensée par un enseignant, par exemple : intelligence artificielle, apprentissage automatique, programmation mobile, etc. Une classe est un groupe d'étudiants qui suivent le même cours et sont enseignés par le même enseignant avec le même créneau horaire. Une demande est un cours demandé par un étudiant.
+
+Le système se compose d'un certain nombre d'étudiants et d'enseignants. Les étudiants viennent de différentes universités, tout comme les enseignants. Les relations entre étudiants et enseignants sont de type plusieurs à plusieurs. Cela signifie qu'un étudiant peut être enseigné par plus d'un enseignant en fonction du nombre de cours que cet étudiant suit. Le nombre d'étudiants est supérieur au nombre d'enseignants. En attendant, un enseignant peut enseigner à de nombreux étudiants. Cette relation est illustrée dans la Fig. 1.
+
+Dans ce système, un enseignant ne peut enseigner qu'un cours en raison de son expertise. En attendant, un étudiant peut suivre plusieurs cours. Les enseignants et les étudiants attribuent plusieurs créneaux horaires disponibles. Ces créneaux horaires sont basés sur une semaine. Cela signifie qu'il y a un certain nombre fixe de créneaux horaires dans une semaine. Le nombre de créneaux horaires réservés par un enseignant représente le nombre de classes qu'il ou elle enseigne. Un étudiant peut suivre un cours dispensé par un enseignant tant que le cours dans cette classe est le même que le cours suivi par cet étudiant et que le créneau horaire de la classe est le même que celui de l'étudiant. L'illustration de cette relation est montrée dans la Fig. 2.
+
+L'explication de la Fig. 2 est la suivante. Il y a un enseignant qui enseigne un cours, par exemple, le cours A. Il attribue deux créneaux horaires pour ce cours afin de gérer deux classes, la classe 1 et la classe 2. En attendant, il y a cinq étudiants qui veulent suivre le cours A. En fonction du créneau horaire correspondant, trois étudiants (étudiant 1, étudiant 2 et étudiant 3) sont assignés à la classe 1 et deux étudiants (étudiant 4 et étudiant 5) sont assignés à la classe 2.
+
+Ce modèle est développé en fonction de plusieurs contraintes strictes comme suit :
+- Les étudiants ne sont pas autorisés à assister à plus d'une classe à la fois [3].
+- Un enseignant n'est pas autorisé à enseigner plus d'une classe à la fois [5].
+- Un étudiant ne peut pas être assigné à une classe dont le créneau horaire est en dehors de ses créneaux horaires disponibles [3].
+- Un étudiant ne peut pas être assigné à une classe où le cours n'est pas son cours demandé.
+- Les étudiants ne peuvent pas demander un cours en dehors des cours proposés.
+- Un enseignant ne peut pas enseigner une classe dont le créneau horaire est en dehors de ses créneaux horaires disponibles [3].
+- Le nombre de participants à une classe ne peut pas dépasser la capacité maximale de la classe [5].
+- Une classe ne peut pas être programmée en dehors des créneaux horaires disponibles dans une semaine.
+
+Ce modèle est également développé en utilisant plusieurs annotations comme suit :
+
+- c : classe
+- csel : classe sélectionnée
+- C : ensemble de classes
+- Cpos : ensemble de classes possibles
+- s : étudiant
+- S : ensemble d'étudiants
+- l : enseignant
+- L : ensemble d'enseignants
+- n : nombre d'entités
+- o : cours
+- O : ensemble de cours
+- q : quantité (nombre de participants)
+- qmax : quantité maximale
+- r : demande
+- R : ensemble de demandes
+- v : statut
+- t : créneaux horaires
+- T : ensemble de créneaux horaires
+- Tpos : ensemble de créneaux horaires possibles
+- u : demande non satisfaite
+- U : ensemble de demandes non satisfaites
+- vq : statut de disponibilité de la classe en fonction de la capacité
+- vt : statut de disponibilité de la classe en fonction du créneau horaire
+- vo : statut de disponibilité de la classe en fonction du cours
+- vat : statut de disponibilité de l'étudiant à un certain créneau horaire
+
+L'objectif de ce modèle est de minimiser le nombre de demandes non satisfaites. Cet objectif est formalisé à l'aide des équations (1) et (2). L'équation (2) montre qu'une demande non satisfaite est une demande dont le statut est 0. En attendant, si cette demande est satisfaite, son statut sera 1. Dans ce système, une demande peut être non satisfaite en raison de plusieurs problèmes. Premièrement, il y a un décalage entre le créneau horaire de la demande et le créneau horaire des classes disponibles pour le même cours. Deuxièmement, il y a une classe ou plusieurs classes dont le cours est le même que celui de la demande et le créneau horaire de la classe est également correspondant, mais le nombre de participants a atteint la capacité maximale de cette classe.
+
+Au début, les enseignants et les étudiants font des préparatifs. Les enseignants attribuent leurs propres créneaux horaires ou classes. En attendant, les étudiants choisissent les cours qu'ils veulent suivre et leurs créneaux horaires disponibles dans une semaine. La configuration de l'enseignant est formalisée à l'aide des équations (3) à (7). En attendant, la configuration de l'étudiant est formalisée à l'aide des équations (8) à (10).
+
+Les explications pour les équations (3) à (7) sont les suivantes. L'équation (3) déclare que toutes les classes gérées par un enseignant doivent avoir le même cours que l'enseignant. L'équation (4) montre que le nombre de classes gérées par un enseignant est égal au nombre de créneaux horaires de cet enseignant. L'équation (5) montre que les créneaux horaires de l'enseignant doivent être dans les créneaux horaires alloués dans une semaine. La contrainte stricte où un enseignant ne peut visiter qu'une seule classe dans un créneau horaire est formalisée dans l'équation (6). L'équation (7) montre que le nombre de classes est égal à l'accumulation du nombre de classes de tous les enseignants.
+
+Les explications pour les équations (8) à (10) sont les suivantes. L'équation (8) stipule que les étudiants peuvent demander des cours parmi les cours proposés. L'équation (9) stipule que les créneaux horaires des étudiants doivent être dans les créneaux horaires disponibles dans une semaine. L'équation (10) montre que le nombre total de demandes est l'accumulation de toutes les demandes des étudiants.
+
+Après la configuration, le processus suivant est le processus de correspondance. Ce processus est effectué de manière itérative de la première demande à la dernière demande. L'ordre de correspondance est mélangé de sorte que la première demande ne soit pas priorisée par rapport à la dernière. Chaque demande se compose de deux attributs : l'étudiant et le cours. Ce processus de correspondance est formalisé à l'aide des équations (11) à (17).
+
+Les explications pour les équations (11) à (17) sont les suivantes. L'équation (11) montre que la classe est sélectionnée au hasard parmi les classes possibles pour la demande. L'équation (12) stipule que la classe possible doit répondre à trois aspects : la capacité, le temps et le cours. L'équation (13) montre que la classe est disponible si son nombre actuel de participants est encore inférieur à sa capacité maximale. L'équation (14) montre que la classe répond à l'aspect temporel s'il existe un créneau horaire possible pour l'étudiant qui est le même que le créneau horaire de cette classe. L'équation (15) montre que l'ensemble des créneaux horaires possibles de l'étudiant se compose des créneaux horaires de l'étudiant qui sont encore disponibles. L'équation (16) montre que le créneau horaire de l'étudiant est disponible s'il n'a pas été occupé par la demande d'un autre étudiant. L'équation (17) montre que la classe répond à l'aspect du cours si le cours de la classe est le même que le cours de la demande.
+
+Dans ce travail, nous comparons trois algorithmes métaheuristiques : l'algorithme génétique (GA) [18], l'algorithme de recuit simulé basé sur la théorie des nuages (CSA) [12] et l'algorithme des colonies d'abeilles artificielles (ABC) [23]. En tant qu'algorithmes métaheuristiques, ils consistent en une approche stochastique, en particulier pendant le processus d'initialisation et le processus d'amélioration. Dans la méthode de l'algorithme génétique, la moitié des meilleures solutions devient la nouvelle génération pendant le processus de reproduction.
+
+Tous ces algorithmes sont basés sur des populations. Une population se compose d'individus ou de solutions. Un individu se compose d'une série de demandes. Chaque élément se compose d'attributs : demande, étudiant et classe.
+
+Pendant le processus d'amélioration, l'échange par paires est effectué en sélectionnant une demande satisfaite, en trouvant une nouvelle
+
+ classe, en assignant cette demande à la nouvelle classe, puis en allouant la place abandonnée à une autre demande non satisfaite. Ce processus d'échange par paires est formalisé par l'algorithme 1.
+
+
+IV. SIMULATION ET RÉSULTATS
+Ce modèle proposé est ensuite mis en œuvre dans la simulation de la planification des cours. Comme mentionné précédemment, trois techniques métaheuristiques sont utilisées pour optimiser le modèle : l'algorithme génétique (GA), l'algorithme de recuit simulé basé sur la théorie des nuages (CSA) et l'algorithme des colonies d'abeilles artificielles (ABC). La fonction objective appliquée dans ces algorithmes est de minimiser le nombre de demandes non satisfaites. La raison est que cette fonction objective est liée à l'objectif de ce travail et du modèle proposé.
+
+Les paramètres techniques utilisés dans ces algorithmes métaheuristiques sont les suivants. Dans le GA, la taille de la population est de 10 individus et le nombre maximal d'itérations est de 100 itérations. Dans le CSA, la taille de la population est de 5 solutions, la température initiale est de 100, la température de terminaison est de 50 et le nombre d'itérations est de 10. Dans l'ABC, la taille de la population est de 10 abeilles, le nombre maximal d'itérations est de 50 itérations et la limite est de 30.
+
+Le scénario utilisé dans cette simulation est le suivant. Au début, un certain nombre d'étudiants et d'enseignants sont générés. Un enseignant enseigne un seul cours. Un étudiant peut demander plusieurs cours. Les étudiants et les enseignants sélectionnent leurs créneaux horaires disponibles. Le nombre de créneaux horaires choisis par l'enseignant représente le nombre de classes qu'il gérera. Les étudiants seront affectés en fonction des créneaux horaires qu'ils ont choisis. La simulation s'exécute ensuite en fonction de cette configuration initiale. Pendant le processus de simulation, les étudiants seront jumelés avec les classes disponibles en fonction des créneaux horaires de cours qu'ils ont sélectionnés. À la fin de la simulation, certaines demandes peuvent ne pas être satisfaites en raison d'un décalage.
+
+Deux simulations sont menées dans ce travail. Le paramètre observé est le nombre de demandes non satisfaites. Ce paramètre devient également la fonction de fitness de ces trois techniques métaheuristiques (minimisation du nombre de demandes non satisfaites). Plusieurs paramètres ajustés sont définis par défaut. Il y a cinq cours dans le système. Le nombre d'enseignants est de 20. La capacité maximale de chaque classe est de 40 participants. Il y a 20 créneaux horaires que les étudiants et les enseignants peuvent choisir. Le nombre de cours demandés par un étudiant est généré aléatoirement et suit une distribution normale. Le nombre moyen de demandes est de 3 cours. Le nombre de créneaux horaires choisis par les enseignants et les étudiants est également généré aléatoirement et suit une distribution normale.
+
+La première simulation est menée pour observer la relation entre le nombre d'étudiants et le nombre de demandes non satisfaites. Le nombre d'étudiants varie de 400 à 600, avec un incrément de 20 étudiants. Le nombre moyen de créneaux horaires choisis est de 3 créneaux horaires. Le résultat est montré dans la Fig. 3.
+
+Dans la Fig. 3, il est montré que le nombre de demandes non satisfaites augmente en raison de l'augmentation du nombre d'étudiants. Cette tendance se produit dans toutes les méthodes. La raison de cette condition est que la demande augmente, tandis que l'offre reste la même, donc la rareté augmente également. Comparé aux autres méthodes, le recuit simulé basé sur la théorie des nuages s'avère être le meilleur modèle en créant le plus faible nombre de demandes non satisfaites. D'autre part, l'algorithme génétique s'avère être la pire méthode. L'algorithme des colonies d'abeilles artificielles obtient des résultats modérés. Lorsque le nombre d'étudiants est faible (400), l'algorithme de recuit simulé génère 91 % de demandes non satisfaites en moins que l'algorithme génétique. Lorsque le nombre d'étudiants est élevé (600), l'écart se réduit à 62 %.
+
+La deuxième simulation est menée pour observer la relation entre le nombre moyen de créneaux horaires et le nombre de demandes non satisfaites. Le nombre moyen de créneaux horaires varie de 3 à 5 créneaux horaires. Le nombre d'étudiants est de 500. Le résultat est montré dans la Fig. 4.
+
+Dans la Fig. 4, il est montré que le nombre de demandes non satisfaites diminue en raison de l'augmentation du nombre moyen de créneaux horaires. Cette condition se produit dans toutes les méthodes métaheuristiques. La raison est la suivante. L'augmentation des créneaux horaires des enseignants signifie une augmentation de l'offre (nombre de classes). D'autre part, l'augmentation des créneaux horaires des étudiants signifie que la possibilité de correspondance augmente également. En comparant les méthodes, le recuit simulé basé sur la théorie des nuages s'avère être le meilleur modèle. Au début, le recuit simulé créait le plus faible nombre de demandes non satisfaites. À partir de quatre créneaux horaires, le recuit simulé obtient zéro demande non satisfaite. Lorsque le nombre moyen de créneaux horaires est de 3, l'algorithme des colonies d'abeilles artificielles obtient de meilleurs résultats que l'algorithme génétique. L'algorithme des colonies d'abeilles artificielles présente 17 % de demandes non satisfaites en moins que l'algorithme génétique. En attendant, lorsque le nombre moyen de créneaux horaires est de 4, leur nombre de demandes non satisfaites est presque égal. À partir de 6 créneaux horaires moyens, l'algorithme génétique obtient zéro demande non satisfaite. D'autre part, l'algorithme des colonies d'abeilles artificielles crée encore un nombre positif de demandes non satisfaites, bien que ce nombre soit faible (17 demandes non satisfaites).
+
+
+V. DISCUSSION
+
+En général, ces trois modèles métaheuristiques peuvent être utilisés pour optimiser le modèle de planification des cours proposé. Dans la première simulation, le nombre de demandes non satisfaites reste inférieur à 50 %. Lorsque l'offre est fixe, le nombre de demandes non satisfaites est proportionnel à la demande (le nombre d'étudiants), comme le montre la Fig. 3. En revanche, lorsque la demande est fixe, l'augmentation de l'offre (nombre de créneaux horaires des enseignants) fait diminuer le nombre de demandes non satisfaites. Une fois que le nombre de demandes non satisfaites atteint zéro, l'augmentation de l'offre ne modifie plus la situation.
+
+Comparées entre les techniques métaheuristiques, le recuit simulé basé sur la théorie des nuages surpasse les deux autres méthodes, l'algorithme génétique et les colonies d'abeilles artificielles. Cette performance découle de deux aspects. Premièrement, sous sa forme de base, le recuit simulé est conçu pour atteindre une optimisation globale en évitant les pièges de l'optimum local [11]. Ce processus est réalisé en tolérant des solutions actuelles moins bonnes avec un certain degré de probabilité pendant le processus d'itération, en particulier au début de la baisse de température [11]. Deuxièmement, le recuit simulé basé sur la théorie des nuages améliore le recuit simulé de base en mettant en œuvre plusieurs individus (solutions) qui agissent de manière indépendante [12]. La meilleure solution finale peut être sélectionnée parmi la population après la fin du processus d'itération [12].
+
+Les colonies d'abeilles artificielles se classent comme la deuxième meilleure méthode. Comme le recuit simulé, les colonies d'abeilles artificielles peuvent également éviter les pièges de l'optimum local. Dans une colonie d'abeilles artificielles, l'évitement des pièges de l'optimum local est effectué pendant la phase des abeilles éclaireuses en trouvant de nouvelles solutions alternatives, c'est-à-dire en diversifiant le processus de recherche [24]. Cette phase intervient après la phase des abeilles spectatrices et la phase des abeilles employées, dont l'objectif est d'intensifier la solution autour de la solution actuelle [24]. Malheureusement, le processus de recherche d'une nouvelle solution absolue n'est pas effectué à chaque itération. Comme indiqué précédemment, ce concept diffère du recuit simulé en ce que l'évitement des pièges de l'optimum local peut être effectué avec un degré élevé de probabilité à chaque itération [11].
+
+L'algorithme génétique se classe comme la pire solution en termes de création d'un faible nombre de demandes non satisfaites. Cette performance s'explique par le fait que, sous sa forme de base, l'algorithme génétique ne peut pas éviter les pièges de l'optimum local, bien qu'il ait été largement utilisé pour optimiser le problème de la planification des cours [4-6]. Dans les algorithmes génétiques, de nouveaux descendants sont générés à partir des meilleurs individus comme mécanisme d'amélioration [11].
+
+
+
+VI. CONCLUSION
+
+Ce travail a démontré que le modèle de planification des cours proposé peut être utilisé dans le programme national de cours communs auquel participent des étudiants et des enseignants de différentes universités. Ce modèle répond également aux exigences énoncées comme des contraintes strictes. En raison du processus de simulation, le recuit simulé basé sur la théorie des nuages obtient les meilleurs résultats pour minimiser le nombre de demandes non satisfaites. Cette méthode surpasse les deux autres méthodes métaheuristiques, l'algorithme génétique et l'algorithme des colonies d'abeilles artificielles. Selon les résultats de la simulation, lorsque le nombre d'étudiants est faible, le nombre de demandes non satisfaites pour le recuit simulé basé sur la théorie des nuages est inférieur de 91 % par rapport à l'algorithme génétique. Lorsque le nombre d'étudiants est élevé, ce chiffre tombe à 62 %. Cette performance est atteinte grâce aux caractéristiques du recuit simulé basé sur la théorie des nuages qui permettent d'atteindre une optimisation globale en évitant les pièges de l'optimum local.
+
+Ce modèle est développé en fonction de plusieurs limitations. Tout d'abord, il n'y a pas de priorisation dans la sélection des enseignants et des cours. Dans certaines conditions, un étudiant préfère certains enseignants à d'autres. En effet, pour un même cours, certains enseignants sont plus appréciés ou populaires que d'autres. Par exemple, les enseignants des universités les mieux classées peuvent être plus populaires que les enseignants des universités moins bien classées. Un étudiant peut également préférer certains cours à d'autres. Cela signifie qu'un étudiant peut tolérer de perdre des cours ou des enseignants moins préférés. En se basant sur cette circonstance, le modèle proposé dans ce travail actuel peut être étendu ou amélioré en tenant compte de ce facteur de préférence.

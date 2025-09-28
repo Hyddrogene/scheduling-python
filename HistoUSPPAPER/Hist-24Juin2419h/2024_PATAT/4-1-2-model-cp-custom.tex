@@ -1,0 +1,21 @@
+%%%%
+\input{4-1-2-model-cp-custom-constraints-table}
+%Dans le cas ou certaine features sont validées par l'instance nous pouvons réécrire voir simplifier certaines contraintes.
+%
+In cases where certain features are validated by the instance, we can rewrite or simplify constraints. 
+%
+%Dans le cas \hyperref[feat:nooverlap]{``no-overlap''} nous pouvons réécrire la contrainte cumulative~\ref{ctr:} pour la simplifier.
+%
+%Dans le cas full-exclusif (\hyperref[featmodel:exclusivesession]{``full-exclusive''}), on applique la contrainte disjonctive plutôt que cumulative en effet la capacité ne nécessite plus d'être prise en compte.
+%
+In the full-exclusive case (\hyperref[featmodel:exclusivesession]{``full-exclusive''}), we apply the disjunctive constraint instead of cumulative because capacity is no longer a concern. 
+%On peut appliquer des contraintes de bin packing et all\_different dans le cas de no\_overlap (\hyperref[feat:nooverlap]{``no-overlap''}) et same\_duration. Ces constraintes globales offrent un meilleur filtrage et dans le cas \UTP{} l'ordre entre les séances impactant peu( ormis la contrainte sequenced et periodic) cela permet de mieux rentabiliser le filtrage de all\_different.
+%
+In the case of no\_overlap (\hyperref[feat:nooverlap]{``no-overlap''}) and same\_duration, we can apply bin\_packing and all\_different constraints. These global constraints provide better filtering, and in the case of \UTP{}, where the order between sessions has little impact (except for the sequenced and periodic constraints), this allows for better utilization of the filtering of all\_different. 
+%
+%Si nous avons des groupes et des salles de tailles modulaires, nous pouvons appliquer des contraintes de comptage (gcc) et cumulative~\ref{cp:cumulativebytype} qui, au lieu d'affecter une salle, affectent un type de salle par cours et vérifient qu'à un instant T, les capacités de type de salles ne sont pas dépassées.
+%
+If we have groups and modular-sized rooms, we can apply counting constraints (gcc) and cumulative constraints~\ref{cp:cumulativebytype} that, instead of assigning a room, assign a room type per course and ensure that at a given time, the capacities of room types are not exceeded.
+%
+%Ensuite il s'agit d'une affectation polynomial des salles pour les .
+%https://link.springer.com/article/10.1007/s10601-018-9282-9

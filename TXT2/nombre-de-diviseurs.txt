@@ -1,0 +1,36 @@
+Voici une sélection de **nombres avec un très grand nombre de diviseurs**, utiles pour tester la spirale et obtenir des figures riches et denses :
+
+---
+
+### 🔢 **Nombres naturels avec beaucoup de diviseurs**
+
+Ces nombres ne sont pas choisis au hasard : ce sont souvent des **"highly composite numbers"**, c’est-à-dire des entiers ayant **plus de diviseurs que tous les entiers plus petits**.
+
+| Nombre `n` | Nombre de diviseurs `d(n)` | Facteurs premiers         | Commentaire                          |
+| ---------- | -------------------------- | ------------------------- | ------------------------------------ |
+| 60         | 12                         | 2² × 3 × 5                | Premier palier riche                 |
+| 120        | 16                         | 2³ × 3 × 5                | Dense et équilibré                   |
+| 180        | 18                         | 2² × 3² × 5               | Plus complexe                        |
+| 240        | 20                         | 2⁴ × 3 × 5                | Très dense                           |
+| 360        | 24                         | 2³ × 3² × 5               | Parfait pour figures                 |
+| 720        | 30                         | 2⁴ × 3² × 5               | Très graphique                       |
+| 840        | 32                         | 2³ × 3 × 5 × 7            | Premier à 32 div.                    |
+| 1260       | 36                         | 2² × 3² × 5 × 7           | Dense avec grand `n`                 |
+| 1680       | 40                         | 2⁴ × 3 × 5 × 7            | Visuellement très riche              |
+| 2520       | 48                         | 2³ × 3² × 5 × 7           | Plus petit multiple commun de 1 à 10 |
+| 5040       | 60                         | 2⁴ × 3² × 5 × 7           | Record symbolique                    |
+| 10080      | 72                         | 2⁵ × 3² × 5 × 7           | Extrêmement dense                    |
+| 13860      | 72                         | 2² × 3 × 5 × 7 × 11 × 13  | Diviseurs très variés                |
+| 27720      | 96                         | 2³ × 3² × 5 × 7 × 11 × 13 | Encore plus extrême                  |
+| 45360      | 100                        | 2⁴ × 3⁴ × 5 × 7           | Esthétiquement fou                   |
+
+---
+
+### 🧠 **À retenir pour tester ton script :**
+
+* **`n = 60`** → compact, bon début.
+* **`n = 360` ou `720`** → densité moyenne, rendu agréable.
+* **`n = 5040` ou `10080`** → pour une spirale complexe et magnifique.
+* **`n = 27720`** → va créer une spirale très développée (mais lente à dessiner).
+
+Souhaites-tu que je te crée un exemple pré-calculé ou sauvegardé en image ?

@@ -1,0 +1,119 @@
+Un problème annuel pour l'administration, que ce soit au niveau du lycée, du collège ou de l'université, est l'affectation des enseignants aux cours. La forme générale du problème consiste à trouver la solution au système suivant :
+(a) La détermination de l'ensemble des cours à offrir et le nombre de sections pour chacun.
+(b) L'affectation des enseignants aux cours.
+(c) L'affectation des cours et des sections aux salles et aux créneaux horaires, et l'allocation des enseignants aux sections.
+(d) L'affectation des étudiants individuels aux cours et aux sections, en fonction de leurs demandes, de manière à minimiser les conflits.
+
+Ce système doit être résolu simultanément pour donner une solution optimale. Un certain nombre de logiciels et de techniques de planification scolaire ont été développés. En effet, la solution au problème de la planification principale et au problème d'allocation des étudiants (parties c et d de la forme générale du problème) est disponible en tant que service commercial pour les écoles et les collèges communautaires ; des allocations satisfaisant 99 % des demandes des étudiants sont régulièrement réalisées même pour les grandes écoles.
+
+Cependant, l'affectation des cours aux enseignants et la détermination du nombre de sections de chaque cours attribuées à un enseignant particulier (partie b du problème général) sont considérées comme exogènes au problème de la planification principale. Cette affectation est généralement effectuée manuellement par le chef de département et/ou le directeur de l'école, en consultation avec les enseignants respectifs. Plusieurs modèles ont été développés pour résoudre efficacement ce problème. L'état de l'art est caractérisé par le travail d'Andrew et Collins. Une fonction objective, consistant en la somme pondérée des préférences des enseignants et de l'efficacité des instructeurs (évaluée par le chef de département), est optimisée, sous réserve de contraintes d'affectation des cours (chaque cours doit être enseigné) et de contraintes de charge d'enseignement (chaque instructeur doit enseigner une charge de travail complète). Il s'agit d'un problème standard de transport pour lequel plusieurs algorithmes efficaces existent, et qui, par la nature du modèle, garantit des solutions entières.
+
+Tillett a étendu le modèle pour inclure différentes pondérations des préférences par les instructeurs afin de permettre la possibilité que la préférence d'un enseignant pour un cours puisse varier avec le nombre de sections de ce cours attribuées à cet enseignant. Il a également introduit un ensemble de contraintes relatives au nombre maximal de nouvelles préparations acceptables pour chaque enseignant. L'algorithme de Tillett nécessitait une solution de programmation en nombres entiers ; cela limite l'efficacité de son modèle :
+"le principal obstacle à l'application pratique immédiate du modèle est le fait que, sauf dans les très petits départements, le temps de calcul pour l'exécution de l'algorithme de programmation en nombres entiers était prohibitivement long".
+
+Cet article tente de surmonter cette difficulté et de développer un modèle particulièrement applicable aux universités. Les besoins particuliers de planification d'une université sont examinés dans la section II, et un modèle est développé dans la section III. Des tests empiriques sont effectués dans la section IV.
+
+
+
+## Le problème de planification universitaire
+
+Les universités fonctionnent quelque peu différemment des lycées en ce sens que le problème de planification principale n'existe pas de la même manière. Chaque département décide des cours qu'il offrira, du nombre de sections pour chacun et des moments où ces sections seront proposées. En pratique, le programme de cette année tend à ressembler à celui de l'année dernière, tant en ce qui concerne le nombre et le type de cours que les horaires des sections. Cette structure assez rigide garantit la compatibilité entre les différents départements. Lors de l'inscription, chaque étudiant décide quels cours et sections il souhaite suivre ; étant donné que les horaires des sections sont déjà disponibles, il peut choisir un programme qu'il sait réalisable, sans conflits d'horaires. La taille maximale des sections est prédéterminée par politique, de sorte que lorsqu'une section est complète, elle est simplement fermée. En cas de demande excessive pour un cours particulier, une section supplémentaire peut être ouverte, confiée à un enseignant à temps partiel ; cette procédure se produit relativement rarement.
+
+Le véritable problème est l'affectation du corps enseignant aux cours avant l'inscription. Puisque les préférences des enseignants changent considérablement d'année en année, de nombreux instructeurs souhaitant enseigner de nouveaux cours pour éviter la routine, et étant donné les changements normaux de personnel, les nominations de visiteurs, les congés, etc., le problème n'est pas trivial.
+
+Un certain nombre de considérations doivent donc être prises en compte lors de la construction d'un modèle pour l'université :
+
+1. La question de l'efficacité n'est plus valide dans cette situation. On considère normalement que si un enseignant souhaite donner un cours, il sera probablement aussi efficace dans ce cours que dans tout autre cours qu'il enseigne. On peut présumer qu'en cas extrême, une préférence particulière peut être rejetée par le chef de département.
+
+2. La préférence du corps enseignant doit être prise en compte, et les pondérations des préférences doivent être fonction du nombre de sections d'un cours particulier qu'un enseignant donne.
+
+3. Puisque l'emploi du temps est déjà déterminé, un certain nombre de contraintes doivent être ajoutées pour éviter les conflits possibles.
+
+4. Les contraintes habituelles de charge d'enseignement et d'affectation des sections doivent être respectées.
+
+5. On souhaiterait appliquer un tel programme à un grand département ; cela empêche effectivement l'utilisation de la programmation en nombres entiers zéro-un en raison du coût prohibitif.
+
+Ce sont les considérations purement techniques. Cependant, l'expérience passée a montré que l'application d'un tel programme de recherche opérationnelle ne satisfait pas l'administration. Après avoir effectué un essai, on apprend que la solution "optimale" n'est "pas satisfaisante" ; elle est politiquement inacceptable, socialement injuste, ou encore marquée par d'autres euphémismes pour dire "cela ne convient pas". On découvre que certaines contraintes ont été omises ; certaines limites ne sont pas aussi rigides qu'elles ont été présentées initialement. Ce genre d'expérience n'est pas nouveau - Stimson et Thompson [8] l'avaient clairement apprécié :
+
+"Ainsi, à la fin de tout cela, le chercheur opérationnel a la solution optimale à un problème dans lequel les paramètres, les contraintes, etc., ne sont pas déterminés de manière optimale, et où ses hypothèses ne sont pas nécessairement réalistes en termes des problèmes auxquels l'administration est confrontée... Par conséquent, la solution d'un modèle de programmation linéaire ne doit pas être considérée comme la solution du problème. Elle doit plutôt être jugée pour son utilité dans une solution spécifique."
+
+Le programme décrit dans la section III résout le problème technique de la planification universitaire, mais le fait de manière à impliquer activement l'administration dans le problème, aidant ainsi efficacement l'administration à résoudre un problème du monde réel.
+
+
+
+## II. Méthodologie du modèle
+
+Le problème d'affectation académique est une variante du problème d'affectation classique, qui lui-même fait partie des problèmes classés sous le problème de transport. Le problème de transport est abondamment décrit dans la littérature [9]; le problème d'affectation est également bien discuté [10, 11]. Le problème consiste essentiellement à minimiser une matrice de coûts (ou à maximiser une matrice de bénéfices) résultant de tout choix d'affectation, sous réserve de la disponibilité du personnel et en veillant à ce que toutes les tâches soient remplies.
+
+Ce problème pourrait être résolu en utilisant la programmation en nombres entiers zéro-un ; cependant, comme discuté ci-dessus, cela devient irréalisable pour les grands problèmes. En fait, ce n'est pas nécessaire, car l'algorithme SIMPLEX ordinaire donnera des solutions entières au problème de transport puisque la forme structurelle de l'ensemble de contraintes garantit que les points extrêmes de la région faisable seront entiers.
+
+Considérons le problème d'affectation académique. Soit la variable \(X_{ij}\) le pourcentage du cours \(i\) enseigné par le professeur \(j\). Une valeur de zéro implique que le professeur \(j\) n'enseigne pas du tout le cours \(i\), tandis qu'une valeur d'unité implique que le cours est entièrement enseigné par le professeur \(j\). Les valeurs intermédiaires sont inacceptables, car elles impliqueraient qu'une partie du cours est enseignée par un instructeur et une autre partie par un autre, ce qui est une situation inadmissible. Par conséquent, \(X_{ij}\) doit prendre les valeurs de zéro ou d'unité. \(P_{ij}\) est la note de préférence pour le cours \(i\) par le professeur \(j\).
+
+Le problème d'affectation universitaire peut être formulé comme un problème de programmation linéaire de la manière suivante :
+
+\[ \text{Max} \sum_{i,j} P_{ij}X_{ij} \]
+
+Sous réserve des contraintes suivantes :
+
+1. \[ \sum_{j=1}^{n} X_{ij} = 1 \quad \text{pour} \quad i = 1, 2, \ldots, n \]
+
+   Chaque cours doit être enseigné une fois, c'est-à-dire que la valeur totale d'affectation associée à chaque cours doit être égale à l'unité.
+
+2. \[ \sum_{i=1}^{n} X_{ij} = W_j \quad \text{pour} \quad j = 1, 2, \ldots, n \]
+
+   Chaque instructeur doit enseigner sa charge de cours \(W_j\), donc la valeur totale d'affectation pour le \(j\)-ième instructeur est \(W_j\). Étant donné qu'il est normalement requis que les professeurs répartissent leur charge de travail de manière égale entre les semestres, cette contrainte s'appliquera deux fois pour chaque instructeur, où \(W_j\) représente la charge de travail du semestre respectif.
+
+3. \[ \sum_{i \in S_k} X_{ij} \leq 1 \quad \text{pour} \quad j = 1, 2, \ldots, n \]
+
+   Un instructeur ne peut pas enseigner plus d'un cours dans une même plage horaire (\(k\)); cette contrainte s'applique à tous les instructeurs et à toutes les plages horaires. L'inégalité existe puisqu'il est permis qu'un instructeur n'enseigne aucun cours dans une plage horaire particulière. En pratique, cette contrainte ne doit être considérée que pour les plages horaires où il existe une possibilité que plus d'un cours soit enseigné par un membre du corps enseignant particulier.
+
+4. \[ \sum_{i \in C_g} X_{ij} \leq 1 \quad \text{pour} \quad j = 1, 2, \ldots, n \]
+
+   Un instructeur peut enseigner au maximum un cours d'un cluster particulier (\(g\)). Encore une fois, l'inégalité est permise, car il se peut qu'aucun cours ne soit sélectionné dans un cluster particulier.
+
+5. \[ X_{ij} \geq 0 \quad \text{pour} \quad i = 1, 2, \ldots, n \quad \text{et} \quad j = 1, 2, \ldots, n \]
+
+   Conditions de non-négativité sur \(X_{ij}\).
+   
+La fonction objective est la somme pondérée des \(X_{ij}\) pour chaque cours et chaque enseignant, où les poids sont dérivés des préférences des enseignants (pour la méthodologie, voir ci-dessous). Le premier ensemble de contraintes (1) exige que chaque cours soit enseigné une fois, c'est-à-dire que la valeur totale de l'affectation associée à chaque cours doit être égale à l'unité. Le deuxième ensemble de contraintes (2) exige que chaque enseignant enseigne sa charge de cours (\(W_j\)) - ainsi la valeur totale de l'affectation pour le jème enseignant est \(1\). Étant donné qu'il est normalement requis que les enseignants répartissent leur charge de travail également entre les semestres, cette contrainte s'appliquera deux fois pour chaque enseignant, où \(W_j\) représente la charge de travail respective pour chaque semestre. Le problème classique d'affectation consiste en ces deux ensembles de contraintes, ainsi que des conditions de non-négativité.
+
+Le troisième ensemble de contraintes (3) stipule qu'un enseignant ne peut pas enseigner plus d'un cours à une même période (k); cette contrainte s'applique à tous les enseignants et à toutes les périodes. L'inégalité existe car il est permis qu'un enseignant n'enseigne aucun cours à une période particulière. En pratique, cette contrainte ne doit être prise en compte que pour les périodes où il existe une possibilité que plus d'un cours soit enseigné par un enseignant particulier.
+
+Le quatrième ensemble de contraintes (4) permet à un enseignant d'enseigner au maximum un cours d'un groupe particulier (g). Encore une fois, l'inégalité est permise, car il se peut qu'aucun cours ne soit sélectionné dans un groupe particulier. Enfin, le cinquième ensemble de contraintes (5) impose des conditions de non-négativité sur les \(X_{ij}\).
+
+Les professeurs listent les cours qu'ils souhaitent enseigner par ordre de préférence décroissante. Si un instructeur souhaite enseigner une section d'un cours particulier (ou effectivement un cours parmi plusieurs cours), l'ensemble des sections (ou cours) concernées est appelé un cluster. Tous les éléments d'un cluster ont naturellement un poids de préférence égal. Si un instructeur souhaite enseigner une autre section du même cours, mais souhaite que cette section soit affectée à une valeur de préférence inférieure à la première section, un cluster de sections souhaitées est donné plus bas dans la liste de préférence. Les cours semestriels reçoivent des demi-poids.
+
+L'algorithme Simplex a été utilisé pour résoudre le problème et, comme mentionné précédemment, fournit une solution entière. L'ajout de contraintes de type inégalité (3) et (4) ne change pas ce résultat (voir Appendice). Dans ce cas, puisque nous traitons avec une matrice creuse, l'algorithme Simplex Révisé a été utilisé. Ainsi, un optimum global est garanti.
+
+Cela prend en charge le côté technique. L'autre exigence était une capacité interactive pour l'administration. Cela a été réalisé en programmant un package complet, qui effectuait le traitement initial, la programmation linéaire et le traitement final, et qui imprime des résultats à chaque étape. Le traitement initial produisait une liste des plages horaires et des charges d'enseignement des professeurs ; une liste des cours préaffectés par professeur (un cours préaffecté est un cours pour lequel un seul professeur a exprimé une préférence) pour chaque semestre ; une vérification initiale de la cohérence ; une liste des charges d'enseignement restantes non affectées pour chaque professeur par semestre ; une liste croisée des cours non affectés, de leurs plages horaires et des professeurs possibles ; et un emploi du temps montrant tous les cours et les professeurs respectifs pour les cours préaffectés. Les messages d'erreur indiquaient où aucune solution réalisable n'était possible à une étape quelconque du processus.
+
+Ce traitement initial, avant qu'une solution linéaire ne soit tentée, a non seulement permis une interaction entre le personnel de recherche opérationnelle et l'administration, mais a également permis d'économiser beaucoup de temps informatique en tentant de résoudre des problèmes pour lesquels aucune solution réalisable n'existait. Après une exécution réussie, une liste des cours par professeur et par semestre, un emploi du temps complet et un tableau normalisé des valeurs de préférence pour chaque professeur ont été produits.
+
+
+
+
+## V. Tests empiriques
+
+L'efficacité d'un programme particulier pour résoudre les problèmes d'affectation est difficile à mesurer, car chaque problème d'affectation est différent, et il n'existe donc pas de norme. Deux approches ont été adoptées : un problème réel et un problème théorique. Bien qu'aucune de ces approches ne soit idéale individuellement, l'expérience acquise en résolvant ces deux problèmes, prises ensemble, donne une idée de l'utilité de ce type d'approche.
+
+### A. Un problème réel
+
+Le département d'économie de l'Université Concordia (SGW), à Montréal, a le problème habituel de la planification des emplois du temps ; la solution manuelle, basée sur l'expérience des années précédentes, prend en moyenne trois mois. Le département est suffisamment grand pour constituer un test raisonnable. Chaque membre du corps professoral a été invité à fournir une liste de préférence ordonnée des cours qu'il voulait enseigner, d'une longueur totale de deux fois sa charge d'enseignement requise, ce qui fournissait suffisamment de marge pour qu'un ensemble faisable existe. Le problème couvrait 85 cours, dont certains étaient semestriels et les autres annuels, 20 professeurs, 20 plages horaires et 2 semestres. Cela semblait être un problème relativement facile, du moins en termes informatiques : une solution optimale a été obtenue en moins de 6 secondes de temps de calcul (CDC 6400). Il est cependant clair que la sortie la plus précieuse du package était les listes produites lors du traitement initial avant la solution de programmation linéaire. En fournissant à l'administration des informations sous une forme reconnaissable et utile, montrant chaque étape du traitement, un degré de communication s'est développé, permettant une interaction bien plus grande que d'habitude. Cela se vérifie par le fait qu'en utilisant ces techniques, la tâche de planification des emplois du temps a été achevée en deux semaines, ce qui constitue une nette amélioration.
+
+### B. Un problème théorique
+
+Le problème théorique suivant a été mis en place : quarante cours doivent être enseignés au premier semestre, quarante au second semestre et quarante autres sont des cours annuels. Vingt-six professeurs ont chacun une charge d'enseignement de 3 cours par semestre, et un autre professeur a une charge de 2 cours par semestre. Ainsi, la charge totale de cours et la charge d'enseignement totale sont égales dans chaque semestre. Il y a 20 plages horaires dans chaque semestre.
+
+Pour garantir une solution faisable, une solution particulière a été choisie. Chaque cours a ensuite été assigné à une plage horaire de manière aléatoire (basée sur une table de nombres aléatoires), à l'exception que si un cours de la solution particulière était assigné à une plage horaire entraînant un conflit avec un autre cours également dans la solution particulière, alors une nouvelle plage horaire était sélectionnée. Chaque professeur a été assigné un total de neuf cours - la solution particulière plus les cours restants, également choisis au hasard. L'ordre des neuf cours a également été déterminé de manière aléatoire ; l'ordre était présumé signifier l'ordre de préférence.
+
+Une solution optimale a été obtenue en 13 secondes de temps de calcul (201 itérations). La solution optimale différait de la solution particulière, et produisait évidemment une fonction objective de valeur plus élevée. Pour \( n = 120 \) (cours) et \( m = 54 \) (27 professeurs, 2 semestres), cela implique une matrice de permutation de 6480 éléments, ce qui n'est en aucun cas trivial.
+
+
+
+
+
+## V. CONCLUSION
+
+Les résultats discutés ici suggèrent que l'utilisation de méthodes d'optimisation pour résoudre le problème de la planification universitaire présente des avantages considérables. Toutefois, il apparaît que ces gains ne proviennent pas uniquement de l'utilisation d'un algorithme efficace, bien que ce dernier soit nécessaire. En réalité, ces bénéfices proviennent en grande partie de l'implication de l'administration tout au long du processus de recherche opérationnelle (RO), plutôt que de la communication avant le processus et à nouveau après. Il semble que cette interaction ne puisse être obtenue que si les résultats sont présentés de manière précise, informative et surtout familière.
+
+Les techniques de RO se sont révélées particulièrement efficaces pour traiter de petits modèles micro spécifiques, où le système est bien défini et où l'optimisation se fait au sein de ce système spécifique. Au niveau macro, où le système lui-même n'est pas clairement défini, les performances de la RO sont pour le moins douteuses. On peut optimiser un déploiement sur le champ de bataille, mais cela ne mène guère au résultat souhaité si, en réalité, on ne devrait pas mener cette guerre. S'il existe une dimension qualitative dans le monde, que ce soit pour la préservation d'une espèce ou la gestion d'un système scolaire, et si cette dimension qualitative est mieux comprise par un administrateur, peut-être en raison de sa familiarité ou de son intuition, alors il se peut qu'une symbiose interactive entre les techniques de RO et les contributions de l'administration puisse donner de meilleurs résultats que chacune d'entre elles ne le pourrait individuellement.

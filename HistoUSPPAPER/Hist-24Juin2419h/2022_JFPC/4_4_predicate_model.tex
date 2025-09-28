@@ -1,0 +1,157 @@
+%------------------------------------------------------------
+%------------------------------------------------------------
+\subsection{{\UTP} Predicates}
+\label{sec:model-predicates}
+
+%%%%{\ADJACENTROOMS}
+%%%%{\ATMOSTDAILY}
+%%%%{\ATMOSTWEEKLY}
+%%%%{\TRAVEL}
+%{\FORBIDDENPERIOD}
+%{\NOOVERLAP}
+%%%%{\SAMEDAILYSLOT}
+%%%%{\SAMEDAY}
+%{\SAMEROOMS}
+%%%%{\SAMESLOT}
+%%%%{\SAMESTUDENTS}
+%%%%{\SAMETEACHERS}
+%{\SAMEWEEKDAY}
+%%%%{\SAMEWEEKLYSLOT}
+%%%%{\SAMEWEEK}
+%{\SEQUENCED}
+%%%%{\TEACHERDISTRIBUTION}
+%%%%{\WEEKLY}
+
+%Due to lack of space, we just present a few {\UTP} constraint predicates, namely,
+Pour des raisons évidentes de place, nous allons présenté quelques  prédicats de contrainte \UTP{} , respectivement,
+\texttt{\FORBIDDENPERIOD} (\ref{ctr:forbiddenperiod}),
+\texttt{\SAMEWEEKDAY} (\ref{ctr:sameweekday}), 
+\texttt{\SAMEROOMS} (\ref{ctr:samerooms}),
+\texttt{\NOOVERLAP} (\ref{ctr:nooverlap}) 
+et \texttt{\SEQUENCED} (~\ref{ctr:sequenced}).
+%Note that \texttt{\FORBIDDENPERIOD} accepts start and end point parameters.
+Il faut noter \texttt{\FORBIDDENPERIOD} prend en paramètre d'entrée 2 créneaux un de début et un de fin. 
+% Predicate \texttt{\NOOVERLAP}
+% uses built-in model predicate $split$ for resources (\ref{ctr:disjointconditional})
+% and its variant for course elements (predicate~\ref{ctr:disjointunconditional}).
+Le prédicat \texttt{\NOOVERLAP} utilise la contrainte disjonctive de \MINIZINC{}.
+
+
+%Constraint~\ref{ctr:forbiddenperiod} implements predicate \texttt{\FORBIDDENPERIOD} which accepts start and end point parameters. Constraint~\ref{ctr:sameweekday} implements predicate \texttt{\SAMEWEEKDAY}. Constraint~\ref{ctr:samerooms} implements predicate \texttt{\SAMEROOMS}. Constraint~\ref{ctr:sequenced} implements predicate \texttt{\SEQUENCED}. Constraint~\ref{ctr:nooverlap} implements predicate \texttt{\NOOVERLAP} using built-in model predicate $split$ for resources (\ref{ctr:disjointconditional}) and its variant for course elements (predicate~\ref{ctr:disjointunconditional}).
+
+% Let $X\in\TYPE, e\in X,S'\subseteq\map{X}{\SESSION}{e}, h,h'\in\SLOT\ (h<h')$.
+
+% %Let\ X\in\TYPE, e\in X,S'\subseteq\map{X}{\SESSION}{e}, h,&h'\in\SLOT\ (h<h'):
+% %\\
+% \begin{multline}
+% \FORBIDDENPERIOD((e,S'),h,h')\\
+% \forallmzn(i \inmzn \funcmzn{index\_set}(sessions))(
+% (\xslot[sessions[i]] < h) \land  (\xslot[sessions[i]]>h')%TODO land ou lor ?
+% )
+% %\leftrightarrow
+% %&\bigwedge_{\substack{s\in S'}}
+% %(\var{\SESSION}{\SLOT}{s}+\sessionduration{s}<h
+% %\vee
+% %h'<\var{\SESSION}{\SLOT}{s}
+% %)
+% \label{ctr:forbiddenperiod}
+% \end{multline}
+
+
+% \begin{multline}
+% %\begin{equation}
+% %\begin{split}
+% %Let\ X&\in\TYPE, e\in X,S'\subseteq\map{X}{\SESSION}{e}:
+% %\\
+% \SAMEWEEKDAY((e,S'))\\
+%   \forallmzn(i,j \inmzn \funcmzn{index\_set}(sessions) \wmzn i<j)(\\
+%     (\xslot[sessions[i]] \divmzn nr\_weekly\_slots) == (\xslot[sessions[j]] \divmzn nr\_weekly\_slots)
+%   )
+% %&\SAMEWEEKDAY((e,S'))
+% %\leftrightarrow
+% %\bigwedge_{\substack{s\in S'}}
+% %\var{\SESSION}{\SLOT}{s} \div{\WEEKDAY} = (\var{\SESSION}{\SLOT}{s} + \sessionduration{s}) \div{\WEEKDAY}
+% %&\var{\SESSION}{\SLOT}{s} \div{\DAILYSLOT} = \sessionend{s} \div{\DAILYSLOT}
+% \label{ctr:sameweekday}
+% \\
+% \end{multline}
+%\end{split}
+%\end{equation}
+%
+%\begin{equation}
+%\begin{split}
+%Let\ X\in\TYPE, e\in X,S'\subseteq\map{X}{\SESSION}{e}:&
+%\\
+% \begin{multline}
+% \SAMEROOMS((e,S'))\\
+% %
+%   \forallmzn(s1,s2 \inmzn \funcmzn{index\_set}(sessions) \wmzn s1<s2)(\\
+%     \xroom[\funcmzn{session\_class}(sessions[s1])] == \xroom[\funcmzn{session\_class}(sessions[s2])]
+%   )
+% %\leftrightarrow
+% %\bigwedge_{\substack{s,s'\in S'}}
+% %(\var{\SESSION}{\ROOM}{s}=\var{\SESSION}{\ROOM}{s'}
+% %)
+% \label{ctr:samerooms}
+% \\
+% \end{multline}
+
+% %\begin{equation}
+% \begin{multline}
+% %Let\ i\in\myset{1,\ldots,n},X_i\in\TYPE,e_i\in X_i,S_i\subseteq\map{X_i}{\SESSION}{e_i}:&
+% %\\
+% \SEQUENCED((e\_1,S\_1),\ldots,(e\_n,S\_n))
+% \\
+%     \forallmzn(i,j \inmzn S\_1 \wmzn i<j)(\\
+%       \xslot[i]+\funcmzn{session\_length}(i) \leq \xslot[j]
+% )
+% %&\leftrightarrow
+% %\bigwedge_{\substack{j=1\ldots n-1}}
+% %\max_{\substack{s\in S_j}}{(\var{\SESSION}{\SLOT}{s} + \sessionduration{s})}
+% %\leq
+% %\min_{\substack{s\in S_{j+1}}}{\var{\SESSION}{\SLOT}{s}}
+% \label{ctr:sequenced}
+% \end{multline}
+%\end{equation}
+
+%Let $X\in\myset{\COURSES,\COURSE,\PART,\CLASS},e\in X,S_1,S_2\subseteq\SESSION:$
+%\begin{multline}
+%
+% \SEQUENCED((e\_1,S\_1),\ldots,(e\_n,S\_n))=\\
+%     \funcmzn{disjunctive}(
+%       [\xslot[s]|s \inmzn \funcmzn{room\_sessions}(r) ],
+%       [\funcmzn{session\_length}(s)*\funcmzn{bool2int}(r \inmzn \xroom[session\_class(s)])|s \inmzn \funcmzn{room\_sessions}(r)]
+%       %[bool2int(r in x_rooms[session_class(s)])*session_length(s)|s in room_sessions(r)]
+%     )
+% %
+% %\disjointroom{e}{S_1}{S_2}
+% %\leftrightarrow
+% %\bigwedge_{\substack{s_1\in S_1,s_2\in S_2\\s_1\neq s_2}}
+% %(e\in\map{\SESSION}{X}{s_1}\cap\map{\SESSION}{X}{s_2}
+% %\rightarrow
+% %\disjoint{s_1}{s_2})
+% \label{ctr:disjointunconditional}
+% \end{multline}
+
+
+
+% Note that entailed constraints may be enforced. 
+% For instance, a room $r$ is necessarily disjunctive if a non-overlapping constraint is enforced on its set of compatible sessions, %\footnote{
+Il faut noter que des contraintes peuvent être renforcés. 
+Par exemple, une salle $r$ est nécessairement disjonctive si une contrainte de non-chevauchement est appliquée à son ensemble de sessions possibles, c'est-à-dire si l'instance inclut la contrainte ${no\_overlap}$.
+% i.e., if the instance includes constraint ${no\_overlap}((r,\map{\ROOM}{\SESSION}{r}))$.
+% If so, the default cumulative capacity constraint may be safely replaced with  Constraint~\ref{ctr:disjunctiveroomcapacity} for such resources where
+% $\disjunctiverooms\subseteq{\ROOM}$         denotes the set of disjunctive rooms.
+Dans ce cas, la contrainte cumulative par défaut peut être remplacée en toute sécurité par la contrainte~\ref{ctr:disjunctiveroomcapacity} pour les ressources concernés.
+
+% \begin{flalign}
+% &\forall r\in\disjunctiverooms:
+% &
+% \bigwedge_{\substack{h\in\SLOT\\k\in\map{\ROOM}{\CLASS}{r}}}
+% \roomcapacity{r}
+% \geq
+% \max_{\substack{s\in\map{\CLASS}{\SESSION}{k}}}
+% {\roomuse{r}{k}{s}{h}}
+% &\label{ctr:disjunctiveroomcapacity}
+% \end{flalign}
+

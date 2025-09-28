@@ -1,0 +1,333 @@
+
+%\newcolumntype{N}{>{\refstepcounter{rowcntr}\therowcntr}r}
+\newcounter{rowcntr}[table]
+\renewcommand{\therowcntr}{(\arabic{rowcntr})}
+\setcounter{rowcntr}{0}
+
+\begin{table*}[!ht]
+\framebox[\textwidth][c]{%
+\small
+\begin{tabularx}{\textwidth}{>{\hsize=0.01\hsize\linewidth=\hsize}X>{\hsize=1.89\hsize\linewidth=\hsize}X>{\raggedleft\arraybackslash\hsize=.09\hsize\linewidth=\hsize}X}
+%\begin{math}\STUDENT = \funcmzn{array\_union}(\xgroup) \end{math} & 
+%partition\_set(\xgroup,\begin{math}\STUDENT\end{math}) & \refstepcounter{rowcntr} \therowcntr \label{mzn:grouppartition}\\
+%
+%
+&$\forallmzn(u,v \inmzn \STUDENT \wmzn u\gqmzn v)$ %&\\
+%&\hspace*{2,8em}
+$(\arraymzn{student\_courses}[u]\neqmzn \arraymzn{student\_courses}[v] \arrowmzn \xstudent[u]\neqmzn \xstudent[v]) $&  \refstepcounter{rowcntr} \therowcntr \label{mzn:studentgrouping}\\
+%
+%
+&$\forallmzn(u \inmzn \STUDENT,p \inmzn \funcmzn{student\_parts}[u])$%&\\
+%&\hspace*{2,8em}
+$(\existmzn(k \inmzn \arraymzn{part\_classes}[p])(\xstudent[u] \inmzn \xgroup[k]))$& \refstepcounter{rowcntr} \therowcntr \label{mzn:allparts}\\
+%forallmzn(u \inmzn \STUDENT, g \inmzn \GROUP)(\xstudent[u] = g \arrowmzn forall(p in \funcmzn{student\_parts}[u])(p = g in  xgroup ))
+%
+&$\forallmzn(p \inmzn \PART,k1,k2 \inmzn \arraymzn{part\_classes}[p] \wmzn k1\gqmzn k2)$%&\\
+%
+%\hspace{2cm}all_disjoint
+%&\hspace*{2,8em}
+$(\xgroup[k1] \intermzn \xgroup[k2]=\{\})$& \refstepcounter{rowcntr} \therowcntr \label{mzn:exclusiveclass}\\
+%
+%
+&$\forallmzn(k1 \inmzn \CLASS, k2 \inmzn \funcmzn{class\_parents}(k1))(\xgroup[k1] \subsetmzn \xgroup[k2])$ &  \refstepcounter{rowcntr} \therowcntr \label{mzn:parent}\\
+%
+&$\forallmzn(k \inmzn \CLASS)(\arraymzn{maxsize}[k] \geqmzn \summzn(g \inmzn \GROUP)$%&\\
+%&\hspace*{2,8em}
+$(\funcmzn{bool2int}(g \inmzn \xgroup[k])*\summzn(u \inmzn \STUDENT)(\funcmzn{bool2int}(\xstudent[u]=g)))$ &  \refstepcounter{rowcntr} \therowcntr \label{mzn:classcapacity}\\
+% 
+%
+\hline
+%
+%
+&$\forallmzn(s \inmzn \SESSION)(\xroom[s] \subsetmzn \arraymzn{part\_rooms}[\funcmzn{session\_part}[s]])$& \refstepcounter{rowcntr} \therowcntr \label{mzn:allowedrooms}\\
+%
+%
+&$\forallmzn(s \inmzn \SESSION)(\xteacher[s] \subsetmzn \arraymzn{part\_lecturers}[\funcmzn{session\_part}[s]]) $ &  \refstepcounter{rowcntr} \therowcntr \label{mzn:allowedteachers} \\
+%
+%
+%$\forallmzn(k \inmzn \CLASS)(((\arraymzn{part\_room\_use}[\funcmzn{class\_part}(k)]=\text{none}) \Longleftrightarrow (\xroom[k] = \{\})) $&\\
+&$\forallmzn(s \inmzn \SESSION, p \inmzn \PART \wmzn p=\funcmzn{session\_part}[s])($&\\ &\hspace*{2,8em}$(\arraymzn{part\_room\_use}[p]=\text{none} \arrowmzn \xroom[s] = \{\}) \landmzn (\arraymzn{part\_room\_use}[p]=\text{single} \arrowmzn \funcmzn{card}(\xroom[s]) =1)$&\\
+&\hspace*{1,4em}$ \landmzn(\arraymzn{part\_room\_use}[p]=\text{multiple} \arrowmzn \funcmzn{card}(\xroom[s]) \leqmzn 1))$
+& \refstepcounter{rowcntr} \therowcntr \label{mzn:multiroom}\\
+%&$\forallmzn(s \inmzn \SESSION, p \inmzn \PART \wmzn p=\funcmzn{session\_part}[s])($&\\ &\hspace*{2,8em}$(\arraymzn{part\_room\_use}[p]=\text{none} \arrowmzn \xroom[s] = \{\}) $&\\
+%&\hspace*{1em}$\landmzn (\arraymzn{part\_room\_use}[p]=\text{single} \arrowmzn \funcmzn{card}(\xroom[s]) = 1)  $&\\
+%&\hspace*{1em}$\landmzn(\arraymzn{part\_room\_use}[p]=\text{multiple} \arrowmzn \funcmzn{card}(\xroom[s]) \leqmzn 1))$
+%& \refstepcounter{rowcntr} \therowcntr \label{mzn:multiroom}\\
+%
+%
+&$\forallmzn(s \inmzn \SESSION)( \funcmzn{card}(\xteacher[s]) = \funcmzn{team}[\funcmzn{session\_part}[s]])$ & \refstepcounter{rowcntr} \therowcntr 
+\label{mzn:multiteacher}\\
+%
+%
+&$\forallmzn(p \inmzn \PART,l \inmzn \arraymzn{part\_lecturers}[p])$%&\\
+%&\hspace*{2,8em}
+$(\summzn{}(s \inmzn \funcmzn{part\_sessions}[p]))(\funcmzn{bool2int}(l \inmzn \xteacher[s]) = \arraymzn{service}[l,p])) $& \refstepcounter{rowcntr} \therowcntr \label{mzn:partteacherservice}\\
+%
+%
+\hline
+%
+%
+%$\forallmzn(k \inmzn \CLASS)(\xroom[k] \subsetmzn \arraymzn{part\_rooms}[\funcmzn{class\_part}(k))$ & \refstepcounter{rowcntr} \therowcntr  \label{mzn:allowedsrooms}\\
+%
+%$\forallmzn(s \inmzn \SESSION)(\xteacher[s] \subsetmzn \arraymzn{part\_teachers}[\funcmzn{session\_part}[s]])$  & \refstepcounter{rowcntr} \therowcntr  \label{mzn:allowedsteacher}\\
+%
+&$\forallmzn(p \inmzn \PART,s \inmzn \funcmzn{part\_sessions}[p])$&\\
+&\hspace*{2,8em}$(\funcmzn{week}(\xslot[s]) \inmzn \arraymzn{weeks}[p]\landmzn \funcmzn{weekday}(\xslot[s]) \inmzn \arraymzn{weekdays}[p]\landmzn \funcmzn{dailyslot}(\xslot[s]) \inmzn \arraymzn{dailyslots}[p])$& \refstepcounter{rowcntr} \therowcntr \label{mzn:allowedslots}\\
+%&$\forallmzn(p \inmzn \PART,s \inmzn \funcmzn{part\_sessions}(p))$&\\
+%&\hspace*{2,8em}$(\funcmzn{week}(\xslot[s]) \inmzn \arraymzn{weeks}[p]$ &\\
+%&\hspace*{1em}$\landmzn \funcmzn{weekday}(\xslot[s]) \inmzn \arraymzn{weekdays}[p]$&\\
+%&\hspace*{1em}$\landmzn \funcmzn{dailyslot}(\xslot[s]) \inmzn \arraymzn{dailyslots}[p])$& \refstepcounter{rowcntr} \therowcntr \label{mzn:allowedslots}\\
+%
+%
+&$\forallmzn(s \inmzn \SESSION)((\xslot[s] - 1) \divmzn \gconst{nr\_daily\_slots} =(\xslot[s] + \funcmzn{length}[s] - 1) \divmzn \gconst{nr\_daily\_slots})$& \refstepcounter{rowcntr} \therowcntr \label{mzn:nopreemption}\\
+%&$\forallmzn(s \inmzn \SESSION)$&\\
+%&\hspace*{2,8em}$((\xslot[s] - 1) \divmzn \gconst{nr\_slots\_per\_day} =$&\\
+%&\hspace*{2,8em}$(\xslot[s] + \funcmzn{length}[s] - 1) \divmzn \gconst{nr\_slots\_per\_day})$& \refstepcounter{rowcntr} \therowcntr \label{mzn:nopreemption}\\
+%
+%
+&$ \forallmzn(k \inmzn \CLASS, s1,s2 \inmzn \funcmzn{class\_sessions}[k] \wmzn \funcmzn{rank}(s1) \gqmzn \funcmzn{rank}(s2))$ %&\\ 
+%&\hspace*{2,8em}
+$(\xslot[s1]+\funcmzn{length}[s] \leqmzn \xslot[s2]) $& \refstepcounter{rowcntr} \therowcntr \label{mzn:classsequencing}\\
+%
+%
+%&$\forallmzn(s1 \inmzn \SESSION, r \inmzn \funcmzn{part\_rooms}[\funcmzn{session\_part}[s1]],s2 \inmzn %\funcmzn{room\_sessions}[r] $&\\
+%&\hspace*{2,8em}$\wmzn \funcmzn{is\_multi\_rooms}[\funcmzn{session\_part}[s1]]) \landmzn s1 \neqmzn %s2)($&\\
+%&\hspace*{3em}$\funcmzn{disjunctive}([\xslot[s1],\xslot[s2]],$&\\
+%%
+%&\hspace*{3em}$[\funcmzn{bool2int}(r \inmzn \xroom[s1])*\funcmzn{length}[s1],\funcmzn{bool2int}(r %\inmzn \xroom[s2])*\funcmzn{length}[s2]]))$ & \refstepcounter{rowcntr} \therowcntr  %\label{mzn:multiroomscheduling}\\
+&$\forallmzn(p \inmzn \PART, s1 \inmzn \funcmzn{part\_sessions}[p], r \inmzn \funcmzn{part\_rooms}[p],s2 \inmzn \funcmzn{room\_sessions}[r] $%&\\
+%&\hspace*{2,8em}
+$\wmzn \funcmzn{is\_multi\_rooms}[p] \landmzn s1 \neqmzn s2)$&\\
+&\hspace*{3em}$(\funcmzn{disjunctive}([\xslot[s1],\xslot[s2]],$&\\
+%
+&\hspace*{3em}$[\funcmzn{bool2int}(r \inmzn \xroom[s1])*\funcmzn{length}[s1],\funcmzn{bool2int}(r \inmzn \xroom[s2])*\funcmzn{length}[s2]]))$ & \refstepcounter{rowcntr} \therowcntr  \label{mzn:multiroomscheduling}\\
+%
+%
+&$\forallmzn(p \inmzn \PART, s \inmzn \funcmzn{part\_sessions}[p] \wmzn \funcmzn{is\_multi\_rooms}[p])$&\\
+&\hspace*{2,8em}$(\summzn(r \inmzn \arraymzn{part\_rooms}[p])(\funcmzn{bool2int}(r \inmzn \xroom[s]) * \arraymzn{capacity}[r])$&\\
+&\hspace*{2,8em}$\geqmzn\summzn(g \inmzn \GROUP)(\funcmzn{bool2int}(g \inmzn \xgroup[\funcmzn{session\_class}[s]] )*\funcmzn{card}(\arraymzn{group\_students}[g])))$& \refstepcounter{rowcntr} \therowcntr \label{mzn:multiroomcapacity}\\
+%
+%
+%$\forallmzn(s \inmzn \SESSION, r \inmzn \funcmzn{session\_rooms}[s])($&\\
+%\multicolumn{1}{|c}{$\arraymzn{room\_capacity}[r] \geq sum(g \inmzn %\funcmzn{session\_group}[s])(\funcmzn{card}(\arraymzn{group\_students}[g]))))$} & \refstepcounter{rowcntr} \therowcntr  
+%\label{mzn:cumulativeroomcapacity}\\
+%
+%
+&$\forallmzn(p \inmzn \PART, s \inmzn \funcmzn{part\_sessions}[p])(\funcmzn{mandatory\_rooms}[p] \subsetmzn \xroom[s])$& \refstepcounter{rowcntr} \therowcntr \label{mzn:mandatoryrooms}\\
+%
+%
+%&$\forallmzn(r \inmzn \ROOM  \wmzn \notmzn(\funcmzn{virtual}[r]))$&\\
+%&\hspace*{2,8em}$(\funcmzn{cumulative}([\xslot[s] | s \inmzn \funcmzn{room\_sessions}[r]],$&\\
+%&\hspace*{2,8em}$[\funcmzn{bool2int}(r \inmzn \xroom[s])* \funcmzn{length}[s] | s \inmzn \funcmzn{room\_sessions}[r]  ],$&\\
+%&\hspace*{3em}$[\summzn(g \inmzn \GROUP)(\funcmzn{bool2int}(g \inmzn \xgroup[\funcmzn{session\_class}[s]])) * \summzn(u \inmzn \STUDENT)($&\\
+%&$\funcmzn{bool2int}(g = \xstudent[u]))| s \inmzn \funcmzn{room\_sessions}[r]],\arraymzn{capacity}[r]))$& \refstepcounter{rowcntr} \therowcntr  
+%\label{mzn:roomuse}\\
+&$\forallmzn(r \inmzn \ROOM  \wmzn \notmzn(\funcmzn{virtual}[r]))(\funcmzn{let \{}\funcmzn{set of \SESSION: RS= room\_sessions}[r]\intermzn\funcmzn{single\_room\_sessions;}\}\inmzn$&\\
+&\hspace*{2,8em}$(\funcmzn{cumulative}([\xslot[s] | s \inmzn RS],[\funcmzn{bool2int}(r \inmzn \xroom[s])* \funcmzn{length}[s] | s \inmzn RS],$&\\
+%&$\forallmzn(r \inmzn \ROOM  \wmzn \notmzn(\funcmzn{virtual}[r]))($&\\
+%&\hspace*{2,8em}$\funcmzn{let \{}\funcmzn{set of \SESSION: RS= room\_sessions}[r]\intermzn\funcmzn{single\_room\_sessions;}\}\inmzn$&\\
+%&\hspace*{2,8em}$(\funcmzn{cumulative}([\xslot[s] | s \inmzn RS],[\funcmzn{bool2int}(r \inmzn \xroom[s])* \funcmzn{length}[s] | s \inmzn RS],$&\\
+%&\hspace*{2,8em}$(\funcmzn{cumulative}([\xslot[s] | s \inmzn RS],$&\\
+%&\hspace*{2,8em}$[\funcmzn{bool2int}(r \inmzn \xroom[s])* \funcmzn{length}[s] | s \inmzn RS],$&\\
+&\hspace*{2,8em}$[\summzn(g \inmzn \GROUP)(\funcmzn{bool2int}(g \inmzn \xgroup[\funcmzn{session\_class}[s]])) * \summzn(u \inmzn \STUDENT)($&\\
+&$\funcmzn{bool2int}(g = \xstudent[u]))| s \inmzn RS],\arraymzn{capacity}[r]))$& \refstepcounter{rowcntr} \therowcntr \label{mzn:roomuse}\\
+%&\hspace*{2em}$[\summzn(g \inmzn \GROUP)(\funcmzn{bool2int}(g \inmzn \xgroup[\funcmzn{session\_class}[s]])) * \summzn(u \inmzn \STUDENT)($&\\
+%&$\funcmzn{bool2int}(g = \xstudent[u]))| s \inmzn RS],\arraymzn{capacity}[r]))$& \refstepcounter{rowcntr} \therowcntr \label{mzn:roomuse}\\
+%
+%
+%\forallmzn(t \inmzn \TEACHER)(\funcmzn{cumulative}( & \\
+%\multicolumn{1}{|c}{$[\xslot[s] | s \inmzn \funcmzn{teacher\_sessions}(t)],[\funcmzn{bool2int}(t \subsetmzn \xteacher[s])* \funcmzn{session\_length}[s] | s \inmzn \funcmzn{teacher\_sessions}(t)],$}&\\
+%\multicolumn{1}{|c}{$[1| s \inmzn \funcmzn{teacher\_sessions}(t)],teacher\_max\_use[t])))$}& \refstepcounter{rowcntr} \therowcntr  
+%\label{mzn:teacheruse}\\
+%
+%
+%$\forallmzn(g \inmzn \GROUP)(\funcmzn{cumulative}($&\\
+%\multicolumn{1}{|c}{$[\xslot[s] | s \inmzn \funcmzn{group\_sessions}(g)],[\funcmzn{session\_length}[s] | s \inmzn \funcmzn{group\_sessions}(g)],$}&\\
+%\multicolumn{1}{|c}{$[1| s \inmzn \funcmzn{group\_sessions}(g)],group\_max\_use[g])))$}& \refstepcounter{rowcntr} \therowcntr  
+%\label{mzn:groupuse}\\
+%
+%
+\hline
+%
+%
+&$\FORBIDDENPERIOD((r,S'),h1,h2) = \forallmzn(i \inmzn S')( r \inmzn \xroom[i] \arrowmzn (\xslot[i]+\funcmzn{length}[i] \geqmzn h_1 \lormzn  \xslot[i]\lqmzn h_2)) $& \refstepcounter{rowcntr} \therowcntr \label{mzn:forbiddenperiod}\\
+%&$\FORBIDDENPERIOD((r,S'),h1,h2) = \forallmzn(i \inmzn S')($&\\
+%&\hspace*{2,8em}$ r \inmzn \xroom[i] \arrowmzn (\xslot[i]+\funcmzn{length}[i] \geqmzn h_1 \lormzn  \xslot[i]\lqmzn h_2)) $& \refstepcounter{rowcntr} \therowcntr \label{mzn:forbiddenperiod}\\
+%
+%
+&$\SAMEWEEKDAY((r,S')) = \forallmzn(i,j \inmzn S' \wmzn i\gqmzn j)($&\\
+&\hspace*{2,8em}$ (r\inmzn \xroom[i] \intermzn \xroom[j]) \arrowmzn(\xslot[i] \divmzn \gconst{nr\_weekly\_slots}=\xslot[j] \divmzn  \gconst{nr\_weekly\_slots}))$ & \refstepcounter{rowcntr} \therowcntr 
+\label{mzn:sameweekday}\\
+%&$\SAMEWEEKDAY((r,S')) = \forallmzn(i,j \inmzn S' \wmzn i\gqmzn j)($&\\
+%&\hspace*{2,8em}$ (r\inmzn \xroom[i] \intermzn \xroom[j]) \arrowmzn $&\\
+%&\hspace*{2,8em}$(\xslot[i] \divmzn \gconst{nr\_weekly\_slots}=\xslot[j] \divmzn  \gconst{nr\_weekly\_slots}))$ & \refstepcounter{rowcntr} \therowcntr \label{mzn:sameweekday}\\
+%
+%
+&$\SAMEROOMS((r,S')) = \forallmzn(i,j \inmzn S' \wmzn i\gqmzn j)(($&\\
+&\hspace*{2,8em}$r\inmzn \xroom[i] \intermzn \xroom[j]) \arrowmzn \xroom[i] = \xroom[j])$ & \refstepcounter{rowcntr} \therowcntr  \label{mzn:samerooms}\\
+%
+%
+&$\SEQUENCED((r1,S1),(r2,S2)) = \forallmzn(i \inmzn S1,j \inmzn S2)($&\\
+&\hspace*{3em}$(r1\inmzn \xroom[i] \landmzn r2\inmzn \xroom[j]) \arrowmzn\xslot[i]\texttt{+}\funcmzn{length}[i] \geqmzn \xslot[j])$ & \refstepcounter{rowcntr} \therowcntr \label{mzn:sequenced}\\
+%
+%
+&$\NOOVERLAP((r,S'))=\funcmzn{disjunctive}([\xslot[i]|i \inmzn S'],[\funcmzn{length}[i]*\funcmzn{bool2int}(r \inmzn \xroom[i])|i \inmzn S'])$ & \refstepcounter{rowcntr} \therowcntr \label{mzn:nooverlap}\\
+%
+%&$\NOOVERLAP((r,S'))=$&\\
+%&\hspace*{2,8em}$\funcmzn{disjunctive}([\xslot[i]|i \inmzn S'],[\funcmzn{length}[i]*\funcmzn{bool2int}(r \inmzn \xroom[i])|i \inmzn S'])$ & \refstepcounter{rowcntr} \therowcntr \label{mzn:nooverlap}\\
+%
+\end{tabularx}%
+}%
+\caption{Contraintes et prédicats du modèle }
+\label{table:mzn-contraintes}
+\end{table*}
+
+%\corentin{}
+
+
+% \begin{table*}[!ht]
+% %\resizebox{\textwidth}{!}{%
+% \small
+% \centering
+% \begin{tabular}{|lr|}
+% \hline
+% %\begin{math}\STUDENT = \funcmzn{array\_union}(\xgroup) \end{math} & 
+% %partition\_set(\xgroup,\begin{math}\STUDENT\end{math}) & \refstepcounter{rowcntr} \therowcntr \label{ctr:grouppartition}\\
+% %
+% %
+% $\forallmzn(u,v \inmzn \STUDENT \wmzn u<v)(%$&\\
+% ( \arraymzn{student\_courses}[u]!=\arraymzn{student\_courses}[v] ) \arrowmzn ( \xstudent[u]!=\xstudent[v] )) $&  \refstepcounter{rowcntr} \therowcntr \label{ctr:studentgrouping}\\
+% %
+% %
+% $\forallmzn(u \inmzn \STUDENT,p \inmzn \funcmzn{student\_parts}(u))(\existmzn(k \inmzn \arraymzn{part\_classes}[p])(\xstudent[u] \inmzn \xgroup[k])))$& \refstepcounter{rowcntr} \therowcntr \label{ctr:allparts}\\
+% %forallmzn(u \inmzn \STUDENT, g \inmzn \GROUP)(\xstudent[u] = g \arrowmzn forall(p in \funcmzn{student\_parts}(u))(p = g in  xgroup ))
+% %
+% $\forallmzn(p \inmzn \PART,k_1,k_2 \inmzn \arraymzn{part\_classes}[p] \wmzn k_1<k_2)($%&\\
+% %
+% %\hspace{2cm}all_disjoint
+% $ \xgroup[k_1] \intermzn \xgroup[k_2] = \{\})$& \refstepcounter{rowcntr} \therowcntr \label{ctr:exclusiveclass}\\
+% %
+% %
+% $\forallmzn(k_1 \inmzn \CLASS, k_2 \inmzn \funcmzn{class\_parent}(k_1))(\xgroup[k_1] \subsetmzn \xgroup[k_2])$ &  \refstepcounter{rowcntr} \therowcntr \label{ctr:parent}\\
+% %
+% $\forallmzn(k \inmzn \CLASS)(\arraymzn{  class\_capacity}[k] \geqmzn \summzn(g \inmzn \GROUP)( \funcmzn{ bool2int}(g \inmzn \xgroup[k]) * \summzn(u \inmzn \STUDENT)(\funcmzn{bool2int}(\xstudent[u] == g))))$ &  \refstepcounter{rowcntr} \therowcntr \label{ctr:classcapacity}\\
+% % 
+% %
+% \hline
+% %
+% %
+% $\forallmzn(s \inmzn \SESSION)(\xroom[s] \subsetmzn \arraymzn{part\_rooms}[\funcmzn{session\_part}(s)])$& \refstepcounter{rowcntr} \therowcntr \label{ctr:allowedrooms}\\
+% %
+% %
+% $\forallmzn(s \inmzn \SESSION)(\xteacher[s] \subsetmzn \arraymzn{part\_teachers}[\funcmzn{session\_part}(s)]) $ &  \refstepcounter{rowcntr} \therowcntr \label{ctr:allowedteachers} \\
+% %
+% %
+% %$\forallmzn(k \inmzn \CLASS)(((\arraymzn{part\_room\_use}[\funcmzn{class\_part}(k)]=\text{none}) \Longleftrightarrow (\xroom[k] = \{\})) $&\\
+% $\forallmzn(s \inmzn \SESSION)((( $\hspace{1,3cm}$\arraymzn{part\_room\_use}[\funcmzn{session\_part}(s)]=\text{none}) \equimzn (\xroom[s] = \{\})) $&\\
+% \multicolumn{1}{|c}{$\landmzn ((\arraymzn{part\_room\_use}[\funcmzn{session\_part}(s)]=\text{single}) \arrowmzn (\funcmzn{card}(\xroom[s]) = 1))  $}&\\
+% \multicolumn{1}{|c}{$\landmzn((\arraymzn{part\_room\_use}[\funcmzn{session\_part}(s)]=\text{multiple}) \arrowmzn (\funcmzn{card}(\xroom[s])>=1)))$}
+% & \refstepcounter{rowcntr} \therowcntr 
+% \label{ctr:multiroom}\\
+% %
+% %
+% $\forallmzn(s \inmzn \SESSION)( \funcmzn{card}(\xteacher[s]) = \funcmzn{teacher\_per\_session}[s])$ & \refstepcounter{rowcntr} \therowcntr 
+% \label{ctr:multiteacher}\\
+% %
+% %
+% \davidl{use GCC for (10)}
+% $\forallmzn(p \inmzn \PART,t \inmzn \arraymzn{part\_teachers}[p])(\summzn{}(s \inmzn \funcmzn{part\_sessions}(p))(\funcmzn{bool2int}(t \inmzn \xteacher[s])) = \arraymzn{part\_teacher\_service}[p,t]) $& \refstepcounter{rowcntr} \therowcntr 
+% \label{ctr:partteacherservice}\\
+% %
+% %
+% \hline
+% %
+% %
+% %$\forallmzn(k \inmzn \CLASS)(\xroom[k] \subsetmzn \arraymzn{part\_rooms}[\funcmzn{class\_part}(k))$ & \refstepcounter{rowcntr} \therowcntr  \label{ctr:allowedsrooms}\\
+% %
+% %$\forallmzn(s \inmzn \SESSION)(\xteacher[s] \subsetmzn \arraymzn{part\_teachers}[\funcmzn{session\_part}(s)])$  & \refstepcounter{rowcntr} \therowcntr  \label{ctr:allowedsteacher}\\
+% %
+% $\forallmzn(p \inmzn \PART,s \inmzn \funcmzn{part\_sessions}(p))(($\hspace{0.5cm}$\funcmzn{slot\_week}(\xslot[s]) \inmzn \arraymzn{part\_weeks}[p])$ &\\
+%   \multicolumn{1}{|c}{$\landmzn (\funcmzn{slot\_weekday}(\xslot[s]) \inmzn \arraymzn{part\_days}[p])$} &\\
+%   \multicolumn{1}{|c}{$\landmzn (\funcmzn{slot\_dailyslot}(\xslot[s]) \inmzn \arraymzn{part\_dailyslots}[p]))$}& \refstepcounter{rowcntr} \therowcntr 
+% \label{ctr:allowedslots}\\
+% %
+% %
+% $\forallmzn(s \inmzn \SESSION)((\xslot[s] - 1) \divmzn \gconst{nr\_slots\_per\_day} = (\xslot[s] + \funcmzn{session\_length}(s) - 1) \divmzn \gconst{nr\_slots\_per\_day})$& \refstepcounter{rowcntr} \therowcntr 
+% \label{ctr:nopreemption}\\
+% %
+% %
+% $ \forallmzn(k \inmzn \CLASS, s_1,s_2 \inmzn \funcmzn{class\_sessions}[k] \wmzn \funcmzn{session\_rank}(s_1)<\funcmzn{session\_rank}(s_2) )$ &\\
+% \multicolumn{1}{|c}{$(\xslot[s_1]+\funcmzn{session\_length}(s) \leqmzn \xslot[s_2])) $}& \refstepcounter{rowcntr} \therowcntr 
+% \label{ctr:classsequencing}\\
+% %
+% %
+% $\forallmzn( s \inmzn \SESSION, r \inmzn \funcmzn{class\_rooms}(\funcmzn{session\_class}(s)),s_p \inmzn \funcmzn{room\_sessions}(r)] \wmzn \funcmzn{is\_multi\_rooms}(s)) \landmzn s != s_p)($&\\
+% \multicolumn{1}{|c}{$\funcmzn{disjunctive}([\xslot[s],\xslot[s_p] ],$}&\\
+% %
+% \multicolumn{1}{|c}{$[\funcmzn{bool2int}(r \inmzn \xroom[s])* \funcmzn{session\_length}(s),\funcmzn{bool2int}(r \inmzn \xroom[s_p])* \funcmzn{session\_length}(s_p)])))$} & \refstepcounter{rowcntr} \therowcntr  \label{ctr:multiroomscheduling}\\
+% %
+% %
+% $\forallmzn(s \inmzn \SESSION \wmzn \funcmzn{is\_multi\_rooms}(s))( \summzn(r \inmzn \arraymzn{session\_rooms}[s])($&\\
+% $\funcmzn{bool2int}(r \inmzn \xroom[s]) * \arraymzn{room\_capacity}[r]) \geqmzn \summzn(g \inmzn \arraymzn{class\_group}[\funcmzn{session\_class}(s)])(\funcmzn{card}(\arraymzn{group\_students}[g]))$& \refstepcounter{rowcntr} \therowcntr  
+% \label{ctr:multiroomcapacity}\\
+% %
+% %
+% %$\forallmzn(s \inmzn \SESSION, r \inmzn \funcmzn{session\_rooms}(s))($&\\
+% %\multicolumn{1}{|c}{$\arraymzn{room\_capacity}[r] \geq sum(g \inmzn %\funcmzn{session\_group}(s))(\funcmzn{card}(\arraymzn{group\_students}[g]))))$} & \refstepcounter{rowcntr} \therowcntr  
+% %\label{ctr:cumulativeroomcapacity}\\
+% %
+% %
+% $\forallmzn(s \inmzn \SESSION \wmzn \funcmzn{has\_mandatory\_room}(s))(\xroom[s] \intermzn \funcmzn{session\_mandatory}[s] != \{\})$& \refstepcounter{rowcntr} \therowcntr 
+% \label{ctr:mandatoryrooms}\\
+% %
+% %
+% $\forallmzn(r \inmzn \ROOM)($&\\
+% \multicolumn{1}{|c}{$\funcmzn{cumulative}([\xslot[s] | s \inmzn \funcmzn{room\_sessions}(r)],[\funcmzn{bool2int}(r \inmzn \xroom[s])* \funcmzn{session\_length}(s) | s \inmzn \funcmzn{room\_sessions}(r)  ],$}&\\
+% \multicolumn{1}{|c}{$[\summzn(g \inmzn \GROUP)(\funcmzn{bool2int}(g \inmzn \xgroup[\funcmzn{session\_class}(s)]) * \summzn(u \inmzn \STUDENT)(\funcmzn{bool2int}(g = \xstudent[u]))| s \inmzn \funcmzn{room\_session}(r)],$}&\\
+% $\arraymzn{room\_capacity}(r))))$& \refstepcounter{rowcntr} \therowcntr  
+% \label{ctr:roomuse}\\
+% %
+% %
+% %\forallmzn(t \inmzn \TEACHER)(\funcmzn{cumulative}( & \\
+% %\multicolumn{1}{|c}{$[\xslot[s] | s \inmzn \funcmzn{teacher\_sessions}(t)],[\funcmzn{bool2int}(t \subsetmzn \xteacher[s])* \funcmzn{session\_length}(s) | s \inmzn \funcmzn{teacher\_sessions}(t)],$}&\\
+% %\multicolumn{1}{|c}{$[1| s \inmzn \funcmzn{teacher\_sessions}(t)],teacher\_max\_use[t])))$}& \refstepcounter{rowcntr} \therowcntr  
+% %\label{ctr:teacheruse}\\
+% %
+% %
+% %$\forallmzn(g \inmzn \GROUP)(\funcmzn{cumulative}($&\\
+% %\multicolumn{1}{|c}{$[\xslot[s] | s \inmzn \funcmzn{group\_sessions}(g)],[\funcmzn{session\_length}(s) | s \inmzn \funcmzn{group\_sessions}(g)],$}&\\
+% %\multicolumn{1}{|c}{$[1| s \inmzn \funcmzn{group\_sessions}(g)],group\_max\_use[g])))$}& \refstepcounter{rowcntr} \therowcntr  
+% %\label{ctr:groupuse}\\
+% %
+% %
+% \hline
+% %
+% %
+% $\FORBIDDENPERIOD((e,S_p),h_1,h_2) = \forallmzn(i \inmzn S_p )( e \inmzn \xroom[i] \arrowmzn (\xslot[i] < h_1) \landmzn  (\xslot[i]>h_2)) $& \refstepcounter{rowcntr} \therowcntr 
+% \label{ctr:forbiddenperiod}\\
+% %
+% %
+% $\SAMEWEEKDAY((e,S_p)) = \forallmzn(i,j \inmzn S_p \wmzn i<j)($&\\
+% \multicolumn{1}{|c}{$ (e\inmzn \xroom[i] \landmzn e\inmzn \xroom[j]) \arrowmzn (\xslot[i] \divmzn nr\_weekly\_slots) = (\xslot[j] \divmzn nr\_weekly\_slots))$} & \refstepcounter{rowcntr} \therowcntr 
+% \label{ctr:sameweekday}\\
+% %
+% %
+% $\SAMEROOMS((e,S_p)) = \forallmzn(s_1,s_2 \inmzn S_p \wmzn s_1<s_2 )(($&\\
+% %
+% \multicolumn{1}{|c}{$e\inmzn \xroom[s_1] \landmzn e\inmzn \xroom[s_2]) \arrowmzn \xroom[s_1] = \xroom[s_2])$} & \refstepcounter{rowcntr} \therowcntr 
+% \label{ctr:samerooms}\\
+% %
+% %
+% $\SEQUENCED((e_1,S_1),(e_2,S_2)) = \forallmzn(i \inmzn S_1,j \inmzn S_2)($&\\
+% \multicolumn{1}{|c}{$(e_1\inmzn \xroom[i] \landmzn e_2\inmzn \xroom[j]) \arrowmzn \xslot[i]+\funcmzn{session\_length}(i) \leqmzn \xslot[j])$} & \refstepcounter{rowcntr} \therowcntr 
+% \label{ctr:sequenced}\\
+% %
+% %
+% $\NOOVERLAP((e_1,S_1))= \funcmzn{disjunctive}([\xslot[s]|s \inmzn S_1 ],[\funcmzn{session\_length}(s)*\funcmzn{bool2int}(e_1 \inmzn \xroom[s])|s \inmzn S_1])$ & \refstepcounter{rowcntr} \therowcntr 
+% \label{ctr:nooverlap}\\
+% \hline
+% \end{tabular}
+% %}
+% \caption{Contraintes et prédicats du modèle \MINIZINC{}}
+% \label{table:mzn-contraintes}
+% \end{table*}

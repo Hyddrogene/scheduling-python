@@ -1,0 +1,101 @@
+Parfait, entrons dans le **détail précis du chargement d’une page HTML** par un navigateur. On va décomposer ça en **étapes chronologiques**, en montrant ce qui se passe côté client, et comment HTML, CSS et JS interagissent.
+
+---
+
+# **Le processus de chargement d’une page HTML par un navigateur**
+
+## **1. Résolution de l’URL et connexion au serveur**
+
+1. L’utilisateur tape une URL ou clique sur un lien.
+2. Le navigateur décompose l’URL en : protocole (`http` ou `https`), domaine (`www.exemple.com`) et chemin (`/index.html`).
+3. Le navigateur résout le **nom de domaine** via le **DNS** pour obtenir l’adresse IP du serveur.
+4. Une connexion TCP est établie avec le serveur (via le port 80 pour HTTP ou 443 pour HTTPS).
+5. Pour HTTPS, un **handshake TLS/SSL** sécurise la connexion.
+
+---
+
+## **2. Envoi de la requête HTTP**
+
+* Le navigateur envoie une **requête HTTP GET** pour demander le fichier HTML :
+
+```http
+GET /index.html HTTP/1.1
+Host: www.exemple.com
+```
+
+* La requête peut contenir des cookies, la langue préférée, etc.
+
+---
+
+## **3. Réception et analyse du HTML**
+
+1. Le serveur renvoie la réponse HTTP avec le code HTML.
+2. Dès que le navigateur reçoit les **premiers octets**, il commence à **parser** le HTML **progressivement** (parce qu’il n’attend pas que tout le fichier soit reçu).
+3. Le navigateur construit le **DOM (Document Object Model)** : une arborescence qui représente la structure de la page.
+
+---
+
+## **4. Détection et traitement des ressources externes**
+
+Pendant le parsing du HTML, le navigateur rencontre des **ressources externes** :
+
+* **CSS** (`<link rel="stylesheet" href="style.css">`)
+* **Images** (`<img src="photo.jpg">`)
+* **JavaScript** (`<script src="app.js"></script>`)
+
+### a) CSS
+
+* Le navigateur commence à télécharger les fichiers CSS dès qu’il les rencontre.
+* Il construit le **CSSOM (CSS Object Model)** : la structure de toutes les règles CSS.
+* Le **rendering** de la page est bloqué tant que le CSS n’est pas chargé (pour éviter le “flash” de page non stylisée).
+
+### b) Images et médias
+
+* Les images sont téléchargées en parallèle (multi-threading) et insérées dès qu’elles sont disponibles.
+* Les vidéos et audios peuvent être préchargés ou chargés à la demande selon les attributs HTML (`preload`, `autoplay`).
+
+### c) JavaScript
+
+* **Script bloquant** : si un `<script>` est rencontré dans le `<head>` sans `defer` ou `async`, le navigateur arrête le parsing du HTML, télécharge et exécute le script avant de continuer.
+* **Defer** : le script est téléchargé en parallèle mais exécuté **après** le parsing du DOM.
+* **Async** : le script est téléchargé en parallèle et exécuté **dès qu’il est prêt**, ce qui peut interrompre le parsing du HTML.
+
+---
+
+## **5. Construction du rendu**
+
+* Une fois le DOM et le CSSOM construits, le navigateur fusionne les deux pour créer le **Render Tree** : structure qui représente **le contenu et son style visuel**.
+* Ensuite, le navigateur effectue le **layout (reflow)** : calcul des positions exactes des éléments.
+* Enfin, le **painting** dessine les pixels sur l’écran.
+
+---
+
+## **6. Exécution des scripts et événements**
+
+* Les scripts JavaScript peuvent maintenant manipuler le DOM et le CSSOM pour modifier la page.
+* Les événements sont attachés et la page devient **interactive**.
+
+---
+
+## **Résumé chronologique**
+
+1. Résolution DNS et connexion au serveur
+2. Requête HTTP pour le fichier HTML
+3. Parsing du HTML → construction du DOM
+4. Téléchargement et parsing du CSS → CSSOM
+5. Téléchargement des images et médias
+6. Téléchargement et exécution des scripts JS (selon blocage, `async` ou `defer`)
+7. Fusion DOM + CSSOM → Render Tree → layout → paint
+8. Interactivité et événements JavaScript
+
+---
+
+### **Astuce pédagogique**
+
+Pour visualiser ce processus, tu peux utiliser les outils de développement de Chrome : **Network tab** montre le téléchargement des ressources, et **Performance tab** montre le rendu et l’exécution du JS en temps réel. C’est très pratique pour comprendre **où se bloquent les ressources** et optimiser le chargement.
+
+---
+
+Si tu veux, je peux te faire un **schéma clair illustrant cette chronologie avec DOM, CSSOM, Render Tree et JS**, ce qui rend le processus beaucoup plus compréhensible.
+
+Veux‑tu que je fasse ce schéma ?

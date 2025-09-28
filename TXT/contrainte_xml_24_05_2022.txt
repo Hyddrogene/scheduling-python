@@ -1,0 +1,29 @@
+sequenced({CM1,CM2,CM3},{TP1})
+periodic({CM2,CM4,...,CM10})
+periodic({  ,CM3,...,CM11})
+forbiddenPeriod(TP1,week2-week6)
+periodic({TP2,...,TP8})
+periodic({TP3,...,TP9})
+allowedSlot(CM1,week1)
+allowedSlot({CM2,...,CM12},week1-week6)
+allowedSlot(EXAM,week6)
+sequenced({EXAM},{CM12})
+
+
+ALGO
+                week1      week2       week3      week4       week5      week6
+
+partie CM-TD++   1
+
+partie CM-TD    1 2         3 4         5 6         7 8         9 10            11    +1 pour le CM-TD++
+
+EXAM                                                                     1(EXAM)
+
+partie TP       1           2 3         4 5         6 7         8 9
+
+
+CM-TD++ < TP1
+CM-TD2 < TP1
+EXAM < CM-TD11
+
+periodic({...}) <=> periodic({...},week,1)

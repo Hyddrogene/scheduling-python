@@ -1,0 +1,20 @@
+
+
+same_rooms(("algoLab1",{5-6}))
+
+periodic(("algoLec",{1-3,4}),1,week)
+
+sequenced(("algoLec1",{3}),("algoLab1",{1}))
+
+forbidenPeriod(("lecturer2",{5-10}),600,1200)
+
+classe based
+
+présenter les différents schémas et leur différence
+
+UTP durée normé pour les séances 
+bijection pas possible
+
+
+france.victime -> 
+collectif ssu

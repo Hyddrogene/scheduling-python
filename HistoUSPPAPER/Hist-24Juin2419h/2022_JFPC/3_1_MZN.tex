@@ -1,0 +1,109 @@
+%------------------------------------------------------------
+%------------------------------------------------------------
+\subsection{Modèle \MINIZINC{}}
+\label{sec:model-minizinc}
+
+%------------------------------------------------------------
+%------------------------------------------------------------
+
+\input{2022_JFPC/3_1_MiniZincTable}
+
+%------------------------------------------------------------
+%------------------------------------------------------------
+%\subsection{Student Sectioning}
+%\label{sec:model-sectioning}
+
+{\MINIZINC} est un langage de modélisation haut-niveau de problèmes d'optimisation sous contraintes \cite{MZN,MINIZINC}. 
+Les modèles {\MINIZINC} sont traduits dans le langage cible {\FLATZINC} \cite{FLATZINC} qui permet d'interfacer différents types de solveurs dont les solveurs de programmation par contraintes sur domaines finis tels  {\GECODE} \cite{GECODE}.
+{\MINIZINC} intègre de nombreuses contraintes globales et le modèle {\UTP} présenté en Table~\ref{table:mzn-contraintes} et utilisant les variables de décision présentée en Table~\ref{table:cp-variables} s'appuie sur quelques contraintes dédiées aux problèmes d'ordonnancement.
+
+%\davidl{Expliquer fichier DZN + fichier MZN avec implémentation prédicats UTP}
+Les contraintes de sectionnement répartissent
+les étudiants dans les groupes et assigne chacun de ces groupes à différentes classes 
+conformément aux règles de sectionnement et aux seuils d'effectifs.
+%La contrainte~\ref{mzn:grouppartition} partitionne les étudiants en groupes.
+La contrainte \ref{mzn:studentgrouping} n'autorise le regroupement
+d'étudiants que s'ils sont inscrits aux mêmes cours.
+\ref{mzn:allparts} impose que tout étudiant, assimilé à son groupe, assiste à toute partie de cours dans lequel il est inscrit.
+\ref{mzn:exclusiveclass} assure que les classes d'une partie de cours n'ont aucun groupe en commun.
+\ref{mzn:parent} implémente la relation de parenté entre classes.
+Enfin, \ref{mzn:classcapacity} vérifie que l'effectif cumulé des groupes attribués à une classe ne dépasse pas le seuil autorisé. 
+%A noter que cette contrainte utilise des variables auxiliaires pseudo-booléennes.
+
+%------------------------------------------------------------
+%------------------------------------------------------------
+%\subsubsection{Resource Distribution}
+%\label{sec:model-distribution}
+
+La distribution des ressources s'appuie sur des contraintes de domaine, de cardinalité et de sommes.
+Les contraintes~\ref{mzn:allowedrooms} et \ref{mzn:allowedteachers} définissent les salles et enseignants allouables à chaque séance.
+\ref{mzn:multiroom} contraint le nombre de salles allouées à une séance selon que sa partie de cours est sans salles, mono-salle, ou multi-salles.
+\ref{mzn:multiteacher} attribue le nombre attendu d'enseignants à chaque séance
+et \ref{mzn:partteacherservice} vérifie que chaque enseignant dispense le volume de séances requis par partie de cours où il est pré-positionné.
+
+%------------------------------------------------------------
+%------------------------------------------------------------
+%\subsubsection{Session Scheduling and Resource Allocation}
+%\label{sec:model-scheduling}
+
+La programmation des séances et l'allocation des ressources met en jeu des contraintes de positionnement, de séquencement, de non-chevauchement et de capacité. 
+%Constraint~\ref{mzn:allowedslots} defines the allowed slots per session
+%and 
+La contrainte~\ref{mzn:allowedslots} définit les créneaux autorisés pour chaque séance.
+\ref{mzn:nopreemption} interdit qu'une séance soit à cheval sur 2 journées. 
+\ref{mzn:classsequencing} séquence les séances d'une classe selon leur rangs.
+Les contraintes \ref{mzn:multiroomscheduling} et \ref{mzn:multiroomcapacity} modélisent les séances multi-salles et l'accès exclusif à leurs ressources.
+\ref{mzn:multiroomscheduling} impose qu'une ressource allouée à une séance multi-salles soit disjonctive le temps de son utilisation.
+\ref{mzn:multiroomcapacity} assure que le nombre d'étudiants attendus n'excède pas la capacité cumulée des salles allouées.
+À noter que cette contrainte est purement quantitative et autorise toute répartition d'étudiants dans les salles indépendamment de la structure de groupes.
+\ref{mzn:mandatoryrooms} modélise les salles à allouer obligatoirement à toute séance d'une partie de cours.
+\ref{mzn:roomuse} modélise la contrainte de capacité cumulative qui s'applique par défaut à toute salle allouée hors séances multi-salles.
+%\ref{mzn:groupuse}
+
+%------------------------------------------------------------
+%------------------------------------------------------------
+
+%\subsubsection{{\UTP} Predicates}
+%\label{sec:model-predicates}
+
+%%%%{\ADJACENTROOMS}
+%%%%{\ATMOSTDAILY}
+%%%%{\ATMOSTWEEKLY}
+%%%%{\TRAVEL}
+%{\FORBIDDENPERIOD}
+%{\NOOVERLAP}
+%%%%{\SAMEDAILYSLOT}
+%%%%{\SAMEDAY}
+%{\SAMEROOMS}
+%%%%{\SAMESLOT}
+%%%%{\SAMESTUDENTS}
+%%%%{\SAMETEACHERS}
+%{\SAMEWEEKDAY}
+%%%%{\SAMEWEEKLYSLOT}
+%%%%{\SAMEWEEK}
+%{\SEQUENCED}
+%%%%{\TEACHERDISTRIBUTION}
+%%%%{\WEEKLY}
+
+%Due to lack of space, we just present a few {\UTP} constraint predicates, namely,
+La table~\ref{table:mzn-contraintes} présente les variantes de quelques prédicats \UTP{} dans le cas où les entités ciblées sont des salles.
+%, respectivement,
+%\texttt{\FORBIDDENPERIOD} (\ref{mzn:forbiddenperiod}),
+%\texttt{\SAMEWEEKDAY} (\ref{mzn:sameweekday}), 
+%\texttt{\SAMEROOMS} (\ref{mzn:samerooms}),
+%\texttt{\NOOVERLAP} (\ref{mzn:nooverlap}) 
+%et \texttt{\SEQUENCED} (~\ref{mzn:sequenced}).
+%Note that \texttt{\FORBIDDENPERIOD} accepts start and end point parameters.
+\ref{mzn:forbiddenperiod} implémente le prédicat \texttt{\FORBIDDENPERIOD} qui prend en paramètres les 2 créneaux modélisant la période interdite. 
+\ref{mzn:sameweekday}, \ref{mzn:samerooms} et \ref{mzn:sequenced} modélisent de manière directe les prédicats \texttt{\SAMEWEEKDAY}, \texttt{\SAMEROOMS} et \texttt{\SEQUENCED}.
+\ref{mzn:nooverlap} implémente le prédicat \texttt{\NOOVERLAP} en s'appuyant sur la contrainte globale \texttt{disjunctive}. %de \MINIZINC{}.
+
+
+% Note that entailed constraints may be enforced. 
+% For instance, a room $r$ is necessarily disjunctive if a non-overlapping constraint is enforced on its set of compatible sessions, %\footnote{
+%Il faut noter que des contraintes peuvent être renforcés. 
+%Par exemple, une salle $r$ est nécessairement disjonctive si une contrainte de non-chevauchement est appliquée à son ensemble de sessions possibles, c'est-à-dire si l'instance inclut la contrainte ${no\_overlap}$.
+% i.e., if the instance includes constraint ${no\_overlap}((r,\map{\ROOM}{\SESSION}{r}))$.
+% If so, the default cumulative capacity constraint may be safely replaced with  Constraint~\ref{mzn:disjunctiveroomcapacity} for such resources where
+% $\disjunctiverooms\subseteq{\ROOM}$         denotes the set of disjunctive rooms.
+%Dans ce cas, la contrainte cumulative par défaut peut être remplacée en toute sécurité par la contrainte~\ref{mzn:disjunctiveroomcapacity} pour les ressources concernés.

@@ -1,0 +1,50 @@
+%------------------------------------------------------------
+%------------------------------------------------------------
+\subsection{Student Sectioning}
+\label{sec:model-sectioning}
+
+The sectioning constraints partition students into groups and assign groups to classes while satisfying sectioning rules and class size upper-bounds. 
+Constraint~(\ref{ctr:grouppartition}) ensures the groups partition the set of students.
+Constraint~(\ref{ctr:studentgrouping}) prevents the clustering of students who register to different courses.
+Constraint~(\ref{ctr:nocommongroup}) ensures that classes of a course part have no shared groups
+and Constraint~(\ref{ctr:allparts}) that the group of a student attends each part of a course he is registered to.
+Constraint~(\ref{ctr:parent}) implements the parent relationships between classes.
+Constraint~(\ref{ctr:classcapacity}) ensures maximum class size is never exceeded by the number of students in its groups. 
+Note that expressions $(g\in\var{\CLASS}{\GROUP}{k})$ in this contraint denote pseudo-boolean variables. The same notation is used for convenience in other constraints.
+
+\begin{flalign}
+&
+&{\STUDENT}=\bigsqcup\limits_{g\in\GROUP}^{}{\var{\GROUP}{\STUDENT}{g}}
+&\label{ctr:grouppartition}
+\\
+%
+&\forall u,u'\in\STUDENT,\map{\STUDENT}{\COURSE}{u}\neq\map{\STUDENT}{\COURSE}{u'},g\in\GROUP:
+&\myset{u,u'}\nsubseteq{\var{\GROUP}{\STUDENT}{g}}
+&\label{ctr:studentgrouping}
+\\
+%
+&\forall p\in\PART,k,k'\in\map{\PART}{\CLASS}{p},k\neq k':
+&{\var{\CLASS}{\GROUP}{k}}\bigcap{\var{\CLASS}{\GROUP}{k'}}=\emptyset
+%&\bigsqcup\limits_{k\in\map{\PART}{\CLASS}{p}}^{}{\var{\CLASS}{\GROUP}{k}}=\bigcup\limits_{k\in\map{\PART}{\CLASS}{p}}^{}{\var{\CLASS}{\GROUP}{k}}
+&\label{ctr:nocommongroup}
+\\
+%
+&\forall u\in\STUDENT,g\in\GROUP:
+&(u\in\var{\GROUP}{\STUDENT}{g})
+\rightarrow
+\bigwedge\limits_{p\in\map{\STUDENT}{\PART}{u}}^{}\bigvee\limits_{k\in\map{\PART}{\CLASS}{p}}^{}(g\in\var{\CLASS}{\GROUP}{k})
+&\label{ctr:allparts}
+\\
+%
+&\forall k\in\CLASS,k'\in\classparents{k}:
+&\var{\CLASS}{\GROUP}{k}\subseteq\var{\CLASS}{\GROUP}{k'}
+&\label{ctr:parent}
+\\
+&\forall k\in\CLASS:
+&%\classsize{k}
+%=
+\classcapacity{k}
+\geq
+\sum_{g\in\GROUP}{\mycard{\var{\GROUP}{\STUDENT}{g}}.(g\in\var{\CLASS}{\GROUP}{k})}
+&\label{ctr:classcapacity}
+\end{flalign}

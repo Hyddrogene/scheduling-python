@@ -1,0 +1,62 @@
+<?php
+
+// Charger la bibliothèque PHPLinAlg
+require_once 'phplinag.php';
+
+// Définir les données d'entraînement
+$inputs = array(
+  array(0, 0, 1),
+  array(1, 1, 1),
+  array(1, 0, 1),
+  array(0, 1, 1)
+);
+
+$outputs = array(
+  array(0),
+  array(1),
+  array(1),
+  array(0)
+);
+
+// Définir les poids aléatoires pour les entrées
+$weights = array(
+  array(rand(), rand(), rand()),
+  array(rand(), rand(), rand()),
+  array(rand(), rand(), rand())
+);
+
+// Boucle d'entraînement
+for ($i = 0; $i < 60000; $i++) {
+  // Choisir une entrée aléatoirement
+  $rand = rand(0, count($inputs) - 1);
+  $input = $inputs[$rand];
+  $output = $outputs[$rand];
+
+  // Calculer les activations du réseau
+  $layer1 = matrix_mul($input, $weights[0]);
+  $layer2 = matrix_mul($layer1, $weights[1]);
+  $layer3 = matrix_mul($layer2, $weights[2]);
+
+  // Calculer les erreurs pour chaque couche
+  $error3 = matrix_sub($output, $layer3);
+  $error2 = matrix_mul($error3, transpose($weights[2]));
+  $error1 = matrix_mul($error2, transpose($weights[1]));
+
+  // Modifier les poids en fonction des erreurs
+  $weights[2] = matrix_add(
+    $weights[2],
+    matrix_mul(transpose($layer2), $error3)
+  );
+  $weights[1] = matrix_add(
+    $weights[1],
+    matrix_mul(transpose($layer1), $error2)
+  );
+  $weights[0] = matrix_add(
+    $weights[0],
+    matrix_mul(transpose($input), $error1)
+  );
+}
+
+// Utiliser le réseau de neurones formé pour faire une prédiction
+$input = array(1, 0, 0);
+$layer1 = matrix_mul($input

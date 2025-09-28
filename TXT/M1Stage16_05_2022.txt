@@ -1,0 +1,27 @@
+toutes les classes ont le même créneau ? remarque utile pour le paire impaire
+
+difficulté si une class impaire paire ont une hétérogéinité sur les contraintes -> 
+
+sameAttendees étudiant et prof : résolution tactique pour fixer les profs dans les classes -> permet de traiter les sameAttendees (avec les classes) && sortir les classes dans les emaps 
+
+contraintes étudiants disjonctive ->  sameAttendees  ITC 
+
+<virer la parties class>
+
+contrainte de précédence entre les parties qui seront les premiers cours (exemple CM) 
+
+exploser les parts en multiples part pourchaque séances? -> pertes peridodic (262 sessions <-> 262 Part: cependant pas de bit set periodicité)
+part virtuel -> permet de jouer avec des overlaps -> ? pas nécessaire
+
+peridodic(Cm3..CM10);
+peridodic(Tp1..Tpk);
+squenced({cm3},{Tp1});
+
+part {cm3..Cm10} <CMF>
+part {tp1..tpk}  <TP>
+part {Cm1, Cm2}  <CMD> -> même jour : éclaté en plusieurs part ou jouer sur les times (en faisant varier la length)
+
+
+sameWeeks(CMF,CMD);
+precedence(CMD,CMF);
+precedence(CMF,TP);

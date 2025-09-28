@@ -1,0 +1,617 @@
+\documentclass{beamer}
+
+\mode<presentation>{
+    \usetheme{presentationleria}
+}
+
+%%%%%%%%% Packages obligatoires
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[francais]{babel}
+\usepackage{graphicx}
+\usepackage{chronosys}%frise chronologique
+\usepackage{color}
+\usetikzlibrary{matrix,backgrounds}%matrice
+\usetikzlibrary{arrows.meta}
+\usepackage{comment} 
+\usepackage[french,onelanguage,ruled,vlined]{algorithm2e}%algo
+\usepackage{colortbl}
+\usepackage{geometry}
+\usepackage{datenumber,xparse}
+\usepackage{tcolorbox,listings}%listing bibli
+
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage[french,onelanguage,ruled,vlined]{algorithm2e}%algo
+%\usepackage{hyperref}%doublon
+\usepackage{array}
+\usepackage{transparent}
+\usepackage{float}
+\input{img/setXml}
+\usepackage[style=numeric,sorting=none]{biblatex}
+\addbibresource{references.bib}
+%%%%%%%%% Informations sur le document
+\author[C. Behuet ]{
+\textbf{Corentin Behuet}\\
+%~\\
+\textit{Directeur :} D. Lesaint\\
+\textit{Autres :} D. Genest, V. Barichard, M. Legeay\\
+%~\\
+Thèse financée par l'Université d'Angers et le projet Thélème}
+\institute[LERIA]{}
+\titlegraphic{
+  \hfill
+  \includegraphics[width=0.2\textwidth]{logos/logo_leria.pdf}
+  \hfill
+  \includegraphics[width=0.25\textwidth]{logos/ua_f_sciences_h_couleur_ecran.png}
+  \hfill
+  ~
+}
+% Titre :   M. Legeay,  
+\title[Conception d'emplois du temps universitaires ]{Approche par contraintes\\ pour la conception d’emplois du temps universitaires }
+
+%\subtitle{Journée du LERIA 2021}
+% Date (\today ou une date) :
+\date{}
+% Nom à affiche pour le plan (Plan, Sommaire, etc.) :
+\newcommand{\nomplan}{Sommaire}
+
+%%%%%%%%% Plan automatique
+% Section
+\AtBeginSection{\plansection}
+% Sous-section
+\AtBeginSubsection{\plansoussection}
+
+\begin{document}
+
+\begin{frame}
+    \titlepage
+    
+\end{frame}
+
+\begin{frame}
+\frametitle{\nomplan}
+\tableofcontents
+\end{frame}
+
+%=============================
+
+\section{Introduction}
+
+\begin{frame}{La problématique EDT : défis et approche}
+    \begin{minipage}{0.66\textwidth}
+        \begin{itemize}
+            \item Caractéristiques
+            \begin{itemize}
+                \item Multi-décisionnel (sectionnement, allocation, programmation \ldots)
+                \item Différentes modalités de raisonnement (génération de solution, révision \ldots)
+            \end{itemize}
+            \item Processus décisionnel
+            \begin{itemize}
+                \item Différentes étapes, acteurs et échelles de temps
+                \item Intrinsèquement dynamique (en continu avec des impondérables)
+                \item Variant selon pays et institutions
+            \end{itemize}
+            \item Besoin d’outils flexibles d’aide à la décision
+            \begin{itemize}
+                \item Modélisation complexe (entités, règles \ldots)
+                \item Résolution difficile (combinatoire, volumétrie)
+            \end{itemize}
+        \end{itemize}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.30\textwidth}
+        \includegraphics[width=\textwidth]{img/aide_décision.png}
+    \end{minipage}
+\end{frame}
+
+%==============
+
+\begin{frame}{Classes de problèmes d'emplois du temps}
+\begin{itemize}
+    \item Problèmes fondamentaux
+    \begin{itemize}
+        \item UCTP (University Course Timetabling Problem)
+        \item STP (School Timetabling Problem) 
+        \item ETP (Examination Timetabling Problem) 
+    \end{itemize}
+    \item Problèmes connexes :
+        \begin{itemize}
+            \item BACP (Balanced Academic Curriculum Problem)
+            \item TAP (Tutor Allocation Problem)
+            \item RAP (Room Assignment Problem)
+            \item SSP (Student Sectionnement Problem)
+        \end{itemize}
+\end{itemize}
+\end{frame}
+
+%==============
+
+\begin{frame}{Modélisation}
+\begin{itemize}
+    \item Variations entre modèles :
+    \begin{itemize}
+        \item Représentation des ressources
+        \item Représentation des cours
+        \item Représentation temporelle
+        \item Déclaration des contraintes 
+    \end{itemize}
+    \item Schémas de représentation : 
+        \begin{itemize}
+            \item Modèle ITC-2019\cite{2018_muller_PATAT} format XML\footnote{\url{https://www.itc2019.org/}}
+            \item Modèle ITC-2007 format DIMACS
+            \item Modèle XHSTT-2014\cite{2012_ahmadi_AOR} format XML \footnote{\url{http://jeffreykingston.id.au/khe/}}
+        \end{itemize}
+\end{itemize}
+\end{frame}
+
+%==============
+
+\begin{frame}{Résolution}
+\begin{minipage}{0.49\textwidth}
+\begin{itemize}
+    \item Approches exactes :
+    \begin{itemize}
+        \item  ILP\cite{2014_aizam_NACO,2016_ober_PATAT}, MILP\cite{2012_alefragis_,2022_nurul_MJFAS}
+        \item  SAT\cite{2021_lemos_TR}, ASP\cite{2019_banbara_AOR}
+        \item  PPC\cite{1998_goltz_INAP,2006_gavalleni,2007_abdennadher_SBH}, CLP \cite{2007_abdennadher_SBH}
+    \end{itemize}
+    \item Méthodes approchées : 
+        \begin{itemize}
+            \item Algorithmes évolutionnaires\cite{2009_bratkovi_SBH}
+            \item Recherche tabou\cite{2010_hao_EJOR,2010_mushi_AJST}
+            \item Recuit simulé\cite{2006_bai_,2019_jawa_JIM}
+            \item Colonies de fourmis \cite{2019_mazlan_IJECS}
+            \item Hyper-heuristiques \cite{2015_ahmed_ESA}
+        \end{itemize}
+\end{itemize}
+    \end{minipage}
+\end{frame}
+
+%==============
+
+\begin{frame}{Le ``processus UA''}
+    \begin{minipage}{.53\textwidth}
+        \includegraphics[width=\textwidth]{img/processus.png}
+    \end{minipage}
+    \begin{minipage}{0.45\textwidth}
+        \begin{itemize}
+
+            \item 1 module logiciel par étape
+            \item Problème d'EDT en aval
+        \end{itemize}
+    \end{minipage}
+    \hfill
+\end{frame}
+
+%==============
+
+\begin{frame}{Le problème d'emploi du temps UTP}
+    \begin{itemize}
+        \item Placer des séances sur une grille horaire
+        \item Allouer des salles, enseignants, groupes etc. aux séances
+        \item Respecter des contraintes
+    \end{itemize}
+    \begin{figure}
+        \centering
+            \includegraphics[scale=0.25]{img/ent_L3_Angers_informatique.png}
+    \end{figure}
+
+\end{frame}
+
+%==============
+%===============================
+%==============
+
+\section{Problématique}
+
+%=============
+
+%\begin{frame}{Modélisation}
+%    \begin{itemize}
+    %    \item Modèle existant : 
+        %    \begin{itemize}
+           %     \item ITC adapté aux institutions anglo-saxonnes
+          %      \item XHSTT adapté aux collèges-lycées
+         %   \end{itemize}
+        %\item Gestion temporelle fine 
+       % \item Qualité du modèle :
+      %  \begin{itemize}
+     %       \item Compréhensible
+    %        \item Expressif 
+   %         \item Autonome
+  %      \end{itemize}
+ %   \end{itemize}
+%\end{frame}
+
+\begin{frame}{Modélisation}
+    \begin{itemize}
+        \item Schéma le plus proche de nos besoins : ITC\cite{2018_muller_PATAT}
+        \begin{itemize}
+            \item Encodage des programmes périodiques par classe
+            \item Catalogue des contraintes dédiées
+            \item Optimisation multi-critères
+        \end{itemize}
+        \item Limites d'applicabilité
+        \begin{itemize}
+            \item Classes rigides
+            \item Toute classe est périodique
+            \item Grille horaire trop lâche
+            \item Multi-ressources, multi-classes
+            \item Enseignants
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+%==============
+
+%\begin{frame}{Résolution}
+%    \begin{itemize}
+%        \item Signaler les erreurs
+%        \item Retrouver les incohérences dans une instance
+%        \item Modèle efficace et passage à l'échelle
+%        \item Geler partiellement des variables
+%        \item Produire une solution même incomplète
+%    \end{itemize}
+
+%\end{frame}
+
+\begin{frame}{Résolution/révision}
+    \begin{minipage}{0.49\textwidth}
+         Résolution
+        \begin{itemize}
+            \item Multi-ressources, multi-critères
+            \item Dynamique : 
+            \begin{itemize}
+                \item Construction incrémentale
+                \item Adaptation
+                \item Révision
+            \end{itemize}
+            \item Volumétrie
+            \item Stratégies de résolution
+            \item Explicabilité, gestion de l'incohérence
+    \end{itemize}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.49\textwidth}
+    Révision
+    \begin{itemize}
+        \item Emplois du temps intrinsèquement dynamiques
+        \item Capable de gérer les imprévus 
+        \item Stable, peu d'altérations de la solution
+        \item Adaptabilité face aux données
+        \item Encoder des heuristiques de réparation
+    \end{itemize}
+    \end{minipage}
+
+
+\end{frame}
+
+%==============
+%===============================
+%==============
+
+\section{Travaux}
+
+%=============
+
+\begin{frame}{Langage dédié XUTP à base de règles}
+    
+    \begin{minipage}{0.49\textwidth}
+    \begin{itemize}
+        \item Format XML
+        \item 3 parties : 
+        \begin{itemize}
+            \item Entités
+            \item Règles
+            \item Pré-affectations
+        \end{itemize}
+    \end{itemize}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.49\textwidth}
+    \begin{figure}
+        \centering
+        \includegraphics[scale=0.4]{2022_CSI/2022_CSI_Diapo/img/xutp_parties.png}
+        \caption{Parties XUTP}
+        \label{fig:xutp}
+    \end{figure}
+    \end{minipage}
+\end{frame}
+
+%==============
+
+\begin{frame}{Modélisation : Entités}
+\begin{minipage}{0.49\textwidth}
+    \begin{itemize}
+        \item Maquette :
+        \begin{itemize}
+            \item Cours
+            \item Parties de cours
+            \item Classes
+        \end{itemize}
+    \end{itemize}
+\end{minipage}
+\begin{minipage}{0.49\textwidth}
+     \begin{itemize}
+        \item Ressources :
+            \begin{itemize}
+                \item Salles
+                \item Enseignants
+                \item Étudiants
+                \item Groupes
+            \end{itemize}
+    \end{itemize}
+\end{minipage}
+    \begin{figure}
+        \centering
+        \includegraphics[scale = 0.3]{img/utp_entity_model.png}
+        \caption{Hiérarchie des entités}
+        \label{fig:entities}
+    \end{figure}
+\end{frame}
+
+%==============
+
+\begin{frame}{Modélisation : Règles}
+    \begin{itemize}
+        \item Tuple d'ensembles de séances
+        \begin{itemize}
+            \item E-maps des paires entités, séances
+            \item Manipule des e-maps conditionnelles
+            \item Applique des filtres et des masques 
+        \end{itemize}
+        \end{itemize}
+
+    \begin{figure}
+        \centering
+        \includegraphics[scale= 0.35]{2022_CSI/2022_CSI_Diapo/img/UTP_rules_examples_no.png}
+        \caption{Fonctionnement des règles}
+        \label{fig:rules}
+    \end{figure}
+\end{frame}
+
+%==============
+
+
+\begin{frame}{Modélisation : Pré-affectation}
+    \begin{itemize}
+        \item Optionnel
+        \item Contient :
+        \begin{itemize}
+            \item Groupes
+            \item Séances
+        \end{itemize}
+        \item Permet des instanciations partielles
+        \item Correspond à une affectation pour les séances
+    \end{itemize}
+\end{frame}
+
+%==============
+
+\begin{frame}{Résolution UTP}
+    \begin{itemize}
+        \item 2 modélisations en CHR++\footnote{\url{https://gitlab.com/vynce/chrpp}} et MiniZinc\footnote{\url{https://www.minizinc.org/}} 
+        \item Contraintes globales efficaces
+        \item Modulaire
+        \item Représentation compréhensible
+        \item Axés sur les contraintes
+        \item Définir un ensemble d'heuristiques
+
+    \end{itemize}
+\end{frame}
+
+%==============
+
+\begin{frame}{Résolution UTP : Ordonnancement}
+    \begin{itemize}
+        \item Ordonnancement de tâches
+        \begin{itemize}
+            \item Séquencement
+            \item Date spécifique de début
+            \item Parallélisation-distribution
+        \end{itemize}
+    \end{itemize}
+    \begin{figure}
+        \centering
+        \includegraphics[scale = 0.3]{img/ordoexemple.png}
+        \caption{Ordonnancement de séances}
+        \label{fig:ordo}
+    \end{figure}
+\end{frame}
+
+%==============
+
+\begin{frame}{Résolution UTP : Ordonnancement cumulatif et disjonctif}
+    \begin{itemize}
+        \item Affectation de ressources
+        \begin{itemize}
+            \item Contrainte cumulative et disjonctive
+            \item Contrainte global cardinality
+            \item Contrainte de domaine
+        \end{itemize}
+    \end{itemize}
+    \begin{minipage}{0.49\textwidth}
+             \begin{figure}
+        \centering
+        \includegraphics[scale = 0.2]{img/cumulative.png}
+        \caption{Ordonnancement cumulatif}
+        \label{fig:ordo}
+    \end{figure}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.49\textwidth}
+        \begin{figure}
+        \centering
+        \includegraphics[scale = 0.2]{img/disjunctive.png}
+        \caption{Ordonnancement disjonctif}
+        \label{fig:ordo}
+    \end{figure}
+    \end{minipage}
+
+\end{frame}
+
+%==============
+
+\begin{frame}{Résolution UTP : Multi-ressources}
+    \begin{itemize}
+        \item Variables ensemblistes et entières 
+        \item Contrainte de cardinalité
+    \end{itemize}
+    \begin{figure}
+        \centering
+        \includegraphics[scale = 0.3]{img/dijunctifMultiRessource.png}
+        \caption{Ordonnancement multi-ressources}
+        \label{fig:multiressource}
+    \end{figure}
+\end{frame}
+
+%==============
+
+\begin{frame}{Résolution UTP : Heuristiques}
+    \begin{itemize}
+        \item Ordre des variables
+        \begin{itemize}
+            \item Affecter les ressources en premier
+            \item Forte propagation dans les contraintes d'ordonnancement
+        \end{itemize}
+        \item Parcours des domaines
+            \begin{itemize}
+                \item Parcourir de manière aléatoire les domaines des ressources
+                \item Splitter les domaines les variables temporelles
+            \end{itemize}
+        \item Stratégie first fail
+        \item Utiliser le graphe de contrainte pour des heuristiques plus fines
+    \end{itemize}
+\end{frame}
+
+%==============
+
+\begin{frame}{Chaîne de traitement}
+ \begin{minipage}{.53\textwidth}
+    \begin{itemize}
+        \item Parseur
+            \begin{itemize}
+                \item Validation d'instances
+                \item Graphe des contraintes
+            \end{itemize}
+        \item Générateur
+            \begin{itemize}
+                \item Filtre les règles
+                \item Génère les e-maps
+                \item Conçoit les contraintes
+            \end{itemize}
+        \item Encodeur
+            \begin{itemize}
+                \item Format pour solveur
+                \item Format XUTP avec règles et contraintes
+            \end{itemize}
+    \end{itemize}
+ \end{minipage}
+  \begin{minipage}{0.45\textwidth}
+    \begin{figure}
+        \centering
+        \includegraphics[scale = 0.3]{img/utp_toolchain.png}
+        \caption{Chaîne de traitement}
+        \label{fig:toolchain}
+    \end{figure}
+        \end{minipage}
+\end{frame}
+
+\begin{frame}{Résumé des travaux}
+    \begin{itemize}
+        \item Proposition du modèle UTP
+        \item 2 modèles de résolution CSP et CLP
+        \item 2 articles :
+        \begin{itemize}
+            \item Conférence JFPC\footnote{\tiny{Approche par contraintes pour une classe d'emplois du temps universitaires, JFPC, Barichard V., Behuet C., Genest D., Lesaint~D. et Legeay M.}} 2022
+            \item Conférence PATAT\footnote{\tiny{A Constraint Language For University Timetabling Problems, PATAT, Barichard V., Behuet C., Genest D., Lesaint~D. et Legeay M.}} 2022
+        \end{itemize}
+        \item Chaîne de traitement
+    \end{itemize}
+\end{frame}
+
+%==============
+
+
+%==============
+%===============================
+%==============
+
+\section{Prévisions}
+
+%=============
+
+\begin{frame}{Prévisions}
+    \begin{minipage}{0.49\textwidth}
+        \begin{itemize}
+        \item Affinage modèle UTP 
+            \begin{itemize}
+                \item Rajouter une syntaxe générative
+                \item Modules optionnels
+                \item Ajouter les événements
+            \end{itemize}
+        \item Modèle de résolution stable
+            \begin{itemize}
+                \item Passage à l'échelle
+                \item Heuristique de recherche
+            \end{itemize}
+        \item Augmenter le catalogue des prédicats UTP
+        \item Réduction entre modèles (ITC vers UTP)
+    \end{itemize}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.49\textwidth}
+        \begin{itemize}
+        \item Réparation des emplois du temps
+            \begin{itemize}
+                \item Encodage des contraintes soft et hard
+                \item Algorithme de réparation (voisinage, symétrie,...)
+            \end{itemize}
+        \item Réécriture des instances 
+            %\begin{itemize}
+            %    \item Simplification de l'horizon temporelle
+            %    \item Simplification des variables ensemblistes
+            %    \item réécriture de contraintes cumulatives
+           % \end{itemize}
+        \item Traitement des sous problèmes
+        \begin{itemize}
+            \item Sectionnement des étudiants
+            \item Pré-affectation des enseignants
+        \end{itemize}
+        
+    \end{itemize}
+    \end{minipage}
+\end{frame}
+
+%==============
+
+\begin{frame}{Conclusion}
+    \begin{itemize}
+        \item Objectif de résoudre les problèmes d'emplois du temps universitaire
+            \begin{itemize}
+                \item Proposer un modèle combinatoire à base de contraintes
+                \item Définir le langage XUTP et implémenter les outils pour l'utiliser
+                \item Développer des méthodes de résolution exacte
+                \item Étudier des méthodes de réparation et de révision de solution.
+            \end{itemize}
+    \end{itemize}
+    \begin{figure}
+        \centering
+        \includegraphics[scale=0.37]{2022_CSI/2022_CSI_Diapo/img/ordonance_ganntttt.png}
+        \caption{Organisation de la  thèse}
+        \label{fig:these}
+    \end{figure}
+    
+\end{frame}
+
+%==============
+
+\printbibliography
+
+%======================================================================
+%======================================================================
+
+
+\end{document}

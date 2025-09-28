@@ -1,0 +1,340 @@
+Un problème d'ordonnancement en informatique se réfère généralement à la tâche d'assigner des ressources à des activités de manière à respecter certaines contraintes et optimiser un ou plusieurs objectifs. Ce type de problème est crucial dans de nombreux domaines, allant de la fabrication industrielle à la gestion de projets, en passant par les systèmes d'exploitation et les réseaux informatiques. Voici une définition plus détaillée et structurée :
+
+### 1. **Activités ou Tâches**
+Les problèmes d'ordonnancement impliquent généralement une série de tâches ou d'activités. Chaque tâche peut avoir des caractéristiques telles que :
+   - **Durée** : Le temps nécessaire pour compléter la tâche.
+   - **Prérequis** : Autres tâches qui doivent être terminées avant que celle-ci puisse commencer.
+   - **Ressources nécessaires** : Peut inclure des machines, des outils, des salles, des compétences spécifiques, etc.
+   - **Fenêtres de temps** : Intervalles durant lesquels les tâches doivent être commencées ou terminées.
+
+### 2. **Ressources**
+Les ressources sont les éléments nécessaires à l'exécution des tâches. Elles peuvent être :
+   - **Limitées** : Quantité finie disponible (ex. : nombre de machines, heures de travail humain).
+   - **Renouvelables** : Peuvent être utilisées à nouveau après achèvement d'une tâche (ex. : employés, équipements).
+   - **Non renouvelables** : Consommées par les tâches (ex. : budget, matériaux).
+
+### 3. **Contraintes**
+Les contraintes sont les règles qui doivent être respectées lors de l'ordonnancement des tâches. Elles incluent :
+   - **Contraintes de temps** : Dates de début et de fin, dépendances entre tâches.
+   - **Contraintes de ressources** : Disponibilité limitée de certaines ressources.
+   - **Contraintes de qualité ou de performance** : Standards ou objectifs spécifiques à atteindre.
+
+### 4. **Objectifs**
+L'objectif principal d'un problème d'ordonnancement est d'optimiser un ou plusieurs critères, tels que :
+   - **Minimiser le temps total** (makespan) : Réduire le temps total nécessaire pour compléter toutes les tâches.
+   - **Maximiser l'efficacité** : Utiliser les ressources de la manière la plus efficace possible.
+   - **Minimiser le coût** : Réduire les coûts associés aux ressources, à la main-d'œuvre, aux retards, etc.
+   - **Respecter les délais** : S'assurer que toutes les tâches respectent les délais spécifiés.
+
+### Exemples d'application
+- **Systèmes d'exploitation** : Ordonnancement des processus et des threads pour optimiser la performance et l'utilisation des ressources du système.
+- **Fabrication** : Ordonnancement de la production dans les usines pour minimiser le temps de changement de production et maximiser la sortie de production.
+- **Réseaux informatiques** : Ordonnancement des paquets de données pour optimiser la latence et la bande passante.
+
+### Conclusion
+En informatique, la résolution de problèmes d'ordonnancement est souvent effectuée à l'aide d'algorithmes spécifiques qui peuvent inclure des techniques d'optimisation, des méthodes heuristiques ou même de l'intelligence artificielle pour traiter la complexité et la variété des contraintes et des objectifs. Chaque type de problème d'ordonnancement peut nécessiter une approche différente en fonction des spécificités des tâches, des ressources et des objectifs.
+
+
+
+Pour une définition plus formelle des problèmes d'ordonnancement en informatique, il est nécessaire d'introduire les concepts de manière structurée, utilisant une terminologie précise et souvent mathématique. Voici une approche formelle pour décrire un problème d'ordonnancement :
+
+### Définition formelle d'un problème d'ordonnancement :
+
+Un **problème d'ordonnancement** est décrit par un triplet \( (T, R, C) \), où :
+
+- \( T = \{t_1, t_2, \ldots, t_n\} \) représente un ensemble fini de **tâches** à exécuter.
+- \( R = \{r_1, r_2, \ldots, r_m\} \) représente un ensemble fini de **ressources** disponibles.
+- \( C \) représente un ensemble de **contraintes** qui doivent être respectées.
+
+#### Tâches
+Chaque tâche \( t_i \) est caractérisée par :
+- Une **durée** \( d_i \), qui est le temps nécessaire pour compléter la tâche sans interruption.
+- Un ensemble de **prédécesseurs** \( P_i \subseteq T \), qui sont des tâches qui doivent être complétées avant que \( t_i \) puisse commencer.
+- Une **demande de ressources** \( R_i \subseteq R \), qui spécifie les ressources nécessaires pour exécuter la tâche.
+
+#### Ressources
+Chaque ressource \( r_j \) est caractérisée par :
+- Une **capacité** \( c_j \), qui est la quantité disponible de la ressource \( r_j \).
+
+#### Contraintes
+Les contraintes dans \( C \) peuvent inclure :
+- **Contraintes de ressources** : Ces contraintes spécifient que la somme des demandes des tâches allouées simultanément à une ressource ne doit pas dépasser la capacité de cette ressource.
+- **Contraintes temporelles** : Ces contraintes spécifient des relations temporelles entre les tâches, telles que les délais et les antériorités.
+- **Contraintes de précédence** : Ces contraintes dérivent des prédécesseurs et peuvent inclure des délais minimaux ou maximaux entre les finitions des tâches précédentes et les débuts des tâches suivantes.
+
+#### Objectifs
+L'objectif d'un problème d'ordonnancement est généralement de trouver un **ordonnancement** \( S \) des tâches qui respecte toutes les contraintes \( C \) et optimise un ou plusieurs **critères** tels que la minimisation du makespan (le temps total de l'ordonnancement), la minimisation du coût total, ou la maximisation de l'utilisation des ressources.
+
+#### Fonction objective
+Une **fonction objective** \( f(S) \) est définie pour évaluer la qualité de chaque ordonnancement \( S \) possible. Le but est de minimiser ou maximiser \( f(S) \) selon le contexte du problème.
+
+### Formulation mathématique
+
+Formellement, un problème d'ordonnancement peut être posé comme un problème d'optimisation où l'on cherche à :
+
+\[ \text{minimiser (ou maximiser) } f(S) \]
+\[ \text{sous les contraintes } C \]
+
+### Exemple : Problème d'ordonnancement des tâches
+
+Un exemple commun est le problème d'ordonnancement des tâches sur des machines parallèles, où \( T \) est l'ensemble des tâches, \( R \) est l'ensemble des machines, et \( C \) inclut des contraintes stipulant que chaque tâche doit être exécutée sur une machine et que deux tâches ne peuvent pas s'exécuter simultanément sur la même machine sans excéder la capacité de cette machine.
+
+Cette approche formelle permet une compréhension rigoureuse des problèmes d'ordonnancement et facilite l'application de méthodes mathématiques et algorithmiques pour leur résolution.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+La formulation de fonctions objectives dans les problèmes d'ordonnancement est cruciale pour orienter la recherche de solutions optimales selon des critères spécifiques. Voici la définition formelle de plusieurs fonctions objectives communément utilisées dans les problèmes d'ordonnancement. Ces fonctions objectives permettent d'évaluer la qualité des ordonnancements obtenus en fonction de différents critères :
+
+### 1. **Minimisation du Makespan (C_max)**
+Le makespan est défini comme le temps total nécessaire pour achever l'ensemble des tâches. Formellement :
+
+\[ C_{\text{max}}(S) = \max_{t_i \in T} (f_i) \]
+
+où \( f_i \) est le temps de fin de la tâche \( t_i \) dans l'ordonnancement \( S \), et \( T \) est l'ensemble de toutes les tâches.
+
+### 2. **Minimisation du Temps Total de Réponse (Total Completion Time)**
+Cette fonction objective vise à minimiser la somme des temps de fin de toutes les tâches :
+
+\[ \sum C_i(S) = \sum_{t_i \in T} f_i \]
+
+où \( f_i \) est similaire à ci-dessus.
+
+### 3. **Minimisation de la Somme des Retards Pondérés (Total Weighted Tardiness)**
+Cette fonction prend en compte les retards des tâches par rapport à leurs dates d'échéance, pondérées par des poids spécifiques :
+
+\[ \sum W_i T_i(S) = \sum_{t_i \in T} w_i \max(0, f_i - d_i) \]
+
+où \( w_i \) est le poids associé à la tâche \( t_i \), \( f_i \) est le temps de fin de \( t_i \), et \( d_i \) est la date d'échéance de \( t_i \).
+
+### 4. **Minimisation du Retard Maximum (Maximum Lateness)**
+Cette fonction vise à minimiser le retard le plus important parmi toutes les tâches :
+
+\[ L_{\text{max}}(S) = \max_{t_i \in T} (f_i - d_i) \]
+
+où \( d_i \) est la date d'échéance de la tâche \( t_i \).
+
+### 5. **Minimisation du Nombre de Tâches en Retard**
+Cette fonction objective cherche à minimiser le nombre total de tâches qui dépassent leur date d'échéance :
+
+\[ N_{\text{tardy}}(S) = \sum_{t_i \in T} \mathbf{1}(f_i > d_i) \]
+
+où \(\mathbf{1}(condition)\) est la fonction indicatrice qui vaut 1 si la condition est vraie, et 0 sinon.
+
+### 6. **Maximisation de l'Utilisation des Ressources**
+Pour des problèmes où l'efficacité de l'utilisation des ressources est critique, on peut chercher à maximiser le taux d'utilisation :
+
+\[ U_{\text{res}}(S) = \frac{\text{Temps actif total des ressources}}{\text{Temps disponible total des ressources}} \]
+
+### 7. **Minimisation des Coûts Opérationnels**
+Si les coûts opérationnels varient avec le temps ou avec l'utilisation de différentes ressources, on peut chercher à minimiser ces coûts :
+
+\[ C_{\text{op}}(S) = \sum_{t_i \in T} c_i(f_i) \]
+
+où \( c_i(f_i) \) est le coût de l'opération de la tâche \( t_i \) qui se termine à l'instant \( f_i \).
+
+Ces différentes fonctions objectives peuvent être utilisées seules ou combinées selon les besoins spécifiques du problème à résoudre. Choisir la bonne fonction objective est crucial car elle dirige l'algorithme de planification vers les types de solutions les plus désirables pour un scénario donné.
+
+
+
+
+
+
+
+Les contraintes dans un problème d'ordonnancement déterminent les règles que les solutions doivent respecter, tandis que les objectifs définissent ce que la solution cherche à optimiser ou à minimiser. Voici comment les contraintes peuvent influencer les objectifs dans un problème d'ordonnancement, et comment des objectifs supplémentaires peuvent être formulés pour répondre à des contraintes spécifiques :
+
+### Contraintes Typiques dans les Problèmes d'Ordonnancement
+
+1. **Contraintes de Précédence**:
+   - Les tâches doivent être réalisées dans un certain ordre. Par exemple, la tâche B ne peut commencer qu'après la fin de la tâche A.
+
+2. **Contraintes de Ressources**:
+   - Les tâches nécessitent certaines ressources qui sont en quantité limitée. Par exemple, seulement un nombre limité de machines ou d'employés est disponible à un moment donné.
+
+3. **Contraintes Temporelles**:
+   - Les tâches doivent être commencées ou terminées à certaines périodes ou respecter des délais spécifiques.
+
+4. **Contraintes de Capacité**:
+   - Certaines tâches ne peuvent pas coexister en raison de limitations de l'espace ou d'autres capacités opérationnelles.
+
+### Objectifs Liés aux Contraintes
+
+#### Objectif: Minimiser la Violation de Contraintes
+Si les contraintes sont souples ou si des pénalités sont associées à leur violation, un objectif pourrait être de minimiser le total des pénalités dues aux violations de contraintes. Par exemple :
+\[ P_{\text{total}}(S) = \sum_{c \in C} p_c \times \mathbf{1}(\text{violation de } c) \]
+où \( p_c \) est la pénalité pour la violation de la contrainte \( c \).
+
+#### Objectif: Maximiser la Conformité aux Fenêtres Temporelles
+Dans les scénarios où les fenêtres de temps pour l'exécution des tâches sont critiques (comme dans les opérations logistiques), un objectif pourrait être de maximiser le nombre de tâches terminées dans leurs fenêtres de temps assignées :
+\[ N_{\text{in-time}}(S) = \sum_{t_i \in T} \mathbf{1}(s_i \geq \text{début}_i \land f_i \leq \text{fin}_i) \]
+
+#### Objectif: Équilibrer la Charge de Travail
+Pour des ressources multiples, équilibrer la charge de travail peut être crucial pour l'efficacité opérationnelle :
+\[ \text{Bal}_{\text{load}}(S) = \text{max}_j(c_j) - \text{min}_j(c_j) \]
+où \( c_j \) est la charge de la ressource \( j \). L'objectif serait de minimiser cette expression pour atteindre une distribution de travail plus équilibrée.
+
+#### Objectif: Minimiser les Délais de Livraison
+Pour les opérations qui incluent des délais de livraison à des clients ou des parties prenantes, minimiser le retard par rapport à ces délais pourrait être un objectif :
+\[ D_{\text{delay}}(S) = \sum_{t_i \in T} \max(0, f_i - d_i) \]
+où \( d_i \) est la date de livraison prévue pour la tâche \( t_i \).
+
+#### Objectif: Maximiser la Satisfaction des Contraintes de Capacité
+Dans un scénario où les tâches consomment une ressource jusqu'à une capacité maximale, maximiser l'utilisation effective sans dépasser cette capacité peut devenir un objectif :
+\[ U_{\text{cap}}(S) = \sum_{t_i \in T} \min(u_i, c_{\text{max}}) \]
+où \( u_i \) est l'utilisation de la ressource par la tâche \( t_i \) et \( c_{\text{max}} \) est la capacité maximale admissible.
+
+### Conclusion
+En incorporant des objectifs spécifiques liés aux contraintes, les solutions d'ordonnancement peuvent être optimisées non seulement pour l'efficacité globale mais aussi pour respecter les exigences opérationnelles, réglementaires ou de service. Chaque type de contrainte
+
+ peut guider la formulation de nouveaux objectifs, rendant le problème d'ordonnancement plus aligné sur les besoins pratiques et opérationnels.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Pour illustrer comment les problèmes d'ordonnancement peuvent être formulés de manière formelle, voici quelques exemples concrets de problèmes d'ordonnancement avec leurs formulations mathématiques associées. Ces formulations détaillent comment les contraintes et objectifs sont intégrés dans le modèle.
+
+### 1. **Problème d'ordonnancement de machines à un seul atelier (Single Machine Scheduling Problem)**
+
+**Objectif :** Minimiser le makespan, c'est-à-dire le temps total nécessaire pour compléter toutes les tâches.
+
+**Formulation :**
+- \( T = \{t_1, t_2, ..., t_n\} \) : ensemble des tâches à ordonner.
+- \( d_i \) : durée de la tâche \( t_i \).
+- \( C_{\text{max}} \) : makespan, le temps total d'achèvement.
+
+**Objectif :**
+\[ \min C_{\text{max}} \]
+\[ C_{\text{max}} = \max_{i=1}^n f_i \]
+où \( f_i \) est le temps de fin de la tâche \( t_i \).
+
+**Contraintes :**
+- \( f_i \geq d_i \) pour toutes les tâches \( i \).
+- Les tâches ne peuvent pas se chevaucher sur la machine.
+
+### 2. **Problème de flow-shop (Flow Shop Scheduling Problem)**
+
+**Objectif :** Minimiser le makespan dans un environnement où plusieurs machines sont impliquées et chaque tâche doit passer par chaque machine dans un ordre spécifique.
+
+**Formulation :**
+- \( T = \{t_1, t_2, ..., t_n\} \) : ensemble des tâches.
+- \( M = \{m_1, m_2, ..., m_m\} \) : ensemble des machines.
+- \( d_{ij} \) : durée de la tâche \( t_i \) sur la machine \( m_j \).
+
+**Objectif :**
+\[ \min C_{\text{max}} \]
+
+**Contraintes :**
+- Chaque tâche suit un ordre spécifique de machines.
+- Une tâche ne peut commencer sur la machine suivante que si elle a été complétée sur la machine précédente.
+- Une machine ne peut traiter qu'une tâche à la fois.
+
+### 3. **Problème d'ordonnancement de projet avec contraintes de ressources (Resource-Constrained Project Scheduling Problem, RCPSP)**
+
+**Objectif :** Minimiser la durée totale du projet tout en respectant les contraintes de disponibilité des ressources.
+
+**Formulation :**
+- \( T = \{t_1, t_2, ..., t_n\} \) : ensemble des activités du projet.
+- \( R = \{r_1, r_2, ..., r_k\} \) : ensemble des ressources.
+- \( d_i \) : durée de l'activité \( t_i \).
+- \( r_{ik} \) : quantité de la ressource \( r_k \) requise par l'activité \( t_i \).
+- \( C_k \) : capacité disponible de la ressource \( r_k \).
+
+**Objectif :**
+\[ \min C_{\text{max}} \]
+
+**Contraintes :**
+- \( \sum_{i \in T} r_{ik} \leq C_k \) pour toutes les ressources \( k \) à tout moment.
+- Respect des relations de précédence entre les activités.
+
+Ces formulations montrent comment les différents problèmes d'ordonnancement sont structurés pour intégrer à la fois les contraintes opérationnelles (telles que les contraintes de machine ou de ressource) et les objectifs d'optimisation (comme la minimisation du temps total). Ces modèles sont la base pour appliquer des méthodes d'optimisation et heuristiques afin de trouver des solutions efficaces aux problèmes d'ordonnancement complexes.
+
+
+
+
+
+
+
+Les contraintes de ressources dans les problèmes d'ordonnancement peuvent être complexes et variées, reflétant les réalités opérationnelles où les ressources ne sont pas toujours uniformément disponibles ou appropriées pour toutes les tâches. Voici un examen plus détaillé des types de contraintes de ressources et leur formulation formelle :
+
+### 1. **Contraintes de Capacité**
+Ces contraintes assurent que l'utilisation totale des ressources à tout moment ne dépasse pas leur capacité disponible.
+
+**Formulation :**
+\[ \sum_{i \in T(t)} r_{ik}(t) \leq c_k(t) \quad \forall k, \forall t \]
+où \( r_{ik}(t) \) est la demande de la ressource \( k \) par la tâche \( i \) à un moment \( t \), et \( c_k(t) \) est la capacité de la ressource \( k \) à ce moment.
+
+### 2. **Contraintes de Disponibilité des Ressources**
+Certaines ressources peuvent ne pas être disponibles en continu tout au long de la période d'ordonnancement, ou leur disponibilité peut varier dans le temps.
+
+**Formulation :**
+\[ a_k(t) = \begin{cases} 
+1 & \text{si la ressource } k \text{ est disponible à } t \\
+0 & \text{sinon}
+\end{cases} \]
+\[ r_{ik}(t) \leq a_k(t) \cdot c_k(t) \quad \forall i \in T, \forall k \]
+
+### 3. **Contraintes d'Assignation Exclusives**
+Certaines tâches peuvent nécessiter une ressource qui ne peut pas être partagée avec d'autres tâches pendant son utilisation.
+
+**Formulation :**
+\[ \sum_{i \in T(t)} x_{ik}(t) \leq 1 \quad \forall k, \forall t \]
+où \( x_{ik}(t) \) est une variable binaire indiquant si la tâche \( i \) utilise la ressource \( k \) au temps \( t \).
+
+### 4. **Contraintes de Nombre Minimum de Ressources**
+Certaines tâches peuvent exiger un nombre minimum de ressources simultanées pour pouvoir être exécutées.
+
+**Formulation :**
+\[ \sum_{k \in K} x_{ik}(t) \geq m_i \quad \forall i \in T(t) \]
+où \( m_i \) est le nombre minimum de ressources nécessaires pour la tâche \( i \).
+
+### 5. **Contraintes de Sélection de Ressource**
+Certaines tâches peuvent nécessiter des ressources spécifiques ou un sous-ensemble de ressources admissibles.
+
+**Formulation :**
+\[ x_{ik}(t) \in \{0, 1\} \]
+\[ x_{ik}(t) = 0 \quad \forall k \notin K_i \]
+où \( K_i \) est l'ensemble des ressources admissibles pour la tâche \( i \).
+
+### 6. **Contraintes de Continuité de Ressource**
+Certaines tâches, une fois commencées, doivent continuer sans interruption jusqu'à leur achèvement et ne peuvent pas changer de ressource une fois démarrées.
+
+**Formulation :**
+Si \( s_i \) est le temps de début et \( f_i \) est le temps de fin de la tâche \( i \) :
+\[ x_{ik}(s_i) = x_{ik}(s_i + 1) = \ldots = x_{ik}(f_i) \quad \forall k \]
+
+### Exemple Complet
+Supposons un projet où certaines tâches requièrent des ressources exclusives qui ne sont disponibles que pendant des fenêtres de temps spécifiques, et certaines tâches nécessitent plusieurs ressources simultanément. Le problème pourrait inclure :
+
+- **Données :** Tâches \( T \), ressources \( K \), fenêtres de disponibilité \( a_k(t) \), capacités \( c_k(t) \), demandes de ressources \( r_{ik} \), et minimum de ressources requises \( m_i \).
+- **Objectif :** Minimiser le makespan ou une autre métrique pertinente.
+- **Contraintes :** Toutes les contraintes listées ci-dessus doivent être respectées pour assurer un ordonnancement valide et efficace.
+
+Ces formulations détaillées permet
+
+tent d'aborder de manière précise les exigences complexes et variées des environnements de production, de projet, et d'autres domaines d'ordonnancement.
+
+
+
+

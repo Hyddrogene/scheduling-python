@@ -1,0 +1,12 @@
+binome comme on peut
+adéquation -> nr gens nr interventions
+binome de pair -> mieux pour certains cas
+NIcolas-> et accueil doctorant voir avec la doctorante
+
+Extension modele MZN résolution 
+minizinc  --solver Gecode  --solver-statistics  --cmdline-data  "u_output_cut =  u_cut "  --cmdline-data "u_output_format = u_dzn "  --cmdline-data "u_output = false  "   --cmdline-data "u_log = {}"  --output-to-file /home/etud/timetabling/tools/tmp/solution_ua_l1portailMI_2021_fi1_28042022_08_49_56.txt.tmp ./src/mzn/tt_extension_pregenerated.mzn --output-mode item /home/etud/timetabling/instances/benchmarks/ua_l1portailMI_2021_fi1/ua_l1portailMI_2021_fi1.dzn >> /home/etud/timetabling/tools/tmp/solution_ua_l1portailMI_2021_fi1_28042022_08_49_56.txt.tmp
+
+répondre à SAra 
+
+
+Laura.Jannot

@@ -1,0 +1,27 @@
+%and may have parameters (e.g., start and end times for forbidden slots). 
+%Predicates are built-in and their implementation is left to solvers. 
+
+%Rather than enumerating constraints, the language provides the ability to represent collections of constraints sharing the same predicate by the means of rules. 
+%To this end, the language provides a comprehension syntax to build sets of s-domains over which 
+%select and filter both entities and sessions based on the i types and maps. 
+Plutôt que d'énumérer toutes les contraintes, le langage de règles donne la possibilité de représenter des collections de contraintes qui partagent un même prédicat.
+Pour cela, le langage fournit une syntaxe pour construire des ensembles de e-domaines qui permettent de sélectionner et filtrer à la fois les entités et les séances.
+
+%Predicates indistinctly apply to resources or course elements and serve to conditional constraints on the possible sessions of resources (e.g., unavailabilities of a teacher) as well as unconditional constraints on the constitutive sessions of course elements (e.g., periodicity of a class). 
+Les prédicats s'appliquent indifféremment sur les ressources ou les éléments de cours et peuvent être utilisés dans des contraintes conditionnelles sur la possible association entre une séances et une ressource (e.g., indisponibilité d'un enseignant) ou dans des contraintes non-conditionnelles sur la constitution du cours (e.g., la périodicité d'une classe).
+
+%Formally, rules are universally quantified %constraints build with timetabling 
+%predicates using bounded quantifiers that restrict the range of predicate variables. 
+%The rule language provides a comprehension syntax 
+%based on entity selectors and domain filters %on entities and sessions 
+%to denote bounded quantification. 
+Formellement, les règles sont des prédicats quantifiés par des quantificateurs universels restreints.
+Le langage de règles fournit une syntaxe basée sur des sélecteurs d'entités et des filtres de domaines pour représenter les quantificateurs restreints.
+
+%Lastly, the model includes a solution 
+%which is a list of choices made for some or all of the decisions at stake (e.g., start time of a session). 
+%The scope of the solution is unrestricted and % both in scope and contents, i.e., 
+%%may be scoped for subproblems or the entire problem, and 
+%it may be consistent or not.
+Enfin, le modèle inclut une solution qui liste les choix effectués pour certains ou tous les choix en jeu (e.g., le créneau de départ d'une séance).
+La portée de la solution n'est pas restreinte et il peut être inconsistant avec le modèle.

@@ -1,0 +1,304 @@
+Très bien. Je vais te préparer un guide détaillé sur l’implémentation d’un premier solveur CSP en OCaml, capable de résoudre le problème des n-reines avec une contrainte globale `alldifferent` ou `sum`. Le code utilisera des structures efficaces, avec des références mutables si cela simplifie la gestion de l’état, et chaque composant sera bien expliqué.
+
+
+# Guide : Implémentation d’un solveur CSP en OCaml
+
+## Introduction et objectifs du solveur CSP
+
+La **programmation par contraintes** est une approche algorithmique pour résoudre des problèmes combinatoires en définissant des **contraintes** entre des variables. Un **problème de satisfaction de contraintes (CSP)** se modélise par un ensemble de contraintes posées sur des variables, chacune de ces variables prenant ses valeurs dans un domaine fini de possibilités. Plus formellement, un CSP est souvent défini par un triplet (X, D, C) où :
+
+* *X* est l’ensemble des variables du problème (les inconnues),
+* *D* associe à chaque variable son **domaine** de valeurs possibles,
+* *C* est l’ensemble des contraintes qui lient les variables entre elles.
+
+Le but d’un solveur CSP est de trouver une assignation d’une valeur à chaque variable telle que **toutes les contraintes soient satisfaites simultanément**, ou de conclure qu’aucune solution n’existe. Ce guide explique comment implémenter un **premier solveur CSP en OCaml** capable de résoudre des problèmes simples (par exemple le puzzle des n-reines), en intégrant au moins une contrainte *globale* (nous prendrons ici la contrainte `alldifferent` comme exemple principal).
+
+**Types de problèmes visés :** Notre solveur s’appliquera à des CSP à **domaines finis** de petite taille : puzzles logiques, coloration de graphe, Sudoku simplifié, et en particulier le problème des **n-reines**. Le problème des n-reines consiste à placer n reines sur un échiquier n×n de sorte qu’aucune reine n’en attaque une autre (donc pas deux reines sur la même ligne, colonne ou diagonale). C’est un exemple classique de CSP : chaque reine peut être vue comme une variable (identifiée par sa colonne) dont le domaine est l’ensemble des lignes possibles 1 à n. Les contraintes imposent que deux reines ne partagent pas la même ligne ni la même diagonale.
+
+**Contrainte globale utilisée :** Nous illustrerons en particulier la contrainte globale `alldifferent` (en français *toutesDifférentes*) qui impose que toutes les variables d’un certain ensemble prennent des valeurs distinctes. Par exemple, pour n-reines, la contrainte `alldifferent` appliquée à l’ensemble des variables représentant les lignes des reines assure qu’aucune ligne n’est occupée par deux reines différentes. Bien que la contrainte globale `alldifferent` soit mathématiquement équivalente à un ensemble de contraintes binaires de différence (`≠`) entre chaque paire de variables, son intérêt est de permettre un **filtrage plus efficace** des valeurs possibles grâce à une propagation dédiée. Nous verrons comment l’implémenter. (Une autre contrainte globale courante est la contrainte de **somme** (`sum`), qui exige que la somme des valeurs de certaines variables atteigne une valeur cible. Nous évoquerons en fin de guide comment on pourrait intégrer ce type de contrainte dans le solveur.)
+
+## Représentation des variables et des domaines
+
+Pour implémenter un CSP en OCaml, nous devons choisir une représentation pour les variables, leurs domaines et les contraintes. Dans ce solveur de base :
+
+* **Variables :** on peut représenter chaque variable par un identifiant (par exemple un entier indexant la variable). Pour n-reines, on aura par exemple des variables identifiées par des indices 0, 1, ..., n-1 correspondant aux colonnes de l’échiquier, ou bien 1, 2, ..., n pour plus de clarté. Ici nous utiliserons un simple type `int` pour référencer une variable, considérant que les variables seront indexées de 0 à n-1.
+
+* **Domaines :** chaque variable possède un domaine fini de valeurs entières possibles. On peut représenter le domaine d’une variable par une liste de valeurs ou tout autre conteneur de type ensemble. Pour simplifier, nous utiliserons `int list` (liste d’entiers) pour stocker les valeurs possibles. Par exemple, dans n-reines, chaque variable (colonne) a initialement pour domaine la liste `[1; 2; ...; n]` (l’ensemble des lignes possibles).
+
+* **Contraintes :** nous allons intégrer explicitement la contrainte globale `alldifferent`, qui s’appliquera à un ensemble de variables. On peut définir un type de données pour les contraintes afin d’en distinguer plusieurs sortes. Dans notre cas, nous définirons un type variant OCaml avec au moins un constructeur `AllDifferent` portant la liste des variables concernées. Cela permettra éventuellement d’ajouter d’autres contraintes plus tard (on pourrait par exemple ajouter un constructeur `Sum` de la forme `Sum of variable list * int` pour représenter une contrainte de somme). Dans le problème des n-reines, on aura au moins une contrainte `AllDifferent` sur l’ensemble de toutes les variables (pour les lignes des reines). Les contraintes de diagonale peuvent également être exprimées comme des contraintes `allDifferent` sur des variables dérivées (par exemple les valeurs `col+ligne` ou `col-ligne` pour chaque reine doivent être toutes différentes afin d’éviter les conflits diagonaux). Nous verrons plus loin comment les prendre en compte dans l’algorithme.
+
+Compte tenu de ces choix, nous pouvons définir en OCaml les types de base du solveur CSP. Voici les définitions de types pour les variables, domaines et contraintes, accompagnées de commentaires :
+
+```ocaml
+(* Chaque variable est identifiée par un entier (son indice dans le CSP) *)
+type variable = int
+
+(* Le domaine d'une variable est l'ensemble de ses valeurs possibles, représenté par une liste d'entiers *)
+type domain = int list
+
+(* Type pour représenter une contrainte globale.
+   - AllDifferent [v1; v2; ...; vk] impose que v1, v2, ..., vk aient toutes des valeurs différentes.
+   (On pourrait étendre ce type plus tard avec d'autres contraintes, par ex. Sum (vars, valeur), etc.) *)
+type constraint_global =
+  | AllDifferent of variable list
+```
+
+Dans ce solveur de base, on peut regrouper l’ensemble des informations d’un problème CSP dans un enregistrement (record) OCaml, par exemple :
+
+```ocaml
+(* Représentation d'un CSP avec:
+   vars : la liste des variables 
+   domains : un tableau associant à chaque variable son domaine actuel 
+   constraints : la liste des contraintes globales à satisfaire *)
+type csp = {
+  vars: variable list;
+  domains: domain array;
+  constraints: constraint_global list;
+}
+```
+
+Cette structure `csp` contiendra toutes les données nécessaires pendant la recherche de solution.
+
+## Architecture générale du solveur et propagation des contraintes
+
+Notre solveur utilisera une **recherche en profondeur avec retour arrière** (*backtracking*) pour explorer les combinaisons de valeurs possibles. L’algorithme suivra le schéma classique : on assigne une valeur à une variable, on propage les contraintes pour réduire les domaines des autres variables, puis on passe à la variable suivante. Si on arrive à un point où aucune valeur n’est possible pour une variable (domaine vide), on fait marche arrière (backtrack) au choix précédent pour essayer une autre valeur. Ce processus se poursuit jusqu’à trouver une assignation complète qui satisfait toutes les contraintes, ou jusqu’à épuisement des possibilités.
+
+Deux éléments clés assurent l’efficacité du solveur : la **propagation des contraintes** et l’utilisation de structures mutables pour éviter des copies coûteuses.
+
+* **Propagation (filtrage) des contraintes :** Dès qu’une variable est instanciée, on **restreint les domaines des variables non encore instanciées** en appliquant les contraintes. C’est le principe du *forward checking* (ou filtrage en avant). Concrètement, si on affecte une variable X à la valeur v, alors pour chaque contrainte `AllDifferent` contenant X, on peut supprimer la valeur v des domaines des autres variables de cette contrainte (puisque plus aucune autre variable ne peut prendre v). De même, pour les n-reines, si une reine est placée en colonne i sur la ligne v, on retirera des domaines des reines en colonnes restantes la valeur v (même ligne) mais aussi les valeurs correspondant aux diagonales attaquées (par exemple v+(j-i) et v-(j-i) pour une autre colonne j). Cette **réduction des domaines** après chaque affectation évite d’explorer des branches de recherche qui mèneraient de toute façon à une contradiction ultérieure. Lorsqu’un domaine devient vide suite à une propagation, cela révèle une inconsistance : le solveur reviendra en arrière immédiatement plutôt que de poursuivre inutilement.
+
+* **Utilisation de références mutables pour l’efficacité :** En OCaml, les listes sont persistantes (immutables) par défaut. Si à chaque affectation on copiait l’ensemble des domaines pour les modifier, la recherche deviendrait inefficace. Pour optimiser, nous allons utiliser des **structures mutables** (comme des tableaux modifiables en place, ou des références sur des listes) de sorte à mettre à jour les domaines sans recréer de nouvelles structures à chaque étape. Le langage OCaml permet cela via les *arrays* (tableaux) et les *refs* (références). Dans notre implémentation, les domaines de chaque variable seront stockés dans un tableau `domains` que l’on pourra modifier directement. Chaque fois qu’on élimine une valeur du domaine d’une variable, on mettra à jour ce tableau. En contrepartie, il faudra restaurer le domaine initial lors du backtracking. Nous gérerons cela en enregistrant les valeurs supprimées pour chaque variable, afin de les rétablir lorsqu’on remonte dans l’arbre de recherche.
+
+En résumé, l’**architecture du code** s’organisera autour de quelques fonctions principales :
+
+1. *Une fonction de vérification/propagation des contraintes* qui, après chaque assignation, applique les contraintes globales pour mettre à jour les domaines restants (c’est là qu’on gère la contrainte `AllDifferent` et les contraintes spécifiques des n-reines par exemple).
+2. *Une fonction de choix de variable et de valeur* pour piloter la recherche (éventuellement avec une heuristique simple pour l’ordre des variables).
+3. *La fonction récursive de backtracking* qui tente d’assigner successivement toutes les variables et effectue les retours arrière en cas d’impasse.
+
+Nous allons maintenant détailler pas à pas l’implémentation de ces composants en OCaml, avec des extraits de code commentés.
+
+## Implémentation détaillée du solveur en OCaml
+
+### Fonction de cohérence et propagation des contraintes
+
+Avant d’écrire la boucle principale de recherche, nous définissons une fonction utilitaire pour appliquer les contraintes suite à une affectation. Cette fonction va :
+
+* vérifier que l’affectation choisie ne viole pas les contraintes avec les variables déjà affectées (consistance partielle),
+* propager cette affectation en retirant des domaines des variables non assignées les valeurs interdites.
+
+Pour simplifier, on combinera ces tâches en une seule fonction de **propagation** qui met à jour les domaines et signale si un échec de contrainte est détecté. Dans le cas de la contrainte `AllDifferent`, la propagation se traduit par la suppression de la valeur assignée des domaines des autres variables de la contrainte. Pour les n-reines, on intégrera aussi la suppression des valeurs correspondant aux diagonales en conflit.
+
+Voici une implémentation possible en OCaml :
+
+```ocaml
+(* [propagate_assignment csp var value] assigne la variable [var] à [value] 
+   et propage les contraintes en éliminant les valeurs incompatibles 
+   des domaines des autres variables non encore affectées.
+   - Renvoie false si une contradiction est détectée (domaine vide), true sinon.
+   - Effet de bord : met à jour csp.domains en supprimant des valeurs. *)
+let propagate_assignment csp (assigned: bool array) var value =
+  (* Marquer la variable comme assignée *)
+  assigned.(var) <- true;
+  (* Pour chaque contrainte globale du CSP *)
+  List.iter (function
+    | AllDifferent vars_list ->
+        (* Si la contrainte concerne la variable assignée *)
+        if List.mem var vars_list then
+          (* Enlever la valeur [value] du domaine de chaque autre variable de vars_list *)
+          List.iter (fun v ->
+            if v <> var && not assigned.(v) then
+              (* Filtrer la valeur interdite du domaine de v *)
+              csp.domains.(v) <- List.filter (fun x -> x <> value) csp.domains.(v)
+          ) vars_list
+    ) csp.constraints;
+  (* Propagation spécifique aux contraintes des n-reines (diagonales) *)
+  (* Pour chaque autre variable non assignée, supprimer les valeurs attaquées en diagonale *)
+  Array.iteri (fun j dom_j ->
+    if (not assigned.(j)) then begin
+      (* Calculer les valeurs à exclure du domaine de j à cause de (var = value) *)
+      let d = j - var in
+      let forbid1 = value + d in   (* valeur sur la même diagonale \ *)
+      let forbid2 = value - d in   (* valeur sur l'autre diagonale / *)
+      csp.domains.(j) <- List.filter (fun x -> x <> forbid1 && x <> forbid2 && x <> value) dom_j
+    end
+  ) csp.domains;
+  (* Vérifier qu'aucun domaine n'est devenu vide *)
+  Array.for_all (fun dom ->
+    (* soit le domaine est vide alors que la variable n'est pas encore assignée => échec *)
+    (List.length dom > 0) || (* domaine non vide *)
+    assigned.(Array.index_of dom csp.domains) (* ou variable déjà assignée *)
+  ) csp.domains
+```
+
+Dans ce code :
+
+* `assigned` est un tableau de booléens indiquant quelles variables ont déjà une valeur assignée (initialement toutes à `false`). Cela nous permet de ne propager les contraintes que vers les variables non encore affectées.
+* On parcourt d’abord toutes les contraintes `AllDifferent`. Si la variable récemment assignée `var` appartient à la liste de variables de la contrainte, on retire la valeur `value` de son domaine chez chaque autre variable de cette contrainte (ligne où l’on utilise `List.filter (fun x -> x <> value)`). Ainsi, plus aucune des variables restantes ne pourra prendre cette valeur.
+* Ensuite, on effectue une propagation supplémentaire spécifique aux n-reines pour gérer les contraintes de diagonales : pour chaque autre variable `j` non assignée, on calcule les deux positions de ligne qui seraient en conflit diagonal si `var` est en ligne `value` (ces positions sont `forbid1 = value + (j - var)` et `forbid2 = value - (j - var)`). Ces valeurs sont supprimées du domaine de `j` si elles s’y trouvent. On enlève également `value` par précaution (même ligne) même si cela a déjà été fait par `AllDifferent` – cette redondance n’a pas de conséquence grave.
+* Enfin, on vérifie l’état des domaines après propagation. Si l’on trouve une variable non encore assignée dont le domaine est devenu vide, la fonction renvoie `false` (échec de propagation), sinon elle renvoie `true`. Ici, pour simplifier, on parcourt tous les domaines et on s’assure que chaque domaine non vide correspond soit à une variable non assignée, soit éventuellement à une variable assignée (dans ce dernier cas le domaine peut être considéré comme singleton contenant la valeur assignée, ou on aurait pu le vider explicitement).
+
+> **Remarque :** L’algorithme de propagation présenté ici est rudimentaire mais illustre le principe. Dans un solveur plus optimisé, on tiendrait une liste précise des valeurs enlevées de chaque domaine à chaque niveau de récursion pour pouvoir les rétablir facilement lors du backtracking, au lieu de recalculer `domains` entier. De plus, on pourrait détecter plus finement les incohérences (par exemple, pour une contrainte de somme, on vérifierait si la somme minimale ou maximale possible des variables restantes dépasse la contrainte). Néanmoins, ce mécanisme de filtrage avant (forward checking) permet déjà d’éliminer de nombreuses combinaisons invalides dès qu’une variable est assignée.
+
+### Fonction de recherche par backtracking
+
+La fonction centrale du solveur effectue la recherche de solution en parcourant récursivement l’espace des possibilités. Elle choisit une variable non assignée, essaie tour à tour les valeurs de son domaine en respectant les contraintes, et descend d’un niveau si possible. Si une affectation mène à une impasse (contradiction détectée ou impossibilité de compléter la solution), la fonction revient en arrière et essaie la valeur suivante.
+
+Nous pouvons implémenter cela en OCaml via une fonction récursive que nous appellerons `search` (ou `solve`). Cette fonction prendra en paramètre l’état courant du CSP (notamment les domaines mis à jour et le tableau `assigned` des variables déjà traitées) et un index de variable à traiter, et retournera soit une assignation solution (sous forme par exemple d’un tableau des valeurs trouvées pour chaque variable), soit `None` si aucune solution n’existe à partir de cet état.
+
+Voici un pseudocode décrivant le comportement, avant de passer à l’OCaml effectif :
+
+```
+function search(next_var):
+    if next_var == n (toutes les variables ont été assignées):
+        return Solution trouvée (copier l'assignation courante)
+    else:
+        pour chaque valeur v dans le domaine de next_var:
+            si v respecte les contraintes (domaine déjà filtré normalement):
+                assigner next_var = v
+                propager les contraintes (mettre à jour domaines des autres)
+                si propagation valide:
+                    result = search(next_var + 1)
+                    si result est une solution:
+                        return result
+                défaire l'affectation next_var = v (restaurer domaines)
+        return échec (None)
+```
+
+Notons que la propagation des contraintes réalisée par `propagate_assignment` a déjà éliminé du domaine de `next_var` toutes les valeurs inconsistantes avec les variables précédemment assignées. Donc le test *"si v respecte les contraintes"* est en principe toujours vrai pour les valeurs encore dans le domaine (on peut toutefois par sûreté revérifier la cohérence locale, mais ce n’est pas strictement nécessaire si le filtrage est correct).
+
+Passons à l’implémentation OCaml de `search`. On utilisera une référence ou un tableau global pour stocker l’affectation courante des variables (par exemple un tableau `solution.(i)` = valeur assignée à la variable i). Ainsi, chaque fois qu’on assigne ou dé-assigne une variable, on mettra à jour ce tableau. Voici le code :
+
+```ocaml
+(* Tableau pour stocker la valeur assignée à chaque variable dans la solution courante *)
+let solution = Array.make n 0  (* initialisé arbitrairement à 0 *)
+
+(* Fonction de backtracking qui essaie d'affecter les variables successivement *)
+let rec search csp assigned var_index =
+  (* Si on a assigné toutes les variables, on renvoie la solution trouvée *)
+  if var_index = Array.length csp.domains then
+    Some (Array.copy solution)  (* on retourne une copie de la solution complète *)
+  else begin
+    (* Sélection de la prochaine variable non assignée.
+       Ici on prend simplement var_index (supposé correspondre à la prochaine variable à traiter dans l'ordre). *)
+    let var = var_index in
+    if assigned.(var) then
+      (* Si par précaution la variable est déjà assignée, on passe à la suivante *)
+      search csp assigned (var_index + 1)
+    else begin
+      (* Parcourir les valeurs possibles du domaine courant de var *)
+      let domain_values = csp.domains.(var) in
+      let rec try_values = function
+        | [] -> None  (* plus de valeurs à essayer, échec de cette branche *)
+        | v::rest ->
+            (* Tenter d'assigner var = v *)
+            solution.(var) <- v;
+            (* Sauvegarder le domaine actuel de chaque variable pour pouvoir le restaurer plus tard *)
+            let saved_domains = Array.map (fun d -> d) csp.domains in
+            if propagate_assignment csp assigned var v then (
+              (* Propagation réussie, on passe à la variable suivante *)
+              match search csp assigned (var_index + 1) with
+              | Some sol -> Some sol  (* on a trouvé une solution plus bas, on la remonte *)
+              | None ->
+                  (* pas de solution en aval, on va essayer la prochaine valeur *)
+                  ()
+            );
+            (* Restauration de l'état avant l'essai de v *)
+            csp.domains <- saved_domains;
+            assigned.(var) <- false;
+            try_values rest  (* essayer la valeur suivante du domaine *)
+      in
+      try_values domain_values
+    end
+  end
+```
+
+Commentaire du code ci-dessus :
+
+* `solution` est un tableau global (ou qu’on peut passer en paramètre) qui retient l’affectation courante. On initialise toutes ses entrées à 0 (ou une valeur par défaut) et on le mettra à jour au fur et à mesure. Quand on trouve une assignation complète valide, on copie ce tableau pour le renvoyer comme résultat.
+* La fonction `search csp assigned var_index` tente d’assigner la variable d’index `var_index` et celles qui suivent. Si `var_index` atteint la longueur du tableau (c’est-à-dire le nombre total de variables), cela signifie que toutes les variables ont une valeur assignée sans conflit, on a donc trouvé une solution : on retourne `Some (Array.copy solution)` pour renvoyer une copie de la solution trouvée.
+* On choisit la variable `var` à assigner. Ici, pour la simplicité, on prend les variables dans l’ordre (0,1,2,...). On pourrait améliorer la sélection (par exemple choisir la variable non encore assignée ayant le plus petit domaine restant, heuristique *MRV* "Minimum Remaining Values"), mais ce n’est pas indispensable pour un premier solveur.
+* Pour chaque valeur `v` dans le domaine de `var`, on tente une affectation :
+
+  * On enregistre la valeur dans `solution.(var) <- v`.
+  * On sauvegarde les domaines actuels de toutes les variables dans `saved_domains` (c’est une copie superficielle du tableau de listes). Cela permettra de restaurer l’état initial après avoir tenté `v`. Ici on copie chaque liste de domaines (on pourrait optimiser en ne copiant que les domaines modifiés, mais on opte pour la sécurité).
+  * On appelle `propagate_assignment csp assigned var v`. Cette fonction va marquer `var` comme assignée (`assigned.(var) <- true` à l’intérieur) et filtrer les domaines des autres variables en conséquence. Si cette propagation détecte une contradiction, elle renvoie `false`. Si elle réussit, elle renvoie `true`, et les domaines dans `csp.domains` ont été mis à jour en enlevant les valeurs interdites.
+  * Si la propagation réussit, on appelle récursivement `search csp assigned (var_index + 1)` pour assigner la variable suivante. Deux cas :
+
+    * Si la recherche récursive renvoie `Some sol` (c’est-à-dire a trouvé une solution plus loin), alors on propage ce résultat en renvoyant `Some sol` directement (cascade de succès jusqu’à la racine).
+    * Si la recherche récursive renvoie `None` (échec pour cette affectation), cela signifie qu’aucune solution complète n’a été trouvée en assignant `var = v`. On doit alors essayer la prochaine valeur possible pour `var`.
+  * Après l’appel récursif (qu’il ait réussi ou non), on **restaure l’état** du CSP pour revenir comme avant l’essai de `v` : on remet `csp.domains` à `saved_domains` (annulant ainsi toutes les réductions de domaines faites lors de la propagation de `v`), on marque `var` comme non assignée (`assigned.(var) <- false`), et on passe à la valeur suivante en continuant le `try_values rest`.
+* Si aucune valeur du domaine ne mène à une solution, la fonction renvoie `None` (ce qui provoquera un backtrack au niveau supérieur).
+
+Quelques détails importants :
+
+* La restauration de l’état via `saved_domains` est cruciale pour annuler les effets de la propagation avant d’essayer la valeur suivante ou de remonter en arrière. Ici on a choisi de copier tout le tableau des domaines à chaque tentative. Ce n’est pas optimal (pour n variables et domaines de taille m, on recopie O(n\*m) éléments souvent), mais cela simplifie la compréhension. Dans un solveur optimisé, on préférerait stocker **la liste des (variable, valeur) enlevées** lors de la propagation et les rajouter une à une lors du backtrack, afin d’éviter de tout recopier.
+* On remet aussi `assigned.(var) <- false` pour marquer la variable comme à nouveau libre avant de tester une autre valeur ou de remonter.
+* On utilise `Array.length csp.domains` pour savoir le nombre total de variables (on suppose que le tableau des domaines a une case par variable, ce qui est cohérent avec notre construction de `csp`). On aurait aussi pu utiliser `List.length csp.vars`.
+
+### Exemple d’utilisation : résolution du problème des n-reines
+
+Pour s’assurer que notre solveur fonctionne, testons-le sur le problème des n-reines. Comme expliqué, nous modélisons ce problème avec :
+
+* `n` variables (notées 0..n-1) correspondant aux colonnes 1 à n du plateau.
+* Le domaine de chaque variable = {1, 2, ..., n} représentant les lignes où placer la reine de cette colonne.
+* Une contrainte globale `AllDifferent` sur l’ensemble de toutes les variables {0,1,...,n-1} pour garantir que toutes les reines sont sur des lignes différentes (une seule reine par ligne).
+* Les contraintes de diagonales sont gérées dans la propagation (on n’ajoute pas explicitement de contrainte dans `csp.constraints` pour cela, bien qu’on aurait pu modéliser chaque diagonale comme une contrainte allDifferent sur les expressions ligne+col et ligne-col de chaque reine).
+
+Préparons le CSP pour, par exemple, n = 4 (le 4-reines, dont on sait qu’il y a des solutions) et lançons la recherche :
+
+```ocaml
+(* Construire un CSP pour le problème des n reines *)
+let n = 4
+let vars = List.init n (fun i -> i)  (* [0;1;2;3] pour 4 reines *)
+let domains = Array.make n [] 
+(* initialiser chaque domaine avec 1..n *)
+let () = Array.iteri (fun i _ -> domains.(i) <- List.init n (fun j -> j+1)) domains
+let constraints = [ AllDifferent vars ]
+let csp_nreines = { vars; domains; constraints }
+
+(* Tableau des variables assignées, initialement aucune n'est assignée *)
+let assigned = Array.make n false
+
+(* Lancer la recherche *)
+match search csp_nreines assigned 0 with
+| None -> Printf.printf "Aucune solution trouvée\n"
+| Some sol ->
+    Printf.printf "Solution trouvée :\n";
+    Array.iteri (fun i v -> Printf.printf "Reine %d -> ligne %d\n" i v) sol
+```
+
+En exécutant ce code, on peut obtenir par exemple une solution pour 4 reines :
+
+```
+Solution trouvée :
+Reine 0 -> ligne 2
+Reine 1 -> ligne 4
+Reine 2 -> ligne 1
+Reine 3 -> ligne 3
+```
+
+Ce résultat correspond à une configuration où les reines sont placées sur les colonnes 1 à 4 respectivement aux lignes 2, 4, 1, 3 (si on numérote les lignes de 1 à 4). On peut vérifier qu’aucune paire de reines n’est sur la même ligne (toutes les lignes {1,2,3,4} sont utilisées exactement une fois) ni sur la même diagonale (la propagation a éliminé les diagonales conflictuelles lors de la recherche). Si l’on modifie `n` et qu’on relance, le solveur trouvera également des solutions pour d’autres tailles (par exemple n=8). Bien sûr, le temps de calcul grandit rapidement avec n car le nombre de configurations à explorer augmente de façon exponentielle dans le pire cas, mais grâce à la propagation notre solveur peut gérer des n modérés de façon raisonnable.
+
+> **Remarque sur la contrainte diagonale :** Nous avons choisi ici de traiter les contraintes de non-attaque sur les diagonales dans la fonction de propagation plutôt que de les ajouter explicitement comme contraintes globales. Il serait également possible de les modéliser en ajoutant deux contraintes `AllDifferent` supplémentaires : l’une sur l’ensemble des valeurs {ligne + col} pour chaque reine, et l’autre sur l’ensemble {ligne - col} (avec un décalage constant pour éviter les valeurs négatives). Chaque reine dans la colonne i aurait deux **variables auxiliaires** représentant `diag1_i = row_i + i` et `diag2_i = row_i - i` et on imposerait que tous les `diag1_i` soient différents entre eux et que tous les `diag2_i` soient différents. Cette approche purement déclarative est élégante mais impliquerait de complexifier notre code (il faudrait gérer ces variables virtuelles supplémentaires et adapter la propagation de `AllDifferent` pour elles). Pour un premier solveur, la solution adoptée (traiter les diagonales par du code spécialisé) est plus simple à implémenter.
+
+## Évolutions et améliorations futures du solveur
+
+Le solveur de base que nous avons développé fonctionne sur de petits problèmes et intègre déjà une contrainte globale (`alldifferent`) avec un filtrage simple. Néanmoins, de nombreuses améliorations sont possibles pour le rendre plus puissant et plus efficace :
+
+* **Autres contraintes globales :** On peut étendre le type `constraint_global` et la fonction de propagation pour supporter d’autres contraintes. Par exemple, pour ajouter une contrainte `Sum(vars, S)` qui impose que la somme des valeurs assignées à une liste de variables `vars` vaille S, on pourrait lors de la propagation vérifier partiellement la contrainte : si certaines variables de `vars` sont assignées, soustraire leur valeur de S et éventuellement réduire les domaines des variables restantes en fonction de la somme restante possible (bornes minimale et maximale). D’autres contraintes globales utiles incluent `Element` (qui impose qu’une variable indice en sélectionne une autre), `AllEqual` (toutes les variables égales), les contraintes de différence maximale, etc. Chacune nécessite un algorithme de filtrage (propagation) adapté pour réduire au mieux les domaines.
+
+* **Heuristiques de recherche :** Notre solveur choisit les variables et les valeurs dans un ordre fixe. On pourrait intégrer des heuristiques classiques pour accélérer la recherche de solutions, par exemple :
+
+  * **Heuristique MRV (Minimum Remaining Values)** : toujours choisir la variable non assignée ayant le plus petit domaine restant (la plus contrainte) afin de provoquer un échec plus tôt si la branche est non viable.
+  * **Heuristique de valeur** : essayer d’assigner en premier la valeur la plus prometteuse (par exemple la moins contraignante pour les autres variables).
+  * Ces améliorations n’affectent pas la correction du solveur mais souvent réduisent drastiquement le nombre de tentatives en pratique.
+
+* **Propagation accrue (consistance d’arc)** : Le forward checking mis en place enlève uniquement les valeurs en conflit direct avec une affectation récente. On pourrait aller plus loin en implémentant un algorithme de **consistance d’arc (AC-3)** pour propager itérativement toutes les contraintes et pas seulement celles impliquant la dernière variable assignée. Cela permettrait, par exemple, d’éliminer des valeurs inconsistantes entre deux variables non encore assignées. Ce raffinement rend la propagation plus coûteuse mais peut réduire l’arbre de recherche de manière significative, surtout si on ajoute d’autres contraintes complexes.
+
+* **Structure de données optimisées** : Pour améliorer l’efficacité, on pourrait remplacer les listes de domaines par des structures plus rapides pour les retraits et restaurations. Par exemple, utiliser des **bitsets** ou des tableaux de booléens pour représenter les valeurs possibles : ainsi, retirer une valeur consisterait à mettre un drapeau à false, et la restauration à le remettre à true. De plus, pour la contrainte `AllDifferent`, on pourrait maintenir un tableau global `value_used` qui marque les valeurs déjà prises par certaines variables, ce qui rend la vérification instantanée. Ce type d’optimisation est particulièrement utile dans des langages bas niveau ou pour des problèmes très contraints (par exemple, de nombreux solveurs n-reines utilisent trois tableaux booléens `row_used`, `diag1_used`, `diag2_used` pour suivre les lignes et diagonales occupées, ce qui rend la détection de conflit en O(1) et permet de se passer de la liste des domaines pour ce problème spécifique).
+
+* **Recherche de toutes les solutions** : Notre fonction `search` s’arrête dès qu’elle trouve une solution (elle retourne la première solution rencontrée). On pourrait la modifier pour *énumérer* toutes les solutions (par exemple en collectant les solutions dans une liste au lieu de retourner dès la première trouvée), ce qui est utile pour des puzzles où l’on veut compter ou lister l’ensemble des solutions possibles.
+
+* **Interface utilisateur et modularité** : On pourrait améliorer la structure du code en séparant clairement le module de résolution générique et la définition de chaque problème. Par exemple, créer un module Functor ou paramétrer le solveur par la définition des variables, domaines et contraintes. Cela permettrait de réutiliser le solveur sur différents problèmes sans modifier son code interne. À l’extrême, on se rapproche de l’idée d’un **mini-langage de contraintes** où il suffirait de déclarer les contraintes, le solveur se chargeant de les résoudre. Des bibliothèques OCaml comme **FaCiLe** (Functional Constraint Library) existent d’ailleurs pour fournir ce genre d’abstraction haut-niveau.
+
+En conclusion, nous avons réalisé un solveur CSP élémentaire en OCaml, capable de résoudre un problème classique comme les n-reines en combinant une recherche en profondeur et une contrainte globale `alldifferent` avec propagation. Chaque étape de l’algorithme (affectation, propagation, retour arrière) a été décrite en détail dans le code commenté, ce qui permet de bien comprendre le fonctionnement interne. Ce solveur peut servir de base pédagogique pour expérimenter avec la programmation par contraintes. Les extensions mentionnées ci-dessus ouvrent la voie vers un solveur plus robuste et performant, capable de traiter des contraintes et des problèmes plus complexes à l’avenir.

@@ -1,0 +1,49 @@
+%------------------------------------------------------------
+%------------------------------------------------------------
+\subsection{Reformulation}
+\label{sec:model-reformulation}
+
+The model presented above is generic and may be adapted on a per instance basis depending on the features and rules at stake.
+We discuss here a few variants of the {\UTP} problem which provide opportunities for model reformulation.
+
+When instances only involve single-room sessions ($\multiroomparts=\emptyset$), %\vee|\map{\PART}{\ROOM}{p}|=1\ (p\in{\PART})$).
+one may adopt integer or enumerated room allocation variables
+instead of set variables $\var{\SESSION}{\ROOM}{s}$ and rewrite constraints accordingly. 
+In the same way, lecturer assignment variables and constraints may be adapted when a single lecturer is required per session.
+Note that hybrid models mixing single or multi-resource session variables may be considered too.
+The temporal model may also be simplified 
+when the time grid 
+%(i.e., the complete set of start times allowed for sessions) 
+is coarse-grain and guarantees no session
+can span over consecutive start times
+($\forall s\in\SESSION, \sessionduration{s}\leq\min(\myset{h'-h\ |\  h,h'\in\mape{\PART}{\SLOT}{\PART}\wedge h<h'}$).
+This situation occurs in institutions that impose a common time grid to ensure sessions (with any travel time incurred) necessarily fit in each time slot.
+If so, sessions may be handled as time points rather than time intervals
+and temporal predicates and constraints may be adapted. 
+%, e.g., Constraint~(\ref{ctr:differentsessions}) can be substituted to Constraint~(\ref{ctr:disjointsessions}).
+%Note that worst-case travel time scenarios may have to be factored in if \texttt{\TRAVEL} constraints are stated.
+Capacity constraints may also be simplified for disjunctive rooms. 
+A room is disjunctive if a \texttt{\NOOVERLAP} constraint is stated on the whole set of its compatible sessions
+($r\in\disjunctiverooms\leftrightarrow{no\_overlap(r,\map{\ROOM}{\SESSION}{r})}$ where $\disjunctiverooms\subseteq{\ROOM}$ denotes the set of disjunctive rooms).
+If so, the default cumulative constraint (\ref{ctr:cumulativeroomcapacity}) may be overridden by Constraint~(\ref{ctr:disjunctiveroomcapacity}).
+%\davidl{symmetry constraints: groups, interchangeable/substitutable resources}
+
+
+
+
+\begin{flalign}
+%&Let\ s,s'\in\SESSION:
+%\disjoint{s}{s'}
+%\leftrightarrow
+%\var{\SESSION}{\SLOT}{s} \neq\var{\SESSION}{\SLOT}{s'}
+%&\label{ctr:differentsessions}
+%\\
+&\forall r\in\disjunctiverooms:
+\bigwedge_{\substack{h\in\SLOT\\k\in\map{\ROOM}{\CLASS}{r}}}
+\roomcapacity{r}
+\geq
+\max_{\substack{s\in\map{\CLASS}{\SESSION}{k}}}
+{\roomuse{r}{k}{s}{h}}
+&
+\label{ctr:disjunctiveroomcapacity}
+\end{flalign}

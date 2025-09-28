@@ -1,0 +1,192 @@
+Oui, on peut le faire proprement sous Ubuntu/Debian avec Python. Voici un guide **clé-en-main** (USB et Bluetooth), plus un script prêt à l’emploi.
+
+# 1) Matériel et prérequis
+
+* **Adaptateur OBD-II ↔ ELM327** (USB ou Bluetooth).
+* Voiture contact mis (moteur pas nécessaire pour lire pas mal de capteurs).
+
+# 2) Installation (Ubuntu/Debian)
+
+```bash
+# Outils Python
+sudo apt update
+sudo apt install -y python3 python3-venv python3-pip
+
+# (Bluetooth uniquement) dépendances
+sudo apt install -y bluetooth bluez bluez-tools rfkill libbluetooth-dev
+
+# Créer un venv propre
+python3 -m venv ~/obd-venv
+source ~/obd-venv/bin/activate
+
+# Biblios Python
+pip install --upgrade pip
+pip install python-OBD pyserial
+```
+
+# 3) Donner l’accès au port série
+
+### Si ton ELM327 est **USB**
+
+1. Branche l’adaptateur, puis regarde le port créé :
+
+```bash
+dmesg | tail
+# tu devrais voir /dev/ttyUSB0 ou /dev/ttyACM0
+```
+
+2. Mets ton utilisateur dans le groupe `dialout` (accès série) :
+
+```bash
+sudo usermod -a -G dialout $USER
+# Déconnecte/reconnecte ta session (ou reboot) pour que ça prenne effet
+```
+
+### Si ton ELM327 est **Bluetooth (ELM327 BT)**
+
+1. Active et paire l’adaptateur :
+
+```bash
+rfkill unblock bluetooth
+bluetoothctl
+# ensuite dans l'invite bluetoothctl :
+# power on
+# scan on        (repère l'adresse MAC de l'ELM327, ex: 00:1D:A5:68:98:8B)
+# pair 00:1D:A5:68:98:8B
+# trust 00:1D:A5:68:98:8B
+# connect 00:1D:A5:68:98:8B
+# quit
+```
+
+2. Crée un port série RFCOMM :
+
+```bash
+# canal 1 marche le plus souvent pour ELM327
+sudo rfcomm bind /dev/rfcomm0 00:1D:A5:68:98:8B 1
+# Tu auras alors un "port série" /dev/rfcomm0
+```
+
+# 4) Script Python minimal (USB **ou** Bluetooth)
+
+Ce script :
+
+* se connecte (port auto, sinon fixe),
+* affiche quelques capteurs (RPM, vitesse, température liquide, charge),
+* lit les codes défauts et leurs descriptions.
+
+Crée `read_obd.py` :
+
+```python
+#!/usr/bin/env python3
+import obd
+import time
+
+# --- Paramètres ---
+# Laisse None pour autodétection, ou force le port:
+# port = "/dev/ttyUSB0"        # USB
+# port = "/dev/ttyACM0"        # USB (certains modèles)
+# port = "/dev/rfcomm0"        # Bluetooth lié avec rfcomm
+port = None
+
+# Vitesse d'échange: 38400 ou 9600 selon clones; python-OBD gère souvent tout seul
+baudrate = None  # ex: 38400 si besoin
+
+print("Connexion OBD…")
+connection = obd.OBD(port, baudrate=baudrate, fast=False, timeout=3.0)
+
+if not connection.is_connected():
+    raise SystemExit("Échec de connexion OBD. Vérifie le port, le contact et l’adaptateur.")
+
+print("Connecté. Protocole:", connection.protocol_name())
+
+# Quelques commandes utiles
+CMDS = {
+    "RPM": obd.commands.RPM,
+    "SPEED": obd.commands.SPEED,
+    "COOLANT_TEMP": obd.commands.COOLANT_TEMP,
+    "ENGINE_LOAD": obd.commands.ENGINE_LOAD,
+    "THROTTLE_POS": obd.commands.THROTTLE_POS,
+    "FUEL_STATUS": obd.commands.FUEL_STATUS,
+}
+
+# Affiche ce qui est supporté
+supported = connection.supported_commands
+print("\nCommandes supportées (extrait) :")
+for name, cmd in list(CMDS.items()):
+    print(f" - {name}: {'OK' if cmd in supported else 'non'}")
+
+# Lecture des DTC (codes défauts)
+print("\nLecture des DTC…")
+dtc_response = connection.query(obd.commands.GET_DTC)
+if dtc_response.is_null():
+    print("Pas de DTC ou non supporté.")
+else:
+    dtcs = dtc_response.value  # liste de tuples (code, description)
+    if dtcs:
+        for code, desc in dtcs:
+            print(f" DTC: {code} — {desc}")
+    else:
+        print("Aucun DTC présent.")
+
+print("\nStreaming des données temps réel (Ctrl+C pour arrêter)")
+try:
+    while True:
+        line = []
+        for name, cmd in CMDS.items():
+            if cmd in supported:
+                r = connection.query(cmd)
+                if r.is_null():
+                    val = "—"
+                else:
+                    val = str(r.value)  # unité formatée (ex: 85 degC, 2500 rpm)
+            else:
+                val = "N/S"  # non supporté
+            line.append(f"{name}: {val}")
+        print(" | ".join(line))
+        time.sleep(1.0)
+except KeyboardInterrupt:
+    print("\nArrêt.")
+finally:
+    connection.close()
+```
+
+Exécution :
+
+```bash
+source ~/obd-venv/bin/activate
+python read_obd.py
+```
+
+# 5) Variante : forcer le port si l’auto-détection échoue
+
+* USB : mets `port = "/dev/ttyUSB0"` (ou `/dev/ttyACM0`) dans le script.
+* Bluetooth : mets `port = "/dev/rfcomm0"`.
+
+# 6) Effacer les DTC (facultatif, attention)
+
+Certaines voitures **réinitialisent des apprentissages** en plus d’effacer les voyants.
+
+```python
+# Ajoute ceci ponctuellement si tu veux effacer:
+# response = connection.query(obd.commands.CLEAR_DTC)
+# print("CLEAR_DTC:", response)
+```
+
+Utilise-le seulement si tu sais ce que tu fais.
+
+# 7) Dépannage rapide
+
+* **Permission refusée** sur `/dev/ttyUSB0` : tu n’es pas dans `dialout`. Ajoute-toi puis reconnecte-toi.
+* **Pas de connexion** : assure-toi que le **contact** est mis; essaye d’autres vitesses (`baudrate=38400` ou `9600`).
+* **Bluetooth** : si `rfcomm` saute au reboot, refais la commande `rfcomm bind`. Tu peux aussi créer un service systemd pour rendre ça persistant.
+* **Certaines valeurs à “—”** : c’est normal si le **PID n’est pas supporté** par ta voiture (chaque constructeur expose un sous-ensemble différent).
+
+# 8) Aller plus loin
+
+* Logger en CSV, faire un petit dashboard (Flask/Streamlit), tracer des courbes, etc.
+* Lire des PIDs étendus (Mode 22) spécifiques constructeur (doc/protocoles nécessaires).
+* Sécurité : **ne manipule pas l’ordi en conduisant**.
+
+---
+
+Si tu veux, je peux te générer une version **CLI** avec options (`--port`, `--csv`, `--interval`) ou un mini **dashboard web** local.

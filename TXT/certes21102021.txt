@@ -1,0 +1,28 @@
+vérifier les contraintes at_most_daily 
+manger le midi
+gérer les appelles de groupes
+groupbystudent l304
+
+manière aboslue de 1 à 86400 = 60 *1440 = 1440 * 5 * 12
+contrainte de domaine temporel -> plus petite  ou augemnte la taille du domaine ?
+
+
+contrainte soft et pas soft ? -> 
+
+diff contrainte forbidden slot
+
+same weeky slot   -> weekly non strict
+
+soft -> taux de violation
+
+evenementt globaux ? -> avec ou sans ? 
+
+j'assouplis ma contriante -> sur des séances visé pour modéliser les absences
+pour les week ends ?? utiliser une part ?une part global  
+
+evenment globaux ?
+
+identifier les événements ? -> utilisateure, differente selon l'evenement 
+périodicité etc-> je construit point
+
+ecrire weekly soft-> inclure les événements -> 

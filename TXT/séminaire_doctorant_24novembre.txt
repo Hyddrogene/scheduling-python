@@ -1,0 +1,41 @@
+mail séminaire doctorant:
+
+discord doctorant : 
+https://discord.gg/Vb7d4DFQSH
+
+date :
+
+https://doodle.com/fr/
+
+sujet :
+
+%==================
+
+Hello everyone,
+
+The next PhD seminar will be presented by Jules Leguy. Here's a little abstract of his presentation :
+
+Constraint Answer Set Programming (CASP) is a new paradigm that aims to combine Answer Set Programming (ASP) and Constraint Programming (CP). This new language is supposed to take the best of both worlds in terms of resolution techniques and modelisation. CASP is fairly new and combining the two isn't as simple as it seems. In this seminar I will briefly explain what are the benefits of this new language and why fusing the two is so complicated.
+
+As usual, it will take place in G208 or G203. The presentation will also be streamed live on discord for those who cannot be there but still want to see the presentation.
+
+To schedule the seminar you can fill the doodle page. doodle page : https://doodle.com/meeting/participate/id/erROAnLe
+
+For more information and communication you can join the discord : https://discord.gg/Vb7d4SDFQSH
+
+If you have any suggestions for the next seminar or if you want to present something, let us know !
+
+Have a nice day and see you soon.
+
+%=================
+ 
+Hello everyone,
+
+21 octobre 11 a.m
+
+If you have any suggestions for the next seminar or if you want to present something, let us know !
+
+Have a nice day and see you soon.
+
+%=================
+

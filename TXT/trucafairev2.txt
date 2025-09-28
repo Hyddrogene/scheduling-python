@@ -1,0 +1,24 @@
+slotperday comme itc pas de double moedle relatif (on verifira que tous fonctionne)
+
+virer calendar -> horizon de tempms bDD retraduire
+
+14h 16h le mercredi aprem
+
+jeudi 9h30 11h
+
+allowedTimes
+
+
+decouper les groupes
+
+student add pour voir à quoi sa ressemble
+
+voir modele en gecode  quand tous sera bien
+
+document latex pour les contraintes
+
+xml modifications dw
+
+redoder pas prioritaire pour le generateur
+
+

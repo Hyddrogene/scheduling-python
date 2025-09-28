@@ -1,0 +1,317 @@
+%------------------------------------------------------------
+%------------------------------------------------------------
+\subsection{Rules and Flattening}
+\label{sec:rules-flattening}
+
+
+Rules are used to state conjunctions of constraints and in particular single constraints.
+Each rule is defined by a universally quantified formula which bounds the domains of the e-map variables of a given predicate.
+The collection of constraints hence represented is derived by instantiating the predicate with each tuple of e-maps belonging to the cross-product of the prescribed domains.
+E-map domains are not given in extension
+but represented using a language of selectors
+%which provides a comprehension syntax 
+allowing to generate and filter e-maps.
+
+
+Formally, a rule is defined by a universally quantified formula wherein quantifiers restrict the domains of the e-map variables. A language of selectors is provided to build and filter domains of e-maps based on session ranks, entity identifiers, entity types, or any user-defined class of elements (e.g., team of lecturers, block of rooms). A rule hence denotes the conjunction of constraints obtained by instantiating the predicate over the cross-product of the domains of the e-map variables. 
+
+Let 
+${\SELECTOR}$
+denote the language of e-map domain selectors,
+%(${\SELECTOR}\subseteq({\TYPE}\times{\LABEL}\times{2^{\RANK}})^{n}$).
+a {\UTP} rule has the form %is a tuple 
+\begin{align}
+c(F_1,\ldots,F_m,p_1,\ldots,p_n)
+\end{align}
+and is interpreted by %The semantics of a rule $(c,D_1,\ldots,D_m,p_1,\ldots,p_n)$ is 
+the %quantified 
+formula
+\begin{flalign}
+&\forall (e_1,S_1)\in\denote{F_1},\ldots,(e_m,S_m)\in\denote{F_{m}}: c((e_1,S_1),\ldots,(e_m,S_m),p_1,\ldots,p_n)
+&\label{rule:rule}
+\end{flalign}
+where 
+$c$ is a predicate symbol of arity $m$,
+$F_1,\ldots,F_m$ are selectors ($F_i\in{\SELECTOR}$, $i=1\ldots m$),
+$\denote{F_i}$
+denotes the domain of e-maps represented by
+selector 
+$
+F_i\in{\SELECTOR}
+$,
+and
+$p_1,\ldots p_n$ are values for the parameters of $c$ ($n\geq0$),
+.
+
+The language of selectors allows 
+to target entities based on type, label or identifier
+and
+to filter their sets of sessions
+based on session rank and mutual compatibility with other entities.
+It is complete in the sense 
+that it allows to construct any domain of e-maps whose entities share the same type.
+For instance, one may construct the e-maps which
+associate any of the rooms labeled \texttt{Building-A}
+with the compatible sessions of rank 2 or 4 
+that are also constitutive of course \texttt{course-1} or class \texttt{class-3}.
+A selector
+combines a generator and an optional list of filters.
+Generators and filters are triples 
+$
+(T_i,L_i,O_i)
+$
+consisting of
+an entity type
+$
+T_i%\in{\TYPE}
+$,
+an entity label or identifier
+$
+L_i%\in{\LABEL}
+$
+and
+a subset of session ranks
+$
+O_i%\subseteq{\RANK}
+$ (a.k.a., session mask),
+the latter two elements being optional.
+A selector 
+matches any e-map
+whose entity satisfies the type, label and identifier constraints of the generator
+and whose %set of sessions 
+image includes any compatible session
+satisfying the mask of the generator
+and one of the filters.
+Note that rules featuring null selectors are discarded during the flattening stage. 
+%Selectors are encoded as attributes in the {\XML} language
+%using a syntax that borrows from the CSS selector language.
+%For instance, the above example would be encoded by the following XML fragment: 
+%\todo[inline]{Marc : Rajouter une phrase pour décrire brièvement la figure 3}
+
+Let
+${\RANK}$
+denote the range of session ranks,
+${\maptype{\RANK}{\SESSION}}:\RANK\rightarrow2{^\SESSION}$
+the rank-based partitioning of sessions
+($s\in\map{\RANK}{\SESSION}{o}$ iff $\sessionrank{s}=o$),
+and
+${\LABEL}^{*}={\LABEL}\cup\myset{\ENTITY}\cup\myset{\myset{e}\ |\ e\in{\ENTITY}}$
+%${\LABEL}^{*}$
+the set of labels 
+%(${\LABEL}\subseteq2^{{\ENTITY}}$)
+%(${\LABEL}\subseteq{\LABEL}^*$)
+completed 
+with the whole set of entities to mock label optionality
+%($\ENTITY\in{\LABEL}^*$)
+and singleton entities to support identity-based selection,
+%($\myset{\myset{e}\ |\ e\in{\ENTITY}}\subseteq{\LABEL}^*$),
+the language of selectors
+is the set 
+$
+{\SELECTOR}=\cup_{n\geq1}({\TYPE}\times{\LABEL}^*\times{2^{\RANK}})^{n}
+$.
+%where each 
+Each selector 
+$
+d=((T_1,L_1,O_1),\ldots,(T_k,L_k,O_k))
+$
+%($k\geq1$)
+decomposes into a generator
+$
+(T_1,L_1,O_1)
+$
+and a possibly empty list of filters
+$
+((T_2,L_2,O_2),\ldots,(T_k,L_k,O_k))
+$.
+%A session $s$ is said to satisfy triple
+%$
+%(T_i,L_i,O_i)
+%%\in({\TYPE}\times{\LABEL}\times{2^{\RANK}})
+%$
+%if
+%it is compatible with
+%an entity of type $T_i$ and label $L_i$ 
+%($s\in\map{T_i}{\SESSION}{L_i}$)\footnote{
+%%Let $X\subseteq Y$,
+%$
+%{\map{Y}{\SESSION}{X}}
+%$
+%denotes
+%$
+%\setunion{i}{X\cap Y}{\map{Y}{\SESSION}{i}}
+%$.
+%}
+%and 
+%if it satisfies mask $O_i$, i.e., its rank is included in $O_i$
+%($s\in\map{\RANK}{\SESSION}{O_i}$).
+%A selector 
+%$
+%d=((T_1,L_1,O_1),\ldots,(T_k,L_k,O_k))
+%$
+$d$ matches any e-map
+whose entity has type $T_1$ and label $L_1$ and whose image includes any compatible session satisfying mask $O_1$ and any of the filters.
+The set of e-maps
+$\denote{d}$
+matched by $d$
+is defined by
+%\begin{flalign*}
+%\denote{d}=
+%\bigcup\limits_{e\in{T_1}}
+%{\myset{(e,S')
+%\ |\ 
+%%e\in T_1\cap L_1,
+%S'=
+%\map{T_1}{\SESSION}{\myset{e}\cap L_1}
+%%\bigcap 
+%%\map{\RANK}{\SESSION}{O_1}
+%\bigcap 
+%\bigcup\limits_{i=2\ldots k}
+%{
+%\map{T_i}{\SESSION}{L_i}
+%\bigcap
+%\map{\RANK}{\SESSION}{O_1\cap O_i}
+%%\myset{s\in\SESSION\ |\ \sessionrank{s}\in O_1\cap O_i}
+%\wedge
+%S'\neq\emptyset
+%}
+%}
+%}
+%\end{flalign*}
+%
+%where
+%$
+%{\map{Y}{\SESSION}{X}}
+%=
+%%$
+%%denotes
+%%$
+%\bigcup\limits_{i\in X}{\map{Y}{\SESSION}{i}}
+%$
+%($X\subseteq Y$)
+%.
+\begin{multline*}
+\denote{d}=
+\bigcup\limits_{e\in{T_1\cap L_1}}
+\Big \{(e,S')
+\ |\ 
+S'=
+\map{T_1}{\SESSION}{e}
+\;\bigcap
+%\\
+\bigcup\limits_{i=2\ldots k}
+{\Big(
+\mape{T_i}{\SESSION}{L_i}
+\bigcap
+\mape{\RANK}{\SESSION}{O_1\cap O_i}
+\Big)
+}
+\\
+\wedge
+S'\neq\emptyset
+\Big \}
+\end{multline*}
+
+where
+$
+{\mape{X}{Y}{X'}}
+=
+%$
+%denotes
+%$
+\bigcup\limits_{i\in X'}{\map{X}{Y}{i}}
+$
+with
+$X'\subseteq X$
+.
+
+
+
+\todo{figure sample rules commented}
+\begin{figure}[ht]
+\includegraphics[scale=0.35]{img/utp_rule_1.png}
+
+
+\newcounter{save_equation}
+\setcounter{save_equation}{\value{equation}}
+\setcounter{equation}{0}
+
+\renewcommand{\theequation}{R\arabic{equation}}
+
+{\footnotesize{
+\begin{flalign}
+&\texttt{{\FORBIDDENPERIOD}((<(\TEACHER,{lecturer2},\_)>,9120,9240)}
+&\label{rule-example-1}
+\\
+&\texttt{{\SEQUENCED}(<(\CLASS,\_,\myset{3}),(\PART,{algoLec},\_)>,
+<(\CLASS,\_,\myset{1}),(\PART,{algoLab},\_)>)}
+&\label{rule-example-2}
+\end{flalign}
+}}
+
+
+\setcounter{equation}{0}
+\renewcommand{\theequation}{C\arabic{equation}}
+
+%
+{
+\footnotesize
+\begin{flalign}
+\nonumber &\texttt{{\FORBIDDENPERIOD}((lecturer2,\{algoLab1:1,algoLab1:2,algoLab2:1,algoLab2:2\}),}\\
+ & \texttt{9120,9240)}
+&\label{constraint-example-1}
+\\
+&\texttt{{\SEQUENCED}((algoLec1,\{algoLec1:3\}), (algoLab1,\{algoLab1:1\}))}
+&\label{constraint-example-2}
+\\
+&\texttt{{\SEQUENCED}((algoLec1,\{algoLec1:3\}), (algoLab2,\{algoLab2:1\})}
+&\label{constraint-example-3}
+\end{flalign}
+}
+%
+
+\caption{Rules flattening and corresponding constraints on a toy example.}
+\label{fig:utp-rule-1}
+
+\setcounter{equation}{\value{save_equation}}
+\end{figure}
+
+
+Figure~\ref{fig:utp-rule-1} illustrates the rules flattening process on a toy example.
+Course \texttt{algorithms} is split into a lecture part \texttt{algoLec} and a lab part \texttt{algoLab}.
+The lecture part has a single class of 4 sessions taught by \texttt{lecturer1} and the lab part has 2 classes of 2 sessions each taught by \texttt{lecturer1} or \texttt{lecturer2}.
+%Figure~\ref{fig:utp-rule-1} illustrates the flattening of the following rules: 
+%on a simple model consisting of 2 teachers and & course subdivided into 2 parts, 3 classes and 8 sessions. The first rule forbids a time period for 
+Rule~\ref{rule-example-1} %below
+requires that \texttt{lecturer2} has no session between slots $9120$ and $9240$, corresponding for instance to 8am and 10am on Tuesday of week 2. % assuming a granularity of 1 minute per time slot. 
+%In this rule, $9120$ (resp. $9240$) is the value\footnote{Each possible session schedule is mapped to a single value. All possible values make up the domain of a session.} that corresponds to 8am on Tuesday (resp. 10am on Tuesday) of week 2. 
+The selector includes no mask and no filter hence matches with all possible sessions of \texttt{lecturer2} 
+as indicated with diamonds on Figure~\ref{fig:utp-rule-1}. 
+The resulting domain of e-maps is the singleton $\myset{(lecturer2,\map{\TEACHER}{\SESSION}{lecturer2})}$
+and the rule is flattened into a single \texttt{\FORBIDDENPERIOD} constraint (\ref{constraint-example-1}). %$\myset{\map{\TEACHER}{\SESSION}{teacher2}}$.
+Rule~\ref{rule-example-2}
+%requires that the first practical session in Algorithmic \todo[inline]{Marc : pourquoi algo ?} start after the third lecture.
+requires that the first sessions of the labs start after the third lecture.
+The two selectors include a filter. The first selector matches with all class sessions of rank 3 in part \texttt{algoLec}, 
+and the second matches with all class sessions of rank 1 in part \texttt{algoLab} as indicated with stars on the figure.
+The rule is flattened into 2 \texttt{\SEQUENCED} constraints (\ref{constraint-example-2} and \ref{constraint-example-3}) corresponding to the cross product of the e-map domains 
+%$\myset{(algoLec1,\map{\RANK}{\SESSION}{3}\cap\map{\PART}{\SESSION}{algoLec})}$
+%and $\myset{(algoPra1,\map{\RANK}{\SESSION}{1}\cap\map{\PART}{\SESSION}{algoPra}),(algoPra2,\map{\RANK}{\SESSION}{1}\cap\map{\PART}{\SESSION}{algoPra})}$.
+$\myset{(algoLec1,\myset{s\in\SESSION\ |\ \sessionrank{s}=3}\cap\map{\PART}{\SESSION}{algoLec})}$
+and $\myset{(algoLab1,\myset{s\in\SESSION\ |\ \sessionrank{s}=1}\cap\map{\PART}{\SESSION}{algoLab}),(algoLab2,\myset{s\in\SESSION\ |\ \sessionrank{s}=1}\cap\map{\PART}{\SESSION}{algoLab})}$.
+\coco{Core constraint }
+
+% \input{2-1-1-variables-table}
+% \input{2-1-1-core-constraints-table}
+% The constraint~\ref{ctr:allowedslots} restricts the set of possible values to the allocated starting slots in the corresponding course part for a session. Similarly, constraint~\ref{ctr:allowedrooms} limits the set of possible values to the allocated rooms in the corresponding course part for a session. Likewise, for teachers, constraint~\ref{ctr:allowedteachers} restricts the set of possible teachers.
+
+% To express the desired number of rooms per course session, we refer to cardinality constraint~\ref{ctr:cardinalmultiroom}, while for teachers, we reference constraint~\ref{ctr:cardinalmultiteacher}. Constraint~\ref{ctr:cumulativeroomcapacity} specifies that each session must take place in a set of rooms whose cumulative capacity can accommodate the groups enrollment of the session.
+
+% More generally, constraint~\ref{ctr:roomuse} prohibits the cumulative capacity of sessions taking place in a room, for a given time slot, don't exceeding the room's capacity. Constraint~\ref{ctr:nooverlap2days} ensures that no session spans across two different days. 
+% %Note that sessions are considered uninterruptible and, in particular, may not overlap two days. 
+% Finally, constraint~\ref{ctr:coresumvariables} establishes the relationship between auxiliary time values and the starting slot variable for each session.
+
+% For each teacher is allocated a fixed number of sessions in each course part he is eligible for, leaving lecturer-to-session assignment decisions to solvers (\hyperref[feat:service]{``service''}) and we used the constraint required\_teacher to explain this relation. And symmetrically, each room allowed to %
+% %in a course part may be freely allocated to any session of the part (possibly none \hyperref[feat:roommodal]{``no room''}) but 
+% the model provides the flexibility to mark a room as mandatory (e.g., requiredRooms constraint) in which case it will host or co-host all the sessions\hyperref[feat:ressourcedistribution]{``ressource distribution''}. 
+

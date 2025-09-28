@@ -1,0 +1,1 @@
+Seed: 4037342581, Dimensions: 1536x1536, Sampler: ddim, Inference Steps: 60, Guidance Scale: 5.6, Model: Smai-Lee V3.2, Negative Prompt: nsfw, bad, missing, ugly, mutilated, skewed, anime, manga, cartoon, comic, Prompt Strength: 0.58, Fix Faces: GFPGANv1.3, Upscale: RealESRGAN_x4plus (4x), Preserve Color Profile: true

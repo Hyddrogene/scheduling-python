@@ -1,0 +1,155 @@
+%------------------------------------------------------------
+%------------------------------------------------------------
+\section{Modèles \MINIZINC{} et \CHR{}}% des instances \UTP}
+\label{sec:model}
+\setcounter{equation}{0}
+Nous présentons dans cette section deux modèles d'instances {\UTP} développés en \MINIZINC{} et \CHR{}.
+Ces modèles mettent en jeu des contraintes relatives
+au partitionnement des étudiants en groupes et à l'attribution des groupes aux classes,
+à la distribution des ressources sur les séances,
+à l'ordonnancement des séances,
+et à l'allocation de leurs ressources.
+%\davidl{Expliquer transformation du modèle UTP en modèle PPC : "manuel" + built-ins:predicates}
+Nous présentons tout d'abord les données d'instance
+ainsi que les variables de décision qui sont communes aux deux modèles.
+%La table~\ref{table:cp-core-sets} liste les plages d'entiers identifiant les différents ensembles d'objets manipulés.
+%(p. ex., ensemble des séancesset of compatible sessions for rooms) and metric properties (e.g., room capacity). 
+La table~\ref{table:cp-instance-data} liste les plages d'entiers identifiant les différents ensembles d'objets manipulés et définit les structures utilisées pour représenter les données d'instance.
+
+
+\begin{table}[!ht]
+%\resizebox{\textwidth}{!}{%
+\centering
+\framebox[\columnwidth][c]{%
+\small
+\begin{tabularx}{\columnwidth}{>{\hsize=0.01\hsize\linewidth=\hsize}X>{\hsize=1.89\hsize\linewidth=\hsize}X>{\raggedleft\arraybackslash\hsize=.09\hsize\linewidth=\hsize}X}
+%\small
+%\begin{tabularx}{\columnwidth}{|p{.35\columnwidth}p{.55\columnwidth}|}
+%\hline
+\SLOT & ensemble des créneaux définissant l'horizon de temps \\
+%& (1..(nr\_daily\_slot $\times$ nr\_week\_day $\times$ nr\_week))\\ 
+\COURSE & ensemble des cours\\
+\PART & ensembles des parties de cours\\
+\CLASS & ensembles des classes\\
+\SESSION & ensembles des séances\\
+\ROOM & ensemble des salles\\
+\TEACHER & ensemble des enseignants\\
+\GROUP & ensemble des groupes d'étudiants\\
+\STUDENT & ensembles des étudiants\\
+\hline
+%class\_groups               & \\
+\multicolumn{2}{p{.9\columnwidth}}{class\_\{sessions,parents\} :} \\
+& ensemble des séances (resp. classes parentes) d'une classe \\
+%class\_sessions             & \\
+%group\_students             & \\
+\multicolumn{2}{p{.9\columnwidth}}{part\_\{classes,lecturers, rooms,sessions\} :} \\
+ & ensemble des classes (resp. enseignants, salles, séances) d'une partie \\
+%part\_lecturers             & \\
+%part\_rooms                 & \\
+%part\_sessions              & \\
+\multicolumn{2}{p{.9\columnwidth}}{room\_sessions :}\\
+& ensemble des séances possibles pour une salle\\
+\multicolumn{2}{p{.9\columnwidth}}{session\_\{part,class\} : la partie (resp. classe) d'une séance} \\
+%session\_class              & \\
+\multicolumn{2}{p{.9\columnwidth}}{student\_\{courses,parts\} :}\\
+ & les cours (resp. parties) que suit un étudiant \\
+%student\_parts              & \\
+
+\multicolumn{2}{p{.9\columnwidth}}{mandatory\_rooms : les salles obligatoires pour une partie} \\
+\multicolumn{2}{p{.9\columnwidth}}{single\_room\_sessions : l'ensemble des séances mono-salle} \\
+\multicolumn{2}{p{.9\columnwidth}}{capacity : capacité maximum d'une salle ou d'une classe} \\
+\multicolumn{2}{p{.9\columnwidth}}{is\_multi\_rooms : indique si une séance est multi-salles} \\
+\multicolumn{2}{p{.9\columnwidth}}{length : durée d'une séance} \\
+\multicolumn{2}{p{.9\columnwidth}}{part\_room\_use :}\\
+ & modalité d'utilisation de salles pour une partie (none, single, multiple) \\
+\multicolumn{2}{p{.9\columnwidth}}{rank : rang d'une séance} \\
+\multicolumn{2}{p{.9\columnwidth}}{service :} \\
+ & nombre de séances à dispenser par enseignant par partie \\
+\multicolumn{2}{p{.9\columnwidth}}{teams :} \\
+ & nombre d'enseignants requis par séance d'une partie \\
+\multicolumn{2}{p{.9\columnwidth}}{virtual : indique si une salle est de capacité illimitée ou non} \\
+\multicolumn{2}{p{.9\columnwidth}}{dailyslots : créneaux quotidiens autorisés pour une partie} \\
+\multicolumn{2}{p{.9\columnwidth}}{weekdays : journées autorisées pour une partie} \\
+\multicolumn{2}{p{.9\columnwidth}}{weeks : semaines autorisées pour une partie} \\
+\multicolumn{2}{p{.9\columnwidth}}{nr\_daily\_slots : nombre de créneaux dans une journée} \\
+\multicolumn{2}{p{.9\columnwidth}}{nr\_weekly\_slots : nombre de créneaux dans une semaine}\\
+%part\_*                     & entité, séance ou valeur associée aux partie de cours\\
+%class\_*                    & entité, séance ou valeur associée aux classes\\
+%%part\_sessions              & séances d'une partie de cours\\
+%%class\_sessions             & séances d'une classe\\
+%%part\_ressources            & ressources allouables dans une partie de cours\\
+%%part\_daily\_slots          & créneaux quotidiens autorisés pour une partie de cours\\
+%%part\_weekdays              & journées hebdomadaires autorisées pour une partie de cours\\
+%%part\_weeks                 & semaines autorisées pour une partie de cours\\
+%%part\_room\_use             & régime d'utilisation des salles dans une partie de cours\\
+%service                     & volume de séances par enseignant et partie de cours\\
+%%room\_capacity              & capacité d'accueil d'une salle\\
+%%class\_capacity             & effectif maximum d'une classe\\
+%*\_capacity                 & seuil de capacité d'une salle ou d'effectif de classe\\
+%%room\_max\_use              & \\
+%%teacher\_max\_use           & \\
+%%group\_max\_use             & \\
+%%\end{tabular}
+%%}
+%%\caption{Données d'instance}
+%%\label{table:input-data}
+%%\end{table*}
+%%
+%%\begin{table*}[h]
+%%%\resizebox{\textwidth}{!}{%
+%%\centering
+%%{\footnotesize
+%%\begin{tabular}{|rl|}
+%%\hline
+%session\_*              & entité ou valeur associée à une séance\\
+%*\_sessions             & séances associées à une entité\\
+%%session\_course         & cours d'une séance\\
+%%session\_part           & partie de cours d'une séance\\
+%%session\_class          & classe d'une séance\\
+%%session\_rank           & rang d'une séance dans sa classe\\
+%%session\_length         & durée d'une séance\\
+%%team                    & enseignants d'une partie\\
+%%room\_sessions          & ensemble des séances possibles pour une salle\\
+%%teacher\_sessions       & ensemble des séances possibles pour un enseignant\\
+%%group\_sessions         & ensemble des séances possibles pour un groupe\\
+%class\_mandatory        & ensemble de salles obligatoires pour une classe\\
+%slot\_*                 & conversion d'un créneau vers une durée relative\\
+%%slot\_dailyslot         & créneau quotidien caractérisant un créneau\\
+%%slot\_weekday           & journée hebdomadaire caractérisant un créneau\\
+%%slot\_week              & semaine caractérisant un créneau\\
+%\hline
+%is\_multi\_rooms        & indique si une séance est multi-salles\\
+%has\_mandatory\_rooms   & indique si une séance a des salles obligatoires\\
+%nr\_weekly\_slots       & nombre de créneaux dans une semaine\\
+%\hline
+\end{tabularx}
+}
+\caption{Données d'instances et fonctions utilitaires}
+\label{table:cp-instance-data}
+\end{table}
+
+%------------------------------------------------------------
+%------------------------------------------------------------
+
+\begin{table*}[!ht]
+%\resizebox{\textwidth}{!}{%
+\centering
+{\small
+\begin{tabular}{|lll|}
+\hline
+array[\STUDENT] of var \GROUP: & $\xstudent$ & groupe attribué à un étudiant\\
+array[\CLASS] of var set of \GROUP: & $\xgroup$ & ensemble de groupes alloués à une classe\\
+array[\SESSION] of var set of \ROOM: & \xroom & ensemble de salles allouées à une séance\\
+array[\SESSION] of var set of \TEACHER: & $\xteacher$ & ensemble d'enseignants alloués à une séance\\
+array[\SESSION] of var \SLOT: & $\xslot$ & créneau de départ attribué à une séance\\
+\hline
+\end{tabular}
+}
+\caption{Variables de décision (\MINIZINC{})}
+\label{table:cp-variables}
+\end{table*}
+
+
+
+\input{2022_JFPC/3_1_MZN}
+\input{2022_JFPC/3_2_CHR}

@@ -1,0 +1,12 @@
+/home/etud/timetabling/instances/benchmarks/ua_l1_p1-p2_L3-info_M1-info_M2-info/ua_l1_p1-p2_l3-info_v2_2023_extension_v2.json  /home/etud/timetabling/instances/benchmarks/instance_for_visualisation/ua_l1_p1-p2_l3-info_2023_visualisation.xml /home/etud/timetabling/src/choco/choco_strategie/test_strategie_simple_v2_experiment.json
+
+
+/home/etud/timetabling/instances/benchmarks/ua_l1_p1-p2_L3-info_M1-info_M2-info/ua_l1_p1-p2_l3-info_v2_2023_extension_v2.json  /home/etud/timetabling/instances/benchmarks/instance_for_visualisation/ua_l1_p1-p2_l3-info_2023_visualisation.xml /home/etud/timetabling/src/choco/choco_strategie/test_strategie_simple_v2_experiment.json
+
+
+/home/etud/minizincPython/example_extension_v2.json /home/etud/minizincPython/example.xml /home/etud/timetabling/src/choco/choco_strategie/test_strategie_simple_v2_experiment.json
+
+
+ Berlin Heidelberg: Springer-Verlag, pp.
+47–160.
+Asham, G. M., S

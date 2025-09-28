@@ -1,0 +1,12 @@
+Des contraintes de sectionnement [et non pas d’appariement] s’appliquent aux 
+
+
+
+rajouter 1 footnote pour définir « gcd »
+
+\newcommand{\txtsynchronousduo}{ Let $A=\{h_j-h_i\mid s_i,s_j\in\SESSION,h_i\in\map{\SESSION}{\SLOT}{s_i}, h_j\in\map{\SESSION}{\SLOT}{s_j}:\; s_i\ne s_j:\;h_i<h_j\}: gcd(A)\footnote{} = \min(A) \land gcd(A)>1$}
+
+
+
+
+\forall t\inT, s_i,s_j\in x_t^T,S tq s_i\neq s_j: x_{s_i}^S,H + length_si \leq x_{s_j}^S,H \/ l’inverse

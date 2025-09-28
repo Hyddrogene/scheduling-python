@@ -1,0 +1,1 @@
+– nurse(N), day(D), days(Y D), D ≤ Y D−13,#count{D1 : assign(N,00 5−rest00,D1), D ≤ D1 ≤ D+13} < 2.

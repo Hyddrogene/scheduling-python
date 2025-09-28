@@ -1,0 +1,30 @@
+// Définir les régions sur la carte
+regions = ['A', 'B', 'C', 'D', 'E', 'F']
+
+// Définir les couleurs disponibles
+colors = ['Red', 'Blue', 'Green']
+
+// Définir les régions adjacentes
+adjacentRegions = {
+  'A': ['B', 'C', 'D'],
+  'B': ['A', 'C', 'E'],
+  'C': ['A', 'B', 'D', 'E', 'F'],
+  'D': ['A', 'C', 'F'],
+  'E': ['B', 'C', 'F'],
+  'F': ['C', 'D', 'E']
+}
+
+// Définir les variables pour chaque région
+variables = {region: colors for region in regions}
+
+// Définir les contraintes pour éviter les couleurs adjacentes identiques
+constraints = []
+for region, adjacents in adjacentRegions.items():
+  for adjacent in adjacents:
+    constraints.append((region, adjacent, colors))
+
+// Résoudre le CSP en utilisant un algorithme de satisfaction de contraintes tel que backtracking ou AC3
+solution = solve_csp(variables, constraints)
+
+// Afficher la solution
+print(solution)

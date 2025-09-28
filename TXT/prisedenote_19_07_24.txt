@@ -1,0 +1,74 @@
+### Proposition pour l'automatisation d'un logiciel de résolution de problèmes
+
+**Objectif** : Automatiser un logiciel de résolution de problèmes (solver) avec une architecture modulaire et configurable pour permettre la réduction et la sélection en fonction des variantes, ainsi que la génération d'instances personnalisées.
+
+### 1. Architecture modulaire et configuration du modèle
+
+#### a. **Réduction et sélection selon les variantes**
+   - **Réduction** : Simplifier le problème en éliminant les éléments non essentiels.
+   - **Sélection** : Choisir les variantes pertinentes pour l'analyse et la résolution.
+
+#### b. **Architecture modulaire**
+   - Décomposer le système en modules indépendants et réutilisables.
+   - Faciliter l'intégration et la maintenance des composants du solver.
+
+#### c. **Configuration du modèle de fonctionnalités (Feature Model)**
+   - Définir les options configurables du logiciel.
+   - Permettre la personnalisation en fonction des besoins spécifiques de l'utilisateur.
+
+### 2. Automatisation et personnalisation du solver
+
+#### a. **Génération d'instances**
+   - Créer des instances spécifiques du problème à résoudre.
+   - Utiliser des configurations prédéfinies ou personnalisées pour générer ces instances.
+
+#### b. **Modèle graphique et chaîne d'automatisation**
+   - Utiliser des outils graphiques pour représenter le modèle et les étapes d'automatisation.
+   - Mettre en place une chaîne d'outils pour automatiser le processus de résolution.
+
+### 3. État de l'art et expériences
+
+#### a. **Automatisation incomplète**
+   - Identifier les aspects de l'automatisation qui ne sont pas encore achevés.
+   - Reformuler ces aspects pour qu'ils soient génériques et spécifiques (spécialisation).
+
+#### b. **Domaine d'application et analyse combinatoire**
+   - Examiner le domaine d'application du solver d'un point de vue combinatoire.
+   - Définir les expériences basées sur la littérature existante et l'UTP (Unified Theories of Programming).
+
+### 4. Problème d'affectation et extensions
+
+#### a. **Modèle simplifié du problème d'affectation**
+   - Présenter le modèle simplifié oralement.
+   - Proposer des extensions pour améliorer l'efficacité par rapport à 2022.
+
+#### b. **Automatisation du service des professeurs**
+   - Automatiser la répartition des groupes aux classes selon des règles préétablies.
+   - Figer l'appariement des groupes aux classes pour éviter les conflits.
+
+### 5. Présentation et mise en avant des concepts
+
+#### a. **Représentation de haut niveau**
+   - Utiliser des concepts de haut niveau pour représenter les solutions.
+   - Intégrer des grilles de lecture pour faciliter la compréhension.
+
+#### b. **Modèles et extensions**
+   - Mettre en évidence les extensions du modèle.
+   - Présenter l'état de l'art et les contraintes et règles vers la fin de l'extension du schéma.
+
+### 6. Planification et communication
+
+#### a. **Présentation à distance**
+   - Préparer une présentation qui peut être effectuée à distance.
+
+#### b. **Planning du soir**
+   - Organiser un planning pour les réunions et les tâches à accomplir.
+
+#### c. **Lettre de début d'année**
+   - Rédiger une lettre d'urgence en début d'année pour communiquer les objectifs et les attentes.
+
+---
+
+**Note** : Ce document constitue une proposition initiale et peut nécessiter des ajustements en fonction des retours et des besoins spécifiques identifiés lors des discussions et des sessions de travail.
+
+Si vous avez des questions supplémentaires ou besoin de plus de détails, n'hésitez pas à me le faire savoir.

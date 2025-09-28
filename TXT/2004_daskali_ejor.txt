@@ -1,0 +1,392 @@
+### Résumé
+
+Une nouvelle formulation de programmation linéaire en nombres entiers 0–1 pour le problème de planification des emplois du temps universitaires est présentée. Le modèle propose des contraintes pour un grand nombre de règles opérationnelles et de besoins rencontrés dans la plupart des institutions académiques. Traité comme un problème d'optimisation, l'objectif est de minimiser une fonction de coût linéaire. Avec cet objectif, il est possible de prendre en compte la satisfaction des préférences exprimées concernant les périodes d'enseignement, les jours de la semaine ou même les salles de classe pour les cours spécifiés. De plus, avec une définition appropriée des coefficients de coût dans la fonction objective, il est possible de réduire l'espace de solution et de rendre le problème traitable. Le modèle peut être résolu par des outils logiciels existants avec des solveurs IP, même pour les grands départements. Le cas d'un département d'ingénierie de cinq ans avec un grand nombre de cours et de professeurs est présenté avec sa solution résultant de la formulation IP présentée.
+
+### 1. Introduction
+
+La construction d'un emploi du temps qui satisfait toutes les règles opérationnelles et les besoins d'une institution académique, tout en répondant aux souhaits et exigences du personnel et des étudiants, est une tâche importante mais extrêmement difficile pour le personnel impliqué. Dans la plupart des institutions, cette tâche est laissée au personnel administratif et la pratique actuelle consiste à répliquer les emplois du temps des années précédentes avec des modifications mineures pour s'adapter aux nouvelles situations. Cependant, ces dernières années, les changements se produisent plus fréquemment et les ajustements des développements historiques ne sont pas toujours la meilleure politique. Dans ces circonstances, et à la lumière des progrès réalisés tant dans les technologies matérielles que logicielles, la communauté scientifique continue de travailler sur le problème afin de développer des procédures formelles et automatisées pour construire des emplois du temps efficaces et souhaitables.
+
+Formellement, le problème de planification des emplois du temps universitaires est défini comme le processus d'attribution des cours universitaires à des périodes spécifiques tout au long des cinq jours ouvrables de la semaine et à des salles de classe spécifiques adaptées au nombre d'étudiants inscrits et aux besoins de chaque cours. Pour le problème que nous modélisons dans cet article, les cours sont offerts à des groupes d'étudiants bien définis qui suivent un emploi du temps semi-structuré et, en ce sens, le problème appartient à la catégorie des problèmes de planification des cours/professeurs pour les environnements universitaires. Pour chaque institution éducative, l'objectif est toujours la construction d'emplois du temps hebdomadaires efficaces et satisfaisants. Un emploi du temps est considéré comme efficace lorsqu'il est réalisable par l'institution et satisfaisant lorsqu'il possède certaines caractéristiques de qualité qui satisfont ses utilisateurs au moins dans une certaine mesure.
+
+La planification des emplois du temps universitaires est la troisième étape de notre effort pour résoudre le problème de planification des emplois du temps pour les trois niveaux d'éducation en Grèce. La première étape a traité le problème de la construction des emplois du temps pour les lycées grecs, la deuxième a résolu le problème pour les lycées (Lyceums) grecs et cet effort final donne un modèle complet et une solution initiale pour l'environnement universitaire. Le problème de la planification des emplois du temps est connu pour être un problème NP-complet dans presque toutes ses formes, ce qui signifie que si toutes les combinaisons devaient être examinées, le temps de solution pour des problèmes raisonnables augmenterait de manière dramatique.
+
+Le problème de la planification des emplois du temps, comme beaucoup d'autres dans le domaine de l'optimisation combinatoire, a été abordé par plusieurs techniques bien connues des domaines de la recherche opérationnelle et de l'informatique. Plusieurs enquêtes sur la planification des cours et la planification automatisée, ainsi que d'autres sur des aspects plus ciblés du problème, ont réussi à enregistrer ce travail de manière systématique, catégorisant ainsi les différentes variations du problème et les approches de solution. Étant donné le travail susmentionné, cet article ne tente pas de couvrir de manière exhaustive l'état de l'art dans ce domaine, sauf en soulignant les principales contributions de notre travail par rapport à d'autres formulations de programmation en nombres entiers.
+
+L'article est organisé comme suit. La section 2 présente une brève revue historique des problèmes de planification des emplois du temps en se concentrant principalement sur les formulations de programmation en nombres entiers (IP) qui apparaissent dans la littérature. Ensuite, la section 3 explique la logique derrière notre approche avec IP. La section 4 décrit les caractéristiques typiques des cours offerts dans une université. La section 5 liste les règles que les planificateurs doivent respecter pour que leur produit soit acceptable (règles de base), ainsi qu'un certain nombre de conventions proposées qu'un emploi du temps doit respecter (règles de qualité). La formulation IP du problème est donnée dans la section 6, qui comprend une description complète des contraintes et de la fonction objective du modèle. La section 7 propose une approche pour définir les coefficients de coût impliqués dans la formulation de la fonction objective. Un problème réel de planification des emplois du temps pour le département de Génie Électrique et Informatique est finalement discuté dans la section 8 et la solution fournie par le modèle proposé est partiellement présentée. La section 9 résume le travail présenté et conclut avec des remarques tirées de notre expérience avec le problème de planification des emplois du temps.
+
+### 2. Revue des Problèmes Similaires et de l'État de l'Art
+
+Dès les années soixante, des approches de simulation, d'autres heuristiques et des méthodes de coloration de graphes sont apparues dans la littérature alors qu'elles tentaient de résoudre certaines variantes du problème de manière efficace. En particulier, Welsh et Powell ont utilisé la technique de coloration de graphes pour résoudre un problème de planification des emplois du temps, tandis que Schmidt et Strohlein rapportent des techniques de simulation. Plus de 30 ans plus tard, il est toujours nécessaire d'aborder le problème de manière systématique, facilitant l'inclusion de variantes réelles du problème ainsi que l'automatisation et la solution de très grands problèmes.
+
+Parmi les premières approches en programmation mathématique, Lawrie et Akkoyunlu présentent des modèles de programmation linéaire et de programmation en nombres entiers pour certaines versions du problème et réussissent ainsi à calculer des solutions optimales pour un problème de planification des emplois du temps scolaires et universitaires, respectivement. Plus précisément, dans le processus de planification des emplois du temps commence par la génération des "dispositions" pour les différents groupes d'étudiants et une formulation en programmation en nombres entiers tente de trouver un ensemble "d'arrangements" optimaux, un pour chaque groupe. À l'inverse, dans le problème est résolu comme un problème d'affectation entre un ensemble de cours et les périodes de temps d'un emploi du temps hebdomadaire, avec un accent central sur la prévention des conflits tout au long de cette affectation.
+
+Une solution est proposée pour le problème d'affectation des professeurs, un problème étroitement lié au problème de planification des emplois du temps, en utilisant des modèles de programmation linéaire. Le même problème a été étudié et une solution a été tentée, à nouveau avec l'aide de la programmation mathématique. Plus récemment, le problème d'affectation des enseignants est formulé comme un problème MIP et est résolu comme un cas spécial du problème de transport à coût fixe. Dans ce cas, l'algorithme spécialisé proposé, fonctionne mieux que les packages disponibles publiquement. En utilisant la programmation par objectifs, le problème d'affectation des enseignants est combiné avec une forme du problème de planification des emplois du temps et est résolu par le biais de logiciels commerciaux de programmation par objectifs. De manière similaire, une formulation de programmation linéaire est fournie pour le problème d'allocation des salles de classe, un sous-problème de la planification des emplois du temps universitaires.
+
+Des formulations IP pour les problèmes de planification des emplois du temps scolaires et universitaires en tant que problèmes d'optimisation sont également données, où la NP-complétude des deux problèmes est montrée même pour des versions simples. L'auteur choisit cependant des approches de théorie des graphes pour la solution des problèmes considérés. Des extensions à ce travail, notamment en ce qui concerne la matrice des conflits, sont présentées. Étant donné les difficultés de l'époque pour résoudre de grands problèmes IP, la relaxation lagrangienne est proposée comme une approche de solution possible pour le modèle résultant. Cependant, dans d'autres applications réelles, une approche heuristique est proposée à la place.
+
+Parallèlement à la formulation mathématique, plusieurs auteurs divisent les exigences en deux groupes : les contraintes strictes, qui sont incluses dans les contraintes et définissent l'espace de recherche, et les contraintes souples, qui sont incluses d'une certaine manière dans la fonction objective. Une stratégie similaire pour un problème de planification des emplois du temps universitaires est résolue en regroupant des sous-problèmes. Une approche de solution pour le même problème, mais avec des conférences de différentes longueurs est fournie ; dans cette approche de formulation, les conférences peuvent durer une, deux ou trois périodes.
+
+En dehors des approches classiques de programmation mathématique, plusieurs nouvelles techniques les plus efficaces pour les problèmes combinatoires ont également été utilisées pour les problèmes de planification des emplois du temps. Parmi celles-ci, la recherche tabou a été utilisée pour la solution des problèmes de planification des emplois du temps scolaires et universitaires ; la programmation logique par contraintes est présentée. Enfin, les algorithmes génétiques ont été utilisés comme un outil efficace pour la solution des problèmes de planification des emplois du temps. Par exemple, les problèmes de planification des emplois du temps universitaires sont résolus par ces techniques.
+
+### 3. Principes de Base de Notre Approche
+
+Ces dernières années, grâce aux avancées dans les logiciels et le matériel informatique, les formulations de programmation en nombres entiers (IP) et de programmation linéaire mixte en nombres entiers (MIP) sont redevenues une approche acceptable pour de nombreux problèmes combinatoires . Les nouvelles technologies dans les systèmes d'information, la disponibilité de logiciels fiables et la capacité de résoudre des problèmes relativement grands en un temps relativement court sont les principales raisons pour lesquelles cette approche de modélisation traditionnelle est attractive pour la solution de problèmes réalistes. Il y a deux décennies, les problèmes solvables par les techniques IP classiques, principalement la méthode de séparation et évaluation, comportaient des dizaines de variables entières. Maintenant, un problème avec plusieurs milliers, et dans des occasions spéciales, des millions de variables binaires n'est pas nécessairement un problème. En ce qui concerne les problèmes de planification des emplois du temps, des modèles IP ont été présentés pour le problème de planification des emplois du temps universitaires et pour le problème de planification des emplois du temps scolaires ; les solutions produites avec des logiciels commerciaux ne présentaient pas de réel problème en termes de temps de calcul.
+
+Dans les sections qui suivent, un problème de planification des emplois du temps universitaires est modélisé comme un problème d'optimisation utilisant des variables binaires. Le modèle propose des contraintes pour un grand nombre de règles et réglementations différentes qui existent dans les environnements académiques. Plus précisément, le modèle réussit à créer des emplois du temps exempts de collisions entre cours, enseignants et salles de classe et ils sont complets sous tous les aspects ; de plus, il prend en charge la planification des cours nécessitant des périodes consécutives, ainsi que des cours nécessitant des sessions répétées plusieurs fois pour accueillir différents groupes d'étudiants. Enfin, les pré-affectations peuvent être facilement introduites dans le modèle, ainsi que les périodes sans enseignement pendant la semaine.
+
+La formulation IP suivie dans cet article est nouvelle et le modèle possède certaines caractéristiques uniques par rapport aux autres. Les variables binaires sont définies de manière à ce que les éléments structurels : cours, étudiants, enseignants, jours et périodes soient préservés dans le modèle de manière distincte. Ce choix a été fait en sachant qu'en réalité l'affectation est effectuée entre l'ensemble des triplets (cours, enseignant, groupe d'étudiants) et l'ensemble des paires (période, jour). Bien sûr, ce choix conduit à un très grand nombre de variables possibles, cependant avec l'introduction de sous-ensembles appropriés des ensembles de base des jours, périodes, groupes d'étudiants, enseignants, cours et salles de classe, ce nombre est réduit à des tailles gérables. D'autre part, la définition proposée de nos variables binaires conduit à des éléments très flexibles en ce qui concerne la modélisation. Porter toutes les informations importantes avec les variables a fourni une grande flexibilité dans le processus de modélisation, de sorte que presque toutes les règles fonctionnelles que le processus de planification des emplois du temps universitaires présentait ont été facilement transformées en équations mathématiques.
+
+De plus, l'introduction des variables auxiliaires pour les contraintes de consécutivité et de répétitivité a également été très réussie pour gérer la complexité de ces questions. Il est connu que les demandes de créneaux horaires consécutifs dans les problèmes de planification des emplois du temps augmentent la complexité et rendent le problème NP-difficile . L'accent de cet article est mis sur la modélisation du problème en utilisant l'IP, cependant, les modèles résultant du problème réel dans notre étude de cas étaient encore solvables par des packages commerciaux utilisant l'approche classique de séparation et évaluation. Les solutions trouvées grâce au modèle présenté sont optimales dans le sens où elles minimisent une fonction de coût, tandis que la fonction objective a été choisie comme moyen d'introduire des préférences pour certaines périodes, jours et salles de classe pour tous les cours concernés.
+
+### 4. Caractéristiques de la Planification des Emplois du Temps Universitaires
+
+Le problème de la planification des emplois du temps universitaires présente des caractéristiques spéciales qui dépendent fortement des caractéristiques des cours dispensés dans une université, ainsi que des dispositions que chaque université prévoit pour l'utilisation de ses ressources.
+
+#### 4.1. Structure des Cours Universitaires
+
+Un cours offert par n'importe quel département de l'université peut comprendre uniquement des conférences, ou des conférences et des travaux dirigés, ou des conférences, des travaux dirigés et/ou des travaux en laboratoire.
+
+Les conférences sont dispensées par des professeurs, des conférenciers ou d'autres membres du personnel enseignant et ils choisissent d'effectuer les exigences hebdomadaires en sessions simples ou multiples. Occasionnellement, deux ou plusieurs professeurs peuvent être affectés aux conférences pour un cours donné, auquel cas ils doivent décider du type de partage de la charge d'enseignement.
+
+Les créneaux horaires désignés pour les travaux dirigés sont souvent traités comme des périodes de cours, couverts par la même personne qui donne les conférences, tandis que dans d'autres cas, ils peuvent être considérés comme du temps pour des exercices et une meilleure compréhension du matériel couvert pendant les conférences. Dans ce dernier cas, les travaux dirigés sont attribués à une ou plusieurs personnes différentes qui prennent en charge les travaux dirigés, tandis que la classe des étudiants est divisée en plusieurs petits groupes.
+
+Les travaux en laboratoire font généralement partie d'un cours donné ou parfois d'un cours en soi et le groupe d'étudiants est divisé en plusieurs sous-groupes pour la formation. Les travaux en laboratoire se déroulent dans des salles de classe spécialement équipées et sont attribués au professeur qui enseigne les conférences ou aux assistants de laboratoire.
+
+### 4.2. Types de cours universitaires
+
+Dans de nombreuses universités, les cours sont caractérisés comme étant obligatoires ou optionnels. Les cours obligatoires sont ceux qu'un département considère comme essentiels pour la formation de ses étudiants. Pendant les premières années d'études, la plupart des cours sont obligatoires ; ils sont donc conçus pour tous les étudiants de la même année. En revanche, les cours optionnels sont moins nombreux, mais dans l'emploi du temps, ils ne doivent jamais chevaucher un cours obligatoire ou un autre cours optionnel.
+
+Dans les années supérieures, les cours obligatoires sont moins nombreux, tandis que les cours optionnels augmentent exponentiellement. De plus, durant les années supérieures, il est très courant pour certains départements de répartir leurs étudiants en plusieurs divisions, chaque division ayant son propre ensemble de cours obligatoires et optionnels. La planification des emplois du temps devient alors encore plus compliquée, étant donné que certains cours peuvent se chevaucher parce qu'il n'y a pas d'intérêt commun entre les divisions, tandis que d'autres cours sont partagés entre les divisions et leur emploi du temps doit être pratique pour tous les étudiants concernés.
+
+Les caractéristiques des cours universitaires décrites ci-dessus, ainsi que le fait que différents étudiants peuvent appartenir à différents groupes de travaux dirigés ou de laboratoires, posent de nombreuses difficultés pour contrôler les emplois du temps des étudiants. Comme nous le verrons plus loin, les règles de qualité imposées par les planificateurs pour rendre les emplois du temps plus faciles pour les étudiants ont une utilisation limitée, car chaque étudiant a son propre emploi du temps. Cependant, dans notre modèle, certaines considérations pour améliorer la fréquentation des étudiants pendant les cours de première année sont possibles en donnant un traitement préférentiel à ceux qui sont généralement considérés comme des « cours difficiles ».
+
+### 4.3. Disponibilité des ressources
+
+Pour le problème de la planification des emplois du temps universitaires, les ressources se réfèrent aux ressources humaines et aux salles de classe.
+
+La disponibilité des ressources humaines pour l'enseignement est définie par les personnes elles-mêmes. Les tâches de nature administrative consomment un certain nombre de périodes pendant la semaine pour chaque individu du personnel enseignant. Pour rendre les choses plus contrôlables, dans les universités grecques, les réunions de l'assemblée générale de chaque département sont programmées à un jour et une heure fixes, de sorte que les cours pour tous les participants sont programmés autour de ces périodes. De plus, chaque individu du personnel enseignant doit fournir toutes les autres périodes qui peuvent être indisponibles pour l'enseignement.
+
+La disponibilité des salles de classe est définie par le système suivi par l'université. Certaines salles de classe peuvent être considérées comme disponibles pendant toutes les périodes, d'autres cependant ont une disponibilité limitée. Par exemple, dans les universités grecques, il est courant que plusieurs départements partagent certaines salles de classe, de sorte qu'un département a accès à une salle de classe donnée certains jours de la semaine et d'autres départements le reste des jours. Le partage des salles de classe est particulièrement courant pour les grands amphithéâtres, une denrée rare dans la plupart des institutions.
+
+### 5. Règles pour la planification des emplois du temps universitaires
+
+Construire un emploi du temps hebdomadaire pour une institution est un processus fastidieux que les administrateurs entreprennent généralement après avoir passé plusieurs heures de travail. Dans cet effort, les planificateurs suivent plusieurs règles, dont certaines sont si importantes qu'elles ne peuvent jamais être violées (contraintes strictes) et d'autres qui ne sont pas aussi importantes et sont généralement respectées uniquement si toutes les contraintes strictes sont satisfaites et qu'il reste encore de la place pour de meilleures solutions selon certains objectifs pour améliorer la qualité (contraintes souples).
+
+Les contraintes strictes pour la planification des emplois du temps universitaires sont régies par les règles de base suivantes :
+
+1. Les collisions ne peuvent pas être permises. Dans un emploi du temps, une collision se produit lorsque deux ou plusieurs cours sont programmés à la même période pour la même personne enseignante, pour le même groupe d'étudiants ou pour la même salle de classe. De même, lorsque deux ou plusieurs personnes enseignantes sont affectées au même groupe d'étudiants pour enseigner deux cours différents ; et enfin lorsque deux ou plusieurs salles de classe sont affectées au même cours et au même groupe d'étudiants.
+   
+2. Un emploi du temps doit être complet. Un emploi du temps est complet lorsque tous les cours prévus pour chaque groupe d'étudiants apparaissent dans l'emploi du temps, avec le bon nombre de périodes pour chaque cours et chaque partie de chaque cours. De plus, lorsque chaque membre du personnel enseignant est affecté au nombre total de périodes d'enseignement que l'institution requiert.
+
+3. Un emploi du temps doit répondre aux demandes de sessions de périodes consécutives. Selon le cours et le nombre de périodes d'enseignement attribuées par semaine, un professeur peut choisir de donner le cours en sessions simples ou multiples. L'emploi du temps doit être capable de programmer un cours donné selon tout schéma que le professeur responsable peut choisir de suivre.
+
+4. Un emploi du temps doit répondre aux demandes de sessions répétées pour un cours ou une partie d'un cours. Cette règle fait référence au besoin présenté par certains cours pour des sessions de travaux dirigés ou de travaux pratiques conçues pour de petits groupes. Dans ce cas, la même session doit être répétée plusieurs fois pour accueillir le nombre total d'étudiants inscrits.
+
+De même, les contraintes souples pour la planification des emplois du temps universitaires sont régies par les règles de qualité suivantes :
+
+1. Les préférences pour l'enseignement à des intervalles de temps spécifiques sont respectées si possible. Chaque membre du personnel enseignant peut exprimer une opinion concernant la période préférée pour enseigner ses cours. Par exemple, une personne peut préférer enseigner un cours donné pendant les périodes du matin, tandis qu'une autre peut préférer les périodes de l'après-midi ou du soir.
+
+2. Les emplois du temps des étudiants doivent être aussi compacts que possible, tout en permettant des pauses pendant les heures de déjeuner. Les emplois du temps des étudiants sont plus faciles à suivre si les planificateurs profitent de ces périodes où les étudiants sont plus alertes et programment les cours dits « difficiles » pendant ces périodes. Les autres cours peuvent ensuite remplir le reste de la journée de manière à minimiser les créneaux vides entre les cours. Cependant, dans la plupart des cas, les étudiants préfèrent un créneau libre autour de l'heure du déjeuner, afin de pouvoir se reposer avant de reprendre leurs cours.
+
+3. Minimiser les changements de salle de classe, en particulier pour les étudiants de première année. Dans les premières années, les étudiants assistent aux cours dans de grands amphithéâtres et il est beaucoup plus préférable de rester au même endroit pendant quelques périodes avant de changer pour un laboratoire ou pour une classe avec un plus petit public.
+
+### 6. Modélisation du Problème de Planification des Emplois du Temps Universitaires
+
+En suivant une approche similaire à celle de, nous utilisons la programmation linéaire en nombres entiers pour construire le modèle qui peut construire les emplois du temps universitaires. Dans cette philosophie de modélisation, les équations pour le modèle IP réel peuvent varier d'une institution à l'autre pour refléter les exigences spéciales imposées par chacune d'elles. Cependant, la structure sous-jacente du modèle reste la même et est décrite dans la section suivante. Plus bas, les équations pour modéliser le problème de planification des emplois du temps sous des hypothèses spécifiques données par les départements de génie de notre université sont présentées.
+
+#### 6.1. Caractéristiques Générales du Modèle
+
+Six paramètres sont considérés comme les éléments structurels de base pour cette approche. Ce sont :
+
+- Le jour de la semaine, auquel un cours ou une partie d'un cours peut être programmé. L'ensemble de tous les jours possibles pour la planification est noté par la lettre \( I \), par exemple \( I = \{1, 2, 3, 4, 5\} \).
+
+- La période de la journée, à laquelle une période d'un cours peut être programmée. Dans notre approche, une période de temps est toute période d'une heure de 8h00 à 21h00. Traditionnellement, dans les universités grecques, l'enseignement...
+
+
+### 4.2. Types de Cours Universitaires
+
+Dans de nombreuses universités, les cours sont caractérisés comme étant obligatoires ou optionnels. Les cours obligatoires sont ceux qu'un département considère comme essentiels pour la formation de ses étudiants. Pendant les premières années, la plupart des cours sont obligatoires et sont donc conçus pour tous les étudiants de la même année. En revanche, les cours optionnels sont moins nombreux, mais dans l'emploi du temps, ils ne doivent jamais chevaucher un cours obligatoire ou un autre cours optionnel.
+
+Dans les années supérieures, les cours obligatoires sont moins nombreux, tandis que les cours optionnels augmentent exponentiellement. De plus, pendant les années supérieures, il est très courant pour certains départements de répartir leurs étudiants en plusieurs divisions, chaque division ayant son propre ensemble de cours obligatoires et optionnels. La planification des emplois du temps devient alors encore plus compliquée, étant donné que certains cours peuvent se chevaucher parce qu'il n'y a pas d'intérêt commun entre les divisions, tandis que d'autres cours sont partagés entre les divisions et leur emploi du temps doit être pratique pour tous les étudiants concernés.
+
+Les caractéristiques des cours universitaires décrites ci-dessus, ainsi que le fait que différents étudiants peuvent appartenir à différents groupes de travaux dirigés ou de laboratoires, posent de nombreuses difficultés pour contrôler les emplois du temps des étudiants. Comme nous le verrons plus loin, les règles de qualité imposées par les planificateurs pour rendre les emplois du temps plus faciles pour les étudiants ont une utilisation limitée, car chaque étudiant a son propre emploi du temps. Cependant, dans notre modèle, certaines considérations pour améliorer la fréquentation des étudiants pendant les cours de première année sont possibles en donnant un traitement préférentiel à ceux qui sont généralement considérés comme des « cours difficiles ».
+
+### 4.3. Disponibilité des Ressources
+
+Pour le problème de la planification des emplois du temps universitaires, les ressources se réfèrent aux ressources humaines et aux salles de classe.
+
+La disponibilité des ressources humaines pour l'enseignement est définie par les personnes elles-mêmes. Les tâches de nature administrative consomment un certain nombre de périodes pendant la semaine pour chaque individu du personnel enseignant. Pour rendre les choses plus contrôlables, dans les universités grecques, les réunions de l'assemblée générale de chaque département sont programmées à un jour et une heure fixes, de sorte que les cours pour tous les participants sont programmés autour de ces périodes. De plus, chaque individu du personnel enseignant doit fournir toutes les autres périodes qui peuvent être indisponibles pour l'enseignement.
+
+La disponibilité des salles de classe est définie par le système suivi par l'université. Certaines salles de classe peuvent être considérées comme disponibles pendant toutes les périodes, d'autres cependant ont une disponibilité limitée. Par exemple, dans les universités grecques, il est courant que plusieurs départements partagent certaines salles de classe, de sorte qu'un département a accès à une salle de classe donnée certains jours de la semaine et d'autres départements le reste des jours. Le partage des salles de classe est particulièrement courant pour les grands amphithéâtres, une denrée rare dans la plupart des institutions.
+
+### 5. Règles pour la Planification des Emplois du Temps Universitaires
+
+Construire un emploi du temps hebdomadaire pour une institution est un processus fastidieux que les administrateurs entreprennent généralement après avoir passé plusieurs heures de travail. Dans cet effort, les planificateurs suivent plusieurs règles, dont certaines sont si importantes qu'elles ne peuvent jamais être violées (contraintes strictes) et d'autres qui ne sont pas aussi importantes et sont généralement respectées uniquement si toutes les contraintes strictes sont satisfaites et qu'il reste encore de la place pour de meilleures solutions selon certains objectifs pour améliorer la qualité (contraintes souples).
+
+Les contraintes strictes pour la planification des emplois du temps universitaires sont régies par les règles de base suivantes :
+
+1. **Les collisions ne peuvent pas être permises.** Dans un emploi du temps, une collision se produit lorsque deux ou plusieurs cours sont programmés à la même période pour la même personne enseignante, pour le même groupe d'étudiants ou pour la même salle de classe. De même, lorsque deux ou plusieurs personnes enseignantes sont affectées au même groupe d'étudiants pour enseigner deux cours différents ; et enfin lorsque deux ou plusieurs salles de classe sont affectées au même cours et au même groupe d'étudiants.
+
+2. **Un emploi du temps doit être complet.** Un emploi du temps est complet lorsque tous les cours prévus pour chaque groupe d'étudiants apparaissent dans l'emploi du temps, avec le bon nombre de périodes pour chaque cours et chaque partie de chaque cours. De plus, lorsque chaque membre du personnel enseignant est affecté au nombre total de périodes d'enseignement que l'institution requiert.
+
+3. **Un emploi du temps doit répondre aux demandes de sessions de périodes consécutives.** Selon le cours et le nombre de périodes d'enseignement attribuées par semaine, un professeur peut choisir de donner le cours en sessions simples ou multiples. L'emploi du temps doit être capable de programmer un cours donné selon tout schéma que le professeur responsable peut choisir de suivre.
+
+4. **Un emploi du temps doit répondre aux demandes de sessions répétées pour un cours ou une partie d'un cours.** Cette règle fait référence au besoin présenté par certains cours pour des sessions de travaux dirigés ou de travaux pratiques conçues pour de petits groupes. Dans ce cas, la même session doit être répétée plusieurs fois pour accueillir le nombre total d'étudiants inscrits.
+
+De même, les contraintes souples pour la planification des emplois du temps universitaires sont régies par les règles de qualité suivantes :
+
+1. **Les préférences pour l'enseignement à des intervalles de temps spécifiques sont respectées si possible.** Chaque membre du personnel enseignant peut exprimer une opinion concernant la période préférée pour enseigner ses cours. Par exemple, une personne peut préférer enseigner un cours donné pendant les périodes du matin, tandis qu'une autre peut préférer les périodes de l'après-midi ou du soir.
+
+2. **Les emplois du temps des étudiants doivent être aussi compacts que possible, tout en permettant des pauses pendant les heures de déjeuner.** Les emplois du temps des étudiants sont plus faciles à suivre si les planificateurs profitent de ces périodes où les étudiants sont plus alertes et programment les cours dits « difficiles » pendant ces périodes. Les autres cours peuvent ensuite remplir le reste de la journée de manière à minimiser les créneaux vides entre les cours. Cependant, dans la plupart des cas, les étudiants préfèrent un créneau libre autour de l'heure du déjeuner, afin de pouvoir se reposer avant de reprendre leurs cours.
+
+3. **Minimiser les changements de salle de classe, en particulier pour les étudiants de première année.** Dans les premières années, les étudiants assistent aux cours dans de grands amphithéâtres et il est beaucoup plus préférable de rester au même endroit pendant quelques périodes avant de changer pour un laboratoire ou pour une classe avec un plus petit public.
+
+### 6. Modélisation du Problème de Planification des Emplois du Temps Universitaires
+
+En suivant une approche similaire à celle de, nous utilisons la programmation linéaire en nombres entiers pour construire le modèle qui peut construire les emplois du temps universitaires. Dans cette philosophie de modélisation, les équations pour le modèle IP réel peuvent varier d'une institution à l'autre pour refléter les exigences spéciales imposées par chacune d'elles. Cependant, la structure sous-jacente du modèle reste la même et est décrite dans la section suivante. Plus bas, les équations pour modéliser le problème de planification des emplois du temps sous des hypothèses spécifiques données par les départements de génie de notre université sont présentées.
+
+#### 6.1. Caractéristiques Générales du Modèle
+
+Six paramètres sont considérés comme les éléments structurels de base pour cette approche. Ce sont :
+
+- Le jour de la semaine, auquel un cours ou une partie d'un cours peut être programmé. L'ensemble de tous les jours possibles pour la planification est noté par la lettre \( I \), par exemple \( I = \{1, 2, 3, 4, 5\} \).
+
+- La période de la journée, à laquelle une période d'un cours peut être programmée. Dans notre approche, une période de temps est toute période d'une heure de 8h00 à 21h00. Traditionnellement, dans les universités grecques, la période de cours est de 45 minutes, permettant ainsi 15 minutes pour une courte pause et un changement de personnel enseignant. L'ensemble de toutes les périodes de temps disponibles pour la planification est noté par la lettre \( J \), par exemple \( J = \{1, 2, ..., 14\} \).
+
+- Le groupe d'étudiants pour lequel un cours dans l'emploi du temps est conçu. Dans notre approche, des exemples de groupes d'étudiants peuvent être les étudiants de première année d'un département donné ou les étudiants de quatrième année d'une division donnée dans un département donné. L'ensemble de tous les groupes d'étudiants différents pouvant être utilisés pour un emploi du temps donné est noté par la lettre \( K \), par exemple \( K = \{group#1, group#2, ..., group#|K|\} \).
+
+- Le professeur, conférencier ou autre personnel enseignant, désormais appelé enseignant, qui va enseigner un cours dans l'emploi du temps. Pour notre problème, il est supposé que l'affectation des cours aux enseignants précède le processus de planification des emplois du temps, et la charge d'enseignement de chaque enseignant est une entrée pour les planificateurs d'
+
+emplois du temps. L'ensemble de tous les enseignants à utiliser dans un emploi du temps donné est noté par la lettre \( L \), par exemple \( L = \{teach#1, teach#2, ..., teach#|L|\} \).
+
+- Les cours à programmer pour un ensemble donné de groupes d'étudiants. Comme expliqué précédemment, toutes les parties différentes d'un cours donné doivent apparaître dans un emploi du temps hebdomadaire et dans un schéma souhaité, différent pour chaque cours. L'ensemble de tous les cours à programmer dans un emploi du temps donné est noté par la lettre \( M \), par exemple \( M = \{course#1, course#2, ..., course#|M|\} \).
+
+- Les salles de classe qui peuvent être disponibles pour programmer des cours pour un ensemble donné de groupes d'étudiants. L'ensemble de toutes les salles de classe à utiliser dans un emploi du temps donné est noté par la lettre \( N \), par exemple \( N = \{classroom#1, classroom#2, ..., classroom#|N|\} \).
+
+Deux ensembles différents de variables binaires sont adoptés. Tout au long de cet article, le premier est appelé l'ensemble de variables de base et est noté \( x_{i,j,k,l,m,n} \), où \( i \in I \), \( j \in J \), \( k \in K \), \( l \in L \), \( m \in M \) et \( n \in N \). La variable \( x_{i,j,k,l,m,n} \) prend la valeur 1, lorsque le cours \( m \), enseigné par l'enseignant \( l \) au groupe d'étudiants \( k \), est programmé pour la \( j \)-ième période du jour \( i \) dans la salle de classe \( n \). Le deuxième ensemble de variables sera appelé variables auxiliaires et sera noté \( y_{i,pv,k,hv,m,n} \), où \( i \in I \), \( k \in K \), \( m \in M \) et \( n \in N \), tandis que \( pv \) et \( hv \) sont des nombres naturels. La variable \( y_{i,pv,k,hv,m,n} \) prendra la valeur 1, lorsque le cours \( m \), qui nécessite une session de \( hv \) périodes consécutives, est programmé pour le jour \( i \) pour le groupe d'étudiants \( k \) dans la salle de classe \( n \). L'indice \( pv \) prend les valeurs \( 1, 2, 3, ..., p_{maxm} \) lorsque la session doit être répétée \( p_{maxm} \) fois. Lorsque la variable \( y_{i,pv,k,hv,m,n} \) se réfère à des sessions de cours, qui sont données une seule fois, alors \( pv \) ne prend que la valeur de 1.
+
+#### 6.2. Caractéristiques Spéciales du Modèle
+
+Les deux ensembles de variables décrits sont assez détaillés, donc suffisamment flexibles, et avec leur aide, toutes les règles de base pour le problème de planification des emplois du temps sont facilement décrites. Cependant, afin de maintenir le nombre de variables gérable, plusieurs sous-ensembles des ensembles originaux \( I \), \( J \), \( K \), \( L \), \( M \) et \( N \) sont définis. De plus, un certain nombre de nouveaux ensembles sont définis a priori afin que certains indices utilisent ceux-ci comme domaines au lieu des ensembles originaux. Ainsi, le nombre de variables est encore réduit, tandis que la modélisation de certaines contraintes devient beaucoup plus facile. Ces nouveaux ensembles sont les suivants :
+
+- \( K1 \) = {k ∈ K : k = groupe d'étudiants des premières années, généralement des étudiants des deux ou trois premières années, suivant une éducation générale au sein d'un département}.
+- \( K2 \) = {k ∈ K : k = groupe d'étudiants des années supérieures (inscrits à une division spécifique)}.
+
+Il est apparent que \( K1 \) et \( K2 \) sont des ensembles disjoints, tandis que \( K = K1 \cup K2 \).
+
+- \( Kl \) = {k ∈ K : k = groupe d'étudiants (de \( K1 \) ou \( K2 \)) pour lequel l'enseignant \( l \) offre un cours}.
+- \( Li \) = {l ∈ L : l = enseignant disponible le jour \( i \)}.
+- \( Lk \) = {l ∈ L : l = enseignant enseignant au moins un cours pour le groupe d'étudiants \( k \), \( k ∈ K \)}.
+- \( Lm \) = {l ∈ L : l = enseignant enseignant le cours \( m \)}.
+- \( Lkm \) = \( Lk \cap Lm \) et \( Lki \) = \( Lk \cap Li \).
+- \( Mk \) = {m ∈ M : m = cours conçu pour le \( k \)-ième groupe d'étudiants ou offert par la \( k \)-ième division pour ses étudiants, \( k \in K \)}.
+- \( Ml \) = {m ∈ M : m = cours enseigné par l'enseignant \( l \)}.
+- \( Mn \) = {m ∈ M : m = cours conçu pour un groupe d'étudiants qui s'adapte à la salle de classe \( n \) ∈ \( N \)}.
+- \( Mkl \) = \( Mk \cap Ml \), \( Mkn \) = \( Mk \cap Mn \), et \( Mkln \) = \( Mk \cap Ml \cap Mn \).
+- \( Mcomk \) = {(\( ka \), \( l \), \( m \)) ∈ \( K2 \times L \times M \) : \( m \) = cours enseigné par l'enseignant \( l \) pour le groupe d'étudiants \( ka \) ∈ \( K2 \), offert en tant que cours optionnel pour le groupe d'étudiants \( k \) ∈ \( K2 \)}.
+- \( Mlab \) = {m ∈ M : m = cours nécessitant un travail en laboratoire}.
+- \( Nmk \) = {n ∈ N : n = salle de classe adaptée au groupe d'étudiants \( k \) ∈ \( K \) pour le cours \( m \) ∈ \( M \)}.
+- \( In \) = {i ∈ I : i = jour où la salle de classe \( n \) est disponible pour l'utilisation}.
+- \( Il \) = {i ∈ I : i = jour où l'enseignant \( l \) ∈ \( L \) est disponible pour les affectations d'enseignement}.
+- \( Iln \) = \( Il \cap In \).
+- \( Jiln \) = {j ∈ J : j = période de la journée \( i \) pendant laquelle l'enseignant \( l \) ∈ \( L \) et la salle de classe \( n \) ∈ \( N \) sont disponibles pour les affectations}.
+- \( JLiln \) = {(\( ja \), \( jb \)) ∈ \( Jiln \times Jiln \) : (\( ja \), \( jb \)) = intervalle de temps de la période \( ja \) à \( jb \) du jour \( i \) pendant laquelle l'enseignant \( l \) ∈ \( L \) et la salle de classe \( n \) ∈ \( N \) sont disponibles pour les affectations}.
+- \( FJLiln \) = {ja ∈ \( Jiln \) : ja = la période de début d'un intervalle du jour \( i \) pendant laquelle l'enseignant \( l \) ∈ \( L \) et la salle de classe \( n \) ∈ \( N \) sont disponibles pour les affectations}.
+- \( Pm \) = {pv ∈ {1, 2, ..., pmaxm}, où pmaxm est le nombre de répétitions requises pour une session multipériode du cours \( m \) ∈ \( M \)}.
+- \( Hm \) = {hv ∈ \( N+ \) : hv = durée (nombre de périodes) d'une session multipériode demandée pour le cours \( m \) ∈ \( M \)}.
+- \( PRA \) = {(\( i \), \( j \), \( k \), \( l \), \( m \), \( n \)) ∈ \( I \times J \times K \times L \times M \times N \) : (\( i \), \( j \), \( k \), \( l \), \( m \), \( n \)) = une affectation a priori dans l'emploi du temps, c'est-à-dire que le cours \( m \) enseigné par l'enseignant \( l \) pour le groupe d'étudiants \( k \) est pré-affecté à la période \( j \) du jour \( i \)}.
+
+#### 6.3. Contraintes pour le Modèle IP
+
+Dans cette section, les contraintes pour le modèle IP ainsi que la règle correspondante que chacune d'elles modélise sont présentées. À des fins de présentation, les contraintes sont regroupées en cinq groupes, chacun comprenant un certain nombre d'équations.
+
+##### 6
+
+.3.1. Contraintes d'Unicité
+
+Ce groupe de contraintes garantit qu'il n'y a pas de conflits dans l'emploi du temps (règle de base #1). Plus spécifiquement :
+
+1. Chaque membre du personnel enseignant doit se voir attribuer au maximum un cours, un groupe d'étudiants et une salle de classe à la fois :
+
+\[ \forall i \in I, \forall j \in J, \forall l \in Li, \sum_{k \in Kl} \sum_{m \in Mkl} \sum_{n \in Nmk} x_{i,j,k,l,m,n} \leq 1 \]
+(1)
+
+2. Pour chaque groupe d'étudiants, au maximum un cours, une personne enseignante et une salle de classe doivent être attribués à chaque période d'enseignement. Cette exigence garantit en outre qu'il n'y aura pas de conflits entre les cours obligatoires pour chaque groupe d'étudiants, mais aussi entre les cours obligatoires et optionnels, afin que les étudiants puissent choisir de les suivre :
+
+\[ \forall k \in K1, \forall i \in I, \forall j \in J, \sum_{l \in Lki} \sum_{m \in Mkl} \sum_{n \in Nmk} x_{i,j,k,l,m,n} \leq 1 \]
+(2)
+
+### 6.3.5. Contraintes de pré-affectation
+
+Ce dernier ensemble de contraintes garantit que certains cours seront assignés à une période donnée d'un jour donné et peuvent être utilisés soit pour la pré-affectation exacte des cours, soit pour faciliter et mieux gérer les difficultés computationnelles.
+
+11. Le cours \( m \) enseigné par l'enseignant \( l \) au groupe d'étudiants \( k \) doit être assigné à une période donnée d'un jour donné :
+\[ \forall (i, j, k, l, m, n) \in PRA, x_{i,j,k,l,m,n} = 1 \]
+(15)
+où PRA est l'ensemble contenant toutes les pré-affectations requises.
+
+### 6.4. Fonction objective pour le modèle IP
+
+Les contraintes présentées, lorsqu'elles sont placées dans un modèle de programmation en nombres entiers, sont capables de fournir des solutions faisables, c'est-à-dire des affectations qui ne violent aucune des règles de base. Cependant, certaines affectations sont préférables à d'autres et l'amélioration des solutions proposées est la responsabilité de la fonction objective, qui dans ce modèle est définie comme suit :
+
+Minimiser 
+\[ \sum_{k \in K} \sum_{l \in L_k} \sum_{m \in M_{kl}} \sum_{n \in N_{mk}} \sum_{i \in I_l} \sum_{j \in J_{iln}} c_{i,j,k,l,m,n} \cdot x_{i,j,k,l,m,n} \]
+\[ + \sum_{k \in K} \sum_{i \in I} \sum_{m \in M_k} \sum_{n \in N_{mk}} \sum_{h_v \in H_m} \sum_{p_v \in P_m} a_{i,p_v,k,h_v,m,n} \cdot y_{i,p_v,k,h_v,m,n} \]
+(16)
+
+Comme on peut le voir dans l'Éq. (16), l'objectif est de minimiser une fonction de coût composée de deux termes. Le premier terme de la fonction objective fait référence au coût d'attribution du cours \( m \) à la \( j \)-ième période du jour \( i \), tandis que le deuxième terme fait référence au coût engagé par l'attribution de ces cours qui nécessitent des sessions de plus d'une heure consécutive, un jour donné de la semaine.
+
+### 7. Détermination des coefficients de coût
+
+Dans tout problème de planification des emplois du temps donné, les coefficients de coût dans la fonction objective présentée dans l'Éq. (16) peuvent prendre n'importe quelle valeur. En fait, si tous les coefficients de coût prennent la même valeur, alors le problème devient dégénéré et toutes les solutions faisables seront optimales. Dans toutes les situations pratiques, cela n'est bien sûr pas possible et une analyse plus spécifique pour l'affectation correcte des coefficients de coût est nécessaire. Bien que les règles pour l'affectation des coûts aux périodes de temps puissent faire l'objet de recherches supplémentaires, dans notre modèle, les coefficients de coût sont attribués de manière à refléter les préférences pour des périodes de temps spécifiques de la journée pour tous les cours et pour des jours spécifiques de la semaine pour les cours avec des sessions multipériodes. Les préférences pour certaines salles de classe sont également incorporées dans les coefficients \( c_{i,j,k,l,m,n} \) de la fonction objective. Pour rendre cela plus compréhensible, chaque cas est discuté séparément.
+
+### 7.1. Affectation des valeurs aux coefficients \( c_{i,j,k,l,m,n} \) selon les demandes des enseignants, des étudiants ou du président du département pour des périodes de temps spécifiques de la journée
+
+Il est bien accepté parmi les enseignants, les étudiants et les personnes qui gèrent le processus de planification des emplois du temps que certains cours doivent bénéficier d'un traitement préférentiel en termes de période de temps à laquelle ils sont attribués. Pour chaque département, il existe un ensemble de cours considérés comme plus difficiles que les autres et nécessitant une « période de pointe », tandis que d'autres cours sont moins exigeants et peuvent être enseignés à tout moment de la journée. Pour influencer l'attribution des cours à leurs périodes de temps préférées respectives, les coefficients \( c_{i,j,k,l,m,n} \) se voient attribuer des valeurs dérivées de fonctions prédéfinies, appelées fonctions de pénalité.
+
+Des exemples de telles fonctions de pénalité sont montrés dans la Fig. 1, même si dans d'autres cas, elles peuvent prendre des formes très différentes et plus compliquées. La figure montre deux fonctions linéaires avec une pente ascendante au fur et à mesure que la journée progresse. Les coefficients \( c_{i,j,k,l,m,n} \) qui correspondent à un cours donné prennent des valeurs de l'une des deux fonctions pour chaque période de temps selon les préférences du département. Cette affectation peut être répétée pour chaque jour de la semaine. Un exemple de telle affectation pour un jour donné et un cours donné est montré dans la Fig. 2. Il est montré que pour ce cours particulier, les périodes de temps 9-10, 10-11, 11-12, 12-13, 13-14 sont les périodes de temps préférées, suivies des périodes de temps 16-17, 8-9, 17-18, 18-19, 19-20, 20-21, 14-15, 15-16. Cette approche de définition des coefficients de coût peut être considérée comme une extension de la fonction en forme de V suggérée et est très bénéfique pour le processus d'optimisation.
+
+La pente donnée aux fonctions \( f_1 \) et \( f_2 \) sert un objectif supplémentaire important : les étudiants devraient se retrouver avec un emploi du temps aussi compact que possible, ce qui signifie qu'il existe un nombre minimal de périodes de temps vides entre les cours. Cette règle de qualité est importante, cependant, elle ne peut pas toujours être satisfaite étant donné qu'il existe également des cours optionnels, ainsi que des travaux pratiques et des travaux dirigés qui sont réalisés en groupes. Ces activités sont effectuées en petits groupes et, par conséquent, les étudiants individuels de la même année d'étude peuvent effectivement avoir des emplois du temps quotidiens et hebdomadaires différents.
+
+
+### 7.2. Attribution des valeurs aux coefficients \( c_{i,j,k,l,m,n} \) pour minimiser les changements de salle entre les cours
+
+Une autre règle de qualité qui peut être partiellement satisfaite grâce à l'attribution de valeurs appropriées aux coefficients \( c_{i,j,k,l,m,n} \) est celle de minimiser les changements de salle entre les cours. Cela est réalisé par un accord selon lequel chaque groupe d'étudiants se voit attribuer sa « salle de classe principale ». Avec cette hypothèse, il est possible d'attribuer des valeurs plus faibles aux coefficients \( c_{i,j,k,l,m,n} \) qui se rapportent à cette salle de classe et à tous les cours enseignés à ce groupe spécifique d'étudiants.
+
+### 7.3. Attribution des valeurs aux coefficients \( a_{i,pv,k,hv,m,n} \) selon les demandes des enseignants, des étudiants ou du département en général pour des jours spécifiques de la semaine
+
+Dans la fonction objective du modèle IP, les \( a_{i,pv,k,hv,m,n} \) sont les coefficients pour les variables auxiliaires, qui sont utilisées pour la planification des cours nécessitant des sessions de plusieurs périodes à des jours spécifiques. En attribuant des valeurs aux coefficients \( a_{i,pv,k,hv,m,n} \), il est donc possible d'influencer les affectations de chacun de ces cours aux jours préférés. Par exemple, il est possible d'éviter d'attribuer des travaux de laboratoire le vendredi, en attribuant des valeurs plus élevées aux coefficients \( a_{i,pv,k,hv,m,n} \) qui correspondent à \( i = 5 \) et aux sessions de laboratoire.
+
+La triple façon de définir les coefficients de coût dans la fonction objective du modèle IP discutée ci-dessus est suivie dans l'exemple présenté dans la section suivante et s'est avérée fournir des solutions très satisfaisantes pour l'emploi du temps requis.
+
+### 8. Étude de cas
+
+Afin de démontrer les capacités du modèle proposé pour la solution du problème de planification des emplois du temps universitaires, le département de Génie Électrique et Informatique de l'Université de Patras a été choisi. Le département, qui est l'un des deux plus grands départements de l'École d'ingénierie, propose un programme de cinq ans pour ses étudiants. Au cours des trois premières années, les étudiants reçoivent une éducation générale en génie électrique et informatique, et au cours des deux dernières années, chaque étudiant choisit l'une des quatre divisions du département pour se spécialiser.
+
+Pour le semestre d'automne, le département propose un total de 72 cours, représentant 211 périodes d'enseignement pour les conférences et les travaux dirigés. Comme le montre le tableau 1 (panneaux A et B), les 72 cours sont répartis de manière inégale parmi les cinq années d'études. De plus, 26 de ces cours nécessitent certaines heures de formation des étudiants dans les laboratoires.
+
+| Année étudiante | Total |
+| --------------- | ----- |
+| Première année  | 10 (six obligatoires, quatre optionnels) |
+| Deuxième année  | 8     |
+| Troisième année | 7     |
+| Total           | 25    |
+
+| Division | Quatrième année | Cinquième année | Total |
+| -------- | --------------- | --------------- | ----- |
+| A        | 4               | 8               | 12    |
+| B        | 6               | 4               | 10    |
+| C        | 6               | 4               | 10    |
+| D        | 7               | 8               | 15    |
+| Total    | 23              | 24              | 47    |
+
+Les panneaux A et B du tableau 1 montrent la répartition du nombre de cours offerts aux étudiants de première, deuxième et troisième année (panneau A) et aux étudiants de quatrième et cinquième année (panneau B).
+
+En résumé, le département propose un total de 72 cours, dont une proportion significative nécessitant des travaux pratiques en laboratoire, ajoutant ainsi à la complexité de la planification des emplois du temps. Les résultats obtenus avec le modèle proposé démontrent son efficacité pour gérer cette complexité et produire des emplois du temps satisfaisants.
+
+... totalisant 110 périodes de travaux pratiques. Le département assigne ces cours à 55 professeurs et conférenciers. Il existe également un groupe supplémentaire d'assistants responsables de tâches spécifiques, principalement la supervision des étudiants pendant les travaux pratiques en laboratoire.
+
+Le département dispose de six salles de classe régulières (adaptées aux conférences et travaux dirigés) et de 12 salles de classe spécialisées (adaptées aux travaux pratiques). Les salles de classe régulières appartiennent au département et sont disponibles à tout moment de la semaine. Ce n'est pas toujours le cas pour les autres départements, et le partage d'une salle de classe avec un emploi du temps de disponibilité préétabli est la pratique courante. Les salles de classe ont des capacités variables et sont adaptées soit pour de grands, soit pour de petits groupes. Respectivement, la plupart des salles de laboratoire sont spécialisées et sont utilisées pour un seul cours, cependant les salles informatiques sont partagées entre les cours du département. De plus, quelques cours partagent des salles spécialisées (par exemple, des salles avec des tables pour les travaux de conception) avec des cours d'autres départements, et dans ce cas, le planificateur doit programmer les cours concernés uniquement pendant les périodes de temps convenues à l'avance.
+
+Un modèle de programmation en nombres entiers (IP) basé sur la formulation décrite dans cet article a été développé pour la construction de l'emploi du temps du semestre d'automne. Les coefficients de coût ont été attribués selon la stratégie discutée dans la section 5, en utilisant des fonctions similaires à celle de la Fig. 2, mais éventuellement différentes pour différents cours et jours. Le solveur de programmation linéaire en nombres entiers mixtes (MIP) de CPLEX 5.1 a été utilisé sur une station de travail HP J7000 et la solution trouvée est un emploi du temps proposé pour le département. À des fins de présentation, nous présentons sélectivement les emplois du temps pour la première et la quatrième année.
+
+### 8.1. Discussion sur les emplois du temps résultants
+
+Les étudiants de première année ont six cours obligatoires et quatre cours optionnels pour le semestre d'automne. Les noms des cours, les numéros de code, la structure (conférences/travaux dirigés/travaux pratiques) et la répartition requise pour les périodes assignées, ainsi que le nombre de groupes requis pour les travaux pratiques, sont tous présentés dans le tableau 2. En jugeant l'emploi du temps résultant pour la première année, on devrait noter les points suivants :
+(a) Tous les cours requis par le programme apparaissent dans l'emploi du temps sans conflits entre eux. Puisque tous les étudiants devraient avoir la possibilité de choisir deux des cours optionnels, il ne devrait y avoir absolument aucun chevauchement entre les cours, ce qui est reflété dans la solution présentée.
+(b) Chaque cours apparaît dans autant de périodes que requis par le programme, assignant des conférences et des travaux dirigés dans des salles de classe régulières (indiquées comme Rm#) et des travaux pratiques dans des salles spécialisées (indiquées comme LR#). De plus, la durée des sessions suit les exigences de chaque cours. Les sessions de travaux pratiques sont programmées de manière répétitive pour gérer le nombre total de groupes requis par le cours correspondant.
+(c) Toutes les conférences et travaux dirigés pour les cours obligatoires et optionnels sont programmés pendant les sessions du matin (8:00–15:00) ou les sessions de l'après-midi (17:00–20:00), suivant les préférences pour certaines périodes de temps données en entrée par le planificateur d'emploi du temps.
+
+### Tableau 2: Programme et emploi du temps pour le semestre d'automne des étudiants de première année
+
+| N°  | Cours                           | Code  | Périodes | Conf. | TD  | Répartition requise en sessions | Travaux pratiques/nombre de groupes |
+| --- | ------------------------------- | ----- | -------- | ----- | --- | ------------------------------- | ---------------------------------- |
+| 1   | Mathématiques I                 | AF1   | 3        | 2     | 2 + 2 + 1                       | -                                  |
+| 2   | Physique I                      | AF2   | 3        | 2     | 3 + 2                           | 2/3                                |
+| 3   | Introduction à l'informatique I | AF3   | 2        | 1     | 3                               | 2/3                                |
+| 4   | Algèbre linéaire                | AF4   | 2        | 1     | 2 + 1                           | -                                  |
+| 5   | Introduction à la logique       | AF5   | 2        | 1     | 3                               | -                                  |
+| 6   | Dessin technique                | AF6   | -        | -     | -                               | 4/2                                |
+|     | **Optionnels**                  |       |          |       |                                 |                                    |
+| 7   | Philosophie I                   | AF7   | 3        | -     | 3                               | -                                  |
+| 8   | Histoire de la nation grecque I | AF8   | 3        | -     | 2 + 1                           | -                                  |
+| 9   | Littérature grecque moderne I   | AF9   | 3        | -     | 3                               | -                                  |
+| 10  | Langue étrangère I              | AF10  | 3        | -     | 1 + 1 + 1                       | -                                  |
+
+### Tableau 3: Programme pour la quatrième année pour toutes les divisions du département
+
+| N°  | Cours                  | Code | Périodes | Conf. | TD | Répartition requise |
+| --- | ---------------------- | ---- | -------- | ----- | -- | -------------------- |
+
+En conclusion, les étudiants de première année ont un emploi du temps bien structuré avec des cours obligatoires et optionnels correctement répartis sans chevauchement, répondant ainsi aux besoins du programme tout en respectant les préférences des enseignants et des étudiants. Les sessions de travaux pratiques sont planifiées de manière répétitive pour gérer le nombre total de groupes nécessaires. Pour la quatrième année, les emplois du temps sont également bien répartis entre les différentes divisions, répondant aux exigences spécifiques de chaque cours et aux besoins des étudiants.
+
+
+### Répartition des Cours
+
+#### Division des Systèmes Électriques – Semestre d'Automne
+| N°  | Cours                           | Code  | Périodes | Conf. | TD  | Répartition requise en sessions | Travaux pratiques/nombre de groupes |
+| --- | ------------------------------- | ----- | -------- | ----- | --- | ------------------------------- | ---------------------------------- |
+| 1   | Analyse des systèmes de puissance I | DFA1  | 2        | 1     | 2 + 1 | 3/1 |
+| 2   | Hautes tensions                   | DFA2  | 3        | -     | 3    | - |
+| 3   | Électronique de puissance I        | DFA3  | 3        | -     | 3    | 3/1 |
+| 4   | Installations électriques          | DFA4  | 3        | -     | 3    | - |
+
+#### Division de l'Électronique et de l'Informatique – Semestre d'Automne
+| N°  | Cours                          | Code  | Périodes | Conf. | TD  | Répartition requise en sessions | Travaux pratiques/nombre de groupes |
+| --- | ------------------------------ | ----- | -------- | ----- | --- | ------------------------------- | ---------------------------------- |
+| 1   | Algorithmes et structures de données | DFB1  | 2        | 1     | 2 + 1 | 2/1 |
+| 2   | Techniques de programmation avancées | DFB2  | 2        | 1     | 2 + 1 | 1/1 |
+| 3   | Microprocesseurs et microsystèmes I  | DFB3  | 2        | 1     | 2 + 1 | 3/2 |
+| 4   | Circuits analogiques/numériques avancés | DFB4  | 2        | 1     | 2 + 1 | - |
+| 5   | Conception de VLSI I               | DFB5  | 2        | 1     | 2 + 1 | - |
+| 6   | Traitement numérique du signal     | DFB6  | 2        | 1     | 2 + 1 | - |
+
+#### Division des Systèmes de Contrôle Automatique – Semestre d'Automne
+| N°  | Cours                            | Code  | Périodes | Conf. | TD  | Répartition requise en sessions | Travaux pratiques/nombre de groupes |
+| --- | -------------------------------- | ----- | -------- | ----- | --- | ------------------------------- | ---------------------------------- |
+| 1   | Lab. pour le contrôle analogique et numérique | DFC1  | -        | -     | -    | 3/1 |
+| 2   | Conception de systèmes dynamiques I | DFC2  | 3        | -     | 2 + 1 | - |
+| 3   | Automatisation industrielle I    | DFC3  | 3        | -     | 2 + 1 | - |
+| 4   | Optimisation appliquée           | DFC4  | 3        | -     | 3    | - |
+| 5   | Systèmes d'information industrielle | DFC5  | 3        | -     | 3    | - |
+| 6   | Méthodes computationnelles appliquées | DFC6  | 3        | -     | 3    | - |
+
+#### Division des Télécommunications et de la Technologie de l'Information – Semestre d'Automne
+| N°  | Cours                               | Code  | Périodes | Conf. | TD  | Répartition requise en sessions | Travaux pratiques/nombre de groupes |
+| --- | ----------------------------------- | ----- | -------- | ----- | --- | ------------------------------- | ---------------------------------- |
+| 1   | Systèmes de télécommunications I     | DFD1  | 2        | 1     | 2 + 1 | 3/1 |
+| 2   | Théorie de l'information             | DFD2  | 3        | -     | 2 + 1 | - |
+| 3   | Systèmes téléphoniques I             | DFD3  | 3        | -     | 2 + 1 | - |
+| 4   | Systèmes d'information               | DFD4  | 2        | 1     | 2 + 1 | - |
+| 5   | Propagation des ondes et conception d'antennes | DFD5  | 2        | 1     | 2 + 1 | 3/1 |
+| 6   | Intelligence artificielle            | DFD6  | 2        | 1     | 2 + 1 | - |
+| 7   | Physique des cellules photovoltaïques | DFD7  | 2        | 1     | 2 + 1 | - |
+
+### 8.2. Résultats Computationnels
+
+Pour évaluer le modèle IP proposé, trois problèmes de tailles différentes ont été résolus et sont exposés dans le tableau 5. Le nombre de cours variait de 25 à 92 en plus des cours de laboratoire qui variaient de 8 à 27, totalisant les exigences pour les périodes d'enseignement de 139 à 326. Il convient de noter que ces périodes d'enseignement sont programmées dans les 70 périodes disponibles chaque semaine.
+
+Les modèles résultant de la formulation IP suggérée comportaient 7 543 à 17 159 équations et 4 100 à 19 295 variables binaires, tandis que les non-zéros du modèle IP variaient de 35 685 à 92 358. Le calcul des emplois du temps optimaux a nécessité 2,5 minutes pour le premier problème, 18,5 minutes pour le deuxième et 95 minutes pour le dernier.
+
+Pour les grands problèmes comme le problème #3, il est presque toujours possible de diviser le problème en plus petits, du moins pour notre école d'ingénierie. En effet, il n'y a pas de réelle concurrence entre les étudiants des premières années et ceux des années supérieures pour les salles d'enseignement. Les étudiants des premières années sont en grands groupes et nécessitent des amphithéâtres, tandis que les étudiants des années supérieures sont généralement en petits groupes et demandent des petites salles de classe.
+
+Enfin, il est important de mentionner le rôle des valeurs choisies pour les coefficients de coût. Selon notre expérience, en changeant les fonctions de pénalité, il est possible de changer le temps de calcul d'un facteur important, ce qui signifie que le processus d'optimisation peut être guidé plus rapidement vers la solution optimale.
+
+### 9. Résumé et Conclusions
+
+Dans cet article, nous avons présenté une nouvelle formulation IP d'un problème de planification des emplois du temps tel qu'il apparaît dans de nombreuses universités, en ajoutant cependant de nombreuses fonctionnalités qui peuvent être distinctes dans les écoles d'ingénierie des universités grecques. Le problème est difficile et très complexe, cependant, les choix faits lors du processus de modélisation aboutissent à des modèles solvables et flexibles. La flexibilité offerte est due aux variables multidimensionnelles, qui permettent de modéliser les détails bas du système éducatif comme des contraintes du modèle IP. Une variété de règles peuvent être représentées dans le modèle avec des contraintes adaptées fournies par cette formulation.
+
+De plus, le choix fait pour la fonction de coût permet l'introduction de certaines préférences concernant les périodes de temps, les jours et les salles de classe, de sorte que les emplois du temps peuvent être améliorés selon des mesures de qualité bien acceptées.
+
+L'emploi du temps pour le département de Génie Électrique et Informatique de notre université a été utilisé comme étude de cas et a été résolu avec beaucoup de succès. La construction de l'emploi du temps nécessitait la planification des conférences, des travaux dirigés et des cours de laboratoire, chaque type ayant des caractéristiques et des demandes différentes. Les sessions avec des périodes de temps consécutives et/ou des répétitions du même cours dans différentes sessions sont parmi les règles qui nécessitent satisfaction et ont été transformées en contraintes strictes.
+
+Créer des emplois du temps pour les institutions académiques est un processus fastidieux, cependant, l'automatisation est maintenant possible.
+
+### Tableau 5: Taille des problèmes résolus et modèles résultants
+
+| Taille du problème | Taille du modèle |
+| ------------------ | ---------------- |
+| Nombre de cours    | Nombre de cours de lab. | Périodes d'enseignement requises | Nombre de salles/labs | Nombre de lignes | Nombre de colonnes | Nombre de non-zéros |
+| Problème #1        | 25                | 8  | 139 | 3/6 | 7 543 | 4 100 | 35 685 |
+| Problème #2        | 47                | 19 | 187 | 4/10 | 12 734 | 13 527 | 78 523 |
+| Problème #3        | 92                | 27 | 326 | 6/12 | 17 159 | 19 295 | 92 358 |

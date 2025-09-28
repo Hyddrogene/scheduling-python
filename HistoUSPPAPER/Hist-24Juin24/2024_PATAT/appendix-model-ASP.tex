@@ -1,0 +1,102 @@
+%
+The \ASP{} model is split in two parts: the first part lists the facts with a small example (Listing~\ref{lst:data-asp}), the second part is the declaration of rules to solve the given \UTP{} problem (Listing~\ref{lst:model-asp}).
+\begin{lstlisting}[style=PrologStyle, caption={ASP facts}, label={lst:data-asp}]
+%%DIMENSIONS
+weeks(4). days(12). slot_per_day(1440).grid(480,90,7).
+courses(1). parts(2).classes(3). sessions(12).
+%%RESSOURCES
+room(Salle-1,40). room(Salle-2,20). room(Salle-3,20). 
+course(math). teacher(teacher1).teacher(teacher2).
+%%COURSES
+part(math-CM,12,120,5,12,2,1). class(math-CM-1,80). course_part(math,math-CM).
+part_class(math-CM,math-CM-1). class_sessions(math-CM-1,1..12).
+%%RESOURCESRELATION
+part_teacher(math-CM,(teacher-1;teacher-2)).
+part_room(math-CM,(salle-1;salle-2;salle-3)).
+%%TIMES
+part_days(math-CM,1..5). part_weeks(math-CM,1..12).
+part_slots(math-CM, (480;570;660;750;840;930)).
+part_grids("cours-1-pCM",1,1,6).
+%%GROUPS
+group(group-1,20).group(group-2,20). class_group(math-CM-1,(group-1;group-2)).
+%%SESSIONS
+session_duration(S,D) :- session(S),session_part(S,P), part_grids(P,_,D,_).
+session_group(S,G) :- class_sessions(C,S),class_group(C,G).
+session_part(S,P) :- session(S), class_session(C,S), part_class(P,C).
+session_teacher(S,T) :- session(S), session_part(S,P), part_teacher(P,T).
+session_room(S,R) :- session(S), session_part(S,P), part_room(P,R).
+%%CONSTRAINT
+sequenced(3,(6;7)).
+periodic(S1,S2,7200) :- session(S1),session(S2),S2 = S1+1 .
+disjunctive_room((1..12),R):- room(R,_).
+disjunctive_teacher((1..12),T):- teacher(T).
+\end{lstlisting}
+%sequenced(S1,S2) :- part(P,_,_,_,_,_,_),part_class(P,C),class_sessions(C,S1),class_sessions(C,S2),S1+1 = S2.
+\newpage
+\begin{lstlisting}[style=PrologStyle, caption={ASP model}, label={lst:model-asp}]
+1{assigned(S,SL) : session_part(S,P), part_slot(P,SL)}1 :- session(S).
+%%%CHOICE ROOM
+nrPositionRoom(S,1..N) :- session(S), nrRoomMax(S,N).
+nrRoomMax(S,N) :- session(S), session_part(S,P), part(P,_,_,_,_,N,_), N > 1.
+sessionRoomFix(S) :- session(S), not nrRoomMax(S,_).
+partRoomFix(P) :- part_sessions(P,S), sessionRoomFix(S).
+partRoomMulti(P) :- part_sessions(P,S), nrRoomMax(S,N).
+K{assignedrk(S,SL,I) : nrPositionRoom(S,I)}K :- assigned(S,SL), nrRoomMax(S,K).
+1{assignedr(S,SL,R,K) : session_room(S,R)}1 :- assignedrk(S,SL,K).
+1{assignedr(S,SL,R,1) : session_room(S,R)}1 :- assigned(S,SL), sessionRoomFix(S).
+%%%CHOICE TEACHER
+1{assigned(S,SL) : session_part(S,P), part_slot(P,SL)}1 :- session(S).
+nrPositionTeacher(S,1..N) :- session(S), nrteacherMax(S,N).
+nrteacherMax(S,N) :- session(S), session_part(S,P), part(P,_,_,_,_,_,N), N > 1.
+sessionTeacherFix(S) :- session(S), not nrteacherMax(S,_).
+partTeacherFix(P) :- part_sessions(P,S), sessionTeacherFix(S).
+partTeacherMulti(P) :- part_sessions(P,S), nrteacherMax(S,N).
+K{assignedtk(S,SL,I) : nrPositionTeacher(S,I)}K :- assigned(S,SL), nrteacherMax(S,K).
+:- assignedt(S,_,T,K2), assignedt(S,_,T,K1), K1 != K2.
+
+:- not {assignedt(S,SL,T,K) : session(S), disjunctive_teacher(T,S), nrPositionTeacher(S,K) } 1, slots(SL), teacher(T).
+:- not {assignedt(S,SL,T,1) : session(S), disjunctive_teacher(T,S) } 1, slots(SL), teacher(T).
+%%%CUMULATIVE ROOM
+:- nrRoomMax(S,_), session_class(S,C), class_headcount(C,N), N > #sum{V:assignedr(S,_,R,_),room(R,V)}.
+:- assignedr(S,SL,R,1), room(R,C1),session_class(S,C), class_headcount(C,N), N > C1.
+:- not {assigned(S,SL) : session(S),disjunctive_group(S,G)}1, group(G,_), slots(SL).
+:- not {assignedr(S,SL,R,K) : session(S), disjunctive_room(R,S), nrPositionRoom(S,K) } 1, slots(SL), room(R,_).
+:- not {assignedr(S,SL,R,1) : session(S), disjunctive_room(R,S) } 1, slots(SL), room(R,_).
+%%%SET VARIABLES
+:- assignedr(S,_,R,K2), assignedr(S,_,R,K1), K1 != K2.
+%%%CONSTRAINT PERIODIC
+:- periodic(S1,S2,N), assigned(S1,SL1), assigned(S2,SL2), SL2 != SL1+N.
+%%%CONSTRAINT SEQUENCED
+:- sequenced(S1,S2), assigned(S1,SL1), session_part(S1,P), part_grids(P,_,N,_), assigned(S2,SL2), SL1+N > SL2.
+sequenced(S1,S2) :- part(P,_,_,_,_,_,_), part_class(P,C), class_sessions(C,S1), class_sessions(C,S2), S1+1 = S2.
+%%%CONSTRAINT SAME SLOT
+:- same_slot(S1,S2), assigned(S1,SL1), assigned(S2,SL2), SL1 != SL2.
+%%%CONSTRAINT SAME TEACHERS
+:- same_teachers(S1,S2), assignedt(S1,_,T1,K), assignedt(S2,_,T2,K), T1 != T2.
+%%%CONSTRAINT SAME ROOMS
+:- same_rooms(S1,S2), assignedr(S1,_,R1,K), assignedr(S2,_,R2,K), R1 != R2.
+:- same_rooms(S,S2), nrRoomMax(S,_), not nrRoomMax(S2,_).
+%%%CONSTRAINT ASSIGN ROOMS
+:- assign_rooms(S1,R1), assignedr(S1,_,R2,_), R1 != R2.
+%%%CONSTRAINT ASSIGN TEACHERS
+:- assign_teachers(S1,T1), assignedt(S1,_,T2,_), T1 != T2.
+%%%CONSTRAINT SERVICE TEACHERS
+:- serviceTeacher(T,P,N), #count { S,T :assignedt(S,_,T,_),part_sessions(P,S)} != N.
+\end{lstlisting}
+%%%CHOICE TEACHER
+%1{assigned(S,SL) : session_part(S,P), part_slot(P,SL)}1 :- session(S).
+%nrPositionTeacher(S,1..N) :- session(S), nrteacherMax(S,N).
+%nrteacherMax(S,N) :- session(S), session_part(S,P), part(P,_,_,_,_,_,N), N > 1.
+%sessionTeacherFix(S) :- session(S), not nrteacherMax(S,_).
+%partTeacherFix(P) :- part_sessions(P,S), sessionTeacherFix(S).
+%partTeacherMulti(P) :- part_sessions(P,S), nrteacherMax(S,N).
+%K{assignedtk(S,SL,I) : nrPositionTeacher(S,I)}K :- assigned(S,SL), nrteacherMax(S,K).
+%1{assignedt(S,SL,T,K) : session_teacher(S,T)}1 :- assignedtk(S,SL,K).
+%1{assignedt(S,SL,T,1) : session_teacher(S,T)}1 :- assigned(S,SL), sessionTeacherFix(S).
+%:- assignedt(S,_,T,K2), assignedt(S,_,T,K1), K1 != K2.
+%
+%:- not {assignedt(S,SL,T,K) : session(S), disjunctive_teacher(T,S), nrPositionTeacher(S,K) } 1, slots(SL), teacher(T).
+%:- not {assignedt(S,SL,T,1) : session(S), disjunctive_teacher(T,S) } 1, slots(SL), teacher(T).
+%
+%1{assignedt(S,SL,T,K) : session_teacher(S,T)}1 :- assignedtk(S,SL,K).
+%1{assignedt(S,SL,T,1) : session_teacher(S,T)}1 :- assigned(S,SL), sessionTeacherFix(S).

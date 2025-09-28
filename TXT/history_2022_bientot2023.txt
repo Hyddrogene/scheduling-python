@@ -1,0 +1,1000 @@
+ 1005  htop
+ 1006  touch students_l1-me.xml
+ 1007  ls
+ 1008  ./create_instance.sh -w=12 -d=5 -s=1440 -o=ua_l1_p1-p2.xml --rooms rooms_sciences*.xml --teachers teachers_l1-mi-mpc.xml --courses courses_l1-m* --students students_l1-m* --rules rules_* --groups groups_l1-m*
+ 1009  ./create_instance.sh -w=12 -d=5 -s=1440 -o=ua_l1_p1-p2.xml --rooms rooms_sciences*.xml --teachers teachers_l1-mi-mpc.xml --courses courses_l1-m*1.xml courses_l1-mpc_physiquedes-ondes.xml courses_l1-mi-mpc_EEO.xml --students students_l1-m*1.xml --rules rules_*1.xml rules_l1-mi-mpc_EEO.xml rules_l1-mpc_physiquedes-ondes.xml --groups groups_l1-m*1.xml
+ 1010  ./create_instance.sh -w=12 -d=5 -s=1440 -o=ua_l1_p1.xml --rooms rooms_sciences*.xml --teachers teachers_l1-mi-mpc.xml --courses courses_l1-m*1.xml courses_l1-mpc_physiquedes-ondes.xml courses_l1-mi-mpc_EEO.xml --students students_l1-m*1.xml --rules rules_*1.xml rules_l1-mi-mpc_EEO.xml rules_l1-mpc_physiquedes-ondes.xml --groups groups_l1-m*1.xml
+ 1011  htop
+ 1012  MiniZincIDE &
+ 1013  time php Execute.php
+ 1014  cd
+ 1015  cd timetabling
+ 1016  ls
+ 1017  git pull
+ 1018  git add .
+ 1019  git commit -m "Fix quelques erreurs"
+ 1020  gi push
+ 1021  git push
+ 1022  MiniZincIDE &
+ 1023  time php Execute.php
+ 1024  MiniZincIDE &
+ 1025  Htop
+ 1026  htop
+ 1027  ./create_instance.sh -w=12 -d=5 -s=1440 -o=ua_l1_p1-p2.xml --rooms rooms_sciences*.xml --teachers teachers_l1-mi-mpc.xml --courses courses_l1-m* --students students_l1-m* --rules rules_* --groups groups_l1-m*
+ 1028  ./create_instance.sh -w=12 -d=5 -s=1440 -o=ua_l1_p1-p2.xml --rooms rooms_sciences*.xml --teachers teachers_l1-mi-mpc.xml --courses courses_l1-m* --students students_l1-m* --rules rules_* --groups groups_l1-m[[:alpha:]]*
+ 1029  ./create_instance.sh -w=12 -d=5 -s=1440 -o=ua_l1_p1-p2.xml --rooms rooms_sciences*.xml --teachers teachers_l1-mi-mpc.xml --courses courses_l1-m* --students students_l1-m[[:alpha:]]* --rules rules_* --groups groups_l1-m[[:alpha:]]*
+ 1030  ./create_instance.sh -w=12 -d=5 -s=1440 -o=ua_l1_p1-p2.xml --rooms rooms_sciences*.xml --teachers teachers_l1-mi-mpc.xml --courses courses_l1-m* --students students_l1-m[[:alpha:]]* --rules rules_* --groups groups_l1-m[[:alpha:]]
+ 1031  ./create_instance.sh -w=12 -d=5 -s=1440 -o=ua_l1_p1-p2.xml --rooms rooms_sciences*.xml --teachers teachers_l1-mi-mpc.xml --courses courses_l1-m* --students students_l1-m[[:alpha:]]* --rules rules_* --groups groups_l1-m[[:alpha:]]*
+ 1032  ./create_instance.sh -w=12 -d=5 -s=1440 -o=ua_l1_p1-p2.xml --rooms rooms_sciences*.xml --teachers teachers_l1-mi-mpc.xml --courses courses_l1-m* --students students_l1-m[[:alpha:]]* --rules rules_* --groups groups_l1-m[[:alpha:]]*$.xml
+ 1033  ./create_instance.sh -w=12 -d=5 -s=1440 -o=ua_l1_p1-p2.xml --rooms rooms_sciences*.xml --teachers teachers_l1-mi-mpc.xml --courses courses_l1-m* --students students_l1-m[[:alpha:]]* --rules rules_* --groups groups_l1-m[[:alpha:]]*.xml$
+ 1034  ./create_instance.sh -w=12 -d=5 -s=1440 -o=ua_l1_p1-p2.xml --rooms rooms_sciences*.xml --teachers teachers_l1-mi-mpc.xml --courses courses_l1-m* --students students_l1-m[[:alpha:]]* --rules rules_* --groups groups_l1-m[[:alpha:]]*
+ 1035  ./create_instance.sh -w=12 -d=5 -s=1440 -o=ua_l1_p1-p2.xml --rooms rooms_sciences*.xml --teachers teachers_l1-mi-mpc.xml --courses courses_l1-m* --students students_l1-m[[:alpha:]]* --rules rules_* --groups groups_l1-m([[:alpha:]])*.xml
+ 1036  ./create_instance.sh -w=12 -d=5 -s=1440 -o=ua_l1_p1-p2.xml --rooms rooms_sciences*.xml --teachers teachers_l1-mi-mpc.xml --courses courses_l1-m* --students students_l1-m[[:alpha:]]* --rules rules_* --groups groups_l1-m
+ 1037  cear
+ 1038  MiniZincIDE &
+ 1039  clear
+ 1040  cearls
+ 1041  ls
+ 1042  /create_instance.sh -w=12 -d=5 -s=1440 -o=ua_l1_p1-p2.xml --rooms rooms_sciences*.xml --teachers teachers_l1-mi-mpc.xml --courses courses_l1-m* --students students_l1-me.xml students_l1-mi.xml students_l1-mpc.xml --rules rules_* --groups groups_l1-me.xml groups_l1-mi.xml groups_l1-mpc.xml 
+ 1043  ./create_instance.sh -w=12 -d=5 -s=1440 -o=ua_l1_p1-p2.xml --rooms rooms_sciences*.xml --teachers teachers_l1-mi-mpc.xml --courses courses_l1-m* --students students_l1-me.xml students_l1-mi.xml students_l1-mpc.xml --rules rules_* --groups groups_l1-me.xml groups_l1-mi.xml groups_l1-mpc.xml 
+ 1044  touch command_instance.txt
+ 1045  kate command_instance.txt 
+ 1046  hto
+ 1047  clear
+ 1048  git pull
+ 1049  git add .
+ 1050  git commit -m "Ajout du json et des command_instance.txt"
+ 1051  git push
+ 1052  ls /etc/
+ 1053  time php Execute.php
+ 1054  htop$
+ 1055  htop
+ 1056  time php Execute.php
+ 1057  htop
+ 1058  cd
+ 1059  *swap
+ 1060  *.swap
+ 1061  ls *.swap
+ 1062  find *.swap
+ 1063  ls
+ 1064  cd Téléchargements/
+ 1065  ls
+ 1066  mkdir pdf_septembre_2022
+ 1067  mv *.pdf pdf_septembre_2022/
+ 1068  ls
+ 1069  mkdir image_septembre_2022
+ 1070  mv *.jpg image_septembre_2022/
+ 1071  ls
+ 1072  mv *.png image_septembre_2022/
+ 1073  ls
+ 1074  swapon LG.swap
+ 1075  sudo swapon LG.swap
+ 1076  htop
+ 1077  time php Execute.php
+ 1078  vmstat
+ 1079  MiniZincIDE &
+ 1080  clear
+ 1081  git add .
+ 1082  git commit -m "Ajout statistique + correction allowed slot"
+ 1083  git push
+ 1084  MiniZincIDE &
+ 1085  kate /home/etud/.bashrc 
+ 1086  conda env list
+ 1087  conda acitvate bot-discord
+ 1088  conda activate bot-discord
+ 1089  python potiron.py 
+ 1090  conda list
+ 1091  python potiron.py 
+ 1092  python potiron.py
+ 1093  printenv
+ 1094  kate /home/etud/.bashrc 
+ 1095  conda env lis
+ 1096  conda env list
+ 1097  conda activate bot-discord
+ 1098  python potiron.py 
+ 1099  printenv
+ 1100  conda activate bot-discord
+ 1101  python potiron.py 
+ 1102  git add .
+ 1103  git commit -m "Ajout commande psykokwak, maj token sécuriser, modification lecture de message"
+ 1104  git add .
+ 1105  git commit -m "Modifcation of gitignore"
+ 1106  git push
+ 1107  python potiron.py 
+ 1108  MiniZincIDE &
+ 1109  htop
+ 1110  sudo kill 3252
+ 1111  kill 3252
+ 1112  man kill
+ 1113  ping 8.8.8.8
+ 1114  conda activate bot-discord
+ 1115  python potiron.py 
+ 1116  python potiron.py *
+ 1117  python potiron.py **
+ 1118  MiniZincIDE &
+ 1119  conda activate bot-discord
+ 1120  python potiron.py
+ 1121  time php Execute.php
+ 1122  MiniZincIDE &
+ 1123  man grep*
+ 1124  man grep
+ 1125  grep 663 ua_l1_p1-p2_extension_v2.json
+ 1126  grep 663 ua_l1_p1-p2_extension_v2.json >> res.txt
+ 1127  kate res.txt &$
+ 1128  ls -q *.json
+ 1129  ls -a *.json
+ 1130  ls
+ 1131  lq
+ 1132  MiniZincIDE &
+ 1133  conda activate bot-discord
+ 1134  python potiron.py
+ 1135  time php Execute.php
+ 1136  MiniZincIDE &
+ 1137  clear
+ 1138  git pull
+ 1139  git add .
+ 1140  git commit -m "Modification faite"
+ 1141  git push
+ 1142  MiniZincIDE &
+ 1143  time php Execute.php
+ 1144  dpkg -i  discord-0.0.20.deb 
+ 1145  sudo dpkg -i  discord-0.0.20.deb 
+ 1146  MiniZincIDE &
+ 1147  python
+ 1148  time php Execute.php
+ 1149  MiniZincIDE &
+ 1150  pwd
+ 1151  cd timetabling
+ 1152  ls
+ 1153  cd tools/
+ 1154  ls
+ 1155  cd tools_php/
+ 1156  ls
+ 1157  time php Execute.php
+ 1158  MiniZincIDE 
+ 1159  MiniZincIDE &
+ 1160  cd timetabling/tools/tools_php/
+ 1161  ls
+ 1162  time php Execute.php
+ 1163  cd timetabling/tools/tmp/
+ 1164  ls
+ 1165  cd experiment_19-09-22/
+ 1166  ls
+ 1167  htop
+ 1168  MiniZincIDE &
+ 1169  time php Execute.php
+ 1170  clear
+ 1171  htop
+ 1172  cd timetabling/tools/tools_php/
+ 1173  ls
+ 1174  time php Execute.php
+ 1175  cd timetabling
+ 1176  ls
+ 1177  cd tools/
+ 1178  ls
+ 1179  cd tools_php/
+ 1180  ls
+ 1181  cd ..
+ 1182  ls
+ 1183  find -name *.fzn
+ 1184  cd ..
+ 1185  find -name *.fzn
+ 1186  MiniZincIDE &
+ 1187  htop
+ 1188  ls
+ 1189  time php Execute.php
+ 1190  ls
+ 1191  MiniZincIDE &
+ 1192  htop
+ 1193  time php Execute.php
+ 1194  time php Execute.php*
+ 1195  time php Execute.php
+ 1196  echo ";teacher v2:"++ show([teacher_name[i]|i in fix(x_teacher[session_convert[s]])..fix(x_teacher[session_convert[s]+part_session_teacher_count[session_part(s)]-1])]) ++
+ 1197  NOUVEAU
+ 1198  touch txt_avec_un_z.txt
+ 1199  kate txt_avec_un_z.txt &
+ 1200  cat txt_avec_un_z.txt | grep z
+ 1201  cat txt_avec_un_z.txt | grep +
+ 1202  cat txt_avec_un_z.txt | grep z
+ 1203  clear
+ 1204  time php Execute.php*
+ 1205  clear
+ 1206  time php Execute.php*
+ 1207  MiniZincIDE &
+ 1208  time php Execute.php
+ 1209  MiniZincIDE &
+ 1210  time php Execute.php
+ 1211  ping 8.8.8.8
+ 1212  prolog --version
+ 1213  ocaml --version
+ 1214  haskell __version
+ 1215  rust __version
+ 1216  MiniZincIDE &
+ 1217  ping 8.8.8.8
+ 1218  MiniZincIDE &
+ 1219  htop
+ 1220  clear
+ 1221  htop
+ 1222  htop
+ 1223  MiniZincIDE &
+ 1224  htop
+ 1225  apt get kmplayer
+ 1226  apt install kmplayer
+ 1227  sudo apt install kmplayer
+ 1228  MiniZincIDE &
+ 1229  mpv --profile=low-latency --untimed /dev/video0
+ 1230  sudo apt install pmpv
+ 1231  sudo apt install mpv
+ 1232  mpv --profile=low-latency --untimed /dev/video0
+ 1233  MiniZincIDE &
+ 1234  touch testdeypefor.cpp
+ 1235  kate testdeypefor.cpp &
+ 1236  g++ testdeypefor.cpp -o testdeypefor.exe
+ 1237  g++ testdeypefor.cpp -o testdeypefor.exe | ./testdeypefor.exe 
+ 1238  g++ testdeypefor.cpp -o testdeypefor.exe
+ 1239  g++ testdeypefor.cpp -o testdeypefor.exe | ./testdeypefor.exe 
+ 1240  g++ testdeypefor.cpp -o testdeypefor.exe ; ./testdeypefor.exe 
+ 1241  g++ testdeypefor.cpp -o testdeypefor.exe | ./testdeypefor.exe 
+ 1242  g++ testdeypefor.cpp -o testdeypefor.exe ; ./testdeypefor.exe 
+ 1243  g++ testdeypefor.cpp -o testdeypefor.exe
+ 1244  ./testdeypefor.exe 
+ 1245  g++ testdeypefor.cpp -o testdeypefor.exe
+ 1246  ./testdeypefor.exe 
+ 1247  g++ testdeypefor.cpp -o testdeypefor.exe
+ 1248  ./testdeypefor.exe 
+ 1249  g++ testdeypefor.cpp -o testdeypefor.exe
+ 1250  ./testdeypefor.exe 
+ 1251  g++ testdeypefor.cpp -o testdeypefor.exe
+ 1252  ./testdeypefor.exe 
+ 1253  g++ testdeypefor.cpp -o testdeypefor.exe
+ 1254  ./testdeypefor.exe 
+ 1255  g++ testdeypefor.cpp -o testdeypefor.exe
+ 1256  ./testdeypefor.exe 
+ 1257  g++ testdeypefor.cpp -o testdeypefor.exe
+ 1258  ./testdeypefor.exe 
+ 1259  g++ testdeypefor.cpp -o testdeypefor.exe
+ 1260  ./testdeypefor.exe 
+ 1261  g++ testdeypefor.cpp -o testdeypefor.exe
+ 1262  ./testdeypefor.exe 
+ 1263  g++ testdeypefor.cpp -o testdeypefor.exe
+ 1264  ./testdeypefor.exe 
+ 1265  g++ testdeypefor.cpp -o testdeypefor.exe
+ 1266  ./testdeypefor.exe 
+ 1267  g++ testdeypefor.cpp -o testdeypefor.exe
+ 1268  ./testdeypefor.exe 
+ 1269  g++ testdeypefor.cpp -o testdeypefor.exe
+ 1270  ./testdeypefor.exe 
+ 1271  g++ testdeypefor.cpp -o testdeypefor.exe
+ 1272  ./testdeypefor.exe 
+ 1273  g++ testdeypefor.cpp -o testdeypefor.exe
+ 1274  ./testdeypefor.exe 
+ 1275  cd tools/
+ 1276  ls
+ 1277  cd parser_tools/
+ 1278  cd ..
+ 1279  ls
+ 1280  touch 
+ 1281  ls
+ 1282  cd parser_tools/
+ 1283  ls
+ 1284  ls parser_function_php/
+ 1285  cd parser_function_php/
+ 1286  ls
+ 1287  mkdir resolution_php
+ 1288  cd resolution_php/
+ 1289  ls
+ 1290  touch RoomServiceCreator
+ 1291  cd ..
+ 1292  cd tools_php/
+ 1293  ls
+ 1294  time php Execute.php
+ 1295  conda create -n astro 
+ 1296  conda activate astro
+ 1297  conda install astropy
+ 1298  python
+ 1299  clear
+ 1300  MiniZincIDE 
+ 1301  MiniZincIDE &
+ 1302  ping 8.8.8.8
+ 1303  clear
+ 1304  time php Execute.php
+ 1305  cd Téléchargements/
+ 1306  touch fuckit.php
+ 1307  kate fuckit.php 
+ 1308  cat villes_france.csv 
+ 1309  MiniZincIDE &
+ 1310  MiniZincIDE &
+ 1311  time php Execute.php
+ 1312  MiniZincIDE &
+ 1313  htop
+ 1314  htop
+ 1315  MiniZincIDE &
+ 1316  ping 8.8.8.8
+ 1317  prolog --version
+ 1318  ocaml --version
+ 1319  apt-get install opam
+ 1320  sudo apt-get install opam
+ 1321  MiniZincIDE &
+ 1322  MiniZincIDE &
+ 1323  htop
+ 1324  time php Execute.php
+ 1325  MiniZincIDE &
+ 1326  ping 8.8.8.8
+ 1327  clear
+ 1328  time php Execute.php
+ 1329  cd ..
+ 1330  clear
+ 1331  git pull
+ 1332  git status
+ 1333  git add .
+ 1334  git commit -m "Push de code"
+ 1335  git push
+ 1336  git pull
+ 1337  git status
+ 1338  git push
+ 1339  git fecth
+ 1340  git fetch
+ 1341  git status
+ 1342  man apt
+ 1343  apt upgrade git
+ 1344  sudo apt upgrade git
+ 1345  git status
+ 1346  git pull
+ 1347  git status
+ 1348  git add . 
+ 1349  git push
+ 1350  git push --help
+ 1351  git pull --force
+ 1352  git push
+ 1353  git pull --help
+ 1354  git forward
+ 1355  git --help
+ 1356  git push -help
+ 1357  MiniZincIDE &
+ 1358  htop
+ 1359  cd
+ 1360  mkdir timetabling-dev
+ 1361  cd timetabling-dev/
+ 1362  git clone https://github.com/ua-usp/timetabling-dev.git
+ 1363  ls
+ 1364  cd timetabling-dev/
+ 1365  ls
+ 1366  git branch
+ 1367  git checkout dev 
+ 1368  git branch
+ 1369  git htop
+ 1370  htop
+ 1371  MiniZincIDE &
+ 1372  time php Execute.php
+ 1373  cd ..
+ 1374  git status
+ 1375  git add .
+ 1376  git commit -m "Test new commit"
+ 1377  git push
+ 1378  git pull
+ 1379  git status
+ 1380  git push
+ 1381  bash
+ 1382  clear
+ 1383  cd 
+ 1384  cd timetabling-dev/
+ 1385  ls
+ 1386  git fetch
+ 1387  time php Execute.php
+ 1388  htop
+ 1389  cd ..
+ 1390  fit stach
+ 1391  git stach
+ 1392  git stash
+ 1393  git pull
+ 1394  git fetch
+ 1395  git fetch --force
+ 1396  git pull
+ 1397  cd .git/objects/
+ 1398  ls -al
+ 1399  cd
+ 1400  clear
+ 1401  ls
+ 1402  bash
+ 1403  htop
+ 1404  rm -d timetabling/
+ 1405  rm
+ 1406  rm --help
+ 1407  rm -rd timetabling/
+ 1408  sudo rm -rd timetabling/
+ 1409  ls timetabling/
+ 1410  git clone https://github.com/ua-usp/timetabling-dev.git
+ 1411  clear
+ 1412  cd timetabling
+ 1413  ls
+ 1414  git checkout dev
+ 1415  git status
+ 1416  cd tools/tools_php/
+ 1417  ls
+ 1418  time php Execute.php
+ 1419  MiniZincIDE &
+ 1420  htop
+ 1421  ping 8.8.8.8
+ 1422  MiniZincIDE &
+ 1423  htop
+ 1424  cd timetabling/
+ 1425  ls
+ 1426  cd tools/
+ 1427  cd tools_php/
+ 1428  time php Execute.php
+ 1429  clear
+ 1430  time php Execute.php
+ 1431  clear
+ 1432  cd ..
+ 1433  ls
+ 1434  ls -a
+ 1435  cd ..
+ 1436  ls
+ 1437  ls -l
+ 1438  ls -al
+ 1439  cd .git/
+ 1440  ls
+ 1441  cd objects/
+ 1442  ls
+ 1443  l_al
+ 1444  ls -al
+ 1445  cd ..
+ 1446  ls
+ 1447  cleat
+ 1448  clear
+ 1449  pwd
+ 1450  user
+ 1451  cast
+ 1452  w
+ 1453  man w
+ 1454  w -o
+ 1455  w -oi
+ 1456  w -i
+ 1457  top
+ 1458  clear
+ 1459  top
+ 1460  man clear
+ 1461  clear -T
+ 1462  clear -V
+ 1463  up
+ 1464  p
+ 1465  tw
+ 1466  clear
+ 1467  MiniZincIDE &
+ 1468  hriop
+ 1469  htop
+ 1470  cd timetabling
+ 1471  MiniZincIDE &
+ 1472  htop
+ 1473  cd AAAAOLD/
+ 1474  ls
+ 1475  cd src/
+ 1476  ls
+ 1477  cd ..
+ 1478  cd octobre_2022/
+ 1479  ls
+ 1480  cd mzn
+ 1481  ls
+ 1482  cd Téléchargements/
+ 1483  ls
+ 1484  sudo dpkg -i discord-0.0.21.deb 
+ 1485  htop
+ 1486  MiniZincIDE &
+ 1487  htop
+ 1488  clear
+ 1489  MiniZincIDE &
+ 1490  kate intent_param_file.mpc &
+ 1491  cd
+ 1492  cd timetabling
+ 1493  ls
+ 1494  cd src/mzn/
+ 1495  MiniZincIDE &
+ 1496  htop
+ 1497  cd tools/
+ 1498  ls
+ 1499  cd tools_php/
+ 1500  ls
+ 1501  MiniZincIDE &
+ 1502  time php Execute.php
+ 1503  cd ..
+ 1504  git fetch
+ 1505  gi pull
+ 1506  git pull
+ 1507  cd tools/tools_php/
+ 1508  time php Execute.php
+ 1509  htop
+ 1510  ping 8.8.8.8.
+ 1511  MiniZincIDE &
+ 1512  htop
+ 1513  top
+ 1514  clear
+ 1515  htop
+ 1516  ping 8.8.8.8.
+ 1517  ping 8.8.8.8
+ 1518  htip
+ 1519  htop
+ 1520  MiniZincIDE &
+ 1521  htop
+ 1522  sort --version
+ 1523  sort tt_flatten_constraints.mzn 
+ 1524  cd
+ 1525  cd timetabling
+ 1526  cd src/
+ 1527  cd mzn/
+ 1528  ls
+ 1529  sort tt_flatten_constraints.mzn 
+ 1530  sort tt_flatten_constraints.mzn || sort -n tt_flatten_constraints.mzn 
+ 1531  sort tt_flatten_constraints.mzn || sort -n
+ 1532  sort tt_flatten_constraints.mzn >> tt_flatten_constraints_sort.mzn 
+ 1533  htop
+ 1534  sort tt_flatten_constraints.mzn >> tt_flatten_constraints_sort.mzn 
+ 1535  MiniZincIDE &
+ 1536  MiniZincIDE &
+ 1537  htop
+ 1538  time php Execute.php
+ 1539  MiniZincIDE &
+ 1540  time php Execute.php
+ 1541  ping 8.8.8.8
+ 1542  cd
+ 1543  cd timetabling
+ 1544  cd instances/
+ 1545  ls
+ 1546  cd benchmarks/
+ 1547  ls
+ 1548  cd ua_l1_p1-p2/
+ 1549  ls
+ 1550  cat ua_l1_p1_statistics.txt 
+ 1551  htop
+ 1552  minizinc 
+ 1553  time php Execute.php
+ 1554  cd
+ 1555  ls
+ 1556  cd timetabling
+ 1557  cd src
+ 1558  cd mzn/
+ 1559  minizinc ortools-solveur.mpc file:///home/etud/timetabling/tools/tmp/experiment_8-11-22/solution_ua_l1_p1_extensio_8112022_11_24_38.txt
+ 1560  minizinc ortools-solveur.mpc /home/etud/timetabling/tools/tmp/experiment_8-11-22/solution_ua_l1_p1_extensio_8112022_11_24_38.txt
+ 1561  minizinc ortools-solveur.mpc /home/etud/timetabling/tools/tmp/experiment_8-11-22/solution_ua_l1_p1_extensio_8112022_11_24_38.fzn
+ 1562  minizinc ortools-solveur.mpc /home/etud/timetabling/tools/tmp/experiment_8-11-22/solution_ua_l1_p1_extensio_8112022_11_41_05.fzn
+ 1563  ua_l3info_2021_extension_v2.dzn:3.1-20:
+ 1564  MiniZinc: type error: undefined identifier `padding_value'
+ 1565  Process finished with non-zero exit code 1
+ 1566  Finished in 29msec
+ 1567  time minizinc ortools-solveur.mpc /home/etud/timetabling/tools/tmp/experiment_8-11-22/solution_ua_l1_p1_extensio_8112022_11_24_38.fzn
+ 1568  time minizinc ortools-solveur.mpc /home/etud/timetabling/tools/tmp/experiment_8-11-22/solution_ua_l1_p1_extensio_8112022_11_41_05.fzn
+ 1569  time minizinc -S ortools-solveur.mpc /home/etud/timetabling/tools/tmp/experiment_8-11-22/solution_ua_l1_p1_extensio_8112022_11_41_05.fzn
+ 1570  time minizinc  ortools-solveur.mpc /home/etud/timetabling/tools/tmp/experiment_8-11-22/solution_ua_l1_p1_extensio_8112022_11_41_05.fzn
+ 1571  cd ..
+ 1572  cd tools/
+ 1573  cd tools_php/
+ 1574  ls
+ 1575  time php Execute.php
+ 1576  htop
+ 1577  time minizinc  ortools-solveur.mpc /home/etud/timetabling/tools/tmp/experiment_8-11-22/solution_ua_l1_p1_extensio_8112022_11_41_05.fzn
+ 1578  MiniZincIDE &
+ 1579  htop
+ 1580  cat ua_l1_p1_statistics.txt 
+ 1581  time php Execute.php
+ 1582  MiniZincIDE &
+ 1583  htop
+ 1584  htop
+ 1585  cd
+ 1586  git clone https://github.com/chuffed/chuffed.git
+ 1587  htop
+ 1588  cd timetabling
+ 1589  cd src/
+ 1590  cd mzn/
+ 1591  time minizinc  ortools-solveur.mpc /home/etud/timetabling/tools/tmp/experiment_10-11-22/solution_ua_l1_p1_extensio_10112022_01_20_09.fzn
+ 1592  time minizinc ortools-solveur.mpc /home/etud/timetabling/tools/tmp/experiment_10-11-22/solution_ua_l1_p1_extensio_10112022_01_20_09.fzn
+ 1593  time php Execute.php
+ 1594  time minizinc  ortools-solveur.mpc /home/etud/timetabling/tools/tmp/experiment_10-11-22/solution_ua_l1_p1_extensio_10112022_01_20_09.txt
+ 1595  time minizinc  ortools-solveur.mpc /home/etud/timetabling/tools/tmp/experiment_10-11-22/solution_ua_l1_p1_extensio_10112022_01_20_09.fzn
+ 1596  time php Execute.php
+ 1597  MiniZincIDE &
+ 1598  time minizinc  ortools-solveur.mpc /home/etud/timetabling/tools/tmp/experiment_13-11-22/solution_ua_l1_p1_extensio_13112022_08_33_01.fzn
+ 1599  time minizinc  ortools-solveur.mpc /home/etud/timetabling/tools/tmp/experiment_13-11-22/solution_ua_l1_p1_extensio_13112022_08_55_40.fzn
+ 1600  MiniZincIDE &
+ 1601  time php Execute.php
+ 1602  time minizinc  ortools-solveur.mpc /home/etud/timetabling/tools/tmp/experiment_13-11-22/solution_ua_l1_p1_extensio_13112022_08_55_40.fzn >> /home/etud/timetabling/tools/tmp/experiment_13-11-22/solution_ua_l1_p1_extensio_13112022_08_55_40_v2.txt
+ 1603  cd ..
+ 1604  cd tools/
+ 1605  cd tmp/
+ 1606  ls
+ 1607  mkdir tezstTmp
+ 1608  cd tezstTmp/
+ 1609  touch solution_v2_1.txt
+ 1610  kate solution_v2_1.txt 
+ 1611  htop
+ 1612  MiniZincIDE &
+ 1613  time php Execute.php
+ 1614  htop
+ 1615  time php Execute.php
+ 1616  MiniZincIDE &
+ 1617  time php Execute.php
+ 1618  htop
+ 1619  MiniZincIDE &
+ 1620  clear
+ 1621  ls
+ 1622  npm installl
+ 1623  npm --v
+ 1624  node --v
+ 1625  node -v
+ 1626  npm install -g n
+ 1627  nvm install node
+ 1628  sudo npm install -g n
+ 1629  npm upgrade
+ 1630  npm -v
+ 1631  npm install -g n
+ 1632  npm install
+ 1633  npm test
+ 1634  node -v
+ 1635  n
+ 1636  n 8
+ 1637  sudo n 8
+ 1638  n -v
+ 1639  node -v
+ 1640  n
+ 1641  node -v
+ 1642  sudo n
+ 1643  node -v
+ 1644  npm test
+ 1645  npm install
+ 1646  n
+ 1647  sudo n 9
+ 1648  sudo n
+ 1649  npm install
+ 1650  sudo n
+ 1651  n latest
+ 1652  sudo n latest
+ 1653  node -v
+ 1654  npm install
+ 1655  sudo npm install
+ 1656  sudo npm update 
+ 1657  npm audit fix --force
+ 1658  npm install -g npm@9.1.1
+ 1659  sudo npm install -g npm@9.1.1
+ 1660  npm fund
+ 1661  npm install
+ 1662  npm test
+ 1663  npm start
+ 1664  sudo npm start
+ 1665  npm -v
+ 1666  sudo npm install
+ 1667  sudo npm test
+ 1668  sudo npm start
+ 1669  sudo n 16
+ 1670  npm install
+ 1671  npm test
+ 1672  time php Execute.php
+ 1673  time php xml_verificator.php /home/etud/Bureau/zerzer/ua_l1_p1_i3.xml
+ 1674  time php Execute.php
+ 1675  time php xml_verificator.php /home/etud/Bureau/zerzer/ua_l1_p1_i3.xml
+ 1676  cd
+ 1677  cd choco-solver/
+ 1678  ls
+ 1679  cd examples/
+ 1680  ls
+ 1681  cd ..
+ 1682  cd
+ 1683  cd Té
+ 1684  cd Téléchargements/
+ 1685  ls
+ 1686  tar xzvf eclipse-java-2022-09-R-linux-gtk-x86_64.tar.gz 
+ 1687  ls eclipse/
+ 1688  cd eclipse/
+ 1689  ./eclipse 
+ 1690  git clone https://github.com/chocoteam/choco-solver.git
+ 1691  maven --v
+ 1692  cd Téléchargements/
+ 1693  tar -x
+ 1694  ls
+ 1695  tar xvfz ibex-2.8.9.tgz ibex-2.8.9/
+ 1696  cd ibex-2.8.9/
+ 1697  ./waf configure --lp-lib=soplex
+ 1698  sudo ./waf install
+ 1699  ibex --v
+ 1700  java --v
+ 1701  java -v
+ 1702  java --version
+ 1703  cd ..
+ 1704  tar xzvf apache-maven-3.8.6-bin.tar.gz
+ 1705  ls apache-maven-3.8.6
+ 1706  seet
+ 1707  set
+ 1708  echo $JAVA_HOME
+ 1709  env
+ 1710  jdk
+ 1711  java --version
+ 1712  cd
+ 1713  find openjdk
+ 1714  find *openjdk*
+ 1715  find "*openjdk*"
+ 1716  find / -iname "*openjdk*"
+ 1717  java -v
+ 1718  java --version
+ 1719  find / -iname "*openjdk-*.jdk"
+ 1720  find / -iname "*jdk*"
+ 1721  ls
+ 1722  export PATH=/home/etud/Bureau/apache-maven-3.8.6/bin:$PATH
+ 1723  mvn -v
+ 1724  cd choco-solver/
+ 1725  $ mvn clean package -DskipTests
+ 1726  mvn clean package -DskipTests
+ 1727  npm install
+ 1728  npm test
+ 1729  npm  start
+ 1730  clear
+ 1731  npm clear
+ 1732  sudo npm install
+ 1733  sudo npm audit fix --force
+ 1734  sudo npm start
+ 1735  clear
+ 1736  sudo n 16
+ 1737  sudo n
+ 1738  node --version
+ 1739  ping 8.8.8.8
+ 1740  htop
+ 1741  MiniZincIDE &
+ 1742  time php Execute.php
+ 1743  kate &
+ 1744  time php Execute.php
+ 1745  count Execute.php 
+ 1746  bc Execute.php 
+ 1747  man bc
+ 1748  ls
+ 1749  cat te
+ 1750  cat txt_avec_un_z.txt 
+ 1751  wc - l txt_avec_un_z.txt 
+ 1752  wc -l txt_avec_un_z.txt 
+ 1753  cat txt_avec_un_z.txt | wc -l
+ 1754  man count
+ 1755  find bash *
+ 1756  grep bash /*
+ 1757  find . -name "bash"
+ 1758  cd ..
+ 1759  find . -name "bash"
+ 1760  cd ..
+ 1761  find . -name "bash"
+ 1762  grep bash *
+ 1763  touch gfdgdfddddddddddddd.txt
+ 1764  kate gfdgdfddddddddddddd.txt 
+ 1765  touch gfdgdfddddddddddddd2.txt
+ 1766  kate gfdgdfddddddddddddd2.txt 
+ 1767  grep bash *
+ 1768  find . -name "bash"
+ 1769  man create
+ 1770  man vi
+ 1771  vim gfdgdfddddddddddddd3.txt
+ 1772  ls
+ 1773  man rm
+ 1774  man rmdir
+ 1775  ls
+ 1776  mkdir TESTPOURLAVIDEO
+ 1777  rm TESTPOURLAVIDEO/
+ 1778  rmdir TESTPOURLAVIDEO/
+ 1779  ls
+ 1780  mkdir TESTPOURLAVIDEO
+ 1781  ls
+ 1782  rmdir TESTPOURLAVIDEO/
+ 1783  ls
+ 1784  mkdir TESTPOURLAVIDEO
+ 1785  rmdir -r TESTPOURLAVIDEO/
+ 1786  rm -rf TESTPOURLAVIDEO/
+ 1787  ls
+ 1788  MiniZincIDE &
+ 1789  htop
+ 1790  ping 8.8.8.8
+ 1791  clear
+ 1792  cd
+ 1793  clear
+ 1794  MiniZincIDE &
+ 1795  htop
+ 1796  cd timetabling
+ 1797  cd tools/
+ 1798  ls
+ 1799  cd tools_php/
+ 1800  ls
+ 1801  time php Execute.php
+ 1802  minizinc --version
+ 1803  bash
+ 1804  minizinc --version
+ 1805  MiniZincIDE-2.6.0-bundle-linux-x86_64/
+ 1806  sudo reboot
+ 1807  MiniZincIDE &
+ 1808  minizinc --version
+ 1809  time php Execute.php
+ 1810  htop
+ 1811  cd
+ 1812  mkdir Projet_CP_M1
+ 1813  cd Projet_CP_M1/
+ 1814  ls
+ 1815  touch model_1.mzn
+ 1816  MiniZincIDE &
+ 1817  ls
+ 1818  rm model_projet 
+ 1819  cat model_projet.mzp 
+ 1820  clar
+ 1821  clear
+ 1822  MiniZincIDE &
+ 1823  clearr/home/etud/timetabling/src/mzn/ortools-solveur.mpc
+ 1824  clear
+ 1825  minizinc /home/etud/timetabling/src/mzn/ortools-solveur.mpc -c -O0 dsfsdfs
+ 1826  minizinc /home/etud/timetabling/src/mzn/ortools-solveur.mpc -c -O0 /home/etud/exemple_dwt__221.dzn
+ 1827  minizinc /home/etud/timetabling/src/mzn/ortools-solveur.mpc -c -O0 model_1.mzn /home/etud/exemple_dwt__221.dzn
+ 1828  mkdir exemple_fzn
+ 1829  minizinc /home/etud/timetabling/src/mzn/ortools-solveur.mpc -c -O0 model_1.mzn /home/etud/exemple_dwt__221.dzn >> exemple_fzn/exemple_dwt__221.fzn
+ 1830  ls
+ 1831  cat exemple_fzn/exemple_dwt__221.fzn 
+ 1832  minizinc ortools-solveur.mpc -c -O0 model_1.mzn /home/etud/exemple_dwt__221.dzn
+ 1833  cat model_1.fzn 
+ 1834  minizinc ortools-solveur.mpc model_1.fzn 
+ 1835  minizinc ortools-solveur.mpc -p=8  model_1.fzn 
+ 1836  minizinc ortools-solveur.mpc -pb8  model_1.fzn 
+ 1837  minizinc ortools-solveur.mpc -p 8  model_1.fzn 
+ 1838  minizinc -p 8 ortools-solveur.mpc  model_1.fzn 
+ 1839  clear
+ 1840  time minizinc ortools-solveur.mpc -c -O0 model_1.mzn /home/etud/exemple_dwt__221.dzn
+ 1841  time minizinc ortools-solveur.mpc  model_1.fzn 
+ 1842  time minizinc ortools-solveur.mpc -c -O0 model_1.mzn /home/etud/exemple_dwt__221.dzn
+ 1843  time minizinc ortools-solveur.mpc  model_1.fzn 
+ 1844  time minizinc ortools-solveur.mpc -c -O0 model_1.mzn /home/etud/exemple_dwt__221.dzn
+ 1845  time minizinc ortools-solveur.mpc  model_1.fzn 
+ 1846  time minizinc ortools-solveur.mpc -c -O0 model_1.mzn /home/etud/exemple_dwt__221.dzn
+ 1847  time minizinc ortools-solveur.mpc  model_1.fzn 
+ 1848  time minizinc ortools-solveur.mpc -c -O0 model_1.mzn /home/etud/exemple_dwt__221.dzn
+ 1849  time minizinc ortools-solveur.mpc  model_1.fzn 
+ 1850  time minizinc -f  ortools-solveur.mpc  model_1.fzn 
+ 1851  time minizinc  ortools-solveur.mpc  model_1.fzn 
+ 1852  time minizinc ortools-solveur.mpc -c -O0 model_1.mzn /home/etud/exemple_dwt__221.dzn
+ 1853  time minizinc  ortools-solveur.mpc  model_1.fzn 
+ 1854  time minizinc -f  ortools-solveur.mpc  model_1.fzn 
+ 1855  MiniZincIDE &
+ 1856  php generate_dzn_CB.php >> exemple_dwt__221.dzn
+ 1857  cat exemple_dwt__221.dzn 
+ 1858  rm exemple_dwt__221.dzn 
+ 1859  MiniZincIDE &
+ 1860  php generate_dzn_CB.php >>
+ 1861  php generate_dzn_CB.php >> exemple_dwt__221.dzn
+ 1862  kate exemple_dwt__221.dzn &
+ 1863  rm exemple_dwt__221.dzn 
+ 1864  php generate_dzn_CB.php >> exemple_dwt__221.dzn
+ 1865  rm exemple_dwt__221.dzn 
+ 1866  php generate_dzn_CB.php >> exemple_dwt__221.dzn
+ 1867  kate exemple_dwt__221.dzn &
+ 1868  htop
+ 1869  php generate_dzn_CB.php >> exemple_dwt__221_v2.dzn
+ 1870  kate exemple_dwt__221_v2.dzn &
+ 1871  ht=
+ 1872  htop
+ 1873  htop
+ 1874  time minizinc -f  ortools-solveur.mpc  model_1.fzn 
+ 1875  hhtop
+ 1876  htop
+ 1877  MiniZincIDE &
+ 1878  htop
+ 1879  tar xzvf Minecraft.tar.gz
+ 1880  ls
+ 1881  cd minecraft-launcher/
+ 1882  ./minecraft-launcher 
+ 1883  MiniZincIDE &
+ 1884  MiniZincIDE &
+ 1885  cd Téléchargements/
+ 1886  ls
+ 1887  cd minecraft-launcher/
+ 1888  ./minecraft-launcher 
+ 1889  htop
+ 1890  cd Téléchargements/
+ 1891  cd minecraft-launcher/
+ 1892  ./minecraft-launcher 
+ 1893  MiniZincIDE &
+ 1894  htop
+ 1895  clear
+ 1896  time php Execute.php
+ 1897  ./minecraft-launcher 
+ 1898  MiniZincIDE &
+ 1899  MiniZincIDE &
+ 1900  cd Téléchargements/
+ 1901  ls
+ 1902  cd minecraft-launcher/
+ 1903  ./minecraft-launcher 
+ 1904  MiniZincIDE &
+ 1905  .:minecraft-launcher 
+ 1906  ./minecraft-launcher 
+ 1907  ping 8.8.8.8
+ 1908  clear
+ 1909  ./minecraft-launcher 
+ 1910  ping 8.8.8.8
+ 1911  htop
+ 1912  ./minecraft-launcher 
+ 1913  touch .bash_aliases
+ 1914  bash
+ 1915  /home/etud/eclipse/eclipse
+ 1916  cd Projet_CP_M1/
+ 1917  lx
+ 1918  ls
+ 1919  minizinc chuffed_solver.mpc model_1.mzn exemple-1.dzn 
+ 1920  bash
+ 1921  eclipse &
+ 1922  clear
+ 1923  minizinc chuffed_solver.mpc model_sat.mzn exemple-1.dzn >> exemple-1.cnf
+ 1924  cat exemple-1.cnf 
+ 1925  rm exemple-1.cnf 
+ 1926  kate chuffed_solver.mpc &
+ 1927  touch chuffed_solver_sat.mpc
+ 1928  kate chuffed_solver_sat.mpc 
+ 1929  minizinc chuffed_solver_sat.mpc model_sat.mzn exemple-1.dzn >> exemple-1.cnf
+ 1930  kate exemple-1.cnf &
+ 1931  wc -l exemple-1.cnf 
+ 1932  minizinc chuffed_solver_sat.mpc model_sat.mzn exemple-1.dzn 1> exemple-1.cnf
+ 1933  rm exemple-1.cnf 
+ 1934  minizinc chuffed_solver_sat.mpc model_sat.mzn exemple-1.dzn 1> exemple-1.cnf
+ 1935  rm exemple-1.cnf 
+ 1936  minizinc chuffed_solver_sat.mpc model_sat.mzn exemple-1.dzn 1> exemple-1.cnf ;n=wc -l head  exemple-1.cnf >> exemple-1_v1.cnf
+ 1937  man wc
+ 1938  wc exemple-1.cnf
+ 1939  wc -l exemple-1.cnf
+ 1940  n=wc -l exemple-1.cnf;cat n;
+ 1941  php generate_sat.php exemple-1.dzn >> azeazezaa
+ 1942  kate azeazezaa 
+ 1943  rm azeazezaa
+ 1944  php generate_sat.php exemple-1.dzn >> azeazezaa
+ 1945  php generate_sat.php exemple-1.dzn
+ 1946  minisat exemple-1_v1.cnf 
+ 1947  php generate_sat.php exemple-1.dzn
+ 1948  minisat exemple-1_v1.cnf 
+ 1949  man minisat 
+ 1950  minisat exemple-1_v1.cnf result.txt
+ 1951  cat result.txt 
+ 1952  minisat exemple-1_v1.cnf result.txt
+ 1953  cat result.txt 
+ 1954  rm result.txt 
+ 1955  php generate_sat.php toy_example.dzn 
+ 1956  cat toy_example_v1.cnf 
+ 1957  minisat toy_example_v1.cnf result.txt
+ 1958  cat result.txt 
+ 1959  cd sat/
+ 1960  php generate_sat.php toy_example.dzn 
+ 1961  minisat toy_example_v1.cnf result.txt
+ 1962  cat result.txt 
+ 1963  ping 8.8.8.8
+ 1964  ./minecraft-launcher 
+ 1965  MiniZincIDE &
+ 1966  ping 8.8.8.8
+ 1967  sudo apt-get install minisat
+ 1968  minisat -v
+ 1969  minisat --v
+ 1970  minisat
+ 1971  ./minecraft-launcher 
+ 1972  MiniZincIDE &
+ 1973  cat .bashrc 
+ 1974  clear
+ 1975  ping 8.8.8.8
+ 1976  sudo dpkg -i discord-0.0.22.deb 
+ 1977  ./minecraft-launcher 
+ 1978  eclipse
+ 1979  java
+ 1980  java -cp "file:///home/etud/choco-solver/solver/target/choco-solver-4.10.11-SNAPSHOT-jar-with-dependencies.jar" Exec.java
+ 1981  java -v
+ 1982  java --v
+ 1983  java -version
+ 1984  java -cp "file:///home/etud/choco-solver/solver/target/choco-solver-4.10.11-SNAPSHOT-jar-with-dependencies.jar" Exec.java
+ 1985  java -cp "/home/etud/choco-solver/solver/target/choco-solver-4.10.11-SNAPSHOT-jar-with-dependencies.jar" Exec.java
+ 1986  java -p/home/etud/choco-solver/solver/target/choco-solver-4.10.11-SNAPSHOT-jar-with-dependencies.jar Exec.java
+ 1987  eclipse
+ 1988  eclipse 
+ 1989  MiniZincIDE &
+ 1990  htop
+ 1991  eclipse &
+ 1992  eclipse 
+ 1993  cd minecraft-launcher/
+ 1994  ./minecraft-launcher 
+ 1995  tar xzvf l2mi-dw-tp_php_0+1+2+3+4+5+6+7_annexes.tgz 
+ 1996  tar xzvf tp-php-1-solution.tgz 
+ 1997  ssh -p 2019 corentin.behuet@leria.univ-angers.fr
+ 1998  ssh -p 2019 c.behuet@leria.univ-angers.fr
+ 1999  cd ..
+ 2000  ls
+ 2001  ssh -p 2019 c.behuet@leria.univ-angers.fr
+ 2002  Process finished with non-zero exit code 1
+ 2003  cat history >> history_2022_bientot2023.txt
+ 2004  history >> history_2022_bientot2023.txt

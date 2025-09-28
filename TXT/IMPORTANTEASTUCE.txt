@@ -1,0 +1,86 @@
+Pour visualiser du markdown contenant des équations LaTeX, vous avez plusieurs options en fonction de l'outil ou de la plateforme que vous utilisez. Voici quelques-unes des options courantes :
+
+### 1. Utiliser un éditeur de texte avec support pour LaTeX et Markdown
+
+#### VS Code avec l'extension Markdown+Math
+
+1. Installez [Visual Studio Code](https://code.visualstudio.com/).
+2. Ajoutez l'extension `Markdown+Math` de Yu Zhang.
+3. Créez un fichier `.md` et ajoutez votre contenu markdown avec des équations LaTeX.
+4. Appuyez sur `Ctrl + Shift + V` pour ouvrir l'aperçu Markdown.
+
+#### Typora
+
+1. Installez [Typora](https://typora.io/), un éditeur Markdown qui supporte LaTeX nativement.
+2. Ouvrez votre fichier `.md` dans Typora pour voir le rendu.
+
+### 2. Utiliser des éditeurs en ligne
+
+#### Dillinger
+
+1. Allez sur [Dillinger](https://dillinger.io/).
+2. Collez votre texte markdown dans l'éditeur.
+3. Les équations LaTeX seront rendues automatiquement.
+
+#### StackEdit
+
+1. Allez sur [StackEdit](https://stackedit.io/).
+2. Collez votre texte markdown dans l'éditeur.
+3. Les équations LaTeX seront rendues automatiquement.
+
+### 3. Utiliser Jupyter Notebooks
+
+1. Installez [Jupyter](https://jupyter.org/install).
+2. Créez un nouveau notebook et ajoutez des cellules de type Markdown.
+3. Tapez votre texte Markdown avec des équations LaTeX.
+4. Exécutez la cellule pour voir le rendu.
+
+### Exemple complet à essayer :
+
+```markdown
+# Théorème de Pythagore
+
+Le théorème de Pythagore est une relation fondamentale en géométrie euclidienne entre les côtés d'un triangle rectangle. Il s'énonce ainsi :
+
+## Formule
+
+Équation en ligne : $a^2 + b^2 = c^2$
+
+Équation en bloc :
+
+$$
+a^2 + b^2 = c^2
+$$
+
+## Explication
+
+Dans un triangle rectangle, le carré de la longueur de l'hypoténuse (le côté opposé à l'angle droit) est égal à la somme des carrés des longueurs des deux autres côtés.
+
+## Énergie équivalente
+
+La célèbre équation de la relativité restreinte d'Einstein est :
+
+$$
+E = mc^2
+$$
+
+où :
+- $E$ est l'énergie,
+- $m$ est la masse,
+- $c$ est la vitesse de la lumière dans le vide.
+```
+
+### 4. Utiliser des extensions de navigateur
+
+#### Markdown Viewer
+
+1. Installez l'extension [Markdown Viewer](https://github.com/simov/markdown-viewer) pour Chrome ou Firefox.
+2. Ouvrez votre fichier markdown dans le navigateur pour voir le rendu.
+
+### 5. Utiliser Overleaf pour des documents plus complexes
+
+1. Créez un compte sur [Overleaf](https://www.overleaf.com/).
+2. Copiez votre contenu markdown dans un projet LaTeX sur Overleaf.
+3. Utilisez les balises `\begin{markdown}` et `\end{markdown}` pour intégrer le markdown dans le document LaTeX.
+
+En utilisant ces outils, vous pourrez visualiser vos équations LaTeX dans un document markdown facilement.

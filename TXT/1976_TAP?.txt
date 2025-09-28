@@ -1,0 +1,346 @@
+An annual problem for administration, be it at the high
+school, college or university level, is the assignment of
+teachers to courses. The general form of the problem is to
+find the solution to the following system:
+(a) The determination of the set of courses to be offered,
+and the number of sections in each.
+(b) The assignment of teachers to courses.
+(c) The assignment of courses and sections to rooms
+and time slots, and the allocation of teachers to sections.
+(d) The assignment of individual students to courses
+and sections, based on their requests, in such a way as to
+yield a minimum of conflicts.
+This system has to be solved simuItaneously to yield an
+optimal solution. A number of school scheduIing packages
+and techniques have been developed[l, 21. Indeed the
+solution to the Master Scheduling problem and the
+student allocation problem (parts c and d of the general
+Sorm of the problem) is available as a commercial service
+for schools and junior colleges; allocations satisfying 99%
+of student requests are regularty achieved even for large
+schools [3].
+However, the allocation of courses to teachers, and the
+determination of how many sections of each course are
+given to a particular teacher (part b of the general
+problem) is taken as exogenous to the master scheduling
+problem. This allocation is usually done manually by the
+department chairman and/or the school principal, in
+consultation with the respective teachers. A number of
+models have been developed to efficiently solve this
+problem[2,4-6]. The state of the art is characterized by
+the work of Andrew and Collins[7]. An objective
+function, consisting of the weighted sum of teacher
+preference and instructor effectiveness (as evaluated by
+the departmental chairman) is optimized, subject to
+course assignment constraints (every course must be
+taught) and teaching load constraints (each instructor
+must teach a full work load). This is a standard
+transportation problem for which a number of efficient
+algorithms exist, and which, by the nature of the model,
+guarantees integer solutions.
+Tillett(61 expanded the model to include different
+preference weightings by ins~uctors to allow for the
+possibility that the preference of a teacher for a course
+could vary with the number of sections of that course
+assigned to that teacher. He also introduced a set of
+constraints relating to the maximum number of new
+preparations acceptable to each teacher. Tillett’s agorithm required an integer programming solution; this
+limits the efficacy of his model:
+“the major barrier to immediate practical application of
+the model is the fact that in all but very small
+departments, the computer time for the execution of
+the zero-one integer programming algorithm was
+prohibitively large”.
+This paper attempts to overcome this difficulty, and
+to develop a model that has particular applicability to
+universities. The particular scheduling needs of a univer-
+sity are considered in Section II, and a model is developed
+in Section III. Empirical testing is carried out in Section
+IV
+
+
+
+IL UNIVERSPTYSCHEDULINGPROBLEM
+Universities tend to operate somewhat differently from
+high schools, in that the master scheduling problem does
+not exist in the same way. Each department decides which
+courses it will offer, how many sections of each and when
+these sections will be offered. Effectively, this year’s
+program tends to resemble last year’s, both in the number
+and type of courses and the times of the sections. This
+fairly rigid structure ensures compatibility between
+different departments. At registration, each student
+decides which course and sections he wishes to take;
+since section times are already available, he can select a
+program which he knows is feasible, in that there are no
+time conflicts. Maximum section size is predetermined as
+a matter of policy, so that when a section is full, it is
+simply closed. If there is substantial excess demand for a
+particular course, an additional section might be opened,
+to be staffed by a part-time instructor; this procedure
+occurs relatively infrequently.
+The real problem is the allocation of faculty to courses
+prior to registration. Since there is a fair degree of change
+in faculty preference from year to year, as many
+instructors will want to teach new courses, rather than get
+stale, and given the normal staffing changes, visiting
+appointments, leave of absence, etc. the problem is not
+trivial.
+A number of considerations thus have to be taken into
+account when constructing a model for use in the
+university context.
+(1) The question of effectiveness is no longer valid in
+this situation-it is normally considered that if an
+instructor wishes to teach a course, then he will probably
+be as effective in that course as in any other course that he
+teaches. Presumably, in the extreme, a particular prefer-
+ence can be vetoed by the departmental chairman.
+(2) Faculty preference must be taken into account, and
+the preference weightings must be a function of the
+number of sections of a particular course that an
+instructor teaches.
+(3) Since the timetable is already determined, a number
+of constraints must be added to prevent possible conflicts.
+(4) The usual teaching load and section assignment
+constraints must be met.
+(5) One would like to apply such a package to a large
+department; this effectively prevents the use of zero-one
+integer programming because of the prohibitive cost.
+These are the purely technical considerations. How-
+ever, past experience has shown that the application of
+such an O.R. package does not satisfy administration.
+After having made a trial run, one learns that the
+“optimal” solution is “not satisfactory”; it is politically
+unacceptable, socially unjust, or a number of other
+euphemisms for “it won’t do”. Some constraints, one
+learns, have been omitted; some bounds are not as rigid as
+they were first presented. This sort of experience is not
+new-Stimson and Thompson [8] clearly appreciated it:
+“Thus, at the end of it all, the operation researcher
+has the optimal solution to a problem in which the
+parameters, constraints and so forth are not optimally
+determined, and where his assumptions are not
+necessarily realistic in terms of the problems facing the
+administration.. . Hence the solution to a linear
+programming model.. should not be viewed as the
+solution to the problem. Rather it should be judged for
+its usefulness in a specific solution.
+The package described in Section III solves the
+technical problem of a university scheduling problem but
+does so in such a way that administration is actively
+involved in the problem, and hence effectively aids
+administration in solving a real world problem.
+
+
+
+IU. MODEL METHODOLOGY
+The academic assignment problem is a variant of the
+usual assignment problem, which itself falls within the set
+of problems categorized by the transportation problem.
+The transportation problem is profusely described in the
+literature[9]; the assignment problem is similarly well
+discussed[lO, 111. The problem consists basically of
+minimizing a costs matrix (or maximizing a benefits
+matrix) that results from any assignment choice, subject
+to the available staff and ensuring that all the jobs are
+filled.
+This problem could be solved using zero-one integer
+programming; however, as discussed above, this becomes
+infeasible for large problems. In fact, this is not
+necessary, since the ordinary SIMPLEX algorithm will
+give integer solutions to the transportation problem since
+the structural form of the constraint set guarantees that
+the extreme points of the feasible region will be integer.
+Consider the academic assignment problem. Let the
+variable Xii be the percentage of course i taught by
+faculty j. A zero value implies that faculty j does not
+teach course i at all, while a value of unity implies that the
+course is totally taught by faculty j. Intermediate values
+are unacceptable, since they would employ that some of
+the course is taught by one instructor, and part by
+another-an inadmissable situation. Hence Xii must take
+the values of either zero or unity. pii is the preference
+rating for course i by faculty j.
+The university assignment problem can be formulated
+as a linear programming problem as follows:
+Max 2 C P+%
+subject to
+gxi=l i= 1,2 ,...n (1)
+i=l
+$Xij= 6 j=1,2,...n
+i=L
+2X+1 j =1,2,...n
+iEt k = 1,2,. . K
+cxijsl j= 1,2 ,...m (4)
+ieg g=l,2,...G
+xij30 i=l,2 n
+j=l,2::::m.
+The objective function is the weighted sum of the X,
+for each course and faculty, where the weights are
+derived from the faculty preference ordering (for
+methodology, see below). The first constraint set (1)
+requires that each courset is taught once, i.e. that the total
+assignment value associated with each course must equal
+unity. Constraint set (2) requires that each instructor
+teaches his course load (Wj)-thus the total assignment
+value for the jth instructor is lI$ Since it is normally
+required that faculty split their work load equally between
+semesters, this constraint will apply twice for each
+instructor, where W, represents the respective semester
+work load. The classical assignment problem consists of
+these two constraint sets, together with non-negativity
+conditions.
+Constraint set (3) stipulates that an instructor may not
+teach more than one course in any one time slot (k); this
+constraint holds for all instructors and all time slots. The
+inequality exists since it is permitted for an instructor to
+teach no courses in a particular time slot. In practice, this
+constraint need only be considered for those time slots
+where there exists a possibility of more than one course
+being taught by a particular faculty member.
+Constraint set (4) permits an instructor to teach a
+maximum of one course from a particular cluster (g).
+Again the inequality is permitted, since no courses may, in
+fact, be selected from a particular cluster. Finally,
+constraint set (5) imposes non-negativity conditions on
+the Xii.
+Faculty list the courses they wish to teach in order of
+declining preference. If an instructor wishes to teach one
+section of a particular course (or indeed one course out of
+a number of courses), the set of sections (or courses)
+concerned is called a cluster. All the entities within a
+cluster naturally have equal preference weighting. Should
+an instructor wish to teach another section of the same
+course, but wishes this section to be assigned a lower
+preference value than the first section, then a cluster of
+desired sections is given lower down in the preference list.
+Half year courses received half weights.
+The Simplex algorithm was used to solve the problem,
+and, as mentioned before, provides an integer solution.
+The addition of inequality type constraints (3) and (4) does
+not change this result (see Appendix). In this case, since
+we are dealing with a sparse matrix, the Revised Simplex
+algorithm was used. Thus a global optimum is guaranteed.
+This takes care of the technical side. The other
+requirement was an interactive capability for administra-
+tion. This was achieved by programming a complete
+package, which carried out initial processing, linear
+programming and final processing, and which prints output
+at each stage. The initial processing produced a listing of
+timeslotsandfacultyteachingloads;alistingof preassigned
+courses by faculty (a preassigned course is one for which
+only one faculty has expressed a preference) for each
+semester; initial consistency checking; a listing of the
+remaining unassigned teaching load for each faculty by
+semester; a cross-listing of unassigned courses, their time
+slots and feasible instructors; and a timetable showing all
+courses and the respective instructor for the preassigned
+courses. Error messages indicated where no feasible
+solution was possible at any stage of the process.
+This initial processing, before a linear solution was
+attempted, not only allowed interaction between the O.R.
+staff and administration, but also saved a lot of computer
+time in attempting to solve problems for which no feasible
+solution existed. After a successful run, a listing of
+courses by faculty and semester, a full timetable and a
+normalized table of preference values for each faculty
+were produced.
+
+
+
+
+
+V. EMPIRICAL TESTING
+The efficacy of a particular program in solving
+assignment problems is di~eult to measure, since each
+particular assignment problem differs from another, and
+so no standard exists. Two approaches were taken: a real
+world problem and a theoretical problem. Although
+neither of these approaches is ideal individually, the
+experience gained from solving these two problems, taken
+together, gives some idea as to the usefulness of this type
+of approach.
+A. A real world problem
+The department of economics at Concordia University
+(SGW), Montreal, has the usual timetable problem;
+manual solution, based on previous year’s experience,
+averages three months. The department is large enough to
+provide a reasonable test. Each faculty member was
+asked to give an ordered preference listing of the courses
+that he wanted to teach, of total length of twice his
+required teaching load-this provided sufficient slack,
+hopefully, for a feasible set to exist. The problem covered
+85 courses, some of which were one semester, and the rest
+full year, 20 faculty, 20 time slots and 2 semesters. This
+appeared to be a relatively easy problem, at least in
+computer terms-an optimal solution was obtained in less
+than 6 seconds of CP time (CDC 6400). It was clear,
+however, that the most valuable output of the package
+were the listings produced in the initial processing prior to
+the linear programming solution. By giving administration
+information in a recognizable and useful form, that
+showed each stage of processing, a degree of communica-
+tion developed that allowed far more interaction than is
+usually the case. This is borne out by the fact that by using
+these techniques, the timetable task was finished in two
+weeks-a distinct improvement.
+B. A theoretical problem
+The following theoretical problem was set up: forty
+courses are to be taught in the first semester, forty in the
+second and another forty are full year courses. Twenty-
+six faculty each have a teaching load of 3 courses per
+semester, and an additional instructor has a load of 2
+courses per semester. Thus total course load and total
+teaching load are equal in each semester. There are 20
+time slots in each semester.
+To ensure a feasible solution a particular solution was
+chosen. Each course was then assigned a time slot
+randomly (based on a table of random numbers), with the
+exception that if a course in the particular solution was
+assigned a time slot which involved a conflict with a
+course that was also in the particular solution, then a
+new time slot was selected. Each faculty was assigned a
+total of nine courses-the particular solution, plus
+remaining courses, also chosen randomly. The order of
+the nine courses was also randomly determined; the order
+was presumed to signify the preference ordering.
+An optimal solution was obtained in 13 seconds
+(decimal) of CP time (201 iterations). The optimal solution
+differed from the particular solution, and obviously
+produced a higher valued objective function. For n = 120
+(courses) and m = 54 (27 faculty, 2 semesters), this
+implies a permutation matrix of 6480 elements, which is
+by no means trivial.
+
+
+
+
+
+V. CONCLUSION
+The results discussed here suggest that there are
+considerable benefits to be gained by using optimization
+methods in the solution of the university scheduling
+problem. It is perceived, however, that these gains do not
+accrue solely by utilizing an efficient algorithm, necessary
+though such an algorithm may be. Rather, these benefits
+come about to a large extent by the bringing in of
+administration during the O.R. process, rather than, as is
+the norm, of communicating before the process, and again
+afterwards. It appears that this interaction can only be
+achieved if the output is presented in such a way as to be
+precise, informative, and above all, familiar.
+O.R. techniques have appeared to be most effective in
+dealing with small specific micro models, where the
+system is well defined, and optimization takes place
+within this specific system. At the macro stage, where the
+system itself is not even a given, O.R. performance is
+dubious, to say the least. One can optimize a battlefield
+deployment but that hardly leads to the desired result if, in
+reality, one shouldn’t be fighting the war. if there is a
+qualitative nature to the world, be it the preservation of a
+species or the running of a school system, and if this
+qualitative nature is best appreciated by an administrator
+because perhaps of familiarity, or intuition, then it may
+well be that an interactive symbiosis of O.R. techniques
+coupled with administration “input” may yield better
+results than either one could do individually.

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+    <typeA>Direct 1</typeA>
+    <typeA>Direct 2</typeA>
+    <container>
+        <typeA>Imbriqué 1</typeA>  <!-- ❌ Ne doit PAS être récupéré -->
+    </container>
+    <other>
+        <typeA>Imbriqué 2</typeA>  <!-- ❌ Ne doit PAS être récupéré -->
+    </other>
+</root>
+ 

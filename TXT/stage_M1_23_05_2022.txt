@@ -1,0 +1,13 @@
+parties d'originis avant de scinder suprimmer (assurer mm durée et mm nombre de séance)
+Optimisation -> pénalité 
+outils -> priorité sur les times (profil de priorité)
+code puisse extensible pour y injecter plus tard
+vérifier les asserts
+-> vérifier les règles
+
+
+
+règle métier UTP
+-> Danger sinon avec CHR++
+
+

@@ -1,0 +1,11 @@
+ for α were previously obtained in Lemos et al.
+(2019) by optimizing this parameter.
+The data is encoded with ITC-2019 XML format (Müller
+et al. 2018). The code and data sets are available at https://
+github.com/ADDALemos/MPPTimetables/releases/tag/J.Sc
+heduling19. The data used to test the system was obtained
+through the FenixEdu™ system public API 2 which is in use
+at IST.
+The tests were run using the runsolver tool (Rousse
+
+https://github.com/ADDALemos/MPPTimetables

@@ -1,0 +1,24 @@
+% choix des instances
+% résultats
+
+% on a gardé que les instances satisfiables
+% analyse globale des 3 approches
+% schema général : choix du paradigme
+
+%\subsection{Results}\label{subsec:experiments}
+
+The experiments were performed on a computer with a processor Intel-Xeon E7-4850 v4, 2.1 GHz, 40MB of cache.
+The \CP{} solver is Choco-solver~\cite{2022_chocosolver} 4.10.12.
+The \ASP{} solver is Clingo~\cite{2019_clingo} 5.6.2.
+The \CASP{} solver is Clingcon~\cite{2018_casp} 5.2.0.
+The \MIP{} solver is Gurobi Optimizer~\cite{2023_gurobi} 10.0.3.
+%
+The building (BT) and solving (ST) times can be found in Appendix~\ref{appendix:instances}.
+Table~\ref{tab:instances} shows selected instances:
+an instance where all solvers performed well (gi8201) and the worst-case instances in run-time for \CP{} (gi5301), \ASP{} (gi4389), \CASP{} (gi5567) and \MIP{} (gi2767).
+Those instances show the limits of the solvers.
+In particular, the more sessions there are, the more difficult it is for \ASP{} and \MIP{} to solve instances to completion.
+%
+Some instances could not be solved by \ASP{} as it may need more than 80GB when \MIP{} instances use up to 15GB, and \CP{} and \CASP{} only need 8GB.
+Some instances could not be solved by \MIP{} due to time outs with a time limit set to 5 hours.
+

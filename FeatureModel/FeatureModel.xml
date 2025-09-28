@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<FeatureModel name="feature model for UTP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="featureModel-schema.xsd">
+
+<Features>
+    <Feature name="Cours" mandatory="false">
+        <subFeature>
+            
+            <Feature name="Horaires" mandatory="true">
+            </Feature>
+            
+            <Feature name="Salles" mandatory="false">
+            </Feature>
+            
+            <Feature name="Enseignant" mandatory="false">
+            </Feature>
+            
+
+            <Feature name="Modalité" mandatory="true">
+                <subFeature>
+                    <subFeature type="XOR">
+                        <Feature name="CM" />
+                        <Feature name="TD" />
+                        <Feature name="TP" />
+                    </subFeature>
+                </subFeature>
+            </Feature>
+
+            <Feature name="Matériel" mandatory="false">
+                <subFeature>
+                    <subFeature type="OR">
+                        <Feature name="Tableau" />
+                        <Feature name="Vidéoprojecteur" />
+                        <Feature name="Tableau interactif" />
+                        <Feature name="Micro" />
+                    </subFeature>
+                </subFeature>
+            </Feature>
+        </subFeature>
+    </Feature>  
+
+</Features>
+
+    
+
+</FeatureModel>
+
+            
+   

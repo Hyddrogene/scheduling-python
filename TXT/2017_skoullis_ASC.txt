@@ -1,0 +1,203 @@
+### Formulation du problème
+
+#### 2.1 Contraintes dures
+
+Il y a trois types de contraintes dures impliquées dans la formulation proposée : a) des contraintes relatives aux classes, b) des contraintes relatives aux enseignants, et c) des contraintes relatives à la co-enseignement.
+
+Concernant les classes, les contraintes dures utilisées dans la formulation proposée sont les suivantes :
+1. **Conflit de classes** : dans chaque classe, il ne peut y avoir plus d'un cours enseigné à un moment donné. De plus, une classe ne doit être attribuée qu'à un seul enseignant à tout moment, à l'exception des restrictions de co-enseignement (voir ci-dessous).
+2. **Périodes de temps inactives des classes** : chaque classe est autorisée à avoir une période de temps inactive uniquement à la dernière heure de chaque jour.
+
+Concernant les enseignants, les contraintes dures utilisées dans la formulation actuelle sont les suivantes :
+1. **Conflit d'enseignants** : chaque enseignant ne peut enseigner à plus d'une classe à un moment donné.
+2. **Disponibilité des enseignants** : chaque enseignant ne peut enseigner pendant les périodes où il/elle n'est pas disponible.
+3. **Attribution des enseignants-classes-cours** : le nombre d'heures et de cours que chaque enseignant peut enseigner à une classe est fixé et prédéfini par les données d'entrée.
+
+Concernant le co-enseignement, les contraintes dures incorporées dans la formulation proposée sont les suivantes :
+1. **Restrictions de co-enseignement** : si deux enseignants doivent enseigner simultanément à la même classe, alors ils sont tous les deux assignés à la même classe pour les mêmes périodes. De plus, si deux enseignants, enseignant à deux classes différentes, doivent enseigner simultanément, alors ils doivent enseigner leurs classes aux mêmes périodes.
+
+#### 2.2 Contraintes souples
+
+Les contraintes souples employées dans la formulation proposée constituent les trois critères appliqués pour mesurer la qualité de chaque emploi du temps résultant comme suit :
+1. **Répartition des heures d'enseignement de chaque leçon** : mesure la répartition uniforme des heures du même cours pour chaque classe les jours où il est enseigné.
+2. **Répartition des heures d'enseignement de chaque enseignant** : mesure la répartition uniforme des heures de chaque enseignant les jours où il/elle est disponible.
+3. **Nombre de périodes inactives de chaque enseignant** : compte le nombre d'heures inactives que chaque enseignant a entre ses heures d'enseignement.
+
+#### 2.3 Modèle mathématique
+
+Les ensembles de données utilisés dans la formulation du modèle du problème sont les suivants :
+
+- \( D = \{1, \ldots, DaysNo\} \) est l'ensemble des jours d'enseignement par semaine.
+- \( H = \{1, \ldots, HoursNo\} \) est l'ensemble des heures d'enseignement par jour.
+- \( L = \{1, \ldots, LessonsNo\} \) est l'ensemble des différents cours enseignés dans une école.
+- \( C = \{1, \ldots, ClassesNo\} \) est l'ensemble des différentes classes d'une école.
+- \( T = \{1, \ldots, TeachersNo\} \) est l'ensemble des enseignants travaillant dans une école.
+- \( H^{na}_t \) est l'ensemble des périodes non disponibles pour l'enseignant \( t \).
+- \( Hlast \) est l'ensemble des dernières heures de tous les jours.
+- \( E \) est un ensemble d'événements (réunions) tel que pour chaque événement \( e \in E \), une paire enseignant-classe et un nombre donné de leçons à programmer sont préassignés.
+- \( E_t \) est un ensemble d'événements qui sont assignés à l'enseignant \( t \).
+- \( U \) est un ensemble de tuples \( (m, n) \) pour \( m, n \in P : n \geq m + 1 \).
+
+Toutes les variables et fonctions utilisées dans la formulation du modèle du problème sont les suivantes :
+
+- \( \delta(\alpha) = \begin{cases} 1, \text{ si } \alpha \text{ est vrai} \\ 0, \text{ si } \alpha \text{ est faux} \end{cases} \)
+- \( y_{l c d h} = \begin{cases} 1, \text{ si le cours } l \text{ est enseigné dans la classe } c \text{ au jour } d \text{ à l'heure } h \\ 0, \text{ sinon} \end{cases} \)
+- \( x_{t c d h} = \begin{cases} 1, \text{ si l'enseignant } t \text{ enseigne à la classe } c \text{ au jour } d \text{ à l'heure } h \\ 0, \text{ sinon} \end{cases} \)
+- \( Subjects_{t c} \) est le nombre de sujets différents que l'enseignant \( t \) enseigne à la classe \( c \), prédéfini par les données d'entrée.
+- \( ClassTotalHours_c (CTH_c) \) est le nombre total d'heures d'enseignement que la classe \( c \) peut recevoir en une semaine, prédéfini par les données d'entrée.
+- \( TeacherTotalHours_t (TTH_t) \) est le nombre total d'heures d'enseignement que l'enseignant \( t \) peut enseigner en une semaine, prédéfini par les données d'entrée.
+- \( LowerBound_{t d} (LB_{t d}) \) est le nombre minimum d'heures d'enseignement qui doit être attribué à l'enseignant \( t \) au jour \( d \) pour que la répartition de ses heures d'enseignement soit uniforme.
+- \( UpperBound_{t d} (UB_{t d}) \) est le nombre maximum d'heures d'enseignement qui doit être attribué à l'enseignant \( t \) au jour \( d \) pour que la répartition de ses heures d'enseignement soit uniforme.
+- \( z_{t d m n} \) est le temps inactif de l'enseignant \( t \) entre les créneaux horaires \( m \) et \( n \) au jour \( d \).
+- \( v_{e d p} = \begin{cases} 1, \text{ si l'événement } e \text{ est programmé au créneau } (d, p) \\ 0, \text{ sinon} \end{cases} \)
+
+Les coûts des contraintes souples définis dans la formulation du modèle du problème sont les suivants :
+
+1. **Coût de distribution des heures de cours** : 
+\[ \text{lessons′hours′distributioncost} = scw2 \times \sum_{t=1}^T G_{t c d} \]
+   où
+\[ G_{t c d} = \begin{cases} 
+1, \text{ si } \sum_{h=1}^H x_{t c d h} > Subjects_{t c} \\ 
+0, \text{ sinon} \end{cases} \]
+   et \( scw2 \) est le poids de la contrainte souple respective tel que présenté par Tassopoulos et Beligiannis [41]. Si
+\[ \sum_{h=1}^H x_{t c d h} > Subjects_{t c}, \]
+   cela signifie que l'enseignant \( t \) enseigne au moins une matière à la classe \( c \) au jour \( d \) plus d'une heure (deux fois ou plus).
+
+2. **Coût de distribution des heures d'enseignement des enseignants** : 
+\[ \text{teachers′teachinghours′distributioncost} = scw1 \times \sum_{t=1}^T \sum_{d=1}^D D_{t d} \]
+   où
+\[ D_{t d} = \begin{cases} 
+1, si \left( \sum_{c=1}^C x_{t c d h} \geq UB_{t d} + 1 \right) \left( \sum_{c=1}^C x_{t c d h} \leq LB_{t d} - 1 \right) \\ 
+0, sinon \end{cases} \]
+   et \( scw1 \) est le poids de la contrainte souple respective tel que présenté par Tassopoulos et Beligiannis [41].
+
+3. **Coût des périodes inactives des enseignants** : 
+\[ \text{teachers′gapscost} = scw3 \times \sum_{d=1}^D \sum_{(m, n) \in U} z_{t d m n} \]
+
+   Selon l'inégalité (6), si les variables sont activées et qu'il n'y a pas de périodes d'enseignement entre elles, la valeur de \( z_{t d m n} \) est égale à \( (n - m - 1) \), ce qui correspond au nombre de périodes inactives entre \( m \) et \( n \). Cette formulation du coût des périodes inactives des enseignants a été introduite par Dorneles et al. en 2012 [46]. De plus, \( scw3 \) est le poids de la contrainte souple respective tel que présenté par Tassop
+
+oulos et Beligiannis [41].
+
+En conclusion, étant donné le modèle mathématique décrit ci-dessus, l'objectif du problème de planification des horaires scolaires peut être exprimé comme suit :
+\[ \min (\text{teachers′teachinghours′distributioncost} + \text{lessons′hours′distributioncost} + \text{teachers′gapscost}) \]
+\[ \forall t \in T, c \in C, l \in L, d \in D, h \in H, e \in E \]
+### 3. L'algorithme hybride basé sur CSO
+
+#### 3.1 L'algorithme CSO original
+
+Le processus d'optimisation de l'algorithme CSO original imite le processus de recherche de nourriture des chats. L'optimum global correspond à la nourriture tandis que l'espace de solution correspond à la zone où se trouve la nourriture. Chaque solution est représentée par un chat explorant la zone de recherche. L'initialisation de l'algorithme est réalisée en initialisant un nombre (essaim) de chats. Chaque chat a sa propre position dans l'espace de solution composé de M dimensions, des vitesses distinctes pour chaque dimension et une valeur de fitness individuelle calculée en utilisant la fonction de fitness correspondante. Chaque chat explore la zone de recherche pour de la nourriture, c'est-à-dire tente de trouver une solution ayant une meilleure valeur de fitness. À chaque itération, l'algorithme CSO calcule la valeur de fitness de chaque chat, la compare à la meilleure valeur jusqu'à ce point - le meilleur chat - et si elle est meilleure - plus basse, dans un processus de minimisation - alors ce chat devient le meilleur chat.
+
+Selon l'approche CSO classique, il existe deux états différents dans lesquels un chat peut être pendant le processus d'optimisation : a) le mode de recherche et b) le mode de traçage. En mode de recherche, chaque chat se repose tout en examinant son environnement pour décider de son prochain mouvement. En mode de traçage, chaque chat se déplace rapidement à la recherche de nourriture. La valeur d'une variable booléenne détermine si un chat est en mode de recherche ou en mode de traçage.
+
+Le comportement d'un chat en mode de recherche est influencé par quatre paramètres : i) le pool de mémoire de recherche (SMP), ii) la plage de recherche de la dimension sélectionnée (RSD), iii) le nombre de dimensions à changer (CDC) et iv) la considération de la position propre (SPC). Les étapes (en pseudocode) que chaque chat k (catk) va exécuter en mode de recherche sont présentées ci-dessous :
+
+**Étape 1 :** créer j copies de la position actuelle de catk, Note : j = SMP  
+Si la valeur du paramètre SPC est vraie,  
+j = (SMP - 1)  
+ajouter la position actuelle dans le pool de positions candidates pour le déplacement.
+
+**Étape 2 :** Pour chaque copie,  
+changer la valeur des dimensions CDC au hasard, Note : ces changements ne peuvent pas dépasser un pourcentage ± RSD.
+
+**Étape 3 :** calculer la valeur de fitness pour toutes les positions candidates.
+
+**Étape 4 :** Si les valeurs de fitness calculées ne sont pas égales entre elles,  
+calculer la probabilité \( P_i \) de sélectionner chaque position candidate,  
+sinon  
+\( P_i = 1.0 \), Note : pour tous les i.
+
+**Étape 5 :** choisir au hasard, parmi les positions candidates, la position vers laquelle catk sera déplacé  
+placer catk à cette position.  
+
+La probabilité \( P_i \), qui est la probabilité de chaque position candidate d'être sélectionnée pour déplacer catk, est calculée en utilisant l'équation suivante :  
+\[ P_i = \frac{|FS_i - FS_b|}{|FS_{\max} - FS_{\min}|}, \text{ où } 0 > i > j \]  
+où \( FS_i \) est la valeur de fitness de la position i, \( FS_{\max} \) est la plus grande valeur de fitness trouvée, \( FS_{\min} \) est la plus petite valeur de fitness trouvée et \( FS_b \) est égal à \( FS_{\max} \) pour les problèmes de maximisation et à \( FS_{\min} \) pour les problèmes de minimisation, respectivement.
+
+Les étapes (en pseudocode) que chaque chat k (catk) va exécuter en mode de traçage sont présentées ci-dessous :
+
+**Étape 1 :** mettre à jour la vitesse de chaque dimension de catk.
+
+**Étape 2 :** Si la valeur d'une vitesse est en dehors de la plage autorisée,  
+la définir à la valeur maximale autorisée.
+
+**Étape 3 :** mettre à jour la position de catk.  
+La vitesse de chaque dimension de catk est mise à jour selon l'équation suivante :  
+\[ v_{k,d} = v_{k,d} + r1 \cdot c1 \cdot (x_{\text{best},d} - x_{k,d}) , d = 1, 2, \ldots, M \]  
+où \( x_{\text{best},d} \) est la position du chat ayant la meilleure valeur de fitness jusqu'à ce moment, \( x_{k,d} \) est la position de catk, \( c1 \) est une constante affectant le changement de la vitesse de chaque dimension (généralement fixée à 2.0) et \( r1 \) est une valeur aléatoire appartenant à [0,1].
+
+La position de catk est mise à jour selon l'équation suivante :  
+\[ x_{k,d} = x_{k,d} + v_{k,d} \]
+
+Ces deux modes (mode de recherche et mode de traçage) sont combinés dans l'algorithme CSO original en utilisant un ratio déterminé par le paramètre Mixture Ratio (MR). Ce paramètre est généralement fixé à une très petite valeur favorisant le mode de recherche et reflétant ainsi le comportement réel des chats, qui passent la plupart de leur temps - lorsqu'ils sont éveillés - à surveiller leur environnement plutôt qu'à chasser de la nourriture. Une description plus détaillée concernant la structure et le fonctionnement des deux modes est référencée dans les sources originales. De plus, certaines variations récentes de l'algorithme CSO de base sont présentées dans la littérature.
+
+L'algorithme CSO original, tel qu'introduit par Chu et Tsai, incorpore un certain nombre de paramètres définis par l'utilisateur qui affectent de manière significative à la fois son fonctionnement et ses performances. Ces paramètres sont décrits en détail dans le tableau 1.
+
+#### 3.2 L'approche de solution basée sur CSO
+
+##### 3.2.1 Représentation des chats
+
+L'emploi du temps hebdomadaire d'un lycée grec typique se compose de cinq jours d'enseignement par semaine avec sept heures d'enseignement par jour, pour un total de 35 heures d'enseignement par semaine. Par conséquent, pour chaque chat qui représente l'emploi du temps hebdomadaire, un tableau bidimensionnel ayant le nombre de classes comme lignes (le nombre de classes est égal au nombre total de classes enseignées dans une école) et le nombre de créneaux horaires comme colonnes (le nombre de créneaux horaires est égal au nombre total d'heures d'enseignement par semaine) peut être utilisé.
+
+Soit \( x_i \) le i-ème chat. Chaque cellule \( x_i[r][c] \) (r=1...Nombre de classes, c=1...Nombre de créneaux horaires) représente une heure d'enseignement (c'est-à-dire une période) et contient un nombre allant de 1 au nombre d'enseignants (le nombre d'enseignants est le nombre total d'enseignants dans chaque lycée) ou la valeur "-1". Un exemple de représentation proposée d'un chat est présenté dans le tableau 2. Si la cellule à la 2ème ligne et à la 2ème colonne de \( x_i \) (c'est-à-dire \( x_i[2,2] \)) contient "10", cela signifie que l'enseignant assigné au numéro "10" enseigne une de ses leçons à une classe assignée au numéro "2" à la période "2" (c'est-à-dire lundi, 2ème heure). Si \( x_i[2,35] \) contient "-1", cela signifie que la classe assignée au numéro "2" a une période libre à l'heure d'enseignement assignée au numéro "35" (c'est-à-dire vendredi, 7ème heure). Les principaux avantages de ce codage sont rapportés par Tassopoulos et Beligiannis.
+
+##### 3.2.2 Représentation des cas de co-enseignement
+
+Il existe deux types de cas de co-enseignement rencontrés dans les lycées. Le premier type se produit lorsqu'une classe doit être assignée à deux enseignants en même temps. Le deuxième type se produit lorsque deux classes doivent avoir leurs enseignants assignés enseignant aux mêmes périodes. Dans les deux cas, la situation se produit temporairement, pour des raisons éducatives et opérationnelles, et dure un nombre limité de leçons/heures d'enseignement. Dans le deuxième type de co-enseignement, les classes impliquées sont appelées co-classes. Chaque classe est la co-classe de l'autre. De plus, dans les deux types de co-enseignement, les enseignants impliqués sont appelés co-enseignants. Chaque enseignant est le co-enseignant de l'autre.
+
+La représentation des cas de co-enseignement est traitée comme suit : pour le premier type, nous assignons les heures d'enseignement uniquement au premier co-enseignant. La présence du deuxième co-enseignant dans le chat (emploi du temps) est implicitement indiquée par la présence du premier. Néanmoins, le deuxième co-enseignant est pris en compte pour évaluer toute violation de contrainte. Pour le deuxième type de co-enseignement, les
+
+ deux enseignants sont explicitement présents dans le chat (emploi du temps), chacun enseignant à sa propre période.
+
+##### 3.2.3 Fonction d'évaluation
+
+Dans l'approche hybride basée sur CSO proposée, nous avons décidé de ne pas éliminer les chats violant des contraintes dures, mais de les traiter de la manière suivante : pour chaque contrainte dure violée, nous ajoutons un sous-coût significativement plus élevé par rapport aux sous-coûts ajoutés pour les violations de contraintes souples. Comme démontré par les résultats expérimentaux dans la section 4, cette approche réussit à trouver des emplois du temps très efficaces qui respectent toutes les contraintes dures. Les contraintes dures et souples impliquées dans la fonction d'évaluation utilisée sont décrites dans la section 2.
+
+Le calcul du coût est effectué en appliquant la même méthode développée par des chercheurs pour permettre une comparaison équitable de notre approche basée sur CSO avec les algorithmes de calcul doux correspondants. Dans le tableau 3, les poids et leurs valeurs respectives utilisés par la fonction d'évaluation pour le calcul de chaque sous-coût sont présentés. Ces poids ont été introduits par Beligiannis et al. et leurs valeurs respectives ont été légèrement modifiées par Tassopoulos et Beligiannis. Un paramètre défini par l'utilisateur et implémenté en plus, qui affecte le comportement de la fonction d'évaluation, est la base de croissance exponentielle (BASE). Ce paramètre est utilisé comme base pour la croissance exponentielle des sous-coûts correspondant aux violations de certaines contraintes. Pour toutes les expériences menées, sa valeur a été fixée à 1,3.
+
+La formule mathématique de la fonction d'évaluation utilisée est celle présentée par Tassopoulos et Beligiannis et Beligiannis et al. Elle incorpore toutes les contraintes dures et souples listées dans la section 2 et a la forme présentée dans l'équation suivante :
+\[ f = (\text{cas d'indisponibilité des enseignants} \times HCW \times BASE^3) + (\text{cas de périodes vides des classes} \times HCW \times (2 \times BASE)^{BASE}) + (\text{cas d'enseignement parallèle} \times HCW \times BASE^k) + (\text{cas de mauvais co-enseignement} \times HCW \times (2 \times BASE)^{BASE}) + (\text{cas de dispersion des leçons de classe} \times ICDW \times h \times BASE^{JOURS}) + (\text{cas d'espaces vides des enseignants} \times TEPW \times h \times BASE^{JOURS}) + (\text{cas de dispersion des leçons des enseignants} \times ITDW \times erreur absolue \times BASE^{JOURS}) \]
+
+Pour une description exacte de toutes les procédures utilisées pour évaluer le sous-coût de chaque violation de contrainte dure et/ou souple, référez-vous aux sources originales.
+
+#### 3.3.1 Procédure de mode de recherche modifiée
+
+Le pseudocode de la procédure de mode de recherche modifiée ajustée pour être utilisée par notre algorithme hybride basé sur CSO est présenté dans le tableau 4. Les paramètres définis par l'utilisateur utilisés dans la procédure de mode de recherche sont définis comme suit : SMP=2, SPC=true, CDC=10% et SRD=10%. Ces valeurs spécifiques ont été sélectionnées après des expériences exhaustives selon une méthode d'essai-erreur. Cette procédure de mode de recherche modifiée, qui est appliquée à chaque chat de la population actuelle, est présentée dans les paragraphes suivants.
+
+Initialement, la valeur de fitness du chat actuel est calculée et stockée dans la variable best fitness (ligne 2). Ensuite, si la valeur du paramètre SPC est vraie, la position actuelle est sélectionnée comme position candidate pour le déplacement (lignes 3-5) et j=SMP-1=1 copie du chat actuel est créée (appelée copie de chat) (ligne 8). Dans l'approche proposée, puisque le paramètre SPC est défini sur vrai, l'une des deux positions candidates pour déplacer le chat actuel est sa position actuelle. Cela signifie que si la position du chat actuel est "proche" de la position du meilleur chat global (appelé meilleur global), le chat actuel peut garder sa position car sa valeur de fitness est "suffisamment bonne" (ligne 21-26). La probabilité de sélection du chat actuel est calculée en utilisant l'équation présentée dans la section 3.2 (ligne 22).
+
+Dans les lignes 11-19, la partie principale de la procédure de mode de recherche est listée. La copie du chat actuel (copie de chat) subit une série de changements basés sur les valeurs des paramètres CDC et SRD. Dans l'approche proposée, les dimensions de l'espace de recherche sont 35, car 35 est le nombre de créneaux horaires de l'emploi du temps scolaire.
+
+La logique de la procédure est la suivante :
+- Tout d'abord, la procédure de mode de recherche remplace CDC x Nombre de créneaux horaires de la copie de chat en utilisant les créneaux horaires du meilleur chat global afin d'enrichir sa fitness (ligne 12). La sélection et le remplacement de ces créneaux horaires sont effectués par la procédure Change random(), qui est expliquée en détail dans la section 3.4.3.
+- Ensuite, sur ce chat enrichi, des échanges SRD x Nombre de classes x Nombre de créneaux horaires sont effectués en utilisant la procédure Single swap() (ligne 14). Cette procédure est également expliquée dans la section 3.4.3. Un échange est accepté, seulement s'il est valide, c'est-à-dire qu'il ne viole pas les contraintes dures (ligne 15). Lorsqu'un échange valide est effectué, la valeur de fitness de la copie de chat mutée est calculée (ligne 16) et si elle est inférieure ou égale à la meilleure valeur de fitness jusqu'à ce point, la meilleure valeur de fitness est mise à jour et la position de cette copie de chat mutée est sélectionnée comme deuxième position candidate pour déplacer le chat actuel (lignes 17-19). De cette manière, la deuxième position candidate est toujours celle de la meilleure copie de chat mutée contrairement à celle résultant après que tous les échanges soient exécutés cumulativement dans l'algorithme CSO original.
+
+#### 3.3.2 Procédure de mode de traçage modifiée
+
+Le pseudocode de la procédure de mode de traçage modifiée ajustée pour être utilisée par notre algorithme hybride basé sur CSO est présenté dans le tableau 5. Dans l'algorithme CSO original, la valeur de la vitesse dépend de la différence entre la position du meilleur chat global et celle du chat actuel (voir l'équation dans la section 3.2). Dans notre approche :
+- Tout d'abord, nous estimons la similarité entre le meilleur chat global et le chat actuel en comparant leurs cellules respectives une par une (ligne 2). Pour chaque cellule similaire (c'est-à-dire ayant la même valeur de fitness), la variable de similarité est incrémentée d'une unité. La valeur maximale que la similarité peut avoir est Nombre de classes * Nombre de créneaux horaires (cela se produit lorsque deux chats sont semblables). Respectivement, la valeur minimale que la similarité peut avoir est zéro (cela se produit lorsque toutes les cellules des deux chats varient).
+- Ensuite, la distance entre le chat actuel et celui du meilleur chat global est calculée (ligne 3). Plus la distance est grande, plus le mouvement du chat actuel sera intense (c'est-à-dire qu'un plus grand nombre de ses cellules sera modifié).
+- Puis, la valeur du paramètre cs, qui est le nombre de cellules à échanger, est calculée (ligne 5). Ce nombre est en réalité mis en œuvre comme l'équivalent de la "vitesse" de l'algorithme CSO original. Cette approche constitue une autre différence entre les deux algorithmes.
+- Enfin, des paires de cellules cs sont sélectionnées au hasard et leurs valeurs sont échangées en exécutant la procédure Single swap() (ligne 6).
+
+#### 3.3.3 Procédures auxiliaires
+
+**Procédure Change Random()**
+
+Cette procédure adhère à l'idée de remplacements successifs aléatoires de cellules, qui a été introduite pour la première fois par Chu et al. Tassopoulos et Beligiannis ont appliqué une variation de cette approche résultant en un remplacement de colonnes entières. La procédure proposée adhère à cette variation particulière. Plus précisément, une colonne (c'est-à-dire une période) de la copie de chat (c'est-à-dire la copie du chat actuel) est sélectionnée au hasard et est remplacée par la colonne respective du meilleur chat global. Cela conduit à un enrichissement significatif de la copie de chat.
+
+Par exemple, supposons que : i) la copie de chat ait la forme présentée dans le tableau 6a, ii) le meilleur chat global ait la forme présentée dans le tableau 6b et iii) la colonne sélectionnée au hasard pour être remplacée se trouve dans la période 1. Cela signifie que tous les enseignants enseignant à la période 1 de la copie de chat doivent être remplacés par ceux de la même période du meilleur chat global. Il est certain que, en raison de la procédure d'initialisation, tous ces enseignants apparaissent déjà dans d'autres périodes de chaque classe, rendant temporairement l'emploi du temps infaisable. Pour avoir une solution faisable,
+
+ les actions suivantes doivent être mises en œuvre :
+a) Chaque classe (c'est-à-dire ligne) de la copie de chat est scannée pour trouver sa période ayant la même valeur (c'est-à-dire numéro de l'enseignant) que la colonne sélectionnée du meilleur chat global (c'est-à-dire période 1 dans cet exemple).
+b) Ensuite, les valeurs de ces cellules sont échangées. Par exemple, l'enseignant No.6 qui enseigne à la classe 1 est échangé avec l'enseignant No.4 (voir tableau 6c). S'il y a plus d'une cellule ayant la même valeur (c'est-à-dire numéro de l'enseignant) que la colonne sélectionnée du meilleur chat global, la cellule à échanger est sélectionnée au hasard (voir tableau 6c, classe 3).
+
+**Procédure Single Swap()**
+
+Cette procédure est mise en œuvre pour échanger les valeurs de deux cellules de la même classe (c'est-à-dire ligne) dans un emploi du temps. Son entrée consiste en : a) le chat actuel, b) les deux cellules sélectionnées au hasard à échanger et c) la classe respective. Tout d'abord, nous vérifions si l'échange peut être effectué.
+
+L'échange n'est pas effectué dans les cas suivants :
+- Si les cellules ont la même valeur (c'est-à-dire le même numéro d'enseignant).
+- Si l'une des cellules a la valeur "-1" (c'est-à-dire cellule vide - pas d'enseignement).
+- Si cela entraîne la situation où un enseignant enseigne à une heure à laquelle il/elle enseigne déjà à une autre classe. Cela viole la contrainte dure de conflit d'enseignants (voir section 2.1).
+
+Les échanges violant toutes les autres contraintes sont permis, aidant ainsi notre algorithme hybride CSO à éviter d'être piégé dans des optima locaux aux premiers stades de son exécution, comme suggéré par Tassopoulos et Beligiannis.

@@ -1,0 +1,32 @@
+\begin{lstlisting}[style=PrologStyle, caption={Donnée ASP}, label={lst:data-asp}]
+weeks(4). days(12). slot_per_day(1440).grid(480,90,7).
+courses(1). parts(2).classes(3). sessions(12).
+room(Salle-1,40). room(Salle-2,20).room(Salle-3,20). 
+course(math).teacher(teacher1).teacher(teacher2).
+%%COURSES
+part(math-CM,12,120,5,12,2,1).class(math-CM-1,80).
+course_part(math,math-CM).part_class(math-CM,math-CM-1).
+class_sessions(math-CM-1,1..12).
+%%RESOURCES
+part_teacher(math-CM,(teacher-1;teacher-2)).
+part_room(math-CM,(salle-1;salle-2;salle-3)).
+%%TIMES
+part_days(math-CM,1..5). part_weeks(math-CM,1..12).
+part_slots(math-CM,(480;570;660;750;840;930)).
+part_grids("cours-1-pCM",1,1,6).
+%%GROUPS
+group(group-1,20).group(group-2,20).
+class_group(math-CM-1,(group-1;group-2)).
+%%SESSIONS RACCOURCI
+session_duration(S,D):-session(S),session_part(S,P),part_grids(P,_,D,_).
+session_group(S,G):-class_sessions(C,S),class_group(C,G).
+session_part(S,P):-session(S),class_session(C,S),part_class(P,C).
+session_teacher(S,T):-session(S),session_part(S,P),part_teacher(P,T).
+session_room(S,R):-session(S),session_part(S,P),part_room(P,R).
+%%CONSTRAINT
+sequenced(3,(6;7)).
+periodic(S1,S2,7200) :- session(S1),session(S2),S2 = S1+1 .
+disjunctive_room((1..12),R):- room(R,_).
+disjunctive_teacher((1..12),T):- teacher(T).
+\end{lstlisting}
+%sequenced(S1,S2) :- part(P,_,_,_,_,_,_),part_class(P,C),class_sessions(C,S1),class_sessions(C,S2),S1+1 = S2.

@@ -1,0 +1,57 @@
+% ------------------------
+\begin{frame}{Structure de base d'une page HTML}
+\begin{itemize}
+    \item \texttt{<!DOCTYPE html>} : indique que le document est en HTML5
+    \item \texttt{<html>} : racine du document
+    \item \texttt{<head>} : informations sur la page (titre, encodage, styles)
+    \item \texttt{<body>} : contenu visible de la page
+\end{itemize}
+\end{frame}
+
+% ------------------------
+\begin{frame}{Titres et texte}
+\begin{itemize}
+    \item \texttt{<h1> ... <h6>} : titres hiérarchiques, du plus important au moins important
+    \item \texttt{<p>} : paragraphe de texte
+    \item \texttt{<strong>} : texte important (souvent en gras)
+    \item \texttt{<em>} : texte accentué/emphasé (souvent en italique)
+\end{itemize}
+\end{frame}
+
+% ------------------------
+\begin{frame}{Listes}
+\begin{itemize}
+    \item \texttt{<ul>} : liste non ordonnée (puces)
+    \item \texttt{<ol>} : liste ordonnée (numéros)
+    \item \texttt{<li>} : élément de liste (utilisé à l'intérieur de <ul> ou <ol>)
+\end{itemize}
+\end{frame}
+
+% ------------------------
+\begin{frame}{Liens et images}
+\begin{itemize}
+    \item \texttt{<a href="URL">} : lien hypertexte
+    \item \texttt{<img src="..." alt="...">} : image avec texte alternatif
+    \item \textbf{Astuce} : toujours mettre un attribut \texttt{alt} pour l’accessibilité
+\end{itemize}
+\end{frame}
+
+% ------------------------
+\begin{frame}{Tables}
+\begin{itemize}
+    \item \texttt{<table>} : tableau
+    \item \texttt{<tr>} : ligne du tableau
+    \item \texttt{<td>} : cellule de tableau
+    \item \texttt{<th>} : cellule d'en-tête (facultatif mais recommandé)
+\end{itemize}
+\end{frame}
+
+% ------------------------
+\begin{frame}{Formulaires}
+\begin{itemize}
+    \item \texttt{<form>} : conteneur pour saisir des données
+    \item \texttt{<input>} : champs de saisie (texte, mot de passe, bouton radio, case à cocher...)
+    \item \texttt{<button>} : bouton cliquable
+    \item \texttt{<label>} : associe un texte à un champ de formulaire (utile pour l’accessibilité)
+\end{itemize}
+\end{frame}

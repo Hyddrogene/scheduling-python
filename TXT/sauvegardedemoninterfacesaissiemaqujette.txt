@@ -1,0 +1,53 @@
+            <div name="teacherContainBubble" >
+                <select id="keywordSelect${i}">
+                    <option value="">Choisir un mot-clé...</option>
+                </select>
+                <button onclick="addKeyword(${i})">Ajouter</button>
+            </div>
+
+            
+            <div id="selectedKeywords${i}" class="keykey"></div>
+
+            <div name="teacherContainBubble" >
+            <select id="keywordSelectR${i}">
+                <option value="">Choisir un mot-clé...</option>
+            </select>
+            <button onclick="addKeywordRoom(${i})">Ajouter</button>
+            </div>
+            <div id="selectedKeywordsR${i}" class="keykey"></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        box.innerHTML = `
+            <div id='cours${i}' class='course-title'>Cours ${i}</div>
+            <div class="left">
+            <select id="sessionType-${i}">
+            <option value="CM">CM</option>
+            <option value="TD">TD</option>
+            <option value="TP">TP</option>
+            </select>
+            <p id="contain-data${i}" class="contain-data"></p>
+            </div>
+
+
+            <div class="right">
+
+                
+                <div id="session-${i}" >
+    
+                    <div id="session-details-container-${i}" class="session-details-container"></div>
+                    <button onclick="addSessionDetails(${i}, 'part${i}')">Valider</button>
+                </div>
+            </div>
+        `;

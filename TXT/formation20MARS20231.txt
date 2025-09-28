@@ -1,0 +1,166 @@
+psnr ?
+critre perceptuel
+amy award nantes ?
+torch torchvsion tomologie
+deep.univ-nantes.io/advnn/cours
+reveal.js
+segmentation
+
+bonne résolution, bon niveau de bruit
+vérité terrain
+
+widrowhoff
+sigmoide est douce (fonction pd et dérivalle)
+
+elle descend la montagne à cheval
+
+d rond -> delta regle de la chaine 
+sigmoide -> donne +importance frontière
+ompact taux appretissage -> divergence ?
+
+la vie n'est pas linéairement séparaaaaaaaaaable
+aled
+norme vecteur normal raidis decision
+taille min pour avoir une décision
+
+    ALEEEEEDDDD
+s
+Cybenko 1989-> sigmoid toute fctn
+
+
+minibatch taille raisonnable 
+somme chacun des chelins
+kulback encore ????
+
+classification entropie
+regression -> regression
+kullback densité porb
+
+taille batch -> meta parametre -> nombre d'exemple avec retropagation
+
+densité probabilité -> sofmax (sorite couche somme à1)
+plan de sépration
+
+complexité
+nb p   arametre entrainable -> degré de liberté mais doit être entrainer (capcité +compliqué)
++données meilleur
+
+malédiction des dimensions
+dileme biais variance -> degré de liberté
+
+nicolas normand Harold mouchere 
+early stopping -> metacacag
+finetunning
+nr epoch -> caca (une fois tout évalué)
+
+mesurer les perfs -> top 1 (que le vrao) top3 pour savoir FP et tout
+ajout dictionnaire reconnaissance mot
+matrice confusion
+courbe ROC
+random :-> précisé TAR FAR
+changer le suil
+envellope convex -> permet de prendre des bonnes choses en ROC
+validation croisé (cross valideation)
+stabulité du modèle poids aléatoire -> VARIANCE ET ECART TYPE (fross -> si alétoire fort et croisé et écart type fort indique donnée dur sur certain pint)-> comportement moyen d'un modèle d'une famille de classifieur 
+leave one out
+tirage aléatoire et poids aléatoire 
+classification ensembliste
+
+parametre poids
+
+meta :
+lerning rate
+nr couche nr neurone per couche
+tanh puis relu sortie softmax
+relu
+
+trop grand disparition du gradient (limite en 0 et 1)
+trop de paramètres
+trop data
+
+le verrou imagenet
+cudacore et driver core
+
+convolutive 
+recurente
+aggregation pooling
+
+dropt put
+
+TDNN
+entrée structuré
+
+meme poids pour première couche, fenetre que de 3
+maj poids toujours pareil
+poids aprend bcp +vite pour chaque instant signal
+
+caillault 2005
+champ perceptuel =4 -> premier neurone 1 voit 7 x 4 
+stride ?
+overlape entre neurone 1 ET 2
+20 lignes de neurones partagé (7x4 poids fois 20
+
+
+derniere couche 16 x 20 xn
+
+opérateur linéaire
+sobel operator
+
+slide 18 -> l'pération du noyeau sur le 3x3 donne 4x4 par chevauchement
+half padding (k-1 /2)et full padding
+
+stride -> décalage de pixel
+couche de ppooling-> accumuler infosur zone
+récupère info sur la zone de la taille du pooling (permet de résumé l'information)
+une convolution derrière aura un plus grand champs de vision
+
+26 x 6
+Ni x( Ni-1 x k²+1)
+
+ReLu -> max(x,0) permet de lutter disparition gradient
+instable en 0
+dying ReLu 
+p 32 gris conv, rouge pooling lmax,    apprendre plusieurs tache en mm temps
+fonction de cout gloabal combine
+1 couche puis plusieurs chemin
+permet de recombiner une caractèristique en diminuant nr couceh
+
+on lui fait apprendre 3 choses en lui mettant 3 sorties
+caractèristique à plueiurs échelles
+sommes pondéres des plusieurs sorties
+fine tuning gelé couche intermédiaiire
+réapprend correspond initilisation
+encodeur décoeur -> capte les bonnes caracétiristiques avec goulet etraglement
+
+entrainté jette le décodeur(loss image)
+
+image de forme géomtrique
+data agmentatiiooooon
+module tourne image
+
+SSD indice jaccardu net contexte localS
+D116 113
+bipyramidale
+max pooling ou global pooling
+112 > 56 etc VGG pooling
+
+extracteur de featrues en coupant après les premiers 4096 premier
+RGB -> 3x3x3 image
+
+on voit qu'il a appris nos features
+VGAN varitionnal
+batchNOrm
+curriculumLeraning
+autoencoder
+gradient vanishing
+resNet 34 raccourci pour gradient fort pas trop de FC
+convolusion inverse, fulle padding, convolution aggregation
+autoencodeur + FC en multi target
+decodeur encodeur manque la sémantique
+
+biridirectonnial
+GRU LSTM
+CTC -> autorise le rien
+prgomation dynamique
+bi RNN + attention
+BEngio2014

@@ -1,0 +1,20 @@
+Salut, j'ai 2 étudiants qui ont mis :
+```javascript
+const occ = {};
+
+for (const n of bornesIncendie) {
+    occ[n] = occ[n] ? occ[n] + 1 : 1;
+}
+console.log(occ["LES PONTS-DE-CE"])
+```
+et chat GPT (en utilisant une variable similaire):
+```javascript
+var occ = {};
+
+bornesIncendie.forEach(borne => {
+   occ[borne.commune] = occ[borne.commune] ? occ[borne.commune] + 1 : 1;
+});
+
+console.log(`Il y a ${occ['LES PONTS-DE-CE'] || 0}bornes à incendie à LES PONTS-DE-CE.`);
+```
+Je trouve que leurs réponses sont pas d'une logique classique (en + d'être étrangement similaire)

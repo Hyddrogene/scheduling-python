@@ -1,0 +1,250 @@
+
+An algorithm for computing a timetable for a university department is discussed. The problem is formulated in terms of costs associated with features of the timetable, including the interactions between courses. The algorithm finds a globally optimal solution using a linear mathematical model.
+
+(Received October 1972)
+
+The computer construction of university timetables has received much attention, and several algorithms have been published (Barraclough, 1965; Yule, 1968; Almond, 1969). The complex nature of the requirements has usually favoured the adoption of a heuristic approach to the problem.
+
+This paper describes a mathematical model for scheduling courses within a single department of a university, and gives an algorithm for computing a globally optimal solution by associating a cost with each feature of the timetable. The costs may be infinite (in which case the feature becomes a constraint), as well as positive or negative (corresponding to undesirable and desirable features respectively). The model is powerful enough to accommodate all the usual requirements with the following exception: it is assumed that there is no limit on the total number of available classrooms. At least for American universities, this causes no real problem since the classrooms are usually allocated from a campus-wide pool. The simpler and more practical problem of several courses competing for specific facilities (a laboratory or auditorium) is easily incorporated in the model.
+
+The algorithm consists of reducing the problem to what is essentially a linear program which is solved to compute a globally optimal timetable.
+
+1. Statement of the problem
+
+A departmental course schedule typically involves some 30 courses and covers about 40 hours of the week. Most courses hold between one and three weekly sessions totalling 2 or 3 hours. The scheduling problem consists of choosing one of several alternatives for each course. Ideally the schedule represents the best compromise between the needs of students, faculty and administration. The criteria used for arriving at a good schedule can be formulated in terms of the considerations listed below.
+
+Constraints
+
+These are minimal requirements which must be met by the schedule. A schedule which satisfies every constraint is called a feasible solution. There are several types of constraints.
+
+1. Global restrictions on the alternatives available for each type of course; for example:
+   (a) Undergraduate courses meet Mondays, Wednesdays and Fridays,
+   (b) Graduate courses meet twice a week,
+   (c) There are designated evening courses.
+
+2. Specific constraints further limiting the choices for each individual course:
+   (d) The instructor may not be available on a given day or during certain hours.
+   (e) An overlap of a specific scheduled course (offered by another department) may have to be avoided.
+
+3. Conflicts which cannot be tolerated. Included are:
+   (a) co-requisites,
+   (b) courses which are part of a fixed curriculum, the same level and in related areas,
+   (c) courses taught by the same instructor,
+   (d) courses which share the same facility, such as a laboratory.
+
+4. Additional constraints on the way certain pairs of courses can be scheduled:
+   (a) Courses given by the same lecturer may not be assigned to consecutive hours.
+   (b) There is a limit placed on the number of teaching days.
+
+5. Administrative constraints:
+   (a) Time must be provided for faculty meetings, colloquia, etc.
+   (b) The schedule must allow committee sessions and other activities involving only part of the faculty.
+
+Secondary features
+
+These are additional properties which are desirable but not essential. The line between constraints and features is not clear and in some instances both constraints and features are included in the same solution exists. Features may be associated with an item, and the aim is to find an overall solution in which the sum of these costs is minimum. The following are typical classes of secondary features.
+
+1. If there are alternatives available for a given course, some may be preferable to others because, for instance,
+   (a) the instructor prefers teaching in the afternoon, or would like to have Tuesday free,
+   (b) the course appeals to part-time students who prefer late afternoon or evening hours.
+
+2. Features may involve the relative position of two courses in the timetable.
+   (a) An unavoidable conflict has to be avoided if possible, since it is anticipated that some students would take both courses.
+   (b) Instructors may indicate a preference on the length of the interval between their courses.
+   (c) To accommodate part-time students whose attendance is limited to one or two days a week, it may be desirable for certain courses with related subject matter to be scheduled consecutively.
+
+The mathematical model to be presented below makes use
+
+
+
+
+
+special provision for constraints of type 5 since these can be handled exactly as the constraints of type 3: each activity in 5(a) corresponds to a course which must not conflict with any other; each activity in 5(b) to a course which must not conflict with only certain other courses.
+
+2. Notation
+
+Let \( a \) be the set of courses, and for each course \( a \in a \), let \( J_a \) denote the set of alternatives available for scheduling \( a \). The problem will be formulated in terms of variables
+
+\[ x_{a,i} \quad (a \in A, i \in J_a) \]
+
+associated with the assignment
+\[ \text{course } a = \text{alternative } i \]
+
+The solutions will have \( x_{a,i} = 0 \) or 1, the schedule consisting of those assignments \( a = i \) for which \( x_{a,i} = 1 \).
+
+The direct cost of the assignment \( a = i \) is \( c_{a,i} \) and the cost of the interaction between the pair of assignments \( a = i \) and \( b = j \) is \( c_{a,i,b,j} \). (The interaction costs are not symmetric, in the sense that either \( c_{a,i,b,j} \) or \( c_{a,j,b,i} \) is always zero.) Let
+
+\[ C_1 = \{ (a,i), (a,i') \in x : i \neq i' \} \]
+\[ C_2 = \{ (a,i), (b,j) \in x : a \neq b, c_{a,i,b,j} \neq 0 \} \]
+
+Finally, let \( D_0 \) be the set of mutually incompatible assignment pairs, i.e. pairs of assignments whose interaction has infinite cost.
+
+\[ D_0 = \{ (x_{a,i}, x_{b,j}) \mid a = i, b = j \text{ are incompatible} \} \]
+
+3. Example
+
+Let \( J = \{ A,B,\ldots,O \} \) be the set of alternative assignments for the courses, corresponding to the assignments in Table 1. Suppose \( w \) is a graduate course whose instructor is not available Thursday afternoons.
+
+To accommodate constraints 1(b) and 2(d), the variables \( x_{a,i} \) are only defined for \( i \in J \) if \( i = \{ H,I,J,K,L \} \). Suppose further that the same instructor also teaches course \( b \). Constraints types 3(a), 4(a), 4(b), 4(c) are formulated by including in \( D_0 \) the pairs listed in Table 2(a), 2(b), 2(c) and 2(d) respectively.
+
+If the instructor dislikes teaching in the morning, this is reflected by choosing positive costs \( c_{a,H} \) and \( c_{a,I} \). The negative interaction costs in Table 3(a) would indicate the preferred spacing of \( w \) and \( b \) (corresponding to feature 2(b)).
+
+Similarly, if \( w \) is some other course in the same area, the considerations mentioned in feature 2(c) would lead to negative values for the interaction costs in Table 3(b).
+
+4. The mathematical model
+
+Consider the set \( D_0 = D_0 \cup \{ (x_{a,i}, x_{b,i}) \mid i \neq k \} \) which is the complete set of mutually incompatible assignment pairs. The information in \( D_0 \) can usually be expressed in more compact form. Any \( D_0 \) with the following properties is an equivalent form of \( D_0 \):
+
+1. The elements of \( D_0 \) have the form \( \{ x_{a,i}, x_{b,j}, \ldots \} \) where \( x_{a,i} \), \( x_{b,j} \) may appear together in some element of \( D_0 \) if and only if \( (x_{a,i}, x_{b,j}) \in D_0 \).
+
+In general, \( D_0 \) is not unique. Indeed, the set \( D_0 \) itself has these properties. However, since the elements of \( D_0 \) are not confined to pairs, but can consist of larger sets of mutually exclusive assignments, it is often possible to find a set \( D_0 \) which considerably fewer elements than \( D_0 \). For example, the 27 pairs in Table 2 can be reduced to 15 sets in Table 3. Note that every pair in Table 2 appears in some set in Table 3 by replacing two pairs in the latter, and that the entries of Table 4 consist only of pairs of elements which are either not mentioned or are included as \( D_0 \) in Table 2. In what follows, \( D_0 \) will stand for any partition of these equivalent forms of \( D_0 \).
+
+Let \( R^* \) be the linear region
+\[ \sum_{a \in A} x_{a,i} \leq 1, \forall (a,i) \in D_0 \]
+\[ x_{a,i} + x_{a,i'} \leq 1, \forall (a,i), (a,i') \in C_1 \]
+\[ x_{a,i} + x_{b,j} \leq 1, \forall (a,i), (b,j) \in C_2 \]
+
+with all \( x_{a,i} \geq 0, x_{a,i'} \geq 0 \). To ensure that all the courses appear in the schedule, we select a large constant \( W \) where
+
+\[ W > \sum_{a \in A} - c_{a,i} + \sum_{(a,i),(b,j) \in C_2} - c_{a,i,b,j} \]
+
+The objective function which is to be minimized over integer vectors of \( R^* \) (The algorithm under discussion will only consider such points as solutions.) The effect of \( W \) is that every solution where \( x_{a,i} = 0 \) for some \( a \in A \) and all \( i \in J_a \), has a higher cost than all solutions in which some \( x_{a,i} = 1 \). Also, since
+
+\[ \forall (a,i) \in C_1 \rightarrow \sum_{a \in A} (W x_{a,i}) \]
+
+for all \( x_{a,i} \in C_1 \), at any solution point, the \( C_1 \) only will contribute to the score when \( x_{a,i} = 1 \).
+
+
+
+
+
+5. Outline and justification of the solution technique
+Normally, since we insist that
+
+\[ x_{a,i} = 0 \text{ or } 1, \, \forall (a, i) \in J \]
+
+we would have to include the relations (5) as an additional set of constraints and resort to integer programming techniques for the solution. The approach presented here replaces the set (6) with the weaker condition that the \( x_{a,i} \) be non-negative, and uses a linear solution technique which is considerably more efficient. The justification is based on the following assertions whose proofs can be found elsewhere (Akkoyunlu, 1971).
+
+1. The set of (0 - 1) vertices of \( R^* \) (i.e., those extreme points of \( R^* \) all of whose coordinates are 0 or 1), is identical to the set \( S \) of feasible schedules.
+2. Usually \( R^* \) will have other vertices. Consider however the convex hull of \( R^* \) (i.e., the linear polyhedral region whose set of vertices is exactly \( S \)). In practice, the task of specifying \( R \) through a set of linear inequalities is equivalent to enumerating all schedules. Suppose for a moment that such a linear formulation of \( R \) were available. Then a linear programming (Simplex) algorithm could be used to minimize \( F \) over \( R \). The solution adopted here hinges on the fact that there is no need to specify \( R \) explicitly, since \( R^* \) is very strongly related to \( R \):
+
+(a) Every edge of \( R \) is an edge of \( R^* \),
+(b) Every (0 - 1) vertex of \( R^* \) is a vertex of \( R \),
+\( R^* \) is called a linear characterization of the vertices of \( R \).
+
+3. We define the S\(^*\)-procedure to the Primal Simplex (PS) algorithm with the following additional selection rule: whenever the potential pivot element differs from 1, reject the corresponding column as a candidate for pivoting.
+
+4. The two procedures,
+S\(^*\) applied to \( F \) over \( R^* \),
+PS applied to \( F \) over \( R \)
+are equivalent, in the sense that the former imitates the latter step by step.
+
+The modification in the selection rule means that in searching for an optimal solution, the S\(^*\)-procedure will ignore the extraneous vertices of \( R^* \). Also, the equivalence of the two processes is strong: the body of linear programming theory which deals with cycling, degeneracy, convergence rates, etc., as well as such specialized techniques as partitioning, parametrization remain valid.
+
+6. The algorithm
+
+Step 0: (Initialization) Set \( D^* = D^0 \).
+Step 1: (Optional - Compression of the constraints). Obtain a more compact set \( D^0 \).
+
+Step 2: Apply the S\(^*\)-procedure to minimize \( F \) over the region \( R^* \) specified through the system (1), (2), (3).
+
+Step 1 is a well-understood process which consists of finding maximal complete subgraphs in an undirected graph (Akkoyunlu, 1972). The aim is to arrive at a compact formulation of the constraints, since the size of the problem and the efficiency of the solution are critically dependent on the size of \( D^0 \). This step can be terminated at any point. Indeed the step is completely optional, since \( D^0 \) itself could serve as well. However, it is usually possible to obtain a considerable reduction by this simple inspection. For example, the single constraint
+
+\[ \sum_{i \in J_a} x_{a,i} \leq 1 \]
+
+can replace the entire set of inequalities
+
+\[ \{ x_{a,i} + x_{a,i'} \leq 1 \mid i \neq k \} \]
+
+Any such reduction, systematic or otherwise, need only be specified once.
+
+Step 2 is the essential technique. Since there corresponds exactly one edge of \( R^* \) to each of the constraints, the Simplex algorithm can be applied directly to the condensed region \( R^* \).
+
+In this formulation, the region \( R^* \) has 1 vertex, 2 corresponding vertices of \( R \), one of which is the final optimal solution.
+
+In the resultant election step, Step 2 corresponds to a Simplex algorithm (Simonard, 1966). In executing this step, it seems desirable to reach a truly feasible solution (i.e. one in which every course is scheduled) as rapidly as possible. This is done by insisting that each pivot step result in a potential improvement of at least \( W/2 \). Once an acceptable solution is reached, this condition is of course relaxed.
+
+7. Discussion
+
+Size
+In practice, the number of alternatives to be considered varies between four and seven on average, averaging around six or seven. There will thus be some 700 \( x_{a,i} \) variables, as well as 150-200 interaction terms of the form \( c_{a,i,b,j} \).
+
+The size of the problem is essentially due to the number of constraints defined: since every course needs to be combined in each element of \( D^* \). This is especially true in the case of constraints for courses which must not occur in the same period (i.e. they require their own area), and constraints which ensure that courses occur on a recurring basis.
+
+While the constraints are relatively independent of size, the features are not. The number of classes involved (3) and the feasibility constraints (4) remain roughly unchanged. This is especially true since each class is associated with a teacher.
+
+An important consideration is the amount of information required to be stored, since the \( D_0 \) matrix can be stored efficiently despite its size, since its elements are dominated by non-zero entries packed into less than a byte. Also, as most elements in \( D_0 \) are zero, sparse matrix methods may be used.
+
+Costs
+There are unfortunately very few guiding principles for deciding what costs to associate with each feature, but the idea of anchoring the cost onto direct and measurable physical quantities is still the more distinguished. In certain situations, a slight change in the costs may result in a drastically different schedule.
+
+When features type 1(b) 2(a), or 2(c) are viewed separately, it seems reasonable to associate with each feature a cost proportional to the number of students who would be affected by it. (This number is derived from experience as an effective past experience.) The difficulty lies in assessing the totality of the impact of different types of features, where the length of each day for a lecturer versus the overlapping of a given pair of courses, etc.
+
+The following strategies are also worth considering:
+
+1. Select two constants \( c < 0, c' > 0 \) and set
+\[ c_{a,i} = c, \quad c_{a,i} = c', \forall c_{a,i} \in C_2 \]
+This makes the reduction process indicated in Appendix I less arbitrary.
+
+2. The costs can be used to order the features in the following sense: feature A has the highest priority if the difference between it and the next feature is less than the cost of violating feature A.
+
+This concept can easily be extended to groups of features, but such considerations can be visualized by the fact that assigning a lower cost feature will 'dislodge' the kth feature.
+
+The sequential approach may be used, with each instructor receiving a fixed number of 'chips' which he allocates as he pleases.
+
+Finally, higher scores in specifying when the rounds are to be done - the morning classes may be grouped into 11:00 AM to 12:00 AM, and then again in the afternoon.
+
+
+
+
+
+
+Near-optimal solutions
+It is possible that the optimum solution treats an instructor or a group of students unfairly by incurring most of the cost at their expense. This is unfortunate, especially if there are other near-optimal schedules which are more equitable. It is therefore useful to print out a few of the near-optimal solutions along with the global optimum.
+
+Acknowledgements
+I would like to thank Professors S. H. Unger and H. D. Eskin for the many long discussions which helped focus this work.
+
+Appendix 1: Further reductions
+This appendix considers a special case in which a reduction in the number of inequalities (2) and (3) is possible. Let \(\alpha, \beta\) be sets with the following property: Either \(\alpha\) contains a single element \(x_{a,i}\) or else if \(x_{a,i}\) and \(x_{a,i'}\) are both in \(\alpha\) then \((x_{a,i}, x_{a,i'}) \in D^0\); and similarly for \(\beta\).
+Further, let \(c_0\) be a constant such that \(c_{a,i,b,j} = c_0\) for all \(x_{a,i}, x_{b,j} \in \beta\). We define \(\hat{x}_{a,i} \geq 0\), and substitute in \(F\) for all \(x_{a,i}\) where \(x_{a,i} \in \alpha \cup \beta\).
+Finally,
+1. if \(c_0 < 0\), the single inequality
+\[
+x_{a,i} \geq \sum_{j \in J} x_{b,j} - \sum_{j \in J} x_{b,j}
+\]
+replaces the entire set
+\[
+\{ x_{a,i} \geq x_{b,j} - x_{a,i} \mid x_{a,i} \in \alpha, x_{b,j} \in \beta \}
+\]
+of inequalities (2).
+2. if \(c_0 > 0\), we write
+\[
+x_{a,i} \geq \sum_{j \in J} x_{b,j} + \sum_{j \in J} x_{b,j} - 1
+\]
+for all inequalities of the form (3) for which
+\[
+\{ x_{a,i} \geq x_{b,j} + x_{a,i} - 1 \mid x_{a,i} \in \alpha, x_{b,j} \in \beta \}
+\]
+
+Appendix 2: Programming considerations
+The input
+In the scheduling algorithms of this type, utmost care must be given to the manner in which the specifications are communicated to the program. The input language must be natural enough to minimize errors. The program should accept TUTH, 'TUES' and 'Thursday' as equivalent, nor should it accept an experimental version of the program included a SNOBOL4 package which accepted the input, formulated the constraints in a mathematical form, and performed the reductions indicated in Step 1 of the algorithm and Appendix 1. The intermediate data was then fed to a FORTRAN IV program executing Step 2.
+
+The SNOBOL4 program had enough 'intelligence' to accept course descriptions of the form:
+TYPE A: MWF9-9:50, 10:10-50, ...,), 10:10-11:45
+and figure out that TUTH 10:30-11:45 overlaps with TUTH9-11:00, etc., as well as deduce which alternatives have the attributes 'early', 'late', 'afternoon', 'Friday'.
+
+A professor specifies his preferences in the form:
+UNGER (E6832, E8l11) M(-2), WED(6), EARLY(-2)S
+stating the courses taught, as well as his unavailability on Monday, his dislike for teaching Wednesday and his preference for teaching early in the day.
+Requirements for each course are listed in the same manner:
+E6832 (A)/G: E6814(-3)/C: E8A01(-6), E6811(-5)
+which indicates the course type as A, thereby specifying what are the alternatives to be considered, states that grouping this course with E6814 is worth 3 points, that conflicts with E8A01 and E6811 are not tolerated, and that an overlap with E6711 would cost 5 points.
+
+The solution
+The FORTRAN program is a modified Simplex procedure. The preponderance of 0, ±1 coefficients in the matrix is exploited so that most pivot steps use addition and subtraction rather than multiplication. The typical matrix consisted of 200 x 400 half-word locations. Included here is a 200 x 200 identity matrix which could of course be eliminated.
+The SNOBOL4 program took about 45 seconds to execute. While the solution program ran between 7 and 15 seconds, the total time never exceeded 11.5 sec. Including overlays (an IBM 360/91 computer was used). The recently available SPITBOL compiler for SNOBOL4 would further increase the speed of the input.
+In the pilot study, the solution was reached in about 10 seconds and it took another 80 steps to reach the optimum.
+
+

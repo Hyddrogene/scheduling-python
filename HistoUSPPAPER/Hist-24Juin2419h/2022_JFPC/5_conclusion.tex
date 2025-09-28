@@ -1,0 +1,33 @@
+%------------------------------------------------------------
+%------------------------------------------------------------
+\section{Conclusion et perspectives}
+\label{sec:conclusion}
+Dans cet article, nous avons introduit brièvement le langage \UTP{} qui permet de modéliser la problématique de construction d'emplois du temps universitaires.
+%Le modèle est générique et peut être adapté à chaque instance en fonction des caractèristiques et des règles présentes.
+%Nous discutons ici de quelques variantes du problème \UTP{} qui offrent des possibilités de reformulation au modèle.
+%Si les instances ne concernent que des sessions à salle unique ($\multiroomparts=\emptyset$), on peut prendre des variables de décision non plus ensembliste mais entière ou énumérées $\var{\SESSION}{\ROOM}{s}$ et réécrire les contraintes en conséquence. 
+%De la même manière, les variables et contraintes concernant les enseignants peuvent être adaptées lorsqu'un seul enseignant est nécessaire par session.
+%Il faut noter que des modèles hybrides mêlant des variables sur les sessions à une ou plusieurs ressources peuvent également être envisagés.
+%Le modèle temporel peut également être simplifié lorsque la grille temporelle 
+%à un niveau de granularité plus faible et garantit qu'aucune séance ne peut commencer avant une autre séance consécutive.
+%($\forall s\in\SESSION, \sessionduration{s}\leq\min(\myset{h'-h\ |\  h,h'\in\map{\PART}{\SLOT}{\PART}\wedge h<h'}$).
+%Cette situation se produit dans les institutions qui imposent une grille horaire commune et une même durée aux sessions de cours, pour faire en sorte que les sessions puissent rentrer dans  chaque créneau.
+%
+%Si c'est le cas, les sessions peuvent être traitées comme des noeuds dans le temps plutôt que comme des intervalles de temps.
+%Les prédicats et les contraintes intégrées peuvent être reformulés, par exemple, la contrainte~(\ref{ctr:roomuse}) peut être remplacée par la contrainte~(\ref{ctrchr:disjunctroom}).
+% Il faut noter pour le temps de parcours entre 2 séances de cours que c'est le scénario le plus défavorables qui est pris en compte si des contraintes de type \texttt{\TRAVEL} sont énoncées.
+% Comme pour la capacité des salles, les contraintes cumulatives (\ref{ctr:roomuse}) peuvent être remplacées par des constraintes~(\ref{ctr:nooverlap})
+% dans le cas où il faut des salles disjointes (dénotées par $\disjunctiverooms\subseteq{\ROOM}$).
+%Ces dernières sont vérifiées si les contraintes \texttt{\NOOVERLAP} s'appliquent à leur ensemble de sessions possibles ($r\in\disjunctiverooms\leftrightarrow{no\_overlap(r,\map{\ROOM}{\SESSION}{r})}$).
+%\davidl{DL: symmetry constraints: groups, interchangeable/substitutable resources}
+Le langage est générique et permet de s'adapter à diférentes variantes du problème \UTP{}.
+Par exemple, les ressources sont cumulatives par défaut mais des règles peuvent être surimposées pour rendre certaines ressources disjonctives.
+%Dans le cas où toutes les ressources sont disjonctives, le modèle peut s'adapter en modifiant les variables de décisions et les contraintes en conséquence.
+De plus, le langage s'appuie sur un catalogue de prédicats qui peut être enrichi afin de s'adapter aux spécificités de différents environnements, et ce sans modifier le langage lui-même.
+
+Dans sa version actuelle, le langage \UTP{} réduit la génération d'emploi du temps à un problème de satisfaction de contraintes dur et ne prend en compte aucun critère d'optimisation.
+Nous avons pour objectif de développer cet aspect, afin entre autres de pouvoir exprimer des préférences, et définir des méthodes d'évaluation d'une solution pour pouvoir choisir la plus adaptée aux souhaits des décideurs (p. ex. éviter de trop longues interruptions de cours dans une journée pour les étudiants ou regrouper les cours sur des demi-journées pour les enseignants).
+
+Nous avons détaillé également deux modèles de programmation par contraintes implémentés en \MINIZINC{} et \CHRPP{}.
+Ces deux modèles ont été développés comme preuve de concept et seront améliorés notamment en implémentant des stratégies de résolution facilitant le passage à l'échelle sur des instances plus conséquentes.
+%\corentin{pas d'hyperlien dans la biblio pour la ref ITC}

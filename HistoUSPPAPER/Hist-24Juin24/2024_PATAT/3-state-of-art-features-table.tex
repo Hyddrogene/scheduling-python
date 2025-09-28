@@ -1,0 +1,82 @@
+%%tableau des features
+
+
+\begin{table}[!b]
+%\begin{table}[!htb]
+    \centering
+    \begin{tabular}{|c|l|*{5}{c|} }
+    %\begin{tabular}{cl*{5}{c} }
+        \hline
+       \multicolumn{2}{|c|}{Features\diagbox[height=\line,width=2cm]{}{}Problems} & ETT & CB-TT &PE-TT & HTT & TAP \\
+        \hline
+        % nom &&&&&\\
+
+        \multirow{2}*{\courses} & \cellcolor[gray]{.9}\coursehierarchy & \cellcolor[gray]{.9} & \cellcolor[gray]{.9}\checkmark & \cellcolor[gray]{.9} & \cellcolor[gray]{.9} & \cellcolor[gray]{.9} \\
+        & \event &&\checkmark&&\checkmark& \checkmark\\%des réunions pas student
+        
+        \hline
+        %horizon &&&&\\
+        \multirow{3}*{\timing}& \cellcolor[gray]{.9}\fullperiod & \cellcolor[gray]{.9}&\cellcolor[gray]{.9}&\cellcolor[gray]{.9}& \cellcolor[gray]{.9}\checkmark &\cellcolor[gray]{.9}\\
+        & \fullweek & \checkmark  & \checkmark & \checkmark &&\\
+        &\cellcolor[gray]{.9}\singleweek & \cellcolor[gray]{.9}\checkmark & \cellcolor[gray]{.9}& \cellcolor[gray]{.9}& \cellcolor[gray]{.9}\checkmark  &\cellcolor[gray]{.9}\\
+        \hline%timing
+        \multirow{3}*{\scheduling}& \nooverlap & \checkmark  & \checkmark  & \checkmark  & \checkmark  &\\
+        & \cellcolor[gray]{.9}\sameduration & \cellcolor[gray]{.9}\checkmark  & \cellcolor[gray]{.9}\checkmark  & \cellcolor[gray]{.9}\checkmark  & \cellcolor[gray]{.9}\checkmark &\cellcolor[gray]{.9}\\
+        & \synchronous & \checkmark   & \checkmark  & \checkmark  & \checkmark &\\
+        
+        %times & relatives &relatives& relatives & relatives & \\
+         %eeks & 1week &1 weeks& 1weeks & 1weeks & \\
+        \hline
+        %hosting
+        \multirow{7}*{\hosting}& \cellcolor[gray]{.9}\noroom &  \cellcolor[gray]{.9}  &\cellcolor[gray]{.9}  & \cellcolor[gray]{.9} & \cellcolor[gray]{.9} & \cellcolor[gray]{.9}NA \\
+        &\singleroom &  \checkmark & \checkmark & \checkmark & \checkmark & NA \\
+        &\cellcolor[gray]{.9}\multiroom & \cellcolor[gray]{.9}\checkmark  & \cellcolor[gray]{.9}\checkmark & \cellcolor[gray]{.9} & \cellcolor[gray]{.9} & \cellcolor[gray]{.9}NA \\
+        
+        & \roomcapacityfeat& \checkmark & \checkmark & \checkmark &  & NA\\
+        & \cellcolor[gray]{.9}\noneexclusive  & \cellcolor[gray]{.9}\checkmark & \cellcolor[gray]{.9} & \cellcolor[gray]{.9} & \cellcolor[gray]{.9} & \cellcolor[gray]{.9}NA\\
+        & \allexclusive  & \checkmark & \checkmark & \checkmark & \checkmark & NA\\
+        & \cellcolor[gray]{.9}\someexclusive  & \cellcolor[gray]{.9}\checkmark & \cellcolor[gray]{.9}\checkmark & \cellcolor[gray]{.9}\checkmark & \cellcolor[gray]{.9}\checkmark & \cellcolor[gray]{.9}NA\\
+
+
+        \hline
+        
+       \multirow{5}*{\teaching} & \noteacher & & \checkmark & \checkmark &  & \\
+       & \cellcolor[gray]{.9}\singleteacher & \cellcolor[gray]{.9}\checkmark & \cellcolor[gray]{.9}\checkmark & \cellcolor[gray]{.9}\checkmark & \cellcolor[gray]{.9}\checkmark & \cellcolor[gray]{.9}\checkmark\\
+       & \multiteacher &\checkmark  & \checkmark &  &  & \checkmark\\
+        & \cellcolor[gray]{.9}\teacheroverlap &\cellcolor[gray]{.9} & \cellcolor[gray]{.9}\checkmark & \cellcolor[gray]{.9}\checkmark & \cellcolor[gray]{.9}\checkmark & \cellcolor[gray]{.9}\checkmark\\
+       & \service && \checkmark  & \checkmark  &&\\
+        \hline
+        
+       \multirow{2}*{\attending} & %student/group & both & group & student & group & both\\
+          \cellcolor[gray]{.9}\studentoverlap  & \cellcolor[gray]{.9}\checkmark & \cellcolor[gray]{.9}\checkmark & \cellcolor[gray]{.9}& \cellcolor[gray]{.9}\checkmark & \cellcolor[gray]{.9}\checkmark\\
+          %TODO
+         & \sectioning &  & \checkmark &  & \checkmark & \checkmark\\
+        % & headcount & both & group & student & group & both\\
+       % & day off student& \checkmark & \checkmark & & & \\
+
+        \hline
+       \multirow{6}*{\aspects} & 
+         \cellcolor[gray]{.9}\availability & \cellcolor[gray]{.9}\checkmark & \cellcolor[gray]{.9}\checkmark & \cellcolor[gray]{.9}  &  \cellcolor[gray]{.9}\checkmark & \cellcolor[gray]{.9}\checkmark \\%day off teacher
+        & \periodicity & \checkmark & \checkmark &  \checkmark &  & \\
+        & \cellcolor[gray]{.9}\sessiondistribution & \cellcolor[gray]{.9}& \cellcolor[gray]{.9}\checkmark & \cellcolor[gray]{.9}\checkmark & \cellcolor[gray]{.9}\checkmark & \cellcolor[gray]{.9} \\
+        
+       &\travel & \checkmark & \checkmark & \checkmark  & \checkmark & \\
+
+       & \cellcolor[gray]{.9}\adjacency & \cellcolor[gray]{.9}\checkmark & \cellcolor[gray]{.9} & \cellcolor[gray]{.9} & \cellcolor[gray]{.9} & \cellcolor[gray]{.9}\checkmark \\
+
+        & \resourcedistribution &  & \checkmark &  \checkmark &\checkmark  & \\%%distribution des profs & room
+       % & lunch time& & \checkmark & & \checkmark & \\% event  
+        \hline
+        %split event&\\
+        %distribute split event&\\
+        %prefer ressource &\\
+        %prefer times &\\
+        %ressource busy&\\
+        %& Code ouvert &&&&&\\
+        %& Données ouvertes &&&&&\\
+        %\hline
+        %temporalité &   \\
+    \end{tabular}
+    \caption{Problem features: a comparison.}
+    \label{tab:featuresproblem}
+\end{table}

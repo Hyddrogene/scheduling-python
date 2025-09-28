@@ -1,0 +1,263 @@
+
+Penser à utiliser les features pour catagoriser les problèmes et modèles
+\subsubsection*{intro générale au pb EDT et différents critères classes}
+
+\input{2-features_schema}
+%On peut citer tout plusieurs problèmes spécifiques au \EDT{} scolaire :
+%BCACP problème sur l'équilibrage des périodes 
+%STUDENT SECTIONNING répartition des étudiants dans différents groupes
+%ETT emplois du temps des examens
+%CBTT emplois ud temps avec maquette
+%PETT emplois du temps avec enregistrement des étudiants
+%TAP affectations des enseignants au différents cours
+%MPTTP perturbation minimal du problème d'emplois du temps.
+%Repair réparation des emplois du temps
+
+%%%%
+
+La création des emplois du temps scolaire représente un défi complexe, caractérisé par une multitude d'acteurs et de sous-problèmes interconnectés. Ce processus implique non seulement l'ordonnancement efficace des cours, mais aussi l'affectation appropriée des ressources telles que les salles de classe, les enseignants et les groupes d'élèves. Les défis inhérents à cette tâche sont vastes et variés, allant de la gestion des préférences individuelles des enseignants à l'optimisation des horaires pour maximiser l'utilisation des installations scolaires. En outre, la bonne planification des horaires pour éviter les conflits et garantir une répartition équitable des ressources est essentielle pour assurer le bon fonctionnement de l'établissement scolaire.
+
+Pour aborder cette complexité, il existe différentes façons de formuler le problème d'emplois du temps et diverses représentations de celui-ci. 
+
+Les problèmes traditionnels liés à la planification des emplois du temps comprennent l'ETT (Exam Timetabling), où l'objectif est d'organiser les horaires des examens dans un établissement scolaire tout en tenant compte des règles pour éviter les conflits d'examens, le PE-TT (Post-Enrollment-based Timetabling) se concentre sur la création des emplois du temps après que les étudiants se sont inscrits aux cours, 
+%en tenant compte des capacités des salles, des choix des étudiants, ainsi que des politiques institutionnelles
+le CB-TT (Curriculum-Based Timetabling) concerne la planification des cours selon un programme académique spécifique, 
+%en attribuant les ressources telles que les salles et les enseignants aux différents cours tout en respectant les prérequis, les capacités des salles et les disponibilités des enseignants. 
+enfin le HTT (Highschool Timetabling) s'applique spécifiquement aux lycées et prend en compte les caractéristiques uniques des emplois du temps des élèves du secondaire.
+
+Parmi les nombreux problèmes spécifiques au domaine des emplois du temps scolaires, on trouve le BACP pour l'équilibrage des périodes, le student sectioning pour la répartition des étudiants dans différents groupes, 
+%ou encore l'ETT pour les emplois du temps des examens 
+ou encore le problème TAP sur une solution déjà existante pour l'affectation des enseignants aux différents cours. Certaines institutions pré-résolvent certains sous-problèmes, tels que le sectionnement des étudiants en sous-groupes ou l'affectation des enseignants aux cours.
+\coco{Add citation des problèmes}
+% ETT (Exam Timetabling), PE-TT (Post-Enrollment-based Timetabling), et CB-TT (Curiculum-Based Timetabling)
+%% cours en même temps -> Etudiant et curiculum
+%% Feature models deja présenté
+%% utiliser pour classé les problèmes 
+%% gtableau des features des problèmes x des languages
+La manière dont ces sous-problèmes sont abordés peut varier d'une institution à l'autre, avec différentes stratégies pour l'affectation des créneaux horaires et des salles, ainsi que pour l'affectation des enseignants. Ce contexte complexe met en évidence l'importance d'une approche flexible et adaptable pour la création des emplois du temps scolaires, afin de répondre aux besoins spécifiques de chaque établissement tout en garantissant une utilisation efficace des ressources disponibles ainsi qu'une répartition des horaires.
+
+
+
+%%%%%
+
+%Sur les problèmes d'\EDT{}, le problème \UTP{} se rapproche des défis rencontrés dans les compétitions ITC. 
+Il est crucial de souligner que la formulation des problèmes liés aux emplois du temps peut varier considérablement en fonction de l'institution et des problèmes ou sous-problèmes spécifiques visés.
+
+Les défis liés à la planification des emplois du temps sont un sujet de recherche ancien, mais ils sont souvent formalisés de manière ad-hoc. 
+Chaque solveur utilisait historiquement son propre langage, ce qui entravait un échange efficace de connaissances entre les différentes équipes de recherche et limité l'évaluation des performances des solveurs entre eux.
+%sur . 
+L'émergence des compétitions telles que ITC (International Timetabling competition) a permis de créer des formats standardisés pour ses compétitions, favorisant ainsi une convergence de la communauté autour de ces formats et facilitant la comparaison des performances des solveurs ainsi que la difficulté des instances de différentes institutions (que se soit pour la résolution ou l'expression de celui-ci).
+
+Des compétitions emblématiques comme ITC-2002 PE-CTT 
+et UETT-Toronto ont été organisées pour relever ces défis et ont contribué à établir des benchmarks pour évaluer les performances des algorithmes. Ces premiers formats ont ensuite inspiré d'autres compétitions dans le domaine.
+
+%Cependant, il convient de noter que dans le modèle UETT, la taille des problèmes n'est pas prise en compte dans l'instance.
+%%
+\subsubsection*{modèle ITC 2007 et les critères auxquels il souscrit}
+
+Il existe plusieurs compétitions ITC qui ont joué un rôle fondamental dans l'établissement de formats de problèmes standardisés pour les emplois du temps (\EDT{}). L'un des schémas les plus étudiés est celui du format ITC-2007, qui offre une représentation simplifiée de trois problèmes majeurs d'emplois du temps : ETT, PE-TT, et CB-TT.
+
+Bien que largement utilisé comme référence pour les benchmarks, le format ITC-2007 présente des limitations. Il offre une vue simplifiée de la réalité des emplois du temps, avec un horizon temporel limité à une semaine type qui se répète. Par conséquent, toutes les subtilités et complexités d'un véritable emploi du temps ne sont pas entièrement représentées.
+
+Dans ce schéma, l'affectation des salles et des enseignants aux différentes séances d'enseignement est traitée. La version PE-TT et CB-TT sont similaires dans la mesure où l'informatisation des formations est portée soit par les curiculum, soit par les étudiants. L'affectation des enseignants et la notion de service des enseignants est résolue en amont, avec chaque enseignant couvrant toutes les séances de cours du cours auquel il est affecté. 
+
+Dans ce modèle, toutes les salles sont disponibles de base pour un cours, avec chacune ayant une capacité définie. Des contraintes peuvent être ajoutées pour spécifier quelles salles sont interdites pour certains cours. L'objectif est d'affecter une seule salle et un seul enseignant à chaque cours. De plus, la charge de travail par jour de cours est donnée sous forme d'intervalle en entrée du modèle.
+
+
+%%%%%%%%%%%%%%%%
+
+%%% limite 
+
+%Il y a un ensemble de contraintes de créneau interdit pour les cours. C'est contraintes vont provenir des enseignants qui leurs sont assignés. (on perd le lien sémantiques)
+
+%On peut représenter certaines instances UTP en ITC-2007 et les instances ITC-2007 en UTP.
+%room stability prise en compte.
+Pour résoudre ce problème il existe plusieurs approche 
+Burke et all 2010, il s'agit d'un MIP hybridé avec une exploration de voisinage, cela permet d'augmenter l'efficacité de la recherche en résolvant des sous problèmes qui guide le problème globale.
+MIP sorensen
+Algo gen  2007 nagata 2018, Holm 2017
+Banbarra 2019, modèle ASP, il s'agit d'un modèle ASP mais il y'en a pas d'autres.
+
+
+
+
+\subsubsection*{deux extensions à ITC 2007 : XHSTT et ITC 2019} (une phrase ou deux)
+Deux extensions importantes du format ITC 2007, XHSTT et ITC 2019, ont été développées pour aborder des aspects spécifiques et des défis plus complexes des emplois du temps scolaires.
+
+\subsubsection*{XHSTT et les critères auxquels il souscrit}
+%% catalogue contriante
+%%autant de ressource que l'on veut
+%% contrainte soft et dur
+%% choix de la grille
+
+Pendant la période de 2012 à 2014, le modèle XHSTT-2014, basé sur le modèle ITC-2012, se concentre principalement sur la modélisation des emplois du temps des lycées et des collèges, offrant ainsi une représentation plus réaliste et adaptés à ses institutions. 
+Ce modèle est caractérisé par un ensemble considérable d'instances et bénéficie d'une recherche avancée sur les algorithmes associés. 
+
+Toutefois, une grande partie de prétraitements sont effectués en amont, notamment le calcul des groupes, la ventilation des salles et les services des enseignants, ce qui simplifie la modélisation. Dans les ensembles de données, les ressources sont souvent pré-affectés, ce qui oriente davantage le problème vers un schéma d'ordonnancement.
+Néanmoins, on peut laisser un ensemble de ressources sur lesquelles effectuer un choix d'affectations. 
+Le modèle permet également l'ajout de plusieurs types de ressources.
+Des contraintes peuvent être imposées sur les ressources. 
+
+L'affectation des salles est généralement résolue, et dans le cas inverse les salles sont déjà pré-fitré par la taille des groupes.
+%, . 
+ Il existe généralement une unique grille temporelle mais rien n'empêche d'en avoir plusieurs. On peut aussi déclaré des groupes de temps tels que les matins ou les heures du mercredi et du samedi.et le temps est exprimé sous forme de volume relatif, avec des cours ayant des durées relatives adaptables aux créneaux horaires. Ces durées de cours peuvent être subdivisées en événements de durée variable, offrant ainsi au solveur la flexibilité nécessaire pour trouver une solution satisfaisant au problème posé.
+
+En termes d'apport, le modèle propose aussi un catalogue de contraintes, avec une distinction entre les contraintes dures et souples. Les contraintes qualifiées de contraintes dures, sont interprétables comme des contraintes coeurs dans le schéma. tandis que les contraintes souples ont un score de violation à minimiser.
+
+%%%%
+%pour convertir de UTp vers XHSTT , il faudrait fixé les enseignants.
+%Il semble plus adaptés pour les instances qui sont basés sur une semaine type. 
+%Le  découpage des séances est faites par l'algorithme de résolution.
+
+%%limite 
+%Il présentent des similitudes cependant (pour le choix des salles on peut assigner un groupes).
+%%% générateur 
+%pas de générateur d'instances
+
+%%% résolution
+Pour le résoudre il y'a en résolution exact des odèles MIP utilisant des réductiosn de via des graphes cylcique fonseca \& sorensen, auinsi que 
+Stuckey à un fait un model CSP pour le résoudre qui utilisent chuffed.
+Il obtient des résultats aussi bon que ceux de l'état de l'art (ALNS , GOAL) 
+Citon Demorovic17,17,18 avec un modèle MAX-SAt qui donne des bon résultats, un modèle SMT qui prend un encodage un peu différent pour les variables de décision en utilisant une décomposition en binaire des dates, et en définissants les opérations de calculs.
+Sorensen 2018 il s'agit de MIP.
+
+
+\subsubsection*{ITC 2019 et les critères auxquels il souscrit}
+
+%% catalogue contriante
+%% pas de prof, choix des salles avec pénalités
+%% contrainte soft et dur
+%% choix de la grille
+
+Et le modèle le plus récent, il s'agit du modèle ITC-2019, qui viens s'intéresser au \EDT{} des universités. Cependant le modèle est davantage pensé pour les universités anglo-saxone et ne correspond pas à la réalité des \EDT{} de l'université en France.
+
+%%% apport 
+Un catalogue de contraintes
+Il s'agit du premier schéma ITC qui prend en compte un horizon de plusieurs semaine.
+On retrouve une hiérarchie de cours, permettant d'avoir une représentation plus fine.
+Le schéma ITC traite la planification comme un problème d'optimisation combinatoire, avec une fonction de coût qui tient compte de quatre critères. Les critères pénalisent respectivement les choix de séances, de salles pour les classes, les violations de contraintes et le chevauchement de séances par étudiant.
+Une classe est dotée d'horaires de séances fixes alternatifs (l'élément "times" dans le schéma XML) et il faut choisir l'un des horaires pour la classe. Un horaire est la répétition sur un ensemble de semaines de une ou plusieurs séances ayant la même durée et commençant les jours spécifiques de la semaine à la même heure prédéfinie (créneau horaire quotidien). 
+%Les deux représentations ne sont pas réductibles l'une à l'autre. 
+
+%%UTP limit
+
+%Forest growth optimization for solving timetabling
+%problems,  Karim Er-rhaimini, 2019 
+
+%ITC-2019: A MaxSAT approach to solve University
+%Timetabling problems, Alexandre Lemos,  2019
+
+%A Mixed Integer Programming Approach for Solving University Timetabling Problems, Rapos, 2019
+
+%Simulated Annealing with Penalization for
+%University Course Timetabling, Edon Gashi, 2019 -> code sur github
+
+%A MIP based approach for ITC-2019, Dennis Holm, 2019
+
+
+Itc 2019 vers UTP il y'a des réductions qui existent mais pas toutes les instances.
+
+%%%
+
+
+%%% résolution
+
+%Forest growth optimization for solving timetabling
+%problems,  Karim Er-rhaimini, 2019 
+
+ITC-2019: A MaxSAT approach to solve University
+Timetabling problems, Alexandre Lemos,  2019
+
+%A Mixed Integer Programming Approach for Solving University Timetabling Problems, Rapos, 2019
+
+Simulated Annealing with Penalization for
+University Course Timetabling, Edon Gashi, 2019 -> code sur github
+
+A MIP based approach for ITC-2019, Dennis Holm, 2019
+
+
+\subsubsection*{Pointer les 2 ou 3 principaux manques qu'on va combler}
+
+Les modèles ITC-2007, ITC-2019 et XHSTT-2014 présentent des limites  qui rendent leur utilisation moins flexible dans certains contextes. Par exemple, le modèle ITC-2019,
+bien qu'il offre une planification sur plusieurs semaines,
+nécessite des adaptations pour répondre pleinement%complétement
+aux besoins complexes des cas réels.
+
+La simplification de l'horizon temporel en fonction de l'institution créant de l'instance peut également être source de défis,
+car cela ne capture pas toujours la complexité réelle des emplois du temps.
+
+De plus,, l'absence de représentation des enseignants peut poser problème 
+dans certains cas où leur présence est nécessaire pour équilibrer efficacement les emplois du temps. 
+%Ces limitations soulignent la nécessité de développer des modèles plus flexibles et adaptés aux exigences spécifiques des institutions éducatives.
+
+Une autre limitation importante est l'incapacité à attribuer plusieurs salles à un cours/séance, 
+ce qui peut être nécessaire dans certains cas, tels que les examens ou les travaux pratiques qui nécessitent plusieurs salles. 
+De même, la représentation des cours dans ces modèles ne permet pas toujours la présence de plusieurs enseignants dans une même classe, ce qui peut être une limitation pour les établissements comme les IUT lors des travaux pratiques.
+
+Enfin, le lien direct entre un catalogue de cours et la représentation dans le problème n'est pas toujours clair, ce qui peut entraîner des incohérences dans la modélisation.
+
+%leur temps relatifs est contraignant pour un cas réel.
+%il faudrait introduire les weeks pour le temps. 
+%Par exemple, les horaires où les séances ne commencent pas nécessairement au même créneau horaire quotidien ne peuvent pas être modélisés dans ITC.
+
+%Disparité structurel entre certaines instances.
+%On peut comparer les events de tailles comprise en la durée-min (1) et la durée maximum(indiqué) comme étant une séance de cours d taille variable.
+\subsubsection*{Les autres modèles moins génériques}
+  
+Mehmet\cite{2021_guler_SIP}
+%ETT au format Excel
+%https://sites.google.com/view/mgguler/datasets
+woumans\cite{2016_woumans_EJOR}
+%ETT au format Excel
+%https://www.cromso.com/publications.php
+Ober iulian 2016 \cite{2016_ober_PATAT}
+%https://www.irit.fr/~Iulian.Ober/XLSScheduler/submit.php
+
+
+Il existe également des alternatives documentées et disponibles dans la littérature pour récupérer des instances au format Excel. Par exemple, pour le problème ETT ont proposé un ensemble de données au format Excel  \cite{2021_guler_SIP, 2016_woumans_EJOR}. Pour les problèmes d'EDT plus classique certains\cite{2016_ober_PATAT} ont aussi publié des instances de problèmes d'ordonnancement au format Excel. 
+
+Une liste~ \cite{2023_Ceshia_EJOR} supplémentaire de modèles dans des formats plus classiques est également disponible, les données sont normalement accessible.
+
+En outre, des modèles alternatifs tels que FlopEdt ont été développés pour permettre la saisie des contraintes d'emploi du temps à l'aide d'outils externes, offrant ainsi une approche différente pour la modélisation et la résolution de ces problèmes.
+
+
+\subsubsection*{Synthèse des manques et introduction de notre problématique à nous}
+Dans le contexte du schéma UTP, l'aspect multi-semaine est important pour assurer un équilibre adéquat, car les besoins de chaque cours génèrent naturellement des semaines de travail variées. Chaque cours ayant ses propres exigences, il est naturel que la planification nécessite des périodes de travail variables. Par exemple, les cours pratiques en biologie peuvent exiger plusieurs semaines pour être planifiés correctement, en raison de la croissance des plantes à des stades spécifiques. De plus, certaines modalités pédagogiques requièrent des ressources très particulières, ce qui souligne l'importance de pouvoir exprimer les contraintes de manière précise.
+
+Le problème d'emploi du temps intervient à la fin du processus de planification. À ce stade, la maquette est déjà conçue, les étudiants sont inscrits aux cours correspondants, les enseignants et les salles sont affectés. Il est donc essentiel de recueillir toutes les informations pertinentes pour alimenter le solveur. Dans le cas spécifique de l'université d'Angers, où les maquettes sont fixées et révisées tous les cinq ans, cela signifie également qu'il est nécessaire de mettre à jour régulièrement les instances pour refléter les modifications apportées à la maquette.
+
+\subsubsection*{focus sur les générateurs d'instances}
+Outre %Ormis
+les instances produites pour les différentes compétitions,
+certaines universités peuvent 
+créer leurs propres instances pour effectuer des simulations ou des tests logiciels. 
+Cependant, tous les modèles ne disposent pas de générateurs d'instances. 
+Par exemple, pour les schémas XHSTT et ITC-2019, il n'existe pas de générateurs d'instances permettant d'explorer l'espace des possibles.
+
+En revanche, pour le schéma ITC-2007, 
+plusieurs versions d'un générateur d'instances sont disponibles. 
+Initialement conçu en 2008, %2008
+ce générateur a été revisité en 2010 puis en 2022 afin de produire des instances plus réalistes et couvrant mieux l'espace des configurations possibles. 
+Le site \url{https://cdlab-artis.dbai.tuwien.ac.at/papers/cb-ctt/} contient le générateur ainsi que les instances ITC-2007.
+
+\subsubsection*{Rappel papier Patat (y'a pas de générateur instances)}
+
+Dans cette version, nous avons retiré les étudiants du modèle, ne conservant que les groupes d'étudiants. De plus, nous avons introduit des contraintes plus précises sur le nombre d'enseignants et de salles nécessaires pour chaque séance de cours. Les services des enseignants sont désormais exprimés sous forme de contraintes, offrant ainsi des options alternatives sans service. De plus, la définition des créneaux horaires possibles est désormais basée sur des contraintes, ce qui octroie une plus grande flexibilité dans la planification.
+
+Dans cette version, le langage UTP aborde le problème en se concentrant sur la satisfaction des contraintes dures. Cependant, des efforts sont actuellement déployés pour intégrer des contraintes douces, ainsi que pour permettre l'agrégation de pénalités ou de préférences, tant dans la génération de solutions que dans les processus de réparation.
+
+%%%Résolution
+
+
+%On retrouve pour résoudre les instances, des méthodes exact comme celle de SORENSEN ou il s'agit d'un MIP ou on utilise une représentation en extensions et ou l'utilisation de pré traitement permet de réduire le problème et d'avoir les meilleurs score sur la compétition.
+%On retrouve aussi des méthodes en SAT, avec LEMOS avec une méthode max-sat qui obtiens aussi des très bon score sur la compétition ITC.
+%Les méthodes approchés sont aussi très en vogue et plusieurs d'entres elles sont utilisés sur le benchmark.ITC 2019 SA, Sorensen, Lemos -2019
+%%%
+%On peut constater que les MIP sont très populaires, que les métaheuristiques de type s local-search obtient des bonnes performances.
+%Les méthodes hybrides (LNS-MIP, LNS-CP, LNS-SAT, LNS-MaxSat)obtienne en général aussi des très bon résultats. Les méhodes basés sur du voisnage aussi (ALNS, VNS).
+%Elles permettent aussi de mieux explorer la robustesse d'une solution.
+%Notons que la CP est peu employé.
+
+%Il existe plein de méthodes
+%Il existe pas de modèle CASP pour résoudre ce genre de problème.
+

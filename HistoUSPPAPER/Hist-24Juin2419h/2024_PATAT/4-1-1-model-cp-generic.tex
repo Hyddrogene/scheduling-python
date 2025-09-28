@@ -1,0 +1,29 @@
+The \CP{} model (see table~\ref{table:cp-contraintes} in appendix~\ref{appendix:CP}) for {\UTP} is based on decisions variables listed in table~\ref{table:core-variables}.
+%An existing model~\cite{2018_stuckey_CPAIOR} addresses \XHSTT{} instances using \CP{}, optimizing without resource allocation, competing with LNS, or other effective methods applied to \XHSTT{}. The model utilizes several global constraints available in \CP{}, specifically designed for scheduling problems.~
+%Dans la modélisation, on constate que de la plupart des contraintes sont exprimées selon leur formalisme, et leur encodage en CSP peut varier selon le solveur utilisé.
+%De plus, la sémantique et l'expression des contraintes globales ont souvent une syntaxe très similaire même avec les différents solveurs.
+%In modeling,  most of constraints are expressed according to their formalism, and their encoding in \CP{} may vary depending on the solver used. Furthermore, the semantics and expression of global constraints often have a very similar syntax even with different solvers.
+%les contraintes ~\ref{cp:allowedrooms} et \ref{cp:allowedteachers} représentent des contraintes de domaine~\ref{ctr:allowedrooms}~\ref{ctr:allowedteachers} permettant de réduire le domaine des variables. 
+%Les contraintes ~\ref{cp:multiroom} et \ref{cp:multiteacher} sont des contraintes de cardinalité permettant de déterminer, respectivement, le nombre salle et d'enseignant par séance de cours. 
+%On garantit via la contrainte~\ref{ctr:roomuse} que les salles affectés à une séance ont une taille suffisante pour accueillir la séance de cours~\ref{cp:classcapacity}.% pour garantir qu'elles puissent se dérouler dans les salles allouées, via la contrainte~\ref{cp:classcapacity} de capacité.
+%The constraints ~\ref{cp:allowedrooms} and \ref{cp:allowedteachers} represent domain constraints~\ref{ctr:allowedrooms}~\ref{ctr:allowedteachers} aimed at reducing the variable domains. %
+%Constraints ~\ref{cp:multiroom} and \ref{cp:multiteacher} are cardinality constraints used to determine the number of rooms and teachers per class session, respectively. %
+%The constraint~\ref{ctr:roomuse} ensures that the rooms assigned to a class session have sufficient capacity to accommodate the class~\ref{cp:classcapacity}.
+%Pour les contraintes de type same\_\{room, teacher, slot\}~\ref{formal:sameteachers}~\ref{formal:samerooms}~\ref{formal:sameslot}, nous utilisons la contrainte globale all\_equal~\ref{cp:samerooms}, qui assure que les variables données en entrée, sous forme de tableau (ou d'ensemble) ont toutes la même valeur.
+%
+%For constraints of type same\_\{room, teacher, slot\}~\ref{formal:sameteachers}~\ref{formal:samerooms}~\ref{formal:sameslot}, we employ the global constraint all\_equal~\ref{cp:samerooms}, which ensures for input variables, provided as an array (or set), all have the same value.
+For the constraint related to teacher service (requiredTeacher), we using the global cardinality constraint (gcc), which enables element counting. It is also feasible to add counting constraints to better distribute the workload or limit the number of hours per day for a room, aiming to achieve more robust solutions. For conditional constraints, we can apply the reification pattern (checking the feasibility and consumption of potential values and use possible sink state). For constraints of equality, we employ the global constraint all\_equal, which ensures for input variables, all have the same value (the implemented propagator is similar to gcc).
+For the no\_overlap constraint and for the main room usage constraint, we employ the global cumulative constraint to ensure that, when sessions utilizing a resource, its maximum capacity is not exceeded, thereby preventing multiple class sessions from overlapping.
+For difference/disjoint constraints, we used the global n-ary constraints all\_different for integer variables and all\_disjoint for set variables.
+%
+%Pour les contraintes différence/disjoint, nous utilisons les contraintes globales n-aire all\_different~\ref{cp:differentslot} pour les variables entières et all\_disjoint~\ref{cp:differentrooms} pour les variables ensemblistes.
+%
+%For difference/disjoint constraints, we utilize the global n-ary constraints all\_different~\ref{cp:differentslot} for integer variables and all\_disjoint~\ref{cp:differentrooms} for set variables.
+%
+%Pour les contraintes no\_overleap~\ref{formal:nooverlap} et pour la contrainte principale d'utilisation des salles~\ref{ctr:cumulativeroomcapacity}, nous utilisons la contrainte globale cumulative~\ref{cp:nooverlap} pour garantir que, lors de l'utilisation d'une ressource, sa capacité maximale n'est pas dépassée, évitant ainsi que plusieurs séances de cours ne se chevauchent.
+%
+%For the no\_overlap constraints~\ref{formal:nooverlap} and for the main room usage constraint~\ref{ctr:cumulativeroomcapacity}, we employ the global cumulative constraint~\ref{cp:nooverlap} to ensure that, when sessions utilizing a resource, its maximum capacity is not exceeded, thereby preventing multiple class sessions from overlapping.
+%
+%Pour la contrainte de service des enseignants, nous utilisons la contrainte globale global\_cardinality (gcc), qui permet de compter les éléments. Il est également possible d'ajouter des contraintes de comptage pour mieux répartir la charge de travail ou limiter le nombre d'heures par jour pour une salle, afin d'obtenir des solutions plus robustes.
+%
+%For the constraint related to teacher service (requiredTeacher), we using the global cardinality constraint (gcc), which enables element counting. It is also feasible to add counting constraints to better distribute the workload or limit the number of hours per day for a room, aiming to achieve more robust solutions.

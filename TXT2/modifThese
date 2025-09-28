@@ -1,0 +1,264 @@
+MODIFICATION
+% pc = pas clair 
+% f = faute
+% sec = titre de section
+% remarque = remarque structurelle
+% réf = problème de référence absente ou éronné
+% tag: texte originale ou besoin :: commentaire -> correction proposé
+
+pc : s de type -> ok
+
+pc : ouplusieurs formations -> ok
+pc : sur un horizon temporel
+structuré en jours et en point temporels quotidiens. -> suppression
+
+pc : bloquant certaines configurations de solutions -> interdisant certaines solutions
+ 
+pc : présenter plus en profondeur -> détailler 
+
+pc : une variation -> une variante
+
+remarque : enseignants ? :: non évoqué mettre une ligne -> non présent dans les études + ajout d'une ligne
+
+
+pc: des chevauchements d’inscriptions -> refromuler sur les inscriptiosn multiples
+
+
+pc : applicabilité -> application
+
+
+f : Problème générale  -> Problème général 
+
+pc : différences entre PE-CTT :: quid des enseignants -> paragraphe en +
+
+pc : en programmes spécifiques -> substitution par parcours
+
+remarque : UCTT -> correction macro : UCTTP
+
+
+pc : Le problème UCTT peut être distinct des variantes PE-CTT et CB-CTT, et est souvent considéré comme un problème à part entière [64, 2, 37, 19, 121]. Il combine fréquemment le problème de sectionnement des étudiants, représentant un bond significatif en termes de standardisation. Bien que simplifié, il réduit l’écart entre les représentations académiques traditionnelles et la pratique réelle, en répartissant les étudiants en classes basées sur leurs inscriptions aux cours. -> reformulation
+
+pc : tout en capturant les souhaits des étudiants.-> les choix d'inscription pédagogique des étudiants
+
+pc : des groupes de cours pour regrouper des leçons -> des ensembles de cours rassemblant des cours selon leurs similitudes pédagogiques
+
+pc : Cependant il reste encore utilisé même aujourd’hui avec des extensions
+récente [85] -> supression 
+
+sec : Autres:: changé le titre -> Problèmes connexes aux emplois du temps +intégration d 'un chapeaux expliquant l'aspects connexe non lié à l'affectation temporel des séances 
+
+pc : Tous se concentre uniquement-> Toute l'attention est focalisée
+
+pc : Parmi les enseignants, on distingue les tuteurs référents, responsables principaux decertains cours et chargés de coordonner les autres tuteurs pour les travaux pratiques, et les tuteurs, qui sont affectés aux cours en fonction de leurs compétences et de leur disponibilité. -> reformulation
+
+remarque : lien UCTP ?  -> phrase de lien
+
+remarque : cette section ne fait pas le lien de maniére fluide -> problèmes/modèles //> schémas //> réductions//> amélioration du lien
+
+pc : PE-TT CB-TT  -> PE-CTT
+
+
+pc: la piste 3 relative au cb-tt. -> supression
+
+pc :  et programme ->  changer la macro
+pc : disjonction :: reformuler ou expliquer -> reforumler
+
+pc: regroupés en programme -> changement macro
+
+pc (H1-H5) et préférences (S1-S4) -> supression
+
+pc : bien que la configuration originale reste dominante.-> reformulation
+
+remarque : 4347 :: espace insécable -> ok
+
+pc : itc 2012 :: pas introduit avant -> introction d'une ref+ reformualtion et explication rapide
+
+pc : times :: expliquer sans les times -> refromulation
+
+f : durée -> durées
+
+pc :  équivalentes aux séances, ont des occurrences à planifier -> refromulation pouir indiquer que ces le qadruplet qui intégre les nombres de séances de la classe via les jours
+
+pc : s1 s2 s3 et o1-o19 -> supression
+
+pc : Unitime -> ajoute d'un lien
+
+pc : limitant les scénarios créées -> limitant ainsi la possibilité de créer de nouveaux scénarios
+
+
+
+pc :  Par exemple, pour le problème ETT ont proposé un ensemble de données -> refromulation
+
+remarque : [108] -> déplacer fin de phrase
+remarque : [35]   -> déplacer fin de phrase
+
+pc : les données sont normalement accessible. -> accessibles
+
+réf : FlopEdt -> ajout référence + reformulation
+
+pc: d'outils externes -> reformulation
+
+f : les problèmes portées -> portés
+
+pc : l'état de 'lart -> la littérature 
+f : de -> supression
+
+pc : arbitrairement -> supression
+
+sec : méthode exacte -> méthodes exactes 
+
+pc: en DIMACS -> au format
+réf : AJOUTER LES REF SAT -> ok
+pc : sur DPLL -> sur la méthode DPLL
+
+pc: domine -> reformulation
+pc :  contraintes partiellement satisfaisables. ->  refromualtion
+pc : CNF influence :: preuve -> ok + explication sur les clauses
+pc : Dans itc-2019 -> rformulation + changement place de la ref
+
+
+réf : ASP ARTICLE FONDATEUR -> ok
+
+pc : méthode -> approche
+
+
+
+
+pc :  souvent globales comme all-different ->
+
+réf : FONDAM. CP
+
+pc : La CP repose sur trois mécanismes clés :: je dirais plutot 2. les heuristiques ne sont pas un concept clé. -> deux
+
+remarque : la propagation -> le filtrage + macro
+
+remarque : le backtracking -> l'énumération + macro
+
+pc : permettant de revoir les affectations en cas de conflit -> 
+pc : en cas de conflit -> 
+
+pc : Contrairement à la programmation linéaire, -> supression
+pc : s. À Ferrare [61] ::viré le nom du pays -> supression + l'étude
+pc : nantes [66,3] ::étrange le nom de la ville  ->  supression
+
+pc : produire des résultats rapidement -> produire rapidement des résultats 
+
+pc : L’équipe [32] -> L'étude
+
+pc : applique la CP au HTT :: au -> au problème
+
+pc : vairables continues -> supression//> c'est effectivement la présence des 2 types variables et de la relation de l'une qui permet de résoudre le problème
+
+f : adaptées à des problèmes  ->  adaptées à la modélisation de problèmes 
+ 
+pc:  d’équations linéaires et d’inégalités -> reformulation (d’équations et inéquations linéaires)
+
+remarque : avec des heu ristiques ->  avec des meta-heuristiques
+
+f : pouir -> pour
+
+f : applique -> appliquent
+
+remarque : pour XHSTT [55] -> pour XHSTT [55],
+
+pc: faisables -> réalisables
+
+f : l'optimiser -> optimiser
+
+f : donné -> donnés 
+
+
+sec : méthode approchée -> méthodes approchées 
+
+remarque : les métaheuristiques ne représentent pas 100% des méthodes apporchées -> ajouter une petite phrase
+
+remarque : enlever un niveau de section -> ok
+
+remarque : GA :: méthodes hybrides -> réécriture pout cohérence
+
+pc : une exploration prolongée -> reformulation
+pc : de "roulette wheel" :: pléonsame -> c'est le terme utilisé dans la littérature
+
+pc : forces de chacune, améliorant ainsi à la fois la qualité et la robustesse des solutions. On peut également étendre un algorithme avec une recherche locale, créant ainsi un algorithme mémétique [115]. -> reformulation
+
+f : algorthimes -> alogirtmhe
+
+pc : a méthode du Great Deluge -> semblable au Hil climbing
+f : dans les travaux -> des
+f : adapté -> adaptée 
+
+remarque : multiobjectifs -> ajouter une phrase introduisant qu'on présente juste pour présenter et simplifier les termes
+
+pc : des tests ont été réalisés avec cette technique hybride. Il apparaît, grâce -> reformuler
+ 
+remarque : conclusion ajouter des réfs -> ok
+ 
+%%%
+ 
+remarque : déplacer ETT -> ok
+remarque : simplifier métaheuristique -> ok
+ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+remarque : réduire graham -> ok
+
+remarque : reformulation premier paragraphe graham.
+
+remarque : 1ére 2éme 3éme partie -> 1ére 2éme 3éme élément
+remarque : révision de la conjugaison -> ok
+
+pc : Des ressources comme Scheduling Zoo (http://schedulingzoo.lip6.fr/) recensent des
+pc : recherches utilisant cette notation -> reformulation
+
+remarque : corection macro + changement : \ftr = caractéristique , \DG diagramme de caractéristique
+
+
+pc : d'un système en groupes de niveaux de détail croissants -> reformulation
+
+pc : nuds -> correction
+
+pc : méta-analyse :: pas de verbe -> reformulation
+
+remarque : changement section 4.2.2, section  4.2.3, section 4.4.3  ->  suppression
+remarque : cohérence chapitre -> ajout de chapeau plus explicictes sur les FM avec notation de graham
+remarque : cohérence chapitre -> ajout d'un chapeau lus explicictes sur la décompositon en sous problèmes (fragment) du pb EDT pour le FM
+
+
+
+remarque : cohérence chapitre -> modification du chapeau pour les features pas sous forme d'un abre mais sous forme d'un tableau,
+remarque : cohérence chapitre -> rajout des illustartions du FM en entier + des sous arbres de celui-ci
+
+
+%correction de la feature modular + nooverlap 
+
+pc : nooverlap -> ils 'agit de la grille horaire qui assure un écart suffisafmeent cosnéquent pour passer en mode affectation sans problème d'heure de débat et de fin.
+
+pc : nooverlap ->  reformulation , en parlmant d'une grille commune pemettant de comarper alors les différentes grilles horaires.
+
+remarque : les autres -> reformulatins partielles / correction
+
+
+
+sec : Rôle d’un feature model pour les emplois du temps :
+
+remarque : blabla pas clair -> supression
+
+remarque : cohérence chapitre -> reformulation des paragprahes pour améliroer la clarté
+
+ref : ref bizarre -> template thèse complète au pif les ref vide (\ref{} <=> \ref{lbl-dernierchapitre} pointe vers le dernier chapitre)
+
+
+remarque : cohérence chapitre -> Supression GTP et Redoplast
+
+remarque : cohérence chapitre -> découpage du grand tableau en fragment pour chaque ftr principale, ajout d'une image pour chaque ftr{}
+
+remarque : cohérence chapitre -> Ajout des comparaisons avec schéma classique et flopEDT, ajout du tableau (\DG (représentation sous forme d'arbre) possible)
+
+remarque : cohérence chapitre -> Ajout d'un paragrpahe long sur les différentes \ftrs dans les différents articles + ligne regroupant par type d'institution (université, lycée) (permet de voir les structures communes)
+
+
+pc : conclusion -> reformulation conclusion
+
+

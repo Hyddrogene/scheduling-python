@@ -1,0 +1,42 @@
+% The organization of courses and examinations in higher education involves strategic, tactical and operational decisions related to curriculum design, student sectioning, course staffing, room planning, class scheduling and resource allocation \cite{2019_lindahl_EJOR}. 
+% These computational tasks and their overall coordination vary between countries and educational institutions, as do the levels of process automation and decision support tools \cite{2019_oude_AOR}. 
+% %In French universities, for example, students register for courses before each teaching period during the academic year. Demand is met by dividing courses into classes, dividing students into fixed groups and filling classes with groups. Eligible groups, lecturers, rooms and equipment are then identified for each course before teaching sessions are scheduled and the necessary resources are allocated. 
+% In the context of French higher education, students sign up for courses ahead of each instructional term within the academic year. To accommodate demand, courses are segmented into sessions, students are grouped, and these groups are then assigned to sessions. The process proceeds by identifying suitable groups, lecturers, rooms, and equipment for each course, followed by the planning of teaching sessions and allocation of the required resources.
+% %Each stage involves different stakeholders with their own requirements (faculty departments, administrative units, course owners, lecturers, tutors, etc.), and the workflow naturally allows for deviations and contingencies (marginal changes in curricula on an annual basis, late student enrollments, staff absences, etc.).
+% This process engages various stakeholders, each with distinct needs (e.g., academic departments, administrative units, course coordinators, lecturers, teaching assistants), and is designed to be flexible, accommodating minor curriculum adjustments annually, late enrollments, and unforeseen faculty absences, among other variables.
+
+% Educational timetabling is a challenging problem from a modeling and computational perspective.
+% It has many facets for which different have been made, 
+
+% Many approaches have been proposed on facets of
+% the problem
+% Various problem formulations, data formats, and algorithms have been proposed to address different aspects of university timetabling, such as curriculum balancing\cite{2001_castro_ARXIV,2012_chiarandini_JH,2013_rubio_MPE}, student sectioning\cite{2010_muller_AOR,2019_schindl_AOR}, examination timetabling\cite{1996_carter_JORS,2020_battistutta_CPAIOR,2010_mccollum_INFORMS}, curriculum-based or post-enrollment-based course timetabling\cite{2010_mccollum_INFORMS,2015_bettinelli_TOP,2007_lewis_ITC,2012_cambazard_AOR,2017_goh_EJOR,2021_chen_IEEEA}, tutor allocation\cite{2022_caselli_ESWA}, and minimal timetabling perturbation\cite{2019_lindahl_EJOR,2020_lemos_JS}. Modeling languages have also been developed, including the {\XHSTT} language\cite{2012_ahmadi_AOR}, the {\ITC} language from the 2019 international timetabling competition\cite{2018_muller_PATAT,2019_ITC}, and the {\UTP} language\cite{2022_barichard_PATAT}. The {\UTP} language is a domain-specific language designed to model a wide range of course timetabling problems, focusing on scheduling class sessions and allocating resources while adhering to core and rule constraints.
+
+%%%OLD
+Various problem formulations, data formats and algorithms have been proposed to tackle specific aspects of university timetabling 
+ranging from curriculum balancing \cite{2001_castro_ARXIV,2012_chiarandini_JH,2013_rubio_MPE}, student sectioning \cite{2010_muller_AOR,2019_schindl_AOR}, examination timetabling \cite{1996_carter_JORS,2020_battistutta_CPAIOR,2010_mccollum_INFORMS}, curriculum-based or post-enrollment-based course timetabling \cite{2010_mccollum_INFORMS,2015_bettinelli_TOP,2007_lewis_ITC,2012_cambazard_AOR,2017_goh_EJOR,2021_chen_IEEEA}, tutor allocation \cite{2022_caselli_ESWA}, to minimal timetabling perturbation \cite{2019_lindahl_EJOR,2020_lemos_JS}. 
+Modeling languages have also been developed, notably the {\XHSTT} language~\cite{2012_ahmadi_AOR}, the {\ITC} language used in the 2019 international timetabling competition \cite{2018_muller_PATAT,2019_ITC} and the {\UTP} language introduced in \cite{2022_barichard_PATAT}.
+%The {\UTP} language is a domain-specific language to model a wide variety of course timetabling instances. It is designed around a formal domain model and a rules language to state constraints. The model supports single-resource sessions (e.g., single lecturer) as well as multi-resource sessions (e.g., multiple rooms for hybrid teaching), and it encodes core constraints relating to session scheduling and resource allocation. All resources are assumed cumulative (i.e., rooms, lecturers and students may host, teach and attend overlapping sessions) but this policy may be overridden with disjunctive scheduling rules.
+The {\UTP} language is a domain-specific language to model a wide variety of course timetabling %isntance %
+problems 
+there objective to schedule class sessions and allocate resources
+ subject to core and rule constraints. 
+%
+%%%%%OLD
+It is built on a structured domain model coupled with a language for formulating rules and constraints. This framework accommodates sessions requiring a single resource 
+%(such as a sole lecturer) 
+and those needing multiple resources 
+%(for instance, several rooms for hybrid instruction), 
+capturing essential limitations related to the timing of sessions and distribution of resources. 
+It operates under the presumption that resources can overlap (meaning rooms, instructors, and students can be involved in simultaneous sessions), though this approach can be adjusted through specific scheduling rules that prevent such overlaps. \UTP{} must assign time slots and allocate resources, and ensuring satisfaction of core and rule constraints. %, and involves decisions on course timetabling to optimize time slot and resource allocation.
+%
+%
+%This work has multiple contributions. 
+We first introduce the {\UTP} schema which has been extended to broaden the range of problems that can be modeled. 
+We then present a feature model to classify problems and compare modeling languages proposed in the literature. 
+Lastly, we report on experiments carried out with 3 types of solvers - {\CP}, {\ASP}, {\MIP} -
+on instances created with a custom generator. % of {\UTP} problem instances, and we report on experiments. 
+% The study identifies several families of instances and conducts experiments to analyze the behavior of models on all instances.
+
+%The remainder of the paper is organized as follows. Section~\ref{sec:schema} provides an overview of the {\UTP} schema and its evolution. Section~\ref{sec:state-of-art} presents the main problems and schemas in the state of the art, together with a feature model to identify their main characteristics. Section~\ref{sec:model} presents and discusses several models (CSP, MIP, ASP) implementing the UTP language. Section~\ref{sec:experiments} introduces an instance generator for {\UTP}, and presents families of instances for conducting relevant experiments. Experimental results for the different models are presented and analysed. Section~\ref{sec:conclusion} concludes and discusses extensions of this work.
+

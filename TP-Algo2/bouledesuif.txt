@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+
+<html  dir="ltr" lang="fr" xml:lang="fr">
+<head>
+    <title>Se connecter sur le site | Moodle</title>
+    <link rel="shortcut icon" href="https://moodle.univ-angers.fr/pluginfile.php/1/core_admin/favicon/64x64/1757368926/favicon.png" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="moodle, Se connecter sur le site | Moodle" />
+<link rel="stylesheet" type="text/css" href="https://moodle.univ-angers.fr/theme/yui_combo.php?rollup/3.18.1/yui-moodlesimple-min.css" /><script id="firstthemesheet" type="text/css">/** Required in order to fix style inclusion problems in IE with YUI **/</script><link rel="stylesheet" type="text/css" href="https://moodle.univ-angers.fr/theme/styles.php/boost/1757368926_1751527408/all" />
+<script>
+//<![CDATA[
+var M = {}; M.yui = {};
+M.pageloadstarttime = new Date();
+M.cfg = {"wwwroot":"https:\/\/moodle.univ-angers.fr","apibase":"https:\/\/moodle.univ-angers.fr\/r.php\/api","homeurl":{},"sesskey":"JuBbIq67W4","sessiontimeout":"7200","sessiontimeoutwarning":1200,"themerev":"1757368926","slasharguments":1,"theme":"boost","iconsystemmodule":"core\/icon_system_fontawesome","jsrev":"1757368927","admin":"admin","svgicons":true,"usertimezone":"Europe\/Paris","language":"fr","courseId":1,"courseContextId":268,"contextid":1,"contextInstanceId":0,"langrev":1757368927,"templaterev":"1757368927","siteId":1,"userId":0};var yui1ConfigFn = function(me) {if(/-skin|reset|fonts|grids|base/.test(me.name)){me.type='css';me.path=me.path.replace(/\.js/,'.css');me.path=me.path.replace(/\/yui2-skin/,'/assets/skins/sam/yui2-skin')}};
+var yui2ConfigFn = function(me) {var parts=me.name.replace(/^moodle-/,'').split('-'),component=parts.shift(),module=parts[0],min='-min';if(/-(skin|core)$/.test(me.name)){parts.pop();me.type='css';min=''}
+if(module){var filename=parts.join('-');me.path=component+'/'+module+'/'+filename+min+'.'+me.type}else{me.path=component+'/'+component+'.'+me.type}};
+YUI_config = {"debug":false,"base":"https:\/\/moodle.univ-angers.fr\/lib\/yuilib\/3.18.1\/","comboBase":"https:\/\/moodle.univ-angers.fr\/theme\/yui_combo.php?","combine":true,"filter":null,"insertBefore":"firstthemesheet","groups":{"yui2":{"base":"https:\/\/moodle.univ-angers.fr\/lib\/yuilib\/2in3\/2.9.0\/build\/","comboBase":"https:\/\/moodle.univ-angers.fr\/theme\/yui_combo.php?","combine":true,"ext":false,"root":"2in3\/2.9.0\/build\/","patterns":{"yui2-":{"group":"yui2","configFn":yui1ConfigFn}}},"moodle":{"name":"moodle","base":"https:\/\/moodle.univ-angers.fr\/theme\/yui_combo.php?m\/1757368927\/","combine":true,"comboBase":"https:\/\/moodle.univ-angers.fr\/theme\/yui_combo.php?","ext":false,"root":"m\/1757368927\/","patterns":{"moodle-":{"group":"moodle","configFn":yui2ConfigFn}},"filter":null,"modules":{"moodle-core-notification":{"requires":["moodle-core-notification-dialogue","moodle-core-notification-alert","moodle-core-notification-confirm","moodle-core-notification-exception","moodle-core-notification-ajaxexception"]},"moodle-core-notification-dialogue":{"requires":["base","node","panel","escape","event-key","dd-plugin","moodle-core-widget-focusafterclose","moodle-core-lockscroll"]},"moodle-core-notification-alert":{"requires":["moodle-core-notification-dialogue"]},"moodle-core-notification-confirm":{"requires":["moodle-core-notification-dialogue"]},"moodle-core-notification-exception":{"requires":["moodle-core-notification-dialogue"]},"moodle-core-notification-ajaxexception":{"requires":["moodle-core-notification-dialogue"]},"moodle-core-lockscroll":{"requires":["plugin","base-build"]},"moodle-core-chooserdialogue":{"requires":["base","panel","moodle-core-notification"]},"moodle-core-actionmenu":{"requires":["base","event","node-event-simulate"]},"moodle-core-blocks":{"requires":["base","node","io","dom","dd","dd-scroll","moodle-core-dragdrop","moodle-core-notification"]},"moodle-core-dragdrop":{"requires":["base","node","io","dom","dd","event-key","event-focus","moodle-core-notification"]},"moodle-core-handlebars":{"condition":{"trigger":"handlebars","when":"after"}},"moodle-core-maintenancemodetimer":{"requires":["base","node"]},"moodle-core-event":{"requires":["event-custom"]},"moodle-core_availability-form":{"requires":["base","node","event","event-delegate","panel","moodle-core-notification-dialogue","json"]},"moodle-course-util":{"requires":["node"],"use":["moodle-course-util-base"],"submodules":{"moodle-course-util-base":{},"moodle-course-util-section":{"requires":["node","moodle-course-util-base"]},"moodle-course-util-cm":{"requires":["node","moodle-course-util-base"]}}},"moodle-course-categoryexpander":{"requires":["node","event-key"]},"moodle-course-management":{"requires":["base","node","io-base","moodle-core-notification-exception","json-parse","dd-constrain","dd-proxy","dd-drop","dd-delegate","node-event-delegate"]},"moodle-course-dragdrop":{"requires":["base","node","io","dom","dd","dd-scroll","moodle-core-dragdrop","moodle-core-notification","moodle-course-coursebase","moodle-course-util"]},"moodle-form-dateselector":{"requires":["base","node","overlay","calendar"]},"moodle-form-shortforms":{"requires":["node","base","selector-css3","moodle-core-event"]},"moodle-question-chooser":{"requires":["moodle-core-chooserdialogue"]},"moodle-question-searchform":{"requires":["base","node"]},"moodle-availability_completion-form":{"requires":["base","node","event","moodle-core_availability-form"]},"moodle-availability_date-form":{"requires":["base","node","event","io","moodle-core_availability-form"]},"moodle-availability_grade-form":{"requires":["base","node","event","moodle-core_availability-form"]},"moodle-availability_group-form":{"requires":["base","node","event","moodle-core_availability-form"]},"moodle-availability_grouping-form":{"requires":["base","node","event","moodle-core_availability-form"]},"moodle-availability_profile-form":{"requires":["base","node","event","moodle-core_availability-form"]},"moodle-mod_assign-history":{"requires":["node","transition"]},"moodle-mod_quiz-util":{"requires":["node","moodle-core-actionmenu"],"use":["moodle-mod_quiz-util-base"],"submodules":{"moodle-mod_quiz-util-base":{},"moodle-mod_quiz-util-slot":{"requires":["node","moodle-mod_quiz-util-base"]},"moodle-mod_quiz-util-page":{"requires":["node","moodle-mod_quiz-util-base"]}}},"moodle-mod_quiz-quizbase":{"requires":["base","node"]},"moodle-mod_quiz-questionchooser":{"requires":["moodle-core-chooserdialogue","moodle-mod_quiz-util","querystring-parse"]},"moodle-mod_quiz-toolboxes":{"requires":["base","node","event","event-key","io","moodle-mod_quiz-quizbase","moodle-mod_quiz-util-slot","moodle-core-notification-ajaxexception"]},"moodle-mod_quiz-dragdrop":{"requires":["base","node","io","dom","dd","dd-scroll","moodle-core-dragdrop","moodle-core-notification","moodle-mod_quiz-quizbase","moodle-mod_quiz-util-base","moodle-mod_quiz-util-page","moodle-mod_quiz-util-slot","moodle-course-util"]},"moodle-mod_quiz-modform":{"requires":["base","node","event"]},"moodle-mod_quiz-autosave":{"requires":["base","node","event","event-valuechange","node-event-delegate","io-form","datatype-date-format"]},"moodle-message_airnotifier-toolboxes":{"requires":["base","node","io"]},"moodle-editor_atto-editor":{"requires":["node","transition","io","overlay","escape","event","event-simulate","event-custom","node-event-html5","node-event-simulate","yui-throttle","moodle-core-notification-dialogue","moodle-editor_atto-rangy","handlebars","timers","querystring-stringify"]},"moodle-editor_atto-plugin":{"requires":["node","base","escape","event","event-outside","handlebars","event-custom","timers","moodle-editor_atto-menu"]},"moodle-editor_atto-menu":{"requires":["moodle-core-notification-dialogue","node","event","event-custom"]},"moodle-editor_atto-rangy":{"requires":[]},"moodle-report_eventlist-eventfilter":{"requires":["base","event","node","node-event-delegate","datatable","autocomplete","autocomplete-filters"]},"moodle-report_loglive-fetchlogs":{"requires":["base","event","node","io","node-event-delegate"]},"moodle-gradereport_history-userselector":{"requires":["escape","event-delegate","event-key","handlebars","io-base","json-parse","moodle-core-notification-dialogue"]},"moodle-qbank_editquestion-chooser":{"requires":["moodle-core-chooserdialogue"]},"moodle-tool_lp-dragdrop-reorder":{"requires":["moodle-core-dragdrop"]},"moodle-assignfeedback_editpdf-editor":{"requires":["base","event","node","io","graphics","json","event-move","event-resize","transition","querystring-stringify-simple","moodle-core-notification-dialog","moodle-core-notification-alert","moodle-core-notification-warning","moodle-core-notification-exception","moodle-core-notification-ajaxexception"]},"moodle-atto_accessibilitychecker-button":{"requires":["color-base","moodle-editor_atto-plugin"]},"moodle-atto_accessibilityhelper-button":{"requires":["moodle-editor_atto-plugin"]},"moodle-atto_align-button":{"requires":["moodle-editor_atto-plugin"]},"moodle-atto_bold-button":{"requires":["moodle-editor_atto-plugin"]},"moodle-atto_charmap-button":{"requires":["moodle-editor_atto-plugin"]},"moodle-atto_clear-button":{"requires":["moodle-editor_atto-plugin"]},"moodle-atto_collapse-button":{"requires":["moodle-editor_atto-plugin"]},"moodle-atto_emojipicker-button":{"requires":["moodle-editor_atto-plugin"]},"moodle-atto_emoticon-button":{"requires":["moodle-editor_atto-plugin"]},"moodle-atto_equation-button":{"requires":["moodle-editor_atto-plugin","moodle-core-event","io","event-valuechange","tabview","array-extras"]},"moodle-atto_h5p-button":{"requires":["moodle-editor_atto-plugin"]},"moodle-atto_html-button":{"requires":["promise","moodle-editor_atto-plugin","moodle-atto_html-beautify","moodle-atto_html-codemirror","event-valuechange"]},"moodle-atto_html-beautify":{},"moodle-atto_html-codemirror":{"requires":["moodle-atto_html-codemirror-skin"]},"moodle-atto_image-button":{"requires":["moodle-editor_atto-plugin"]},"moodle-atto_indent-button":{"requires":["moodle-editor_atto-plugin"]},"moodle-atto_italic-button":{"requires":["moodle-editor_atto-plugin"]},"moodle-atto_link-button":{"requires":["moodle-editor_atto-plugin"]},"moodle-atto_managefiles-button":{"requires":["moodle-editor_atto-plugin"]},"moodle-atto_managefiles-usedfiles":{"requires":["node","escape"]},"moodle-atto_media-button":{"requires":["moodle-editor_atto-plugin","moodle-form-shortforms"]},"moodle-atto_noautolink-button":{"requires":["moodle-editor_atto-plugin"]},"moodle-atto_orderedlist-button":{"requires":["moodle-editor_atto-plugin"]},"moodle-atto_recordrtc-button":{"requires":["moodle-editor_atto-plugin","moodle-atto_recordrtc-recording"]},"moodle-atto_recordrtc-recording":{"requires":["moodle-atto_recordrtc-button"]},"moodle-atto_rtl-button":{"requires":["moodle-editor_atto-plugin"]},"moodle-atto_strike-button":{"requires":["moodle-editor_atto-plugin"]},"moodle-atto_subscript-button":{"requires":["moodle-editor_atto-plugin"]},"moodle-atto_superscript-button":{"requires":["moodle-editor_atto-plugin"]},"moodle-atto_table-button":{"requires":["moodle-editor_atto-plugin","moodle-editor_atto-menu","event","event-valuechange"]},"moodle-atto_title-button":{"requires":["moodle-editor_atto-plugin"]},"moodle-atto_underline-button":{"requires":["moodle-editor_atto-plugin"]},"moodle-atto_undo-button":{"requires":["moodle-editor_atto-plugin"]},"moodle-atto_unorderedlist-button":{"requires":["moodle-editor_atto-plugin"]}}},"gallery":{"name":"gallery","base":"https:\/\/moodle.univ-angers.fr\/lib\/yuilib\/gallery\/","combine":true,"comboBase":"https:\/\/moodle.univ-angers.fr\/theme\/yui_combo.php?","ext":false,"root":"gallery\/1757368927\/","patterns":{"gallery-":{"group":"gallery"}}}},"modules":{"core_filepicker":{"name":"core_filepicker","fullpath":"https:\/\/moodle.univ-angers.fr\/lib\/javascript.php\/1757368927\/repository\/filepicker.js","requires":["base","node","node-event-simulate","json","async-queue","io-base","io-upload-iframe","io-form","yui2-treeview","panel","cookie","datatable","datatable-sort","resize-plugin","dd-plugin","escape","moodle-core_filepicker","moodle-core-notification-dialogue"]},"core_comment":{"name":"core_comment","fullpath":"https:\/\/moodle.univ-angers.fr\/lib\/javascript.php\/1757368927\/comment\/comment.js","requires":["base","io-base","node","json","yui2-animation","overlay","escape"]}},"logInclude":[],"logExclude":[],"logLevel":null};
+M.yui.loader = {modules: {}};
+
+//]]>
+</script>
+
+<style>
+.que.shortanswer .answer input[id^="q727150:10"], .que.shortanswer .answer input[id^="q727150:18"], .que.shortanswer .answer input[id^="q727150:32"], .que.shortanswer .answer input[id^="q727150:44"] {
+    width: 100%;
+}
+@media print {
+body > *{
+    display: block;
+}
+script, style{
+ display:none;
+}
+}
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<!-- Matomo -->
+<script>
+  var _paq = window._paq = window._paq || [];
+  /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u="https://piwik.univ-angers.fr/";
+    _paq.push(['setTrackerUrl', u+'matomo.php']);
+    _paq.push(['setSiteId', '32']);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+<!-- End Matomo Code -->
+<script type="text/javascript">
+$(function(){
+/* lien pour la déclaration d'accessibilité dans le pied de page (point d'interrogation)*/
+  $.each($(".footer-section"), function(key, value){
+     if(key === 1){ // la deuxième section du footer
+       $(this).append("<div><a href='https://moodle.univ-angers.fr/course/view.php?id=32243'>Accessibilité : Non conforme</a></div>")
+     }
+  })
+})
+</script><meta name="robots" content="noindex" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body  id="page-login-index" class="format-site  path-login dir-ltr lang-fr yui-skin-sam yui3-skin-sam moodle-univ-angers-fr pagelayout-login course-1 context-1 notloggedin theme ">
+<div class="toast-wrapper mx-auto py-0 fixed-top" role="status" aria-live="polite"></div>
+
+<div id="page-wrapper">
+
+    <div>
+    <a class="sr-only sr-only-focusable" href="#maincontent">Passer au contenu principal</a>
+</div><script src="https://moodle.univ-angers.fr/lib/javascript.php/1757368927/lib/polyfills/polyfill.js"></script>
+<script src="https://moodle.univ-angers.fr/theme/yui_combo.php?rollup/3.18.1/yui-moodlesimple-min.js"></script><script src="https://moodle.univ-angers.fr/lib/javascript.php/1757368927/lib/javascript-static.js"></script>
+<script>
+//<![CDATA[
+document.body.className += ' jsenabled';
+//]]>
+</script>
+
+<div class="eupopup eupopup-container eupopup-container-block eupopup-container-bottom eupopup-block eupopup-style-compact" role="dialog" aria-label="Politiques">
+    </div>
+    <div class="eupopup-markup d-none">
+        <div class="eupopup-head"></div>
+        <div class="eupopup-body">
+            Si vous continuez à consulter ce site web, vous acceptez nos politiques :
+            <ul>
+                    <li>
+                        <a href="https://moodle.univ-angers.fr/admin/tool/policy/view.php?versionid=1&amp;returnurl=https%3A%2F%2Fmoodle.univ-angers.fr%2Flogin%2Findex.php" data-action="view-guest" data-versionid="1" data-behalfid="1">
+                            Charte de respect des droits d'auteur
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://moodle.univ-angers.fr/admin/tool/policy/view.php?versionid=2&amp;returnurl=https%3A%2F%2Fmoodle.univ-angers.fr%2Flogin%2Findex.php" data-action="view-guest" data-versionid="2" data-behalfid="1">
+                            Charte d'usage du système d'information de l'université d'Angers
+                        </a>
+                    </li>
+            </ul>
+        </div>
+        <div class="eupopup-buttons">
+            <a href="#" class="eupopup-button eupopup-button_1">Continuer</a>
+        </div>
+        <div class="clearfix"></div>
+        <a href="#" class="eupopup-closebutton">x</a>
+    </div>
+
+    <div id="page" class="container-fluid pt-5 mt-0">
+        <div id="page-content" class="row">
+            <div id="region-main-box" class="col-12">
+                <div id="region-main" class="col-12 h-100">
+                <div class="login-wrapper">
+                    <div class="login-container">
+                    <div role="main"><span id="maincontent"></span><div class="loginform">
+        <div id="loginlogo" class="login-logo">
+            <img id="logoimage" src="https://moodle.univ-angers.fr/pluginfile.php/1/core_admin/logo/0x200/1757368926/moodleua.png" class="img-fluid" alt="Ressources Pédagogiques de l&#039;Université d&#039;Angers"/>
+            <h1 class="login-heading sr-only">Connexion à Ressources Pédagogiques de l&#039;Université d&#039;Angers</h1>
+        </div>
+        <form class="login-form" action="https://moodle.univ-angers.fr/login/index.php" method="post" id="login">
+            <input id="anchor" type="hidden" name="anchor" value="">
+            <script>document.getElementById('anchor').value = location.hash;</script>
+            <input type="hidden" name="logintoken" value="PGwoWaMZUvSyqiJ3iK3ssPYRxF9SQwXP">
+            <div class="login-form-username mb-3">
+                <label for="username" class="sr-only">
+                        Nom d’utilisateur
+                </label>
+                <input type="text" name="username" id="username" class="form-control form-control-lg" value="" placeholder="Nom d’utilisateur" autocomplete="username">
+            </div>
+            <div class="login-form-password mb-3">
+                <label for="password" class="sr-only">Mot de passe</label>
+                <input type="password" name="password" id="password" value="" class="form-control form-control-lg" placeholder="Mot de passe" autocomplete="current-password">
+            </div>
+            <div class="login-form-submit mb-3">
+                <button class="btn btn-primary btn-lg" type="submit" id="loginbtn">Connexion</button>
+            </div>
+            <div class="login-form-forgotpassword mb-3">
+                <a href="https://moodle.univ-angers.fr/login/forgot_password.php">Mot de passe perdu ?</a>
+            </div>
+        </form>
+        <div class="login-divider"></div>
+        <div class="login-identityproviders">
+            <h2 class="login-heading">Connexion</h2>
+                <a class="btn login-identityprovider-btn btn-block" href="https://moodle.univ-angers.fr/login/index.php?authCAS=CAS">
+                        <img src="https://moodle.univ-angers.fr/pluginfile.php/1/auth_cas/logo/ua_v_couleur.svg" alt="" width="24" height="24"/>
+                    Utilisateurs UA
+                </a>
+                <a class="btn login-identityprovider-btn btn-block" href="https://moodle.univ-angers.fr/auth/shibboleth/index.php">
+                        <img src="https://moodle.univ-angers.fr/pluginfile.php/1/auth_shibboleth/logo/world_shib.png" alt="" width="24" height="24"/>
+                    Utilisateurs extérieurs
+                </a>
+        </div>
+        <div class="login-divider"></div>
+        <h2 class="login-heading">Des cours peuvent être ouverts aux visiteurs anonymes</h2>
+        <form action="https://moodle.univ-angers.fr/login/index.php" method="post" id="guestlogin">
+            <input type="hidden" name="logintoken" value="PGwoWaMZUvSyqiJ3iK3ssPYRxF9SQwXP">
+            <input type="hidden" name="username" value="guest" />
+            <input type="hidden" name="password" value="guest" />
+            <button class="btn btn-secondary" type="submit" id="loginguestbtn">Accéder en tant qu’anonyme</button>
+        </form>
+    <div class="login-divider"></div>
+    <div class="d-flex">
+            <div class="login-languagemenu">
+                <div class="action-menu moodle-actionmenu" id="action-menu-0" data-enhance="moodle-core-actionmenu">
+                
+                        <div class="menubar d-flex " id="action-menu-0-menubar">
+                
+                            
+                
+                
+                                <div class="action-menu-trigger">
+                                    <div class="dropdown">
+                                        <a
+                                            href="#"
+                                            tabindex="0"
+                                            class=" dropdown-toggle icon-no-margin"
+                                            id="action-menu-toggle-0"
+                                            aria-label="Français ‎(fr)‎"
+                                            data-toggle="dropdown"
+                                            role="button"
+                                            aria-haspopup="true"
+                                            aria-expanded="false"
+                                            aria-controls="action-menu-0-menu"
+                                        >
+                                            
+                                            Français ‎(fr)‎
+                                                
+                                            <b class="caret"></b>
+                                        </a>
+                                            <div class="dropdown-menu menu dropdown-menu-right" id="action-menu-0-menu" data-rel="menu-content" aria-labelledby="action-menu-toggle-0" role="menu">
+                                                                                                <a href="https://moodle.univ-angers.fr/login/index.php?lang=en" class="dropdown-item menu-action" data-lang="en" lang="en" role="menuitem" tabindex="-1" >
+                                                <span class="menu-action-text">English ‎(en)‎</span>
+                                        </a>
+                                                                                                <a href="https://moodle.univ-angers.fr/login/index.php?lang=es_es" class="dropdown-item menu-action" data-lang="es_es" lang="es" role="menuitem" tabindex="-1" >
+                                                <span class="menu-action-text">Español - España ‎(es_es)‎</span>
+                                        </a>
+                                                                                                <a href="#" class="dropdown-item menu-action" role="menuitem" tabindex="-1" >
+                                                <span class="menu-action-text">Français ‎(fr)‎</span>
+                                        </a>
+                                                                                                <a href="https://moodle.univ-angers.fr/login/index.php?lang=zh_cn" class="dropdown-item menu-action" data-lang="zh_cn" lang="zh" role="menuitem" tabindex="-1" >
+                                                <span class="menu-action-text">简体中文 ‎(zh_cn)‎</span>
+                                        </a>
+                                            </div>
+                                    </div>
+                                </div>
+                
+                        </div>
+                
+                </div>
+            </div>
+            <div class="divider border-start align-self-center mx-3"></div>
+        <button type="button" class="btn btn-secondary"  data-modal="alert" data-modal-title-str='["cookiesenabled", "core"]'  data-modal-content-str='["cookiesenabled_help_html", "core"]'>Avis relatif aux cookies</button>
+    </div>
+</div></div>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer id="page-footer" class="footer-popover bg-white">
+        <div data-region="footer-container-popover">
+            <button class="btn btn-icon bg-secondary icon-no-margin btn-footer-popover" data-action="footer-popover" aria-label="Afficher le pied de page">
+                <i class="icon fa fa-question fa-fw " aria-hidden="true"  ></i>
+            </button>
+        </div>
+        <div class="footer-content-popover container" data-region="footer-content-popover">
+            <div class="footer-section p-3 border-bottom">
+                <div class="logininfo">
+                    <div class="logininfo">Non connecté.</div>
+                </div>
+                <div class="tool_usertours-resettourcontainer">
+                </div>
+    
+                <div class="policiesfooter"><a href="https://moodle.univ-angers.fr/admin/tool/policy/viewall.php?returnurl=https%3A%2F%2Fmoodle.univ-angers.fr%2Flogin%2Findex.php">Politiques</a></div><div><a class="mobilelink" href="https://download.moodle.org/mobile?version=2024100705.03&amp;lang=fr&amp;iosappid=633359593&amp;androidappid=com.moodle.moodlemobile&amp;siteurl=https%3A%2F%2Fmoodle.univ-angers.fr">Obtenir l’app mobile</a></div>
+                
+<!-- Modal -->
+<div style="background-color:RGBa(150,150,150,0.8)" class="modal fade" id="oldPasswordModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Mot de passe trop ancien</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+            </div>
+            <div class="modal-body text-center">
+              Vous devez changer votre mot de passe car il n’a pas été modifié depuis plus d’un an.<br/>
+Pour découvrir nos recommandations pour sécuriser votre mot de passe, cliquez <a href='https://www.univ-angers.fr/fr/vie-des-campus/actualites/actualites-2021/modifier-son-mot-de-passe.html'>ici</a>.<br/>
+            </div>
+            <div class="modal-footer pt-0">
+                <button onclick='window.location.href="https://monprofil2.univ-angers.fr/monprofil2/moncompte"' id="closeOldPasswordModal" type="button" class="btn btn-primary" data-dismiss="modal">Modifier mon mot de passe</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+/*Bouton shibboleth*/
+$(function(){
+$(".btn-login").text("Compte UA");
+$(".btn-login").before("<a class='btn-login d-inline-block'' onClick='window.location.assign(\"../auth/shibboleth/index.php\")'>Compte Ext.</a>")
+
+/*Changement icônes thème adaptable
+$("img.icon, img.moduleIcon, img.activityicon").each(function(){
+	let url = $(this).attr("src").split("adaptable");
+	if(url.length>0){
+		let new_url = url[0]+"boost"+url[1];
+	        $(this).attr("src", new_url);
+		//console.log("url changée")
+	}else{
+		//console.log("url inchangée")
+}
+
+});
+*/
+let url_base = location.protocol + "//" + location.host + "/my/";
+let current_url = document.URL;
+
+/*
+if(url_base  === document.URL){
+$.post("../matoo/requetes/commun/get_password_status.php",{},function(data){
+ console.log(data)
+ if(data.motDePasseTropAncien === true && sessionStorage.getItem("dismissOldPassword") !== "true"){
+  $("#oldPasswordModal").modal("show");
+  $("#closeOldPasswordModal").on("click", function(data){
+    sessionStorage.setItem("dismissOldPassword", "true")
+    console.log(sessionStorage);
+    })
+ }
+},'json').fail(function(error){
+ console.error(error.responseText);
+});
+}*/
+
+/* lien pour revenir  au tableau de bord sur le logo*/
+$("#logo").on("click", function(){window.location.href =url_base}).css("cursor", "pointer");
+
+});
+</script><script>
+//<![CDATA[
+var require = {
+    baseUrl : 'https://moodle.univ-angers.fr/lib/requirejs.php/1757368927/',
+    // We only support AMD modules with an explicit define() statement.
+    enforceDefine: true,
+    skipDataMain: true,
+    waitSeconds : 0,
+
+    paths: {
+        jquery: 'https://moodle.univ-angers.fr/lib/javascript.php/1757368927/lib/jquery/jquery-3.7.1.min',
+        jqueryui: 'https://moodle.univ-angers.fr/lib/javascript.php/1757368927/lib/jquery/ui-1.13.2/jquery-ui.min',
+        jqueryprivate: 'https://moodle.univ-angers.fr/lib/javascript.php/1757368927/lib/requirejs/jquery-private'
+    },
+
+    // Custom jquery config map.
+    map: {
+      // '*' means all modules will get 'jqueryprivate'
+      // for their 'jquery' dependency.
+      '*': { jquery: 'jqueryprivate' },
+
+      // 'jquery-private' wants the real jQuery module
+      // though. If this line was not here, there would
+      // be an unresolvable cyclic dependency.
+      jqueryprivate: { jquery: 'jquery' }
+    }
+};
+
+//]]>
+</script>
+<script src="https://moodle.univ-angers.fr/lib/javascript.php/1757368927/lib/requirejs/require.min.js"></script>
+<script>
+//<![CDATA[
+M.util.js_pending("core/first");
+require(['core/first'], function() {
+require(['core/prefetch'])
+;
+require(["media_videojs/loader"], function(loader) {
+    loader.setUp('fr');
+});;
+M.util.js_pending('filter_mathjaxloader/loader'); require(['filter_mathjaxloader/loader'], function(amd) {amd.configure({"mathjaxconfig":"MathJax.Hub.Config({\r\nconfig: [\"Accessible.js\", \"Safe.js\"],\r\nerrorSettings: { message: [\"!\"] },\r\nskipStartupTypeset: true,\r\nmessageStyle: \"none\"\r\n});","lang":"fr"}); M.util.js_complete('filter_mathjaxloader/loader');});;
+M.util.js_pending('filter_glossary/autolinker'); require(['filter_glossary/autolinker'], function(amd) {amd.init(); M.util.js_complete('filter_glossary/autolinker');});;
+
+        require(['jquery', 'tool_policy/jquery-eu-cookie-law-popup', 'tool_policy/policyactions'], function($, Popup, ActionsMod) {
+            // Initialise the guest popup.
+            $(document).ready(function() {
+                // Initialize popup.
+                $(document.body).addClass('eupopup');
+                if ($(".eupopup").length > 0) {
+                    $(document).euCookieLawPopup().init();
+                }
+
+                // Initialise the JS for the modal window which displays the policy versions.
+                ActionsMod.init('[data-action="view-guest"]');
+            });
+        });
+    ;
+
+require(['theme_boost/footer-popover'], function(FooterPopover) {
+    FooterPopover.init();
+});
+;
+
+M.util.js_pending('theme_boost/loader');
+require(['theme_boost/loader'], function() {
+  M.util.js_complete('theme_boost/loader');
+});
+;
+
+        require(['core/togglesensitive'], function(ToggleSensitive) {
+            ToggleSensitive.init("password", 1);
+        });
+    require(['core_form/submit'], function(Submit) {
+        Submit.init("loginbtn");
+            Submit.init("loginguestbtn");
+    });
+;
+M.util.js_pending('core/notification'); require(['core/notification'], function(amd) {amd.init(1, []); M.util.js_complete('core/notification');});;
+M.util.js_pending('core/log'); require(['core/log'], function(amd) {amd.setConfig({"level":"warn"}); M.util.js_complete('core/log');});;
+M.util.js_pending('core/page_global'); require(['core/page_global'], function(amd) {amd.init(); M.util.js_complete('core/page_global');});;
+M.util.js_pending('core/utility'); require(['core/utility'], function(amd) {M.util.js_complete('core/utility');});;
+M.util.js_pending('core/storage_validation'); require(['core/storage_validation'], function(amd) {amd.init(null); M.util.js_complete('core/storage_validation');});
+    M.util.js_complete("core/first");
+});
+//]]>
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?delayStartupUntil=configured"></script>
+<script>
+//<![CDATA[
+M.str = {"moodle":{"lastmodified":"Modifi\u00e9 le","name":"Nom","error":"Erreur","info":"Information","yes":"Oui","no":"Non","cancel":"Annuler","confirm":"Confirmer","areyousure":"Voulez-vous vraiment continuer\u00a0?","closebuttontitle":"Fermer","unknownerror":"Erreur inconnue","file":"Fichier","url":"URL","collapseall":"Tout replier","expandall":"Tout d\u00e9plier"},"repository":{"type":"Type","size":"Taille","invalidjson":"Cha\u00eene JSON non valide","nofilesattached":"Aucun fichier joint","filepicker":"S\u00e9lecteur de fichiers","logout":"D\u00e9connexion","nofilesavailable":"Aucun fichier disponible","norepositoriesavailable":"D\u00e9sol\u00e9, aucun de vos d\u00e9p\u00f4ts actuels ne peut retourner de fichiers dans le format requis.","fileexistsdialogheader":"Le fichier existe","fileexistsdialog_editor":"Un fichier de ce nom a d\u00e9j\u00e0 \u00e9t\u00e9 joint au texte que vous modifiez.","fileexistsdialog_filemanager":"Un fichier de ce nom a d\u00e9j\u00e0 \u00e9t\u00e9 joint","renameto":"Renommer \u00e0 \u00ab\u00a0{$a}\u00a0\u00bb","referencesexist":"Il y a {$a} liens qui pointent vers ce fichier","select":"S\u00e9lectionnez"},"admin":{"confirmdeletecomments":"Voulez-vous vraiment supprimer les commentaires s\u00e9lectionn\u00e9s\u00a0?","confirmation":"Confirmation"},"debug":{"debuginfo":"Info de d\u00e9bogage","line":"Ligne","stacktrace":"Trace de la pile"},"langconfig":{"labelsep":"&nbsp;"}};
+//]]>
+</script>
+<script>
+//<![CDATA[
+(function() {M.util.help_popups.setup(Y);
+ M.util.js_pending('random68bf5b7bbc0be6'); Y.on('domready', function() { M.util.js_complete("init");  M.util.js_complete('random68bf5b7bbc0be6'); });
+})();
+//]]>
+</script>
+
+            </div>
+            <div class="footer-section p-3">
+                <div>Fourni par <a href="https://moodle.com">Moodle</a></div>
+            </div>
+        </div>
+    
+        <div class="footer-content-debugging footer-dark bg-dark text-light">
+            <div class="container-fluid footer-dark-inner">
+                
+            </div>
+        </div>
+    </footer>
+</div>
+
+
+</body></html>

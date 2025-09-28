@@ -1,0 +1,263 @@
+### 1. Introduction
+
+Le problème de l'emploi du temps scolaire, souvent désigné par le terme de "High School Timetabling Problems" (HSTP), concerne le processus d'organisation d'une séquence de réunions entre enseignants et classes (ensemble de leçons) dans un nombre spécifique de créneaux horaires sur une période de temps prédéfinie (typiquement une semaine), tout en respectant un ensemble de contraintes de différentes natures [1,2,3]. Ces contraintes sont généralement classées en deux types : dures et souples. Les contraintes dures doivent être satisfaites pour obtenir une solution réalisable, tandis que les contraintes souples, qui expriment les préférences et la qualité de l'emploi du temps, peuvent être violées (mais doivent être satisfaites autant que possible) [4]. La qualité d'un emploi du temps est mesurée en fonction du nombre de contraintes souples satisfaites. Plus les contraintes souples sont satisfaites, meilleure est la qualité de la solution. Une discussion plus approfondie sur la planification scolaire peut être trouvée dans [2,5].
+
+La littérature sur la planification scolaire est très vaste avec plusieurs approches de solution (modèles et algorithmes) proposées. En fait, de nombreux modèles, y compris le format XHSTT (qui est basé sur le standard Extensible Markup Language) et plusieurs variantes NP-complètes du HSTP ont été proposés dans la littérature, qui diffèrent en raison des différences dans les systèmes éducatifs de chaque pays, du contexte de l'application, de l'école et de l'endroit où elle est située. Une littérature représentative inclut [6,7,8,9,10,11,12,13,14]. De plus, une variété de méthodes heuristiques (analytiques) et complètes ont été proposées pour résoudre le HSTP, y compris des méthodes hybrides ou améliorées, comme passé en revue par [3].
+
+Néanmoins, développer de bons modèles et algorithmes pour résoudre le HSTP est une tâche difficile en raison des caractéristiques et complexités inhérentes du problème (un espace de recherche vaste – grand nombre d'événements à assigner aux ressources tout en respectant une longue liste de contraintes ; augmentation du nombre de cours/matières très divers à planifier pour les différents pays ; une structure variable dans différentes écoles secondaires même dans le même pays ou système éducatif et une variété plus large de nombreuses exigences différentes (objectifs et contraintes) qui sont généralement spécifiques à chaque institution et changent quotidiennement) [5,15,16,17,18]. En outre, [19] a confirmé que chaque modèle a une utilité limitée et que de nombreux problèmes ne sont toujours pas résolus de manière efficace ou optimale, car la plupart de ces approches de solution génèrent cependant des solutions réalisables ou de faible qualité. Même [20] a exprimé que trouver une solution réalisable au HSTP est souvent difficile, en particulier lorsque les ressources sont limitées, et conduit généralement à une faible efficacité computationnelle.
+
+Le HSTP a été intensivement étudié depuis les années 1960 [21,22]. Ces dernières années ont vu une augmentation du niveau d'activité de recherche dans ce domaine. Cela est démontré (entre autres) par des études de synthèse, par exemple, [23,24,25], et l'émergence d'une série de conférences internationales sur la pratique et la théorie de la planification automatisée (PATAT), la conférence internationale multidisciplinaire sur la planification : théorie et application (MISTA) et la création d'un groupe de travail de l'Association européenne des sociétés de recherche opérationnelle (EURO) sur la planification automatisée [26]. Cependant, la série de conférences internationales sur PATAT a largement contribué à ce domaine, par exemple [10,18,27,28,29].
+
+Les graphes, les réseaux et la programmation en nombres entiers (IP) se sont révélés utiles dans la formulation mathématique et la solution des modèles de planification scolaire [15,30]. La programmation en nombres entiers (IP) a été utilisée pour modéliser des problèmes avec des exigences plus sophistiquées, y compris les problèmes de planification éducative, depuis les premiers jours de la recherche opérationnelle, par exemple, [22,31]. Cependant, l'IP est principalement utilisée pour la planification en raison de sa force de modélisation, et non comme une méthode de solution réelle, car seules de petites instances ou des variantes simplifiées du problème ont été montrées pour être résolues en un temps raisonnable. Ces derniers temps, plusieurs améliorations ont été apportées aux solveurs IP [32] et plusieurs techniques basées sur l'IP ont été introduites pour des HSTP similaires qui ont pu fournir des bornes et de bonnes solutions après des exécutions plus longues. [7,8] ont passé en revue certaines de ces contributions récentes.
+
+Au cours des dernières années, les méta-heuristiques, y compris leurs hybrides, se sont révélées très efficaces dans la littérature sur l'optimisation, et en particulier dans la planification scolaire. Souza et al. [33] ont appliqué une approche hybride de l'algorithme de recherche tabou GRASP pour résoudre le problème de la planification scolaire afin d'améliorer la compacité de l'emploi du temps et d'accélérer le processus d'obtention de solutions de meilleure qualité. Dans ce travail, tandis que la procédure de construction partiellement avide a été utilisée pour générer de bonnes solutions initiales et diversifier la recherche, la procédure de recherche tabou a été utilisée pour améliorer (affiner) la solution construite (recherche). Bien que des solutions de qualité aient été générées, il a été suggéré que la qualité de la solution pourrait être améliorée en prenant en compte d'autres exigences et en ajoutant un composant qui mesure la différence entre la solution actuelle et la solution souhaitée dans la fonction objective.
+
+Soza et al. [34] ont abordé la solution des problèmes de planification en utilisant des algorithmes culturels. Les auteurs ont proposé l'utilisation des connaissances du domaine, à la fois a priori et extraites pendant la recherche, pour améliorer les performances d'un algorithme évolutif lors de la résolution de problèmes de planification. Les résultats expérimentaux ont fourni des résultats très encourageants. Cependant, l'optimalité de la solution était douteuse car les violations des contraintes souples n'étaient pas abordées. Il a été suggéré que les performances de l'algorithme développé pourraient être améliorées en analysant les mécanismes de la méthode du recuit simulé pour l'incorporation dans un algorithme évolutif ou un algorithme culturel.
+
+Santos et al. [35] ont présenté une approche hybride SA-ILS pour résoudre le problème de la planification scolaire. Le moteur Kingston's High School Engine (KHE) a été utilisé pour générer une solution initiale tandis que le recuit simulé (SA) et la recherche locale itérée (ILS) ont été utilisés pour effectuer une recherche locale autour de la solution initiale. Les résultats expérimentaux ont produit plusieurs meilleures solutions connues pour l'ensemble de tests. Cependant, il a été suggéré que la qualité de la solution pourrait être améliorée par le développement d'un ensemble élargi de voisinages et une étude expérimentale appropriée pour affiner la sélection des paramètres.
+
+Sorensen et al. [36] ont établi une nouvelle approche hybride appelée matheuristic, combinant la programmation en nombres entiers et les méta-heuristiques pour résoudre le problème de la planification scolaire. Les résultats expérimentaux ont montré que la matheuristic développée a fourni des résultats prometteurs et le potentiel de l'hybridation de la programmation mathématique et des méta-heuristiques. Cependant, il a été suggéré que l'efficacité computationnelle de la matheuristic développée pourrait être améliorée en étudiant des approches plus avancées pour ajuster la taille des voisinages et sélectionner les variables dans chaque voisinage.
+
+Raghavjee [37] a présenté des algorithmes génétiques pour résoudre le HSTP afin de tester l'efficacité d'une approche par algorithme génétique pour résoudre plusieurs types de HSTP et également pour évaluer les performances d'un algorithme génétique utilisant une représentation indirecte (IGA) par rapport à un algorithme génétique utilisant une représentation directe (DGA) lors de la résolution du HSTP. Les deux DGA et IGA, lorsqu'ils sont testés sur cinq HSTP, ont permis de produire des emplois du temps compétitifs et, dans certains cas, supérieurs à ceux d'autres méthodes. Cependant, l'IGA a surpassé le DGA pour tous les HSTP testés. La solution n'a pas abordé le problème de l'optimalité et des complexités logicielles et computationnelles qui peuvent être envisagées pour de futures recherches. De plus, il a été recommandé que les recherches futures se concentrent sur la mise en œuvre de techniques plus avancées (algorithmes plus efficaces) pour résoudre le HSTP afin de fournir plus de bases de comparaison.
+
+Kristiansen [38] a développé différentes techniques pour résoudre les problèmes de planification multiples (planification scolaire, sectionnement des étudiants et planification des réunions) dans les lycées danois. Les techniques développées incluent la recherche à grand voisinage adaptatif (ALNS), la programmation en nombres entiers mixtes (MIP) avec décomposition Dantzig-Wolfe dans une branche et prix (B&P). Les résultats expérimentaux ont prouvé que toutes les techniques et algorithmes développés étaient efficaces. Cependant, il a été suggéré que les recherches futures pourraient se concentrer sur l'étude de techniques telles que les hyper-heuristiques et les matheuristiques pour mesurer et améliorer la qualité de la solution et l'efficacité computationnelle des méthodes exactes développées.
+
+Odeniyi et al. [2] ont développé un algorithme de recuit simulé modifié (MSA) pour résoudre le HSTP. L'implémentation du MSA était caractérisée par une modification de l'horaire de refroidissement avec l'introduction d'un facteur non linéaire au calendrier de refroidissement exponentiel du recuit simulé classique (α = (1/log(1+t)) pour devenir parabolique (comme α = (1/log(1+t+t²)), afin de diminuer la sensibilité aux valeurs initiales (paramètres) qui expliquaient le temps de convergence excessif du recuit simulé classique. Le MSA, lorsqu'il a été testé sur certaines variantes du HSTP provenant des institutions secondaires nigérianes, a produit des emplois du temps scolaires sans conflit qui respectaient toutes les contraintes dures et minimisaient de manière optimale toutes les violations des contraintes souples en moins de temps de simulation et avec un coût de solution inférieur. Cependant, la solution n'a pas abordé le problème des complexités logicielles et computationnelles qui peuvent être envisagées pour de futures recherches. De plus, il a été recommandé que les recherches futures se concentrent sur l'amélioration de la qualité de la solution de l'algorithme développé en mettant en œuvre des techniques plus avancées telles que des algorithmes hybrides efficaces.
+
+Dorneles [39] a développé des techniques qui combinent la programmation mathématique et les heuristiques, appelées matheuristiques (heuristique de fixation et d'optimisation combinée avec une stratégie de descente de voisinage variable et une approche de génération de colonnes), pour résoudre de manière efficace et robuste certaines variantes du problème de planification scolaire (HSTP) provenant d'institutions brésiliennes. Les performances des matheuristiques développées ont été évaluées et comparées aux solveurs MIP de pointe conçus pour résoudre le GHSTP, appelés GOAL et SVNS. Les résultats expérimentaux ont fourni des résultats très encourageants qui indiquaient que les solveurs MIP de pointe n'étaient pas efficaces pour résoudre les instances du HSTP+. Il a été suggéré que les recherches futures pourraient se concentrer sur la réduction du temps de simulation tout en améliorant à la fois la qualité de la solution et l'efficacité computationnelle des matheuristiques développées.
+
+Raghavjee et al. [40] ont présenté une hyper-heuristique perturbative de sélection par algorithme génétique (GASPHH) pour résoudre le HSTP. Une approche en deux phases a été adoptée, la première phase se concentrant sur les contraintes dures, et la seconde sur les contraintes souples. GASPHH a utilisé la sélection par tournoi pour choisir les parents, auxquels les opérateurs de mutation et de croisement ont été appliqués. GASPHH a été appliqué à cinq problèmes différents de planification scolaire. Les performances de GASPHH ont été évaluées et comparées à celles d'autres méthodes appliquées à ces problèmes, y compris un GA appliqué directement à l'espace de solution. GASPHH a produit des emplois du temps réalisables pour toutes les instances de problèmes, a fourni une solution généralisée au HSTP et a surpassé les autres méthodes appliquées au même ensemble de problèmes. Cependant, GASPHH était plus intensif en termes de calcul par rapport aux heuristiques de référence basées sur SGA. Il a été suggéré que les recherches futures pourraient se concentrer sur l'étude d'approches pour réduire à la fois le temps de simulation et la complexité computationnelle ainsi que pour améliorer l'efficacité computationnelle du GASPHH développé.
+
+Demirovic [6] a présenté des approches basées sur la satisfaction de contraintes pour le HSTP. Le problème de déterminer si une formule de logique propositionnelle a une solution est appelé le problème de la satisfiabilité (abrégé en SAT). La thèse a exploré la relation entre la logique propositionnelle et le HSTP, ainsi que les approches connexes. La thèse a décrit le HSTP général (XHSTT), introduit une définition formelle, ainsi que deux approches de modélisation différentes, basées sur SAT et bitvector. L'auteur a combiné la recherche locale et la recherche à grand voisinage pour résoudre les instances de XHSTT modélisées comme maxSAT. Chacune des méthodes décrites est très différente l'une de l'autre et représentait des moyens distincts de traiter le XHSTT. Les résultats computationnels ont montré que les modèles et les méthodes de solution développés étaient compétitifs par rapport à l'état de l'art. Cependant, il a été suggéré que les recherches futures pourraient se concentrer sur l'étude de techniques pour trouver et prouver des solutions optimales en un temps raisonnable pour XHSTT dans de nombreuses instances.
+
+Une analyse de la littérature ci-dessus a révélé que la plupart de ces approches de solution généraient néanmoins des solutions réalisables ou presque optimales avec une faible efficacité computationnelle. Par conséquent, cette recherche se concentre sur le développement d'une approche de solution plus efficace, en utilisant la force et en minimisant les faiblesses de deux méta-heuristiques bien connues, le recuit simulé (SA) et l'algorithme génétique (GA). Le SA est basé sur une analogie avec la thermodynamique simulant le refroidissement d'un ensemble d'atomes chauffés. Cette technique commence sa recherche à partir de toute solution initiale qui peut être générée aléatoirement ou en utilisant des solutions générées par un autre algorithme [2,41]. La procédure principale consiste en une boucle qui génère aléatoirement, à chaque itération, un voisin s′ de la solution actuelle s. Les mouvements sont sélectionnés de manière probabiliste en tenant compte d'une température T et de la variation de coût du mouvement ∆ [42].
+
+Le SA est connu pour son pouvoir d'éviter les optima locaux et sa garantie théorique de trouver la solution optimale globale lorsque la température initiale est suffisamment élevée et le taux de refroidissement infiniment lent [43,44,45], mais converge en un temps excessif surtout lorsque l'espace de recherche est vaste [46]. Plusieurs tentatives ont été faites pour accélérer ce processus, telles que le traitement ou la modification du paramètre de température, connu sous le nom de stratégie ou calendrier de recuit [2], et l'hybridation avec d'autres techniques [47,48,49,50], entre autres.
+
+Le GA est une méta-heuristique adaptative biologiquement motivée basée sur la sélection naturelle et la recombinaison génétique. Il utilise des mécanismes de sélection, de croisement et de mutation pour faire évoluer la population. L'utilisation du GA pour obtenir les paramètres optimaux d'une fonction de noyau, sa flexibilité, associée à sa capacité démontrée de recherche ou d'exploration de grands espaces de recherche [51,52], sa capacité démontrée à atteindre des solutions proches de l'optimum pour de grands problèmes et son pouvoir de découvrir de bonnes solutions rapidement pour des problèmes difficiles de haute dimension en font une technique idéale à envisager pour résoudre le problème de la planification.
+
+Dans ce travail, nous prolongeons les études précédentes sur le HSTP. Nous proposons un modèle de programmation mathématique et une méthode méta-heuristique pour construire des emplois du temps scolaires. Nous utilisons la formulation en programmation linéaire mixte en nombres entiers pour modéliser le problème à résoudre, mais en raison de la limitation d'une approche de programmation mathématique pour résoudre de grandes instances de problème et de la lenteur de convergence de l'algorithme classique de recuit simulé (SA), nous proposons une nouvelle méthode méta-heuristique, appelée algorithme de recuit simulé amélioré (ESA), qui incorpore les meilleures caractéristiques du recuit simulé (SA) et de l'algorithme génétique (GA) pour trouver des solutions de qualité à certaines variantes du HSTP.
+
+L'objectif de ce travail est de développer une approche de solution efficace (modèle et algorithme) qui offre une utilisation sans limites et une solution de haute qualité au problème de la planification scolaire. L'idée générale est de surmonter le problème de la faible qualité de la solution (lenteur de la vitesse de convergence), qui est un problème commun lors de l'utilisation du recuit simulé (SA). L'approche de solution développée a été mise en œuvre en utilisant le logiciel Matrix Laboratory 8.6. Afin de valider et de démontrer les performances de l'approche de solution proposée, elle a été testée avec les ensembles de données de planification scolaire hautement contraints fournis par un lycée nigérian, en utilisant le temps de calcul, le coût de la solution et les violations des contraintes comme métriques d'évaluation.
+
+Développer des modèles et des algorithmes qui génèrent automatiquement des emplois du temps de haute qualité est d'une grande importance [6] et est encore un domaine de recherche actif ainsi que des enjeux importants dans ce domaine. Des emplois du temps de haute qualité sont pertinents pour des raisons financières et pédagogiques. Des emplois du temps de haute qualité influencent directement la qualité de l'enseignement et de l'apprentissage, les conditions de travail des enseignants ainsi que la satisfaction des étudiants et du personnel, entre autres choses, ce qui conduit à une meilleure utilisation globale des ressources et de l'environnement d'apprentissage [12,53]. À l'inverse, la
+
+ construction des emplois du temps à la main est généralement très difficile, chronophage et sujette aux erreurs. Par conséquent, aider les planificateurs des lycées avec des algorithmes efficaces et des logiciels d'aide à la décision qui génèrent automatiquement des emplois du temps de haute qualité et/ou passent moins de temps est d'une grande importance [6,7].
+
+De plus, l'administration des lycées nécessite un modèle de HSTP qui soit suffisamment général pour répondre à de nombreuses exigences différentes, et qui soit également traitable par des méthodes de solution assistées par ordinateur. Cela soutient la tendance récente à développer des modèles généraux pour le HSTP, par exemple [6,9,10,12,14,16,17,54,55,56,57,58]. En outre, le modèle de programmation mathématique formulé dans cet article est le premier pour le système scolaire nigérian, et est parmi les modèles les plus complets de planification scolaire trouvés dans la littérature. Bien que le modèle développé soit adapté au cas nigérian, il peut facilement être adapté à d'autres variantes d'autres pays et à d'autres problèmes d'optimisation connexes. Le modèle est "complet" dans le sens où il contient toutes les contraintes pratiques pertinentes disponibles dans le contexte du problème de la planification scolaire au Nigeria.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+2. MÉTHODOLOGIE
+Dans ce travail, une technique de programmation linéaire mixte en nombres entiers a été utilisée pour formuler le modèle de programmation mathématique du problème de planification scolaire pour le système des lycées au Nigeria (HNSTP). Un algorithme de recuit simulé amélioré (ESA) pour résoudre le problème de planification scolaire a été formulé, incorporant des caractéristiques spécifiques du recuit simulé (SA) et des algorithmes génétiques (GA). Le modèle mathématique formulé avec l'algorithme ESA et l'algorithme SA a été mis en œuvre à l'aide du logiciel Matrix Laboratory 8.6 sur un processeur Intel(R) Core(TM) i3-7100 CPU avec une vitesse de 2,50 GHz, un disque dur de 32 Go, une mémoire vive de 4 Go et un système d'exploitation 32 bits, sous Windows 7. La validation a été effectuée en utilisant un ensemble de données de lycée nigérian hautement contraignant. Les algorithmes mis en œuvre ont été évalués en utilisant la violation des contraintes, le temps de simulation et le coût de la solution comme métriques de performance.
+
+2.1 Spécification du problème et formulation du modèle
+L'objectif du problème de planification scolaire dans le système des lycées au Nigeria (NHSTP) est de construire un emploi du temps hebdomadaire. La semaine est organisée en un ensemble de jours D, et chaque jour est divisé en un ensemble de périodes P. Toutes les périodes sont réparties sur les jours de la semaine D et les périodes journalières H qui se déroulent pendant le même créneau, c'est-à-dire que P = D * H. Soit C un ensemble de classes (sections de classe), T un ensemble d'enseignants et S un ensemble de matières. Une classe k ∈ C est un groupe distinct d'élèves suivant les mêmes matières, sans période d'inactivité pendant la semaine, et chaque matière d'une classe est enseignée par un seul enseignant prédéterminé. Un créneau horaire est une paire, composée d'un jour et d'une période de classe (i,j), avec i ∈ D et j ∈ P où toutes les périodes ont la même durée. Les enseignants l ∈ T peuvent être indisponibles à certains créneaux horaires.
+
+Les entrées pour le NHSTP sont un ensemble d'événements (ou réunions) E qui doivent être programmés, une matrice C* T des exigences de cours R = (Rlk) où Rlk est le nombre de périodes pendant lesquelles l'enseignant l doit rencontrer la classe k pendant la durée de l'emploi du temps (contenant un total de P périodes dans un ensemble P), et les matrices binaires d'indisponibilité des enseignants et des classes T ij et Ckj. Chaque événement nécessite une classe k(e) ∈ C, un enseignant l(e) ∈ T, et un nombre d'heures hebdomadaires hours(e) ∈ N. En particulier, dans le contexte nigérian, un enseignant, une classe et une salle sont préassignés à chaque événement e de sorte que les salles de classe ne sont pas prises en compte dans la planification. De plus, chaque événement définit comment les cours sont répartis sur une semaine en demandant un certain nombre de cours doubles, en limitant le nombre quotidien de cours et en définissant si les cours enseignés le même jour sont consécutifs ou non.
+
+Un emploi du temps réalisable attribue un créneau horaire à chaque leçon des événements en satisfaisant aux exigences des contraintes dures HC1-HC13 ci-dessous :
+HC1 : Le nombre de cours que chaque enseignant doit donner à chaque classe doit être respecté (contrainte d'exigence de cours).
+HC2 : Deux classes ne doivent pas être programmées pour le même enseignant à la même période (contrainte de conflit de classes).
+HC3 : Deux enseignants ne doivent pas être programmés pour la même classe à la même période (contrainte de conflit d'enseignants).
+HC4 : Un cours ne peut pas être programmé à des périodes où l'enseignant est indisponible (contrainte d'indisponibilité des enseignants).
+HC5 : Un cours ne peut pas être programmé à des périodes où la classe est indisponible (contrainte d'indisponibilité des classes).
+HC6 : Chaque classe, pour un ensemble donné de périodes, doit être impliquée dans une leçon (contrainte d'une classe, une leçon).
+HC7 : Chaque enseignant peut être assigné à au plus une matière et une classe (section de classe) dans une période donnée, à l'exception des matières indiquées nécessitant plus d'un instructeur (contrainte d'unicité).
+HC8 : Toutes les matières du programme d'une section de classe doivent apparaître dans l'emploi du temps pour le nombre requis de périodes d'enseignement (contrainte de complétude pour les élèves).
+HC9 : Toutes les matières assignées à un enseignant donné doivent apparaître dans l'emploi du temps pour le nombre requis de périodes d'enseignement (contrainte de complétude pour les enseignants).
+HC10 : Les périodes d'enseignement assignées à une matière donnée sur une semaine entière doivent correspondre aux exigences hebdomadaires pour cette matière spécifique (contrainte de complétude pour les matières).
+HC11 : Certaines paires de leçons doivent être programmées simultanément (contrainte de simultanéité).
+HC12 : Certaines matières doivent être enseignées dans des créneaux de plusieurs périodes au plus une fois par jour pour une section de classe donnée (contrainte de consécutivité).
+HC13 : L'emploi du temps de chaque section de classe ne doit pas comporter de créneaux vides pendant la semaine (contrainte d'emploi du temps compact pour les élèves).
+
+En plus de la faisabilité des contraintes dures, autant que possible des exigences souples SC1-SC8 énoncées ci-dessous devraient être satisfaites :
+SC1 : Éviter plus de leçons à la même classe le même jour que le maximum spécifié pour le couple enseignant-classe (contrainte de charge de travail quotidienne maximale des classes).
+SC2 : Respecter le nombre maximal de leçons quotidiennes spécifiées pour chaque enseignant (contrainte de charge de travail quotidienne maximale des enseignants).
+SC3 : Éviter d'assigner des enseignants à des périodes où ils préfèrent ne pas enseigner (contrainte de préférence ou d'indésirabilité des enseignants).
+SC4 : Éviter les périodes d'inactivité des enseignants. Autant que possible, minimiser le nombre de périodes vides ou de trous entre deux périodes consécutives où un enseignant est assigné à une classe. Les pauses et les périodes libres ne sont pas considérées comme des périodes d'inactivité ou des trous (contrainte de période d'inactivité des enseignants).
+SC5 : Accorder autant que possible les demandes des enseignants pour des cours doubles (cours donnés en deux périodes consécutives) (contrainte de leçon double par semaine).
+SC6 : Accorder autant que possible les demandes des enseignants pour le parallélisme des matières (matières programmées pour les mêmes périodes) (contrainte de parallélisme des matières).
+SC7 : Les leçons pour une matière donnée doivent être programmées pour au plus une période d'enseignement par jour de la semaine, sauf si elles nécessitent plus de périodes d'enseignement que les jours de la semaine ou s'il y a une demande spéciale pour des heures multiples ou consécutives, auquel cas elles sont programmées en conséquence (contrainte de distribution uniforme des matières).
+SC8 : Les pré-assignations de certaines matières à des périodes spécifiques doivent être respectées (contrainte de pré-assignations de certaines matières).
+
+La notation utilisée dans la spécification du problème et le modèle formulé pour le NHSTP, prenant en compte toutes les exigences des contraintes dures et souples énumérées ci-dessus, est présentée comme suit.
+
+Ensembles
+i ∈ D jours de la semaine. D = {1,2,...,|D|}.
+j ∈ P périodes d'un jour. P = {1,...,|P|}.
+P1 P sans les deux dernières périodes d'un jour. P1 = {1,...,|P| −2}.
+k ∈ C ensemble des classes.
+l ∈ T ensemble des enseignants.
+m ∈ S ensemble des matières.
+e ∈ E ensemble des événements.
+B ensemble des quadruples de la forme (l1; k1; l2; k2) avec l1 ≠ l2 et k1 ≠ k2 de sorte que toutes les leçons de l'enseignant l1 à la classe k1 doivent être simultanées aux leçons de l'enseignant l2 à la classe k2
+Skl = {m∈S : m est une matière que l'enseignant l enseigne à la section de classe k}
+S*kl = {m∈S : m est une matière régulière que l'enseignant l enseigne à la section de classe k}, où le terme "régulière" se réfère à toutes les matières qui ne nécessitent aucun type de planification spécial.
+SlSim = {(m, k, l*) : m∈S est une matière que l'enseignant l∈T enseigne à une partie de la section k∈K simultanément avec une autre matière enseignée par l'enseignant "de base" l*}
+SlCol = {(m, k, l*) : m∈S est une matière que l'enseignant l∈T enseigne à la section k∈K en collaboration avec l'enseignant "de base" l*}
+Scons = {(m, k, h m) : m∈S est une matière de la section k∈K qui doit être programmée en bloc(s) de hm périodes consécutives}
+Sparal = {[(ma, mb) ; (ka, kb) ; (la, lb)] : ma ∈S est une matière que l'enseignant la enseigne à la section ka qui doit être programmée toujours en parallèle à mb une matière enseignée par l'enseignant lb pour la section kb}
+Sexcl = {[(ma, ka, la ; mb, kb, lb ; ... ; mw, kw, lw) (la)] : ma, mb, ..., mw ∈S sont des matières que les enseignants la, lb, ..., lw ∈T enseignent aux sections ka, kb, ..., kw ∈K, respectivement, cependant, pas plus qu'un certain nombre d'entre eux ne peuvent être programmés le même jour ou à la même période}
+Sfix = {(ia, ja, ma, ka, la) : ma ∈S est une matière que l'enseignant la enseigne à la section ka et doit être programmée le jour ia et pendant la période ja}
+Dl = {i∈D : i est un jour de la semaine où l'enseignant l est disponible pour l'école}
+Cl = {k∈C : k est une section de classe de l'école à laquelle l'enseignant l enseigne au moins une matière}
+
+Paramètres
+Rlk : La charge de travail d'un événement (l,k), c'est-à-dire le nombre de leçons que l'enseignant l doit enseigner à la classe k.
+λ : Le nombre maximal de leçons autorisées par jour.
+mμ : Le nombre de créneaux de plusieurs périodes (leçons doubles) requis pour la matière m chaque semaine.
+il, μ : Le nombre maximal de leçons doubles demandées par l'enseignant l avec la classe k.
+il, ϕ : Le nombre effectif de leçons doubles attribuées.
+ilk,, σ : Le nombre total de leçons attribuées à la classe k avec l'enseignant l le jour i.
+lk, λ : Le nombre maximal de leçons autorisées par jour.
+ijl,, π : Le nombre total de leçons attribuées à l'enseignant l pendant la période j du jour i.
+η : Le nombre de périodes d'inactivité dans l'emploi du temps de l'enseignant l le jour i.
+TTP : Total des périodes de temps. TTP indique le nombre total de périodes de temps à programmer dans l'emploi du temps.
+WTL l : Charge d'enseignement hebdomadaire pour l'enseignant l. WTL l indique le nombre total de périodes de temps à attribuer à l'enseignant l chaque semaine.
+DTL l : Charge d'enseignement quotidienne moyenne pour l'enseignant l. DTL l indique le nombre moyen quotidien de périodes de temps attribuées à l'enseignant l.
+WTL kl : Charge d'enseignement hebdomadaire de l'enseignant l pour la section de classe k. WTL kl indique le nombre total de périodes de temps à attribuer à l'enseignant l pour la section de classe k chaque semaine.
+WTL klm : Charge d'enseignement hebdomadaire de l'enseignant l pour la section de classe k et la matière m. WTL klm indique le nombre total de périodes de temps à attribuer à l'enseignant l pour la matière m chaque semaine.
+TTP k : Total des périodes de temps pour la section k. TTP k indique le nombre total de périodes de temps sur toutes les matières de la section de classe k à attribuer chaque semaine.
+Hk max : Est un paramètre qui indique le nombre maximal de périodes d'enseignement que la section k peut avoir pendant n'importe quel jour de la semaine. Hk max peut être égal à J, la durée de chaque jour, cependant, afin de créer des emplois du temps plus équilibrés pour les classes, il est préférable de définir une limite supérieure différente pour chaque section de l'école. Par conséquent, Hk max est égal à [TTP k /D]. En général, cependant, il est vrai que Hk max ≤ P, ∀ k∈C.
+
+Variables
+x i, j, k, l, m : Variable binaire qui indique si la matière m, enseignée par l'enseignant l à la section de classe k, est programmée pour la jème période du jour i.
+mlkjix ,,,, : Complément de la variable binaire x i, j, k, l, m, c'est-à-dire x i, j, k, l, m = 0 si mlkjix ,,,, = 1 et vice versa.
+mhkti mm y ,,,, : Variable binaire qui indique si la matière m est programmée pour hm périodes consécutives le jour i pour la section de classe k, avec tm étant la première période pour cette attribution.
+T ij : Variable binaire qui indique si l'enseignant l est disponible pour enseigner la matière m à la classe k programmée pour la jème période du jour i.
+Ckj : Variable binaire qui indique si la classe k est disponible pour être enseignée par l'enseignant l matière m programmée pour la jème période du jour i.
+Z kj : Matrice binaire qui indique si la classe k doit être enseignée une matière m par l'enseignant l à la jème période du jour i,
+jill ,, : Variable binaire qui indique si l'enseignant l a été programmé pour enseigner à une période indésirable j le jour i.
+X = Une matrice arbitraire (x i, j, k, l, m) est appelée un emploi du temps. X ∈ {0, 1}
+
+La fonction objectif est de minimiser la violation des contraintes (souples) qui est formulée comme une fonction de coût de solution Cf(s), qui associe une valeur de coût à une solution donnée. Cette valeur a été utilisée pour comparer la qualité des différentes solutions. Cette fonction a été définie comme suit : Soit S l'espace de recherche ; s ∈ S, une solution ; n, le nombre de types de contraintes du problème considérés, wi, le poids de pénalité associé à chaque type de contrainte i et vi(s), représente le nombre de violations de contrainte de type i dans une solution s, v i(s) = 0 si le type de contrainte i est satisfait et vi(s) = 1 si le type de contrainte i est violé. Par conséquent, la fonction de coût de solution Cf(s) est donnée comme :
+
+
+
+
+
+
+
+
+Ensemble de contraintes (2) : garantit que le nombre de leçons que chaque enseignant doit donner à chaque classe est entièrement programmé.
+Ensemble de contraintes (3) : garantit que deux classes ne sont pas programmées pour le même enseignant à la même période.
+Ensemble de contraintes (4) : garantit que deux enseignants ne sont pas programmés pour la même classe à la même période.
+Ensemble de contraintes (5) : garantit qu'une leçon ne peut pas être programmée à des périodes où l'enseignant est indisponible.
+Ensemble de contraintes (6) : garantit qu'une leçon ne peut pas être programmée à des périodes où la classe est indisponible.
+Ensemble de contraintes (7) : garantit que chaque classe, pour un ensemble donné de périodes, est programmée pour une seule leçon à la fois.
+Ensemble de contraintes (8) : garantit que chaque enseignant est assigné à au plus une matière et une classe (section de classe) à une période donnée, à l'exception des matières indiquées nécessitant plus d'un instructeur.
+Ensemble de contraintes (9) : garantit que toutes les matières du programme d'une section de classe apparaissent dans l'emploi du temps pour le nombre requis de périodes d'enseignement.
+Ensemble de contraintes (10) : garantit que toutes les matières assignées à un enseignant donné apparaissent dans l'emploi du temps pour le nombre requis de périodes d'enseignement.
+Ensemble de contraintes (11) : garantit que les périodes d'enseignement assignées à une matière donnée sur une semaine entière correspondent aux exigences hebdomadaires pour cette matière spécifique.
+Ensemble de contraintes (12) : garantit que certaines paires de leçons sont programmées simultanément.
+Ensemble de contraintes (13) : garantit que certaines matières enseignées dans des créneaux de plusieurs périodes au plus une fois par jour pour une section de classe donnée sont respectées. La contrainte (13a) force les variables de base hm xi,j,k,l,m qui se réfèrent à des périodes de temps consécutives à prendre la valeur de 1, tandis que la contrainte (13b) garantit qu'un seul bloc de périodes consécutives peut être attribué un jour donné et la contrainte (13c) indique qu'il doit y avoir exactement mμ de ces blocs pour la semaine entière.
+Ensemble de contraintes (14) : garantit que l'emploi du temps de chaque section de classe ne comporte pas de créneaux vides pendant la semaine. Fondamentalement, les ensembles de contraintes (14a) et (14b) garantissent que pour chaque section de classe, une seule matière est programmée pour une période donnée (sauf peut-être la dernière) de chaque jour, tandis que la contrainte (14c) vérifie que toutes les matières de la section de classe k sont programmées dans la période maximale autorisée pour la section de classe.
+Ensemble de contraintes (15) : garantit que la limite du nombre maximal de leçons qu'une classe peut avoir par jour est respectée.
+Ensemble de contraintes (16) : garantit que le nombre maximal spécifié de leçons quotidiennes pour chaque enseignant est respecté.
+Ensemble de contraintes (17) : garantit que l'affectation des enseignants à des périodes où ils préfèrent ne pas enseigner est évitée.
+Ensemble de contraintes (18) : détermine le nombre de périodes d'inactivité des enseignants dans une solution.
+Ensemble de contraintes (19) : garantit que les demandes des enseignants pour des leçons doubles sont accordées.
+Ensemble de contraintes (20) : garantit que les demandes des enseignants pour le parallélisme des matières sont accordées.
+Ensemble de contraintes (21) : garantit que la distribution uniforme des matières est respectée.
+Ensemble de contraintes (22) : garantit que les préaffectations de certaines matières à des périodes spécifiques sont respectées, tandis que l'ensemble de contraintes (23) est nécessaire pour garantir l'intégrité de la solution.
+
+Dans ce travail, chaque contrainte dure a été assignée un poids de 20 pour stipuler leur priorité plus élevée par rapport aux contraintes souples et pour permettre à la solution proposée de guider le processus de recherche vers des solutions valides conformément à la littérature [59]. Le poids assigné à chacune des contraintes souples (préférences) varie pour indiquer l'importance relative de chaque préférence par rapport aux autres, de sorte qu'un poids de 6 a été assigné à SC1, SC2, SC5 et SC6 ; un poids de 4 a été assigné à SC7 et SC8 ; un poids de 3 a été assigné à SC3 et enfin un poids de 1 a été assigné à SC4.
+
+Ces ensembles de poids ont été inspirés par la littérature qui stipule qu'une fonction d'évaluation basée sur des pénalités pondérées devrait être utilisée pour les problèmes de planification où une abondance de combinaisons de contraintes différentes est rencontrée [60,61,62], permettant ainsi à certaines contraintes d'avoir une priorité plus élevée que d'autres. Il faut noter que (i) plus la valeur de Cf(s) pour une solution s donnée est basse, plus la qualité de s est élevée, (ii) à la fois la distance à la faisabilité et la qualité de la solution ont été mesurées.
+
+
+
+
+
+### 2.2 Formulation de l'algorithme de recuit simulé amélioré (ESA)
+
+L'algorithme de recuit simulé (SA) a été amélioré pour former l'algorithme de recuit simulé amélioré (ESA) à travers les trois étapes suivantes :
+
+1. **Modification du recuit simulé (SA)** :
+    - En termes du paramètre de réduction de la température \(\alpha\) afin d'améliorer son efficacité en termes de vitesse de convergence et de coût de solution, en introduisant un paramètre de réduction parabolique \(\alpha\) (\(\alpha = \frac{1}{\log(1+t+t^2)}\)) comme suggéré par [2]. En effet, l'efficacité du SA dépend souvent du plan de refroidissement et en contrôlant soigneusement le taux de refroidissement de la température, le SA peut trouver l'optimum global de manière exponentiellement plus rapide [63,64].
+
+2. **Intégration avec l'algorithme génétique (GA)** :
+    - (i) Améliorer davantage les performances du SA en termes de vitesse et de qualité de la solution comme suggéré par [65].
+    - (ii) Trouver un bon équilibre entre l'exploitation des éléments trouvés jusqu'à présent et l'exploration de l'espace de recherche afin de trouver la solution optimale globale comme suggéré par [66].
+    - (iii) Améliorer sa capacité de recherche locale comme suggéré par [67]. Grâce à cette amélioration (intégration), les opérateurs génétiques du GA ont été appliqués pour observer le comportement du recuit simulé, ce qui a conduit à moins de paramètres à contrôler. Conformément au principe de l'intégration, de nouveaux individus ont été produits avec l'algorithme génétique (GA) après quoi ces individus ont été traités avec le SA, tandis que les résultats correspondants ont été utilisés comme les nouveaux individus de la génération suivante.
+
+3. **Réorganisation de la séquence des opérations évolutives** :
+    - Pour devenir (mutation, sélection et croisement) au lieu de (sélection, croisement et mutation) afin de réduire davantage le temps de convergence et d'améliorer globalement son efficacité computationnelle comme rapporté par [68,69].
+
+La séquence de processus ci-dessus a abouti à l'algorithme de recuit simulé amélioré (ESA). La structure algorithmique de l'algorithme ESA, qui a été codée en utilisant le logiciel MATLAB Laboratory 8.6, est présentée comme suit :
+
+1. **Étape 1** : Initialiser le paramètre de température \(T\), c'est-à-dire, définir \(T = T_0\), où \(T_0\) est un nombre positif élevé, définir le facteur de réduction de la température exponentielle comme \(\alpha = \frac{1}{\log(1+t+t^2)}\), et la température finale comme \(T_{t+1} = \alpha T_t\).
+
+2. **Étape 2** : Produire la population initiale composée de \(n\) individus.
+
+3. **Étape 3** : Calculer la fitness de chaque individu dans la population initiale.
+
+4. **Étape 4** : Répéter :
+    - **Étape 4.1** : Effectuer des opérations évolutives, c'est-à-dire, mutation, sélection et croisement, pour les individus dans la population de solutions actuelle.
+    - **Étape 4.2** : Laisser \(C_j\) être l'individu enfant produit par un individu parent \(P_j\), \(j = 1, \ldots, n\).
+    - **Étape 4.3** : Calculer la fitness \(E(C_j)\) du nouvel individu \(C_j\), \(j = 1, \ldots, n\).
+    - **Étape 4.4** : Pour \(j = 1, \ldots, n\), calculer \(\Delta E = E(C_j) - E(P_j)\), où \(E(P_j)\) est la fitness de l'individu parent \(P_j\). Si \(\Delta E \geq 0\), alors produire un nombre \(r\) avec une distribution uniforme dans l'intervalle [0,1]. Si \(\exp(-\Delta E/T) > r\), alors remplacer l'individu \(P_j\) par l'individu enfant \(C_j\). Si \(\Delta E < 0\), alors écarter l'individu enfant \(C_j\).
+    - **Étape 4.5** : Si la condition d'arrêt est satisfaite, alors la procédure entière est arrêtée, sinon la valeur de la température \(T\) est diminuée.
+
+La structure algorithmique de l'algorithme SA, codée en utilisant le logiciel MATLAB Laboratory 8.6, est présentée comme suit :
+
+1. **Étape 1** : Générer un emploi du temps initial \(S\).
+
+2. **Étape 2** : Définir le meilleur emploi du temps initial \(S^* = S\).
+
+3. **Étape 3** : Calculer le coût de \(S\) : \(C(S)\).
+
+4. **Étape 4** : Calculer la température initiale \(T_0\).
+
+5. **Étape 5** : Définir la température initiale \(T = T_0\), définir le facteur de réduction de la température parabolique comme \(\alpha = \frac{1}{\log(1+t)}\), et la température finale comme \(T_{t+1} = \alpha T_t\).
+
+6. **Étape 6** : Tant que le critère d'arrêt n'est pas satisfait, faire :
+    - (a) Répéter la longueur de la chaîne de Markov (M) fois :
+        - i. Sélectionner un voisin aléatoire \(S_1\) du programme actuel, (\(S_1 \in NS\)).
+        - ii. Définir \(\Delta(C) = C(S_1) - C(S)\).
+        - iii. Si (\(\Delta(C) \leq 0\) {déplacement vers le bas}).
+            - Définir \(S = S_1\)
+            - Si \(C(S) < C(S^*)\) alors définir \(S^* = S\)
+        - iv. Si (\(\Delta(C) > 0\) {déplacement vers le haut}).
+            - Choisir un nombre aléatoire \(r\) uniformément de [0, 1]
+            - Si \(r < e^{-\Delta(C)/T}\) alors définir \(S = S_1\)
+    - (b) Réduire (ou mettre à jour) la température \(T\).
+
+7. **Étape 7** : Retourner le programme \(S\).
+
+
+### 3. RÉSULTATS ET DISCUSSION
+
+Les algorithmes de recuit simulé (SA) et de recuit simulé amélioré (ESA) développés ont été testés avec l'ensemble de données d'emploi du temps scolaire hautement contraint fourni par un lycée nigérian. Les algorithmes ont été testés sous plusieurs itérations d'optimisation. Les résultats de l'évaluation des performances des deux algorithmes (SA et ESA) sont présentés dans le tableau 1.
+
+Comme le montre le tableau 1, le temps moyen de simulation et le coût de la solution pour générer un emploi du temps de haute qualité avec l'algorithme SA sont plus élevés que pour générer un emploi du temps optimal avec l'algorithme ESA développé. Le temps de simulation plus élevé et le coût de la solution de l'algorithme SA peuvent être attribués à la lente vitesse de convergence et au plan de refroidissement exponentiel inhérents à l'algorithme SA. Le plan de recuit modifié (plan de refroidissement lent - parabolique), la capacité de recherche locale améliorée et la réorganisation de la séquence des opérations évolutives dans l'algorithme ESA développé ont permis d'améliorer la vitesse de convergence, ce qui a réduit le temps moyen de simulation et le coût de la solution pour générer un emploi du temps optimal avec l'algorithme ESA développé.
+
+Ce résultat confirme les littératures précédentes qui indiquaient que : des solutions de haute qualité ne peuvent être obtenues que si les paramètres du SA (plan de refroidissement, mouvements de mise à jour, solution initiale, entre autres) sont bien ajustés et que (i) l'efficacité de l'algorithme SA dépend du plan de refroidissement et qu'en contrôlant soigneusement le taux de refroidissement de la température, le SA peut trouver l'optimum global de manière exponentiellement plus rapide [63,64] ; (ii) les performances du SA en termes de vitesse, de qualité de la solution (solution optimale globale) et de capacité de recherche locale peuvent être améliorées en l'intégrant avec le GA [65,66,67] ; et (iii) le temps de convergence et l'efficacité computationnelle d'un algorithme basé sur le GA peuvent être améliorés en réorganisant la séquence des opérations évolutives pour devenir (mutation, sélection et croisement) au lieu de (sélection, croisement et mutation) [68,69].
+
+La section suivante donne le résultat détaillé de l'évaluation des performances des deux approches de solution (SA et l'ESA développé) :
+
+(i) **Violation des contraintes** : La violation des contraintes est la métrique qui mesure la faisabilité et l'optimalité de la solution produite par un algorithme. Un algorithme qui satisfait toutes les contraintes du problème est dit produire une solution faisable. L'optimalité (qualité/bonté) de la solution d'un algorithme est indiquée par le nombre de contraintes souples que l'algorithme satisfait. Comme le montre le tableau 1, l'algorithme SA a produit un emploi du temps de haute qualité en raison de la violation d'une des contraintes souples, tandis que l'algorithme ESA développé a produit une solution optimale en satisfaisant toutes les contraintes spécifiées (dures et souples).
+
+(ii) **Temps de simulation** : Le temps de simulation est le paramètre qui mesure le temps utilisé par un algorithme pour s'exécuter jusqu'à ce que le résultat soit produit. Il est également connu sous le nom de temps de calcul, temps d'exécution ou temps de fonctionnement. Comme le préconisent [73], le temps de simulation doit être considéré en premier lors de l'évaluation des performances des algorithmes d'optimisation pour les problèmes combinatoires. Il doit être un élément clé de toute évaluation de ce type [74]. Il a été indiqué que l'un des facteurs les plus importants considérés avant de choisir le gagnant lors de la deuxième compétition internationale d'emplois du temps (ITC-2007) était le temps de simulation.
+
+Le tableau 1 montre les valeurs obtenues du temps de simulation des algorithmes SA et ESA développés pour les niveaux JSS et SSS respectivement. Le temps de simulation de l'algorithme SA et de l'algorithme ESA développé sont de 40,90 et 37,91 secondes respectivement pour le niveau JSS, et de 45,82 et 42,16 secondes respectivement pour le niveau SSS. Cela démontre clairement que l'algorithme ESA développé utilise moins de temps et converge plus rapidement que l'algorithme SA pour produire un emploi du temps optimal grâce à ses fonctionnalités améliorées (plan de refroidissement lent - parabolique, capacité de recherche locale améliorée et réorganisation de la séquence des opérations évolutives).
+
+Il a été observé que l'ESA développé a généré une vitesse de convergence élevée, ce qui a entraîné un temps moyen de simulation plus faible pour produire une solution optimale, mais a utilisé plus de temps pour calculer les emplois du temps des classes SSS par rapport aux classes JSS en raison des différents groupes de matières présents dans le SSS, tels que le groupe scientifique, le groupe commercial et le groupe artistique. Ce résultat confirme les littératures qui indiquaient que le SA peut trouver l'optimum global de manière exponentiellement plus rapide en contrôlant soigneusement le taux de refroidissement de la température, car les plans de refroidissement lents sont généralement plus efficaces [63] et que les performances du SA en termes de vitesse et de qualité de la solution peuvent être améliorées en l'intégrant avec le GA [65,67].
+
+(iii) **Coût de la solution** : La qualité d'un emploi du temps est définie par un coût de solution, également connu sous le nom de valeur de fitness ou fonction de qualité de la solution. La fonction de fitness calcule le nombre de violations de contraintes (généralement avec une valeur pondérée) pour différentes contraintes. Cette valeur est utilisée comme mesure de la qualité de l'emploi du temps généré par les algorithmes. Elle est utilisée pour comparer la bonté de différentes solutions, car plus les emplois du temps produits sont meilleurs, meilleures sont les valeurs de fitness. Elle est implicitement définie à travers la spécification du problème de l'emploi du temps scolaire et les contraintes comme donné dans l'équation 1a. Plus la valeur du coût de la solution pour une solution donnée est faible, meilleure est la qualité de la solution [70].
+
+Le tableau 1 montre les valeurs mesurées du coût de la solution des deux algorithmes (SA et ESA développé) pour les niveaux Junior Secondary School (JSS) et Senior Secondary School (SSS) respectivement. Les valeurs moyennes du coût de la solution de l'algorithme SA et de l'algorithme ESA développé étaient de 20,88 et 17,03 respectivement pour le niveau JSS, et de 23,43 et 18,99 respectivement pour le niveau SSS. Cela démontre clairement que l'ESA développé a produit la meilleure solution optimale (avec une valeur de coût de solution plus faible), mais avec une valeur plus élevée pour le niveau SSS en raison de la structure quelque peu plus compliquée des groupes d'élèves et de la demande pour une planification compacte dans le SSS par rapport au JSS. Cela est attribué au composant de réduction lente de la température (taux de refroidissement parabolique de l'algorithme ESA développé) car le coût de la solution est généralement amélioré avec un taux de refroidissement lent. Ce résultat confirme les littératures indiquant que le choix du plan de refroidissement influence la qualité de la solution obtenue avec le SA [71,72] et que les plans de refroidissement lents sont généralement plus efficaces, et aussi que le coût de la solution s'améliore généralement avec des taux de refroidissement plus lents [63].

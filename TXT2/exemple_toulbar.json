@@ -1,0 +1,25 @@
+{
+  "variables": {
+    "start_T1": 10,
+    "start_T2": 10,
+    "start_T3": 10
+  },
+  "functions": {
+    "precedence_T1_T2": {
+      "scope": ["start_T1", "start_T2"],
+      "defaultCost": 0,
+      "costs": {
+        "(s1,s2)": "infinity"  // Si s1 + durée_T1 > s2, alors coût infini
+      }
+    },
+    "resource_usage": {
+      "scope": ["start_T1", "start_T2", "start_T3"],
+      "defaultCost": 0,
+      "costs": {
+        "(s1,s2,s3)": "infinity"  // Si à un moment donné, la somme des ressources > capacité
+      }
+    }
+  },
+  "top": "infinity",
+  "mustbe": "<= makespan"
+}

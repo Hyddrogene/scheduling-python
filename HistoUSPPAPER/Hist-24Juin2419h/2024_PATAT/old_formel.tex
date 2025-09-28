@@ -1,0 +1,484 @@
+ \begin{itemize}
+      \item \ADJACENTROOMS
+      \item \ALLOWEDGRIDS((e,S'),W',D',M') : ($W'\subseteq \WEEK, D'\subseteq\WEEKDAY, M'\subseteq\DAILYSLOT$) $\forall s\in S': \var{\SESSION}{\WEEK}{s}\in W' \wedge   \var{\SESSION}{\WEEKDAY}{s}\in D' \wedge  \var{\SESSION}{\DAILYSLOT}{s}\in M'$
+      
+      
+      \item \ALLOWEDROOMS : Soit  $\ROOM' \subseteq \ROOM,  $ $\forall s \in \SESSION'$, $\var{\SESSION}{\ROOM}{s} \subseteq \ROOM'$
+      
+      \item \ALLOWEDSLOTS : Soit  $\SLOT' \subseteq \SLOT,  $
+      $\forall s \in S' [\var{\SESSION}{\SLOT}{s},\var{\SESSION}{\SLOT}{s}+\sessionduration{s}] \subseteq \SLOT'$
+      
+      \item \ALLOWEDTEACHERS : Soit  $\TEACHER' \subseteq \TEACHER,  $ $\forall s \in \SESSION'$, $\var{\SESSION}{\TEACHER}{s} \subseteq \TEACHER'$
+      
+      \item \ASSIGNROOMS: $ \ROOM' \subseteq \ROOM	,  \forall s \in \SESSION'$, $(\var{\SESSION}{\ROOM}{s} = \ROOM' )$
+      
+      \item \ASSIGNSLOT : $ h \in \SLOT	,  \forall s \in \SESSION'$, $(\var{\SESSION}{\SLOT}{s} = h )$
+      
+      \item \ASSIGNTEACHERS  : $ \TEACHER' \subseteq \TEACHER	,  \forall s \in \SESSION'$, $(\var{\SESSION}{\TEACHER}{s} = \TEACHER' )$
+      
+      \item \COMPACTNESS \coco{TODO}
+      
+      \item \DIFFERENTDAILYSLOT : $\forall s_1, s_2 \in \SESSION'$, $\var{\SESSION}{\DAILYSLOT}{s_1}  \ne \var{\SESSION}{\DAILYSLOT}{s_2}$
+      
+      \item \DIFFERENTDAY :  $\forall s_1, s_2 \in \SESSION',\var{\SESSION}{\WEEKDAY}{s_1}  \ne \var{\SESSION}{\WEEKDAY}{s_2} \vee \var{\SESSION}{\WEEK}{s_1}  \ne \var{\SESSION}{\WEEK}{s_2} $%$\forall s_1, s_2 \in \SESSION \times \SESSION$, $(1+((\var{\SESSION}{\SLOT}{s_1}-1) / \WEEKDAY   )) \ne (1+((\var{\SESSION}{\SLOT}{s_2}-1) / \WEEKDAY   ))$
+      
+      \item \DIFFERENTROOMS :  $\forall s_1, s_2 \in \SESSION'$, $\var{\SESSION}{\ROOM}{s_1}  \cap \var{\SESSION}{\ROOM}{s_2} = \emptyset	$
+      
+      \item \DIFFERENTSLOT :  $\forall s_1, s_2 \in \SESSION'$, $\var{\SESSION}{\SLOT}{s_1}   \ne \var{\SESSION}{\SLOT}{s_2}$
+      
+      \item \DIFFERENTTEACHERS :  $\forall s_1, s_2 \in \SESSION'$, $\var{\SESSION}{\TEACHER}{s_1}  \cap \var{\SESSION}{\TEACHER}{s_2} = \emptyset	$
+      
+      \item \DIFFERENTWEEK :  $\forall s_1, s_2 \in \SESSION'$, $\var{\SESSION}{\WEEK}{s_1}  \ne \var{\SESSION}{\WEEK}{s_2}$%$\forall s_1, s_2 \in \SESSION \times \SESSION$, $(1+((\var{\SESSION}{\SLOT}{s_1}-1) / \WEEKDAY   )) \ne (1+((\var{\SESSION}{\SLOT}{s_2}-1) / \WEEKDAY   ))$
+      
+      \item \DIFFERENTWEEKDAY : $\forall s_1, s_2 \in \SESSION',\var{\SESSION}{\WEEKDAY}{s_1}  \ne \var{\SESSION}{\WEEKDAY}{s_2} $%$\forall s_1, s_2 \in \SESSION \times \SESSION$, $(1+((\var{\SESSION}{\SLOT}{s_1}-1) / \WEEKDAY   )) \ne (1+((\var{\SESSION}{\SLOT}{s_2}-1) / \WEEKDAY   ))$
+      
+      \item \DIFFERENTWEEKLYSLOT :  $\forall s_1, s_2 \in \SESSION'$, $\var{\SESSION}{\DAILYSLOT}{s_1}  \ne \var{\SESSION}{\DAILYSLOT}{s_2} \vee \var{\SESSION}{\WEEKDAY}{s_1}  \ne \var{\SESSION}{\WEEKDAY}{s_2} $% $\forall s_1, s_2 \in \SESSION \times \SESSION$, $(1+((\var{\SESSION}{\SLOT}{s_1}-1) / \WEEKDAY   )) \ne (1+((\var{\SESSION}{\SLOT}{s_2}-1) / \WEEKDAY   ))$
+      
+      \item \FORBIDDENROOMS : Soit  $\ROOM' \subseteq \ROOM,  $ $\forall s \in \SESSION'$, $\var{\SESSION}{\ROOM}{s} \subseteq \ROOM\setminus\ROOM'$
+      
+      \item \FORBIDDENSLOTS  Soit  $\SLOT' \subseteq \SLOT,  $
+      $\forall s \in S'  [\var{\SESSION}{\SLOT}{s},\var{\SESSION}{\SLOT}{s}+\sessionduration{s}] \cap \SLOT' = \emptyset$
+      
+      
+      \item \FORBIDDENTEACHERS : Soit  $\TEACHER' \subseteq \TEACHER,  $ $\forall s \in \SESSION'$, $\var{\SESSION}{\TEACHER}{s} \subseteq \TEACHER\setminus\TEACHER'$
+      
+      %\item \GAP : $N_{min},N_{max} \in \SLOT\cup\{0\} , $ $\forall s_1,s_2 \in \SESSION', $ $ (N_{min} \geq \var{\SESSION}{\SLOT}{s_2} - (\var{\SESSION}{\SLOT}{s_1} +\sessionduration{s_1})) \land  ((\var{\SESSION}{\SLOT}{s_2} +\sessionduration{s_2})-\var{\SESSION}{\SLOT}{1} \leq N_{max})$
+    
+      \item \GAP ALL unaire $N_{min},N_{max} \in \SLOT\cup\{0\} , $ $ \forall s_1,s_2 \in \SESSION' , $ $ s.t.  \var{\SESSION}{\SLOT}{s_1} \leq  \var{\SESSION}{\SLOT}{s_2}, \var{\SESSION}{\SLOT}{s_2} -\var{\SESSION}{\SLOT}{s_1} +\sessionduration{s_1} \in [N_{min},N_{max}]  \wedge  \var{\SESSION}{\SLOT}{s_1} \ne  \var{\SESSION}{\SLOT}{s_2} $
+
+      \item \GAP ALL naire $N_{min},N_{max} \in \SLOT\cup\{0\} , $ $ \forall i \in \mathbb{N} \forall s_1 \in \SESSION_i , s_2 \in \SESSION_{i+1} , $ $ s.t.  \var{\SESSION}{\SLOT}{s_1} \leq  \var{\SESSION}{\SLOT}{s_2}, \var{\SESSION}{\SLOT}{s_2} -\var{\SESSION}{\SLOT}{s_1} +\sessionduration{s_1} \in [N_{min},N_{max}]  \wedge  \var{\SESSION}{\SLOT}{s_1} \ne  \var{\SESSION}{\SLOT}{s_2} $    
+    
+     \item \GAP FL naire $N_{min},N_{max} \in \SLOT\cup\{0\} , $ $ \forall i,j \in \mathbb{N}, j = i+1 \forall s_1 \in \SESSION_j , s_2 \in \SESSION_i , $ $ s.t.  \var{\SESSION}{\SLOT}{s_1} \leq  \var{\SESSION}{\SLOT}{s_2}, \var{\SESSION}{\SLOT}{s_2} -\var{\SESSION}{\SLOT}{s_1} +\sessionduration{s_1} \in [N_{min},N_{max}]  \wedge  \var{\SESSION}{\SLOT}{s_1} \ne  \var{\SESSION}{\SLOT}{s_2} $
+         
+        
+     \item \GAP LF naire $N_{min},N_{max} \in \SLOT\cup\{0\} , $ $ \forall i,j \in \mathbb{N}, j = i+1 \forall s_1 \in \SESSION_j , s_2 \in \SESSION_i , $ $ s.t.  \var{\SESSION}{\SLOT}{s_1} \leq  \var{\SESSION}{\SLOT}{s_2}, \var{\SESSION}{\SLOT}{s_2} -\var{\SESSION}{\SLOT}{s_1} +\sessionduration{s_1} \in [N_{min},N_{max}]  \wedge  \var{\SESSION}{\SLOT}{s_1} \ne  \var{\SESSION}{\SLOT}{s_2} $
+    $Si = argmin_{s \in Si} xs , Si+1  = argmax xs + len xs$
+      
+
+      \item \NOOVERLAP  
+     $ \disjointroom{w}{S_1}{} \leftrightarrow$
+$\bigwedge_{\substack{s_1,s_2\in S\\s_1\neq s_2}}
+(\var{\SESSION}{\SLOT}{s_1} + \sessionduration{s_1}\leq\var{\SESSION}{\SLOT}{s_2}
+\vee
+\var{\SESSION}{\SLOT}{s_2} + \sessionduration{s_2}\leq\var{\SESSION}{\SLOT}{s_1})$
+
+
+
+      
+      \item \PAIRWISENOOVERLAP      $ \disjointroom{w}{S_1}{S_2} \leftrightarrow$
+$\bigwedge_{\substack{s_1\in S1,s_2\in S2\\s_1\neq s_2}}
+(\var{\SESSION}{\SLOT}{s_1} + \sessionduration{s_1}\leq\var{\SESSION}{\SLOT}{s_2}
+\vee
+\var{\SESSION}{\SLOT}{s_2} + \sessionduration{s_2}\leq\var{\SESSION}{\SLOT}{s_1})$
+      
+      \item \PERIODIC: $N \in \mathbb{N}, $ $\forall s_1,s_2 \in \SESSION \times \SESSION, $ $ \var{\SESSION}{\SLOT}{s_1}+N = \var{\SESSION}{\SLOT}{s_2} $
+      
+      \item \REQUIREDROOMS :  $ r \subseteq \ROOM $, $\forall s \in \SESSION $, $(r \subseteq \var{\SESSION}{\ROOM}{s})	$
+      
+      \item \REQUIREDTEACHERS :   $ t \subseteq \TEACHER $, $ \forall s \in \SESSION $, $(t \subseteq \var{\SESSION}{\TEACHER}{s})	$
+      %\item RoomSize
+      %
+      
+      \item \SAMEDAILYSLOT  :  $\forall s_1, s_2 \in \SESSION \times \SESSION$, $(1+((\var{\SESSION}{\SLOT}{s_1}-1) \% \DAILYSLOT) = (1+((\var{\SESSION}{\SLOT}{s_2}-1) \% \DAILYSLOT )	$
+      %
+      
+      \item \SAMEDAY  :  $\forall s_1, s_2 \in \SESSION \times \SESSION$, $(1+((\var{\SESSION}{\SLOT}{s_1}-1) / \WEEKDAY   ))  = (1+((\var{\SESSION}{\SLOT}{s_2}-1) / \WEEKDAY   ))	$
+      %
+     
+      \item \SAMEROOMS :  $\forall s_1, s_2 \in \SESSION \times \SESSION$, $(\var{\SESSION}{\ROOM}{s_1}  = \var{\SESSION}{\ROOM}{s_2})	$
+      %
+      \item \SAMESLOT  :  $\forall s_1, s_2 \in \SESSION \times \SESSION$, $(\var{\SESSION}{\SLOT}{s_1}  = \var{\SESSION}{\SLOT}{s_2})	$
+      %
+      \item \SAMETEACHERS  :  $\forall s_1, s_2 \in \SESSION \times \SESSION$, $(\var{\SESSION}{\TEACHER}{s_1}  = \var{\SESSION}{\TEACHER}{s_2})	$
+      %
+      \item \SAMEWEEK  :  $\forall s_1, s_2 \in \SESSION \times \SESSION$, $(1+((\var{\SESSION}{\SLOT}{s_1}-1) / \WEEK)) = (1+((\var{\SESSION}{\SLOT}{s_2}-1) / \WEEK))	$
+      %
+      \item \SAMEWEEKDAY  :  $\forall s_1, s_2 \in \SESSION \times \SESSION$, $(1+(((\var{\SESSION}{\SLOT}{s_1}-1) / \DAILYSLOT)) \% \WEEKDAY)  = (1+(((\var{\SESSION}{\SLOT}{s_2}-1) / \DAILYSLOT)) \% \WEEKDAY)	$
+      %
+      \item \SAMEWEEKLYSLOT  :  $\forall s_1, s_2 \in \SESSION \times \SESSION$, $(1+((\var{\SESSION}{\SLOT}{s_1}-1) \% (\DAILYSLOT * \WEEKDAY)))  = (1+((\var{\SESSION}{\SLOT}{s_2}-1) \% (\DAILYSLOT * \WEEKDAY)))	$
+      %
+      \item \SEQUENCED  :  $\forall s_1 \in \SESSION_1,\forall s_2 \in \SESSION_2$, $ \var{\SESSION}{\SLOT}{s_2} \geq \var{\SESSION}{\SLOT}{s_1} + \sessionduration{s_1}	$
+      %\item Service Teacher
+      \item \WORKLOAD : $ N \subset \mathbb{N}, $ $ \forall g \in \GROUP, \forall d \in \WEEKDAY, $ $( \sum_{\forall \var{\SESSION}{\SLOT}{s} \backslash slot\_day(\var{\SESSION}{\SLOT}{s}) \ne d } \var{\SESSION}{\SLOT}{s}) \in N$
+      
+      
+      
+      
+  \end{itemize}
+
+
+  %%%% ==========================OLD TABLE
+
+  %%tableau des features / schema
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|*{5}{c|} }
+        \hline
+       \multicolumn{1}{|c|}{\diagbox{Features}{Names}} & ITC-2007 & ITC-2019 & XHSTT & UTP  \\
+        \hline
+        room & Mono-room  & Mono-room & Mono-room & Multi-room \\
+        students/groups & students/groups & groups & students & groups \\
+        teacher & mono-teacher & --& mono-teacher& multi-teacher \\
+        another ressources & -- & -- & -- & --  \\%
+        course hierarchie & event & event/courses & event & event \\
+        times & relatives &relatives& relatives & relatives \\
+         weeks & 1week &1 weeks& 1weeks & 1weeks \\
+        \hline
+        
+        room capacity& not mandatory & yes & yes & -- \\
+        disjunctive room & not mandatory & yes & yes & yes \\
+        room stability & minimize  & yes && yes \\
+        \hline
+        
+        disjunctive teacher & -- & yes & yes & yes \\
+        teacher stability & -- & yes & yes & yes  \\
+        day off teacher& -- & yes & -- & --  \\
+        teacher preferences& -- & yes & yes & yes \\
+        \hline
+        
+        travel time & ?? & yes & yes  & yes \\
+        lunch time& -- & yes & -- & yes  \\
+        spread courses & -- & yes & yes & yes \\
+
+        \hline
+        disjunctive students & yes & yes &--& yes\\
+        day off student& yes & yes & -- & -- \\
+        student worload& yes & yes & yes & --  \\
+        student minimum workload & yes & yes & yes & yes  \\
+        gap & yes & yes & -- & -- \\
+        student compactness & -- &  yes & -- & yes  \\
+        
+        \hline
+
+        %split event&\\
+        %distribute split event&\\
+
+        %prefer ressource &\\
+        %prefer times &\\
+        %ressource busy&\\
+
+        Code ouvert &&&&\\
+        Données ouvertes &&&&\\
+        \hline
+        %temporalité &   \\
+    \end{tabular}
+    \caption{Caption}
+    \label{tab:my_label}
+\end{table}
+
+
+OLD CONSTRAINT
+ \begin{table}[H]
+    \centering
+    \begin{tabular}{|lr|}
+    %p{4cm}|p{7cm}|}
+    \hline%======================
+        Name & Entry parameter \\ 
+        \multicolumn{2}{|c|}{ formule} \\
+    \hline%====================== 
+    \hline%====================== 
+    \COMPACTNESS precise
+    &
+    $\delta_1,..,\delta_m \in 0..|\SLOT|,  $
+    \\
+    \multicolumn{2}{|c|}{
+    %$\NOOVERLAPARG{\SESSION'} \land $
+    $\sigma_1,...,\sigma_m \in 0..|\SESSION'|$
+    $ \forall d \in \WEEKDAY : \exists \SESSION'' = \{s \in \SESSION' : \var{\SESSION}{\WEEKDAY}{s}\} \land$ \raisebox{0.2ex}{$\scriptscriptstyle(1\leq i < j \leq |\SESSION''|)$} } 
+    \\
+    \multicolumn{2}{|c|}{
+     $\exists! \pi : \SESSION'' \to 1..|\SESSION''|: \var{\SESSION}{\SLOT}{\piinv{i}} < \var{\SESSION}{\SLOT}{\piinv{j}} \land$
+     $\forall i \in  1..|\SESSION''|-1, \exists y_i \in 0..|H|,$
+     }
+    \\
+     \multicolumn{2}{|c|}{
+     $\var{\SESSION}{\SLOT}{\piinv{i+1}} - (\var{\SESSION}{\SLOT}{\piinv{i}} + \sessionduration{\piinv{i}}) = y_i \land$
+     $\forall k \in 1..m |\{i \in 1..|\SESSION''|: y_i = \delta_k\}| \leq \sigma_k$}\\
+    %S'' :1..|S''| \to S'' ,\text{ soit }\pi : 1..|S''|\to 1..|S''|,\pi \circ S''(i) < \pi\circ S''(j) tq \var{\SESSION}{\SLOT}{s_i} <  \var{\SESSION}{\SLOT}{s_j} \vee (\var{\SESSION}{\SLOT}{s_i} =  \var{\SESSION}{\SLOT}{s_j} ) \to i<j $
+    %\\
+    %&
+    %&
+    %$\forall d \in \WEEKDAY$, 
+    %$ (\sum_{s_i \ in (\SESSION''\setminus \var{\SESSION}{\WEEKDAY}{s} != d)\setminus s_{0}}\var{S}{H}{s_{i-1}}+\sessionduration{s_i-1} - \var{S}{H}{s_{i}}) \leq n $
+            \hline
+
+    
+    \GAP ALL unaire 
+    & 
+    $N_{min},N_{max} \in \SLOT\cup\{0\} , $ 
+    \\%\\\hdashline
+    \multicolumn{2}{|c|}{$ \forall s_1,s_2 \in \SESSION' , $ $ s.t.  \var{\SESSION}{\SLOT}{s_1} \leq  \var{\SESSION}{\SLOT}{s_2}, \var{\SESSION}{\SLOT}{s_2} -\var{\SESSION}{\SLOT}{s_1} +\sessionduration{s_1} \in [N_{min},N_{max}]  \wedge  \var{\SESSION}{\SLOT}{s_1} \ne  \var{\SESSION}{\SLOT}{s_2} $}\\
+     \hline%========== OLD GAP ==============
+    \GAP ALL unaire 
+    & 
+    $N_{min},N_{max} \in \SLOT\cup\{0\} , $ 
+    \\%\\\hdashline
+    \multicolumn{2}{|c|}{$ \forall s_1,s_2 \in \SESSION' , $ $ s.t.  \var{\SESSION}{\SLOT}{s_1} \leq  \var{\SESSION}{\SLOT}{s_2}, \var{\SESSION}{\SLOT}{s_2} -\var{\SESSION}{\SLOT}{s_1} +\sessionduration{s_1} \in [N_{min},N_{max}]  \wedge  \var{\SESSION}{\SLOT}{s_1} \ne  \var{\SESSION}{\SLOT}{s_2} $}\\
+
+    \hline%======================
+    \GAP ALL naire 
+    &
+    $N_{min},N_{max} \in \SLOT\cup\{0\} $ 
+    \\%\\\hdashline
+    \multicolumn{2}{|c|}{$ \forall i \in \mathbb{N} \forall s_1 \in \SESSION_i , s_2 \in \SESSION_{i+1} , $ $ s.t.  \var{\SESSION}{\SLOT}{s_1} \leq  \var{\SESSION}{\SLOT}{s_2}, \var{\SESSION}{\SLOT}{s_2} -\var{\SESSION}{\SLOT}{s_1} +\sessionduration{s_1} \in [N_{min},N_{max}]  \wedge  \var{\SESSION}{\SLOT}{s_1} \ne  \var{\SESSION}{\SLOT}{s_2} $} \\
+    
+    \hline%======================
+    \GAP FL naire 
+    &
+    $N_{min},N_{max} \in \SLOT\cup\{0\} $
+    \\%\\\hdashline
+    \multicolumn{2}{|c|}{$ \forall i,j \in \mathbb{N}, j = i+1 \forall s_1 \in \SESSION_j , s_2 \in \SESSION_i , $ $ s.t.  \var{\SESSION}{\SLOT}{s_1} \leq  \var{\SESSION}{\SLOT}{s_2}, \var{\SESSION}{\SLOT}{s_2} -\var{\SESSION}{\SLOT}{s_1} +\sessionduration{s_1} \in [N_{min},N_{max}]  \wedge  \var{\SESSION}{\SLOT}{s_1} \ne  \var{\SESSION}{\SLOT}{s_2} $}\\
+         
+    %\hline%======================
+        %temporalité &   \\
+    \end{tabular}
+    \caption{Caption}
+    \label{tab:my_label}
+\end{table}
+
+
+
+Dans le langage UTP, le schéma adopte un horizon de planification multi-échelle (càd, semaines, jours de la semaine et créneaux horaires quotidiens), un ensemble mixte de ressources (càd, étudiants, groupes d'étudiants, salles et enseignants), et une structure de cours hiérarchique (c'est-à-dire, parties de cours, classes de parties et séances de classe). 
+
+
+Le modèle prend en charge à la fois les séances impliquant une seule ressource (comme un enseignant unique) et celles nécessitant plusieurs ressources (telles que les examens), tout en encodant les contraintes fondamentales liées %à la répartition des sections d'étudiants,  
+à l'organisation des séances et à l'allocation des ressources. Il suppose que toutes les ressources sont cumulatives, ce qui signifie que les salles de classe, les enseignants et les étudiants peuvent participer à des séances qui se chevauchent. 
+Cependant, cette politique peut être contournée en utilisant des règles de planification disjonctives. Le langage de règles permet efficacement d'ajouter des contraintes supplémentaires à des ensembles spécifiques de séances et d'entités (telles que les ressources et les éléments de cours). Les règles sont exprimées à l'aide d'un ensemble de prédicats d'emploi du temps et d'une syntaxe de compréhension permettant de regrouper, filtrer et lier des séances et des entités. Les règles vont ensuite créer un collection de contrainte UTP qui vont être lisible par les solveurs.
+
+Dans le schéma UTP nous partons de l'hypothèse que les groupes sont déjà pré-calculé et le service des enseignants est déjà prédéfinis (il reste la possibilité de rajouter un service [0-*] à toutes les séances pour un enseignant.
+
+Dans le schéma UTP il existe tout un catalogue de contrainte qui vont prendre en entrée des séances de cours et des paramètres.\url{lienducatalogue.fr}
+% Avec cette durée temporel "longue" les modélisations son intrinsèquement différentes des autres.
+
+
+
+
+Dans le schéma UTP, les séances de classe sont considérées comme des objets qui doivent être planifiés individuellement aux côtés des ressources.
+
+Le modèle d'entités~\ref{table:model-maps} ($\ENTITY$) s'appuie sur un horizon de temps multi-échelles avec les semaines ($\WEEK$), les jours ($\WEEKDAY$) et créneaux quotidiens ($\DAILYSLOT$). Un ensemble d'entité qui peuvent être des ressources, groupes ($\GROUP$), salles ($\ROOM$) et enseignants ($\TEACHER$)). La structure hiérarchique de cours, avec les cours ($\COURSE$) pouvant s'interpréter comme l'unité d'enseignement (p.ex. algorithmique-1), les parties de cours ($\PART$)qui s'assimile à la modalité pédagogique (p.ex. cours magistral d'algorithmique 1), les classes ($\CLASS$) et les séances ($\SESSION$) qui viennent se répartir dans les classes (p.ex. le cours magistrale d'algorithmique à 2 classes car il y a plusieurs groupes d'étudiant et il dure 10 séances). Chaque séance est à programmer individuellement sur l'horizon de temps et les ressources nécessaires doivent lui être allouées.
+
+Le modèle d'ordonnancement permet de représenter à la fois des séances mono-ressource et multi-ressources ainsi que des ressources exclusives, cumulatives et hybrides. D'une part, les séances sont étiquetées à ressource unique (p. ex. cours magistral) ou à ressources multiples (p. ex. cours hybride en distanciel et présentiel) en quantifiant le nombre de salles (i.e. $\multiroompartmax{p}, \multiroompartmin{p}$) et d'enseignants requis (i.e. $\partteachermultiplicitymax{p}, \partteachermultiplicitymin{p}$).
+Les groupes se distribuent sur les cours selon leurs inscriptions alors que salles et les enseignants se distribuent sur les parties de cours (p. ex. salles de travaux pratiques) ce qui détermine %indirectement 
+le domaine des ressources allouables à chaque séance (i.e. $\map{X}{\SESSION}{i}$ permettant de récupérer les séances pouvant être associé à une entité).
+
+
+listés les différents critères à optimiser :
+
+\begin{itemize}
+    \item Compacité 
+    \item Jour libre enseignant
+    \item pas finir trop tard ni commencer trop tard
+    \item Préférences des enseignants
+    \item Périodicité,  room stability
+\end{itemize}
+
+
+\begin{table}[!h]
+    \centering
+    
+    \begin{tabular}{|lr|}
+    \hline
+    Contrainte & \\
+    \hline
+        disjunctive teacher($\SESSION'$) &  \\
+        $\forall s_1,s_2 \in \SESSION \times \SESSION$, &\\
+         \multicolumn{2}{|c|}{$ \varsequenced{s_1}{s_2}, \varsequenced{s_2}{s_1}\in \{0,1\} \times\{0,1\}$, $t_{s_1,s_2} \in  \{0,1\}$}\\
+         \multicolumn{2}{|c|}{ $t_{s_1,s_2} \leq \var{\SESSION}{\TEACHER}{s_1}$, $t_{s_1,s_2} \leq \var{\SESSION}{\TEACHER}{s_2},\; t_{s_1,s_2} \geq (\var{\SESSION}{\TEACHER}{s_1} + \var{\SESSION}{\TEACHER}{s_2} -1 )$} \\
+         \multicolumn{2}{|c|}{$t_{s_1,s_2} \geq \varsequenced{s_1}{s_2} $, $t_{s_1,s_2} \geq \varsequenced{s_2}{s_1} $}\\
+         \multicolumn{2}{|c|}{ $(\var{\SESSION}{\SLOT}{s_1} - \var{\SESSION}{\SLOT}{s_2}) \geq ((\sessionduration{s_2}+M)*\varsequenced{s_1}{s_2} - M )$ }\\
+         \multicolumn{2}{|c|}{ $(\var{\SESSION}{\SLOT}{s_2} - \var{\SESSION}{\SLOT}{s_1}) \geq ((\sessionduration{s_2}+M)*\varsequenced{s_2}{s_1} - M )$}\\
+         \hline
+         disjunctive room($\SESSION'$) & \\
+         $\forall s_1,s_2 \in \SESSION \times \SESSION$,& \\
+        \multicolumn{2}{|c|}{ $ \varsequenced{s_1}{s_2}, \varsequenced{s_2}{s_1}\in \{0,1\} \times\{0,1\}$, $r_1r_2 \in  \{0,1\}$}\\
+         \multicolumn{2}{|c|}{ $r_1r_2 \leq \var{\SESSION}{\ROOM}{s_1}$, $r_1r_2 \leq \var{\SESSION}{\ROOM}{s_2}
+         ,\;r_1r_2 \geq (\var{\SESSION}{\ROOM}{s_1} + \var{\SESSION}{\ROOM}{s_2} -1 )$} \\
+         \multicolumn{2}{|c|}{$r_1r_2 \geq \varsequenced{s_1}{s_2} $, $r_1r_2 \geq \varsequenced{s_2}{s_1} $}\\
+         \multicolumn{2}{|c|}{$(\var{\SESSION}{\SLOT}{s_1} - \var{\SESSION}{\SLOT}{s_2}) \geq ((\sessionduration{s_2}+M)*\varsequenced{s_1}{s_2} - M )$ }\\
+         \multicolumn{2}{|c|}{$(\var{\SESSION}{\SLOT}{s_2} - \var{\SESSION}{\SLOT}{s_1}) \geq ((\sessionduration{s_2}+M)*\varsequenced{s_2}{s_1} - M )$}\\
+         \hline
+         disjunctive group($\SESSION'$) &  \\
+         $\forall s_1,s_2 \in \SESSION $, &\\
+     \multicolumn{2}{|c|}{$ \varsequenced{s_1}{s_2}, \varsequenced{s_2}{s_1}\in \{0,1\} \times\{0,1\}$}\\
+         \multicolumn{2}{|c|}{ $\varsequenced{s_1}{s_2} + \varsequenced{s_2}{s_1} = 1$}\\
+         \multicolumn{2}{|c|}{ $(\var{\SESSION}{\SLOT}{s_1} - \var{\SESSION}{\SLOT}{s_2}) \geq ((\sessionduration{s_2}+M)*\varsequenced{s_1}{s_2} - M )$} \\
+         \multicolumn{2}{|c|}{$(\var{\SESSION}{\SLOT}{s_2} - \var{\SESSION}{\SLOT}{s_1}) \geq ((\sessionduration{s_2}+M)*\varsequenced{s_2}{s_1} - M )$}\\
+         \hline
+         service teacher(p,t,n) &  \\
+         $\forall p \in \PART, \forall t \in \partteachermultiplicity{p} $&\\
+         \multicolumn{2}{|c|}{ $(\sum_{s\in \PART}\varquad{\SESSION}{\TEACHER}{s}{t}) \leq \partteacherservice{t}$ }\\
+         \hline                  
+         Implicite\_sequenced\_session($\SESSION'$)  & \\
+         $ \forall s_1,s_2 \in \SESSION \times \SESSION,  s_1 \neq s_2 $,sequenced($s_1$,$s_2$) & \\
+         \hline
+         roomCapacity() & \\
+         $\forall s \in \SESSION, \forall r \in  \roomcapacity{r}$&\\ 
+         \multicolumn{2}{|c|}{$(\var{S}{R}{s}*|\mape{\SESSION}{\STUDENT}{s}|) \leq \roomcapacity{r} $}\\
+         \hline
+    \end{tabular}
+    \label{tab:mip-constraint}
+\end{table}
+
+
+
+\begin{table}[ht]
+\resizebox{\textwidth}{!}{%
+\centering
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{Name}               & \textbf{Arity} & \textbf{Parametric} & \textbf{Semantics}\\ \hline
+
+{\ADJACENTROOMS}            & 1         & yes   & Sessions are hosted in the given adjacent rooms\\ \hline
+
+\ALLOWEDGRIDS{} & 1 & yes & Sessions use parameter grids\\ \hline
+\ALLOWEDROOMS{} & 1 & yes & Sessions reduction of the domain of given rooms \\ \hline
+\ALLOWEDSLOTS{} & 1 & yes & Sessions reduction of the domain of given slots\\ \hline
+\ALLOWEDTEACHERS{} & 1 & yes & Sessions start are scheduled with given teachers  \\ \hline
+\ASSIGNROOMS{} & 1 & yes & Sessions are hosted in given rooms \\ \hline
+\ASSIGNSLOT{} & 1 & yes & Sessions start at given slot \\ \hline
+\ASSIGNTEACHERS{} & 1 & yes & Sessions are scheduled with given teachers \\ \hline
+\COMPACTNESS{} & 1 & yes & Reduce for each groups the duration of course day \\ \hline
+\DIFFERENTDAILYSLOT{} & 1 & no & Sessions start at different daily slot \\ \hline
+\DIFFERENTDAY{}  & 1 & no & Sessions start at different day \\ \hline
+\DIFFERENTROOMS{} & 1 & no & Sessions are hosted in different room(s) \\ \hline
+\DIFFERENTSLOT{} & 1 & no & Sessions start at different time \\ \hline
+\DIFFERENTTEACHERS{} & 1 & yes & Sessions are scheduled with different teacher(s) \\ \hline
+\DIFFERENTWEEK{} & 1 & no & Sessions start at different week \\ \hline
+\DIFFERENTWEEKDAY{}& 1 & no & Sessions start at different week day \\ \hline
+\DIFFERENTWEEKLYSLOT{} & 1 & no & Sessions start at different weekly slot \\ \hline
+\FORBIDDENROOMS{}          & 1         & yes   & Sessions cannot start in the given time period\\ \hline
+\FORBIDDENSLOTS{}          & 1         & yes   & Sessions cannot hosted in the given rooms \\ \hline
+\FORBIDDENTEACHERS{}          & 1         & yes   & Sessions cannot scheduled with the given teachers\\ \hline
+
+\GAP{}          & 1         & yes   & Sessions scheduled have upper-bounded and lower-bounded \\ &&&given period between start and end for each pairs\\ \hline
+
+\NOOVERLAP{}                & 1         & no    & Sessions cannot overlap\\ \hline
+\PAIRWISENOOVERLAP{}    & $\geq2$          & no    & Sessions two by two aren't overlap\\ \hline
+\PERIODIC{}                & 1         & yes    & Sessions are periodic \\ \hline
+
+\REQUIREDROOMS{}                & 1         & yes    & Sessions scheduled at least in the given rooms \\ \hline
+
+\REQUIREDTEACHERS{}     & 1         & yes    & Sessions scheduled at least with the given teachers \\ \hline
+
+{\SAMEDAILYSLOT}            & 1         & no    & Sessions start on the same daily slot\\ \hline
+{\SAMEDAY}                  & 1         & no    & Sessions start the same day\\ \hline
+
+{\SAMEROOMS}                & 1         & no    & Sessions are hosted in the same room(s)\\ \hline
+{\SAMESLOT}                 & 1         & no    & Sessions start at the same time\\ \hline
+{\SAMETEACHERS}             & 1         & no    & Sessions are taught by the same lecturer(s)\\ \hline
+
+{\SAMEWEEKDAY}              & 1         & no    & Sessions start on the same weekday\\ \hline
+{\SAMEWEEKLYSLOT}           & 1         & no    & Sessions start on the same weekly slot\\ \hline
+{\SAMEWEEK}                 & 1         & no    & Sessions start the same week\\ \hline
+
+\SEQUENCED{}                & $\geq2$   & no    & Sessions are sequenced\\\hline
+
+\WORKLOAD{\{times,sessions\}}                & 1         & yes    & The number of sessions scheduled in \\ &&& the daily period is upper-bounded and lower-bounded\\ \hline
+
+
+%{\FORBIDDENPERIOD}          & 1         & yes   & Sessions cannot start in the given time period\\ \hline
+%{\ATMOSTDAILY}              & 1         & yes   & The number of sessions scheduled in the daily period is upper-bounded\\ \hline
+%{\ATMOSTWEEKLY}             & 1         & yes   & The number of sessions scheduled in the weekly period is upper-bounded\\ \hline
+%implicit\_sequenced\_sessions & 1 & \multicolumn{4}{|c|}{no} & All sessions in classes are sequenced\\ \hline
+%{\SEQUENCED}                & $\geq2$   & no    & Sessions are sequenced\\ \hline
+%{\WEEKLY}                   & 1         & no    & Sessions are weekly \\ \hline
+
+% \hline
+%{\TRAVEL}                   & 1         & yes   & Travel time is factored in if sessions hosted in the given rooms\\ \hline
+
+
+
+
+{\TEACHERDISTRIBUTION}      & $\geq2$   & yes   & Distributes lecturer workload over classes\\ \hline
+
+\end{tabular}
+}
+\caption{Catalog of {\UTP} predicates.}
+\label{tab:predicate_catalog}
+\end{table}
+
+
+
+
+\subsection{Features model}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%Le modèle de features permet de représenter les différentes options valides pour un problème donné, ou schéma \EDT{}. Nous répertorions ici différentes caractéristiques issues du features modèles et notre modèle. %On retrouve ainsi les différentes features que peuvent valider les différents schémas. 
+The feature model allows representing the various valid options for a given problem or \EDT{} schema. Here, we list various characteristics derived from the feature models and our model.
+
+
+%Certaines sont obligatoires, tandis que d'autres sont facultatives. Les caractéristiques facultatives peuvent être choisies selon plusieurs modalités,  soit au moins une parmi toutes ($+$), et d'autres impliquent d'en choisir une seule parmi toutes ($1$), ou dans le cas le plus général, autant que l'on veut de 0 à toutes ($*$ ou $?$ dans le cas unaire). Elles sont formellement représentées comme indiqué dans le tableau \ref{tab:features}.
+
+Some are mandatory, while others are optional. Optional features can be chosen according to several modalities, either at least one among all ($+$), and others imply choosing exactly one among all ($1$), or in the most general case, as many as desired from 0 to all ($*$ or $?$ in the unary case). They are formally represented as indicated in Table \ref{tab:features}.
+
+%D'un point de vue générale nous regroupons les caractéristiques liées au maquette dans la caractéristique ``model''.
+%Pour les entités de types cours, nous avons la possibilité d'avoir une structure de cours hiérarchique (\hyperref[featmodel:hierarchy]{``course-hierarchy''}). Une hiérarchie est une relation entre des éléments de cours. Si des relations existent entre des entités qui sont des cours, alors cette caractéristique est valide. Nous avons également la possibilité d'avoir des événements qui sont des cours ayant une ressource en moins (\hyperref[featmodel:event]{``event''}). En effet, un cours auquel il manque une ou plusieurs ressources devient un événement.
+
+In general, we group the characteristics related to the course layout under the "model" feature. For entities of course types, we have the possibility of having a hierarchical course structure (\hyperref[featmodel:hierarchy]{``course-hierarchy''}). A hierarchy is a relation between course elements. If relations exist between entities of courses types, then this characteristic is valid. %We also have the possibility of having events, they are courses with one less resource
+We also have the possibility of having events, they are courses with one fewer resource 
+(\hyperref[featmodel:event]{``event''}). Indeed, a course that lacks one or more resources becomes an event.
+
+
+%Il existe également des caractéristiques pour d'horizon temporel d'un modèle (``horizon''), telles que \hyperref[featmodel:fullperiod]{``full period''}, \hyperref[featmodel:fullweek]{``full week''} et \hyperref[featmodel:singleweek]{``single week''}. \hyperref[featmodel:fullperiod]{``Full period''} indique que si l'horizon en termes de semaines correspond aux semaines réelles, alors l'horizon temporel en semaines est complet. \hyperref[featmodel:fullweek]{``Full week''} signifie que tous les jours de la semaine sont représentés. Enfin, l'attribut \hyperref[featmodel:singleweek]{``single week''} indique que l'horizon temporel en termes de semaines est de une semaine.
+
+There are also characteristics for the temporal horizon of a model ("horizon"), such as \hyperref[featmodel:fullperiod]{``full period''}, \hyperref[featmodel:fullweek]{``full week''}, and \hyperref[featmodel:singleweek]{``single week''}. The feature \hyperref[featmodel:fullperiod]{``Full period''} indicates that if the model's temporal horizon is defined in weeks that correspond to real weeks, then the temporal horizon in weeks is complete. \hyperref[featmodel:fullweek]{``Full week''} means that all days of the week are represented. Finally, the attribute \hyperref[featmodel:singleweek]{``single week''} denotes that the temporal horizon spans one week.% in terms of weeks.
+
+
+%Pour les aspects temporels, nous disposons des caractéristiques de "timing" concernant les relations temporelles au sein d'un modèle EDT et des différentes grilles temporelles.
+For temporal aspects, we have "timing" features concerning temporal relationships within an EDT model and various temporal grids.
+%
+%La première de celle ci \hyperref[featmodel:nooverlap]{``nooverlap''} indique que les créneaux horaires entre eux ont une durée suffisante pour accueillir n'importe quelle séance de la maquette, sans chevauchement. 
+%Quant à la caractéristique \hyperref[featmodel:sameduration]{``same-duration''} elle concerne la durée des séances, si toutes les séances du problème ont la même durée alors elle est caractéristique est valide.
+%Enfin la caractéristiques  \hyperref[featmodel:synchronous]{``synchronous''} permet d'exprimer un écart inter-créneaux modulaire. Autrement dit il existe un pgcd entre les écarts des créneaux horaires permettant ainsi de relier les différents créneaux horaires des différentes grilles. Et si le minium des écarts est égale à ce pgcd alors les grilles sont synchrones.
+%
+The first one, \hyperref[featmodel:nooverlap]{``nooverlap''}, denotes that the time slots have sufficient duration between them to accommodate any session of the schedule, without overlap. 
+%
+As for the \hyperref[featmodel:sameduration]{``same-duration''} characteristic, it concerns the duration of the sessions. If all sessions of the problem have the same duration, then this characteristic is valid. 
+%
+Lastly, the \hyperref[featmodel:synchronous]{``synchronous''} feature allows expressing a modular inter-slot gap. In other words, there is a greatest common divisor between the gaps of the time slots, thus linking the different time slots of the various grids. If the minimum gap is equal to this greatest common divisor, then the grids are synchronous.
+
+%Pour l'hébergement des cours (``hosting'') nous avons 3 familles de caractéristiques. la première aborde la quantité de salle par cours, plusieurs modalités d'utilisation des salles sont possibles aucune salle (\hyperref[featmodel:noroom]{``no-room''}), une salle (\hyperref[featmodel:singleroom]{``single-room''}) ou plusieurs salles (\hyperref[featmodel:multiroom]{``multi-room''}). Il faut en choisir au moins une de ces modalités parmi les trois proposées. On retrouve également comme caractéristique la capacité des salles (\hyperref[featmodel:capacityroom]{``capacity-room''}) qui est facultative. Dans certains cas, elle n'est pas utile par construction des problèmes.
+%
+For course hosting ("hosting"), we have three families of characteristics. The first one addresses the quantity of rooms per course sessions, with several modalities of room usage possible: no room (\hyperref[featmodel:noroom]{``no-room''}), one room (\hyperref[featmodel:singleroom]{``single-room''}), or multiple rooms (\hyperref[featmodel:multiroom]{``multi-room''}). At least one of these modalities must be chosen among the three proposed. Another characteristic is the room capacity (\hyperref[featmodel:capacityroom]{``capacity-room''}), which is optional. In some cases, it is not necessary due to problem construction.
+%
+%Enfin, nous abordons la question du partage des salles. Il s'agit de déterminer si les séances de cours partagent ou non les salles avec d'autres cours. Il est nécessaire de choisir une seule option parmi les trois disponibles. Il peut s'agir d'un cas complètement exclusif ou toutes les séances n'admettent pas d'autres cours en même temps (\hyperref[featmodel:exclusivesession]{``full-exclusif''}), complètement inclusives permettant à toutes les séances d'avoir plusieurs cours de se dérouler dans la même salle tant que sa capacité n'est pas dépassée (\hyperref[featmodel:inclusivesession]{``full-inclusif''}), et enfin le cas mixte qui est une combinaison de séances exclusives et inclusives (\hyperref[featmodel:mixedsession]{``mixed''}).
+%
+%
+Finally, we address the question of room sharing. This involves determining whether course sessions share rooms with other courses or not. It is necessary to choose only one option among the three available. It can be a completely exclusive case where all sessions do not admit other courses at the same time (\hyperref[featmodel:exclusivesession]{``full-exclusive''}), completely inclusive allowing multiple courses to take place in the same room as long as its capacity is not exceeded (\hyperref[featmodel:inclusivesession]{``full-inclusive''}), and finally, the mixed case, which is a combination of exclusive and inclusive sessions (\hyperref[featmodel:mixedsession]{``mixed''}).
+
+%Ensuite pour les enseignants (``teaching''), on distingue 2 classes de features. La première concerne le nombre d'enseignants par cours, offrant plusieurs options, aucun enseignant (\hyperref[featmodel:noteacher]{``no-teacher''}), un seul enseignant (\hyperref[featmodel:singleteacher]{``single-teacher''}) ou plusieurs enseignants (\hyperref[featmodel:multiteacher]{``multi-teacher''}). Nous avons également la caractéristique de chevauchement des séances \hyperref[featmodel:teacheroverlap]{``session overlap''} pour déterminer si les  enseignants peuvent avoir plusieurs séances simultanément. Enfin, un enseignant peut avoir un nombre prédéterminé de séances à effectuer dans une partie de cours qui est représenté par une valeur appelée service (\hyperref[featmodel:service]{``service''}).
+%
+Next, for teachers ("teaching"), we differentiate between two classes of features. The first one concerns the number of teachers per course, offering several options: no teacher (\hyperref[featmodel:noteacher]{``no-teacher''}), a single teacher (\hyperref[featmodel:singleteacher]{``single-teacher''}), or multiple teachers (\hyperref[featmodel:multiteacher]{``multi-teacher''}). We also have the characteristic of session overlap (\hyperref[featmodel:teacheroverlap]{``session overlap''}) to determine if teachers can have multiple sessions simultaneously. Lastly, a teacher may have a predetermined number of sessions to conduct in a course part, represented by a value called service (\hyperref[featmodel:service]{``service''}).
+
+%En ce qui concerne les étudiants (``students''), ils peuvent avoir des cours qui se chevauchent ou non (\hyperref[featmodel:groupoverlap]{``session overlap''}). Dans certains cas, les étudiants sont inclus sous forme de groupes (\hyperref[featmodel:group]{``group''}). Ces groupes, s'ils sont inclus, indiquent que le problème est résolut en amont.
+%
+Regarding students ("students"), they may have the feature of overlapping courses or not (\hyperref[featmodel:groupoverlap]{session overlap''}). In some cases, students are included as groups (\hyperref[featmodel:group]{group''}). These groups, if included, indicate that the problem is solved before the \EDT{} problem.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{lstlisting}[style=PrologStyle, caption={Multi-room ASP}, label={lst:multiroom-asp}]
+nrPositionRoom(S,1..N):- session(S), nrRoomMax(S,N).
+nrRoomMax(S,N):- session(S),session_part(S,P), part(P,_,_,_,_,N,_), N > 1.
+1{assignedrk(S,SL,I) : nrPositionRoom(S,I)}K :- assigned(S,SL), nrRoomMax(S,K).
+1{assignedr(S,SL,R,I) : session_room(S,R), nrPositionRoom(S,I)}1 :- assignedrk(S,SL,I).
+roomOrdered(S,1..N):- session(S), same_rooms(S,_), nrRoomMax(S,K), N = #count{S,I:assignedr(S,_,_,I)}.
+:- roomOrdered(S,I), not assignedr(S,_,_,I).
+:- assignedr(S,_,R,K2), assignedr(S,_,R,K1), K1 != K2.
+\end{lstlisting}
+
+%Pour ce faire nous définissons un ensemble de taille  L pour les séances qui nécessitent d'avoir plusieurs salles. %Chaque ensemble de \verb|assignedrk|.
+%Cette ensemble de taille L, contient un minimum de de K1 (possiblement 0) salles et un maximum de K2 salles.
+%Il faut alors créer pour chaque séance le nombre K1 minimum de salle nécessaire et au plus K2 (cela crée donc K1 \verb|assignedr| et un maximum de K2).
+%Pour chaque k$ \in$ L (donc \verb|assignedrk|) il faut affecter une salle à la séance.
+%Cette information supplémentaire nous permet d'accéder aux différentes valeurs de l'ensemble crée. 
+%Cela permet de minimiser la combinatoire et d'éviter d'avoir une contrainte vérifiant qu'une combinaison ne génère pas deux fois la même prédicat \verb|assignedr| avec un même k ayant des salles différentes. 
+%De plus, pour s'assurer que les séances nécessitant d'être comparées sont bien ordonnés de 1 à |L|, nous ajoutons des contraintes qui obligent les valeurs choisies à être correctement ordonnées.
+%Cependant, ces contraintes d'ordre ne semblent pas avoir d'impact sur la résolution, car de fait les valeurs semblent choisies dans cet ordre.
+%
+To do this, we define a set of size L for sessions that require multiple rooms. Each set of \verb|assignedrk| contains a minimum of K1 (possibly 0) rooms and a maximum of K2 rooms. Therefore, for each session, we need to create a minimum of K1 rooms and at most K2 (this creates K1 \verb|assignedr| and a maximum of K2). For each k$ \in$ L (thus \verb|assignedrk|), a room needs to be assigned to the session. This additional information allows us to access the different values of the created set. 
+%This minimizes combinatorics and avoids having a constraint that checks whether a combination generates the same \verb|assignedr| predicate twice with the same k having different rooms.
+%
+This reduces combinatorial complexity and prevents the need for a constraint to verify if the same combination produces duplicate \verb|assignedr| predicates with different rooms for the same k.

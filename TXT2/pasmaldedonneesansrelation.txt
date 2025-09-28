@@ -1,0 +1,115 @@
+Un emploi du temps est modélisé dans le langage UTP par un ensemble de séances de l’instance à chacune desquelles est associé un horaire de départ, un ensemble de salles et un ensemble d’enseignants. L’horaire de départ d’une séance est exprimée relativement à l’horizon temporel de l’instance par la donnée d’une semaine, d’une journée et d’un horaire. L’ensemble de salles allouées à une séance peut être vide (cad. aucune salle n’est allouée), ne contenir qu’une seule salle ou bien plusieurs. De même, l’ensemble d’enseignants affectés à une séance peut être vide, réduit à un singleton ou contenir plusieurs enseignants.
+
+
+
+
+chien viverrin
+rat des bambous
+Centrine commune
+acanthephyra vomi
+Acanthephyra purpurea 
+menagier de paris
+
+nombre  hyperreel
+repression prague
+https://fr.wikipedia.org/wiki/Championnat_du_monde_d%27%C3%A9checs_1972 : Championnat du monde d'échecs 1972
+https://fr.wikipedia.org/wiki/Th%C3%A9or%C3%A8me_de_la_pizza : théoreme de la pizza
+
+
+Manifestations de la place Tian'anmen
+https://fr.wikipedia.org/wiki/Arbre_AVL: arbre avl
+
+https://fr.wikipedia.org/wiki/Effet_de_vue_d%E2%80%99ensemble : effet de vue d'esemble
+max weber
+borelopelta
+https://fr.wikipedia.org/wiki/Shin%27ichi_Fujimura : importante fraude scietifique
+https://fr.wikipedia.org/wiki/Syndrome_de_Paris : syndrome de paris
+
+https://www.sciencesetavenir.fr/fondamental/histoire-des-sciences/pourquoi-les-tronconneuses-ont-elles-ete-inventees_176087: pourquoi ont été inventé les tronconeue
+
+https://en.wikipedia.org/wiki/Karush%E2%80%93Kuhn%E2%80%93Tucker_conditions : truc en maths
+
+elisabeth fritzl
+
+
+
+
+https://ihtc2024.github.io/#section4
+https://ihtc2024.github.io/assets/files/ihtc2024_problem_specification.pdf
+
+
+https://fr.wikipedia.org/wiki/Relation_de_van_%27t_Hoff : chais pas
+https://fr.wikipedia.org/wiki/%C3%85ngstr%C3%B6m
+https://fr.wikipedia.org/wiki/Nombre_abondant
+
+idiosyncrasiques
+
+https://fr.wikipedia.org/wiki/Algorithme_de_Bernstein-Vazirani
+https://fr.wikipedia.org/wiki/Th%C3%A9or%C3%A8me_de_Banach-Steinhaus
+loki ceratops
+
+https://fr.wikipedia.org/wiki/Algorithme_de_Kosaraju
+abscons
+Hétérotopique
+Aporétique
+Afférent
+
+
+Pourquoi les étoiles brillent-elles plus fort en montagne
+LIDAR (Light Detection and Ranging) :
+décomposer les hydrocarbures champignon
+
+https://fr.wikipedia.org/wiki/Pleurotus_ostreatus
+
+Le mécanisme d'Anticythère, une ancienne machine grecque trouvée dans une épave de navire, est souvent considéré comme le premier ordinateur mécanique
+
+
+Huaca del Sol,
+
+
+https://fr.wikipedia.org/wiki/Zhurong_(rover)
+
+https://www.lesnumeriques.com/photo/ces-2024-swarovski-devoile-des-jumelles-capables-d-identifier-9000-especes-d-oiseaux-n217600.html
+
+https://inciteful.xyz/search?q=vincent%20barichard
+https://www.connectedpapers.com/main/1bc361e14109346cdfa6b41ef9c13bba457c61e6/A-survey-of-approaches-for-university-course-timetabling-problem/graph
+
+
+https://fr.wikipedia.org/wiki/Paradoxe_de_Fermi
+https://fr.wikipedia.org/wiki/Le_Probl%C3%A8me_%C3%A0_trois_corps
+https://en.wikipedia.org/wiki/Rare_Earth_hypothesis
+
+oeil parietal pleiosaure
+
+https://en.wikipedia.org/wiki/V%C3%ADctor_Larco_Herrera_District
+
+rivière moche
+https://www.mayaztequemexique.fr/les-geoglyphes-amazoniens-devoilent-leurs-secrets-6572
+https://jardinage.lemonde.fr/dossier-3363-griffe-diable.html
+
+dean clifford
+https://www.debra.fr/quest-ce-que-l-epidermolyse-bulleuse/
+alexithimie
+vincent conarre
+https://cp2023.a4cp.org/accepted_papers.html
+
+colour out space
+annhilitation
+
+https://fr.wikipedia.org/wiki/Poisson-dragon
+Malacosteus niger
+
+
+
+Le langage n’impose aucune contrainte quant à la complétude d’un EDT. Un EDT peut inclure toutes les séances de l’instance ou partie des séances. En particulier, un EDT peut être vide, cad. n’inclure aucune séance. Le langage permet donc de représenter des EDT partiels …
+
+
+
+
+
+Chaque session listée (élément de balise session) est identifiée par le rang chronologique qu’elle occupe (attribut rang) dans sa classe (attribut class). …
+
+%%%%%%%%%%
+
+
+Cette approche reflète les pratiques courantes, où les \EDTWS{} des niveaux inférieurs (comme la 6\up{e}, la seconde ou la L1) sont établis en priorité et servent de base à ceux des niveaux supérieurs.

@@ -1,0 +1,33 @@
+Hello everyone,
+
+The next session of our Introduction to Deep Learning (Fidle) training
+will start on Thursday, November 17th, at 2pm, via Zoom/YouTube.
+
+In order to introduce you to this new season and to answer all your questions,
+concerning for example the program or the installation of the practical work environments,
+we are pleased to propose you a small :
+
+Présentation de saison Fidle
+Thursday, November 10, at 2 p.m.
+Paramètres Zoom :
+Id: 957 4730 0116
+Code : 1618
+https://univ-grenoble-alpes-fr.zoom.us/j/95747300116?pwd=Yit1cGxHUXpia1E3VCtwbTVUakc5QT09
+
+This season presentation is totally optional ;-)
+If you want to follow the training, meet us on Thursday, November 17th, at 2pm :-)
+
+Fidle is a 100% free training without registration, open to anyone interested in discovering
+the concepts and tools of deep learning.
+The 2022/23 program is composed of 20 sequences, ranging from basic concepts
+to the most advanced ones.
+With our apologies, the presentations will be in French, the materials in English.
+
+Program and information : https://fidle.cnrs.fr
+Video presentation : https://fidle.cnrs.fr/teaser
+To stay informed* : https://fidle.cnrs.fr/listeinfo
+
+See you soon!
+Jean-Luc Parouty, pour l'équipe Fidle
+
+se.khebbache@gmail.com>

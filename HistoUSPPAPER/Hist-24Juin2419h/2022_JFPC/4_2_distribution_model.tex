@@ -1,0 +1,82 @@
+%------------------------------------------------------------
+%------------------------------------------------------------
+\subsection{Resource Distribution}
+\label{sec:model-distribution}
+
+%Resource distribution involves domain, cardinality and basic summation constraints.
+La distribution des ressources fait intervenir des contraintes de domaine, cardinalité et de somme de base.
+%Constraint~\ref{ctr:allowedresources} defines the allowed rooms and allowed teachers per session.
+Les contraintes~\ref{ctr:allowedrooms} et \ref{ctr:allowedteachers} défininissent les salles et enseignants alloué pour les sessions.
+%Constraint~\ref{ctr:allowedrooms} allowed rooms per session.
+%Constraint~\ref{ctr:allowedteachers} allowed teachers per session.
+%Constraint~\ref{ctr:compatiblesessionsperresource} compatible sessions per room or teacher.
+%Constraint~\ref{ctr:compatiblesessionsperroom} compatible sessions per room.
+%Constraint~\ref{ctr:compatiblesessionsperteacher} compatible sessions per teacher.
+%
+%Constraint~\ref{ctr:multiroom} models single-room sessions.
+Cette contrainte~\ref{ctr:multiroom} modélise les sessions mono-salle.
+%Constraint~\ref{ctr:multiteacher} ensures sessions get assigned the right number of teachers as defined in each course part 
+%and Constraint~\ref{ctr:partteacherservice} ensures each teacher is assigned the expected number of sessions.
+Tandis que 
+la contrainte~\ref{ctr:multiteacher} assure que les séances ont le bon nombres d'enseigants définis dans chaque parties de cours
+et la contrainte ~\ref{ctr:partteacherservice} vérifie que chaque enseignant est affecté au bon nombres de sessions.
+%Constraint~\ref{ctr:classsize} class size
+
+% \begin{multline}
+% \forallmzn(s \inmzn \SESSION)(\\
+% \xroom \subsetmzn \arraymzn{part\_rooms}[\funcmzn{session\_part}(s)])\\
+% \label{ctr:allowedrooms}
+% \end{multline}
+% \begin{multline}
+% \forallmzn(s \inmzn \SESSION)(\\
+% \xteacher \subsetmzn \arraymzn{part\_teachers}[\funcmzn{session\_part}(s)]
+% ) 
+% %\forall W\in\myset{\ROOM,\TEACHER},s\in\SESSION:
+% %\var{\SESSION}{W}{s}\subseteq{\map{\SESSION}{W}{s}}
+% \label{ctr:allowedrteachers}
+% \\
+% \end{multline}
+% %%
+% %&\forall s\in\SESSION:
+% %\var{\SESSION}{\ROOM}{s}\subseteq{\map{\SESSION}{\ROOM}{s}}
+% %&\label{ctr:allowedrooms}
+% %\\
+% %%
+% %&\forall s\in\SESSION:
+% %\var{\SESSION}{\TEACHER}{s}\subseteq{\map{\SESSION}{\TEACHER}{s}}
+% %&\label{ctr:allowedteachers}
+% %\\
+% %
+% \begin{multline}
+% \forallmzn(k \inmzn \CLASS)(\\
+%   ((\arraymzn{part\_room\_use}[\funcmzn{class\_part}(k)]==\text{none}) \Longleftrightarrow\\ (\xroom[k] == \{\}))\\
+%   \land\\
+%   ((\arraymzn{part\_room\_use}[\funcmzn{class\_part}(k)]==\text{single}) \arrowmzn\\ (\funcmzn{card}(\xroom[k]) == 1))\\
+%   \land\\
+%   ((\arraymzn{part\_room\_use}[\funcmzn{class\_part}(k)]==\text{multiple}) \arrowmzn\\ (\funcmzn{card}(\xroom[c])>=1)))
+% %\forall p\in\PART\setminus\multiroomparts,s\in\map{\PART}{\SESSION}{p}:
+% %\mycard{\var{\SESSION}{\ROOM}{s}}=1
+% \label{ctr:multiroom}
+% \\
+% \end{multline}
+% %
+% \begin{multline}
+% \forallmzn(s \inmzn \SESSION))(\\ \funcmzn{card}(\xteacher[s]) == \funcmzn{teacher\_per\_session}[s])
+% %\forall p\in\PART,s\in\map{\PART}{\SESSION}{p}:
+% %\partteachermultiplicity{p}
+% %=\mycard{\var{\SESSION}{\TEACHER}{s}}
+% \label{ctr:multiteacher}
+% \\
+% \end{multline}
+% %
+% \begin{multline}
+% \forallmzn(p \inmzn \PART,t \inmzn \arraymzn{part\_teachers}[p])(\\
+% \summzn{}(s \inmzn \funcmzn{part\_sessions}(p))\\(\funcmzn{bool2int}(t \inmzn \xteacher[s])) * \arraymzn{part\_teacher\_service}[p,t]
+% )\\
+% %\forall t\in\TEACHER,p\in\PART:
+% %\partteacherservice{t,p}
+% %=\sum_{s\in\map{\PART}{\SESSION}{p}}{(t\in\var{\SESSION}{\TEACHER}{s})}
+% \label{ctr:partteacherservice}
+% \end{multline}
+
+

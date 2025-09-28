@@ -1,0 +1,48 @@
+pc 
+
+f: Problème d'emplois du temps éducatif -> Problèmes d'emplois du temps éducatif
+
+chapeau : etat de la'art -> ajout d'un chapeau
+
+remarque : point après le paragraphe -> ajotu d'un point /virgule
+
+pc : UCTP problème diviser en 2 mais aussi autonome -> unifier les 2 paragraphes
+(Le problème UCTP se distingue des variantes PECTT et CBCTT, et est souvent considéré
+comme un problème à part entière )
+
+remarque :  espace étrange -> correction macro
+
+
+pc : problématiques -> problémes
+
+
+
+Le problème de planification des cours universitaires, également connu sous le nom
+de University Course Timetabling Problem (UCTP, ou UCTP) peut être décliné en deux
+sous-variantes principales : le PECTT (Post-Enrolment Course Timetabling) et le CBCTT
+(Curriculum-Based Course Timetabling).
+
+
+Le problème UCTP se distingue des variantes PECTT et CBCTT, et est souvent considéré
+comme un problème à part entière [79, 2, 42, 20, 153]. Contrairement à ces modèles
+bien définis, UCTP englobe une plus grande diversité de configurations institutionnelles et
+éducatives, rendant son formalisme plus flexible mais aussi plus difficile à standardiser
+
+
+
+
+phrase introductive sur les schémaspour définir ce que c'est 
+
+retirer itc 2011 car au final peut de ressource web et subsumer par xhstt-14  de + ça allourdissais;
+
+
+reformulation pour max sat
+
+
+
+h
+
+
+
+
+

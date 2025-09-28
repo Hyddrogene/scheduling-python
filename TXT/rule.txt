@@ -1,0 +1,171 @@
+
+
+
+        <rule> <!-- All Lessons should start the same week -->
+            <sessions groupBy="part" sessionsMask="1">
+                <filter type="part" attributeName="id" in="English-Les"/>
+            </sessions>
+            <constraint name="sameWeek" type="hard">
+            </constraint>
+        </rule>
+        
+        <rule> <!-- A Lesson class should have the same teacher for all its sessions -->
+            <sessions groupBy="class">
+                <filter type="course" attributeName="id" in="English"/>
+             </sessions>
+            <constraint name="sameTeachers" type="hard">
+            </constraint>
+        </rule>
+
+        <rule> <!-- A Lesson class should be in the same rooms for all tis sessions -->
+            <sessions groupBy="class">
+                <filter type="part" attributeName="id" in="English-Les"/>
+             </sessions>
+            <constraint name="sameRooms" type="hard">
+            </constraint>
+        </rule>
+    
+
+
+       <rule> <!-- All classes of Tutorial should start the same week -->
+            <sessions groupBy="part" sessionsMask="1"> 
+                <filter type="part" attributeName="id" in="Databases-part2-Tut"/>
+            </sessions>
+            <constraint name="sameWeek" type="hard">
+            </constraint>
+        </rule>
+
+        <rule> <!-- All classes of Practice should start the same week -->
+            <sessions groupBy="part" sessionsMask="1">
+                <filter type="part" attributeName="id" in="Databases-part2-Pra"/>
+            </sessions>
+            <constraint name="sameWeek" type="hard">
+            </constraint>
+        </rule>
+
+
+
+
+
+
+
+        <rule> <!-- A class should always have the same teacher -->
+            <sessions groupBy="class">
+                <filter type="course" attributeName="id" in="Databases-part2"/>
+             </sessions>
+            <constraint name="sameTeachers" type="hard">
+            </constraint>
+        </rule>
+
+        <rule> <!-- A class should always have the same rooms -->
+            <sessions groupBy="class">
+                <filter type="course" attributeName="id" in="Databases-part2"/>
+             </sessions>
+            <constraint name="sameRooms" type="hard">
+            </constraint>
+        </rule>
+
+        <rule> <!-- Evaluations should take place at the same time -->
+            <sessions groupBy="part">
+                <filter type="course" attributeName="id" in="Databases-part2"/>
+                <filter type="part" attributeName="label" in="EVAL"/>
+             </sessions>
+            <constraint name="sameSlots" type="hard">
+            </constraint>
+        </rule>
+    
+
+
+
+        <rule> <!-- Practice sessions should start the same week -->
+            <sessions groupBy="part" sessionsMask="1">
+                <filter type="part" attributeName="id" in="Web-Development-Pra"/>
+             </sessions>
+            <constraint name="sameWeek" type="hard">
+            </constraint>
+        </rule>
+ 
+
+
+       <rule> <!-- Lectures and Practices classes should be respectively in the same rooms (example with all WebDev parts except Projects and Eval -->
+            <sessions groupBy="class">
+                <filter type="course" attributeName="id" in="Web-Development"/>
+                <filter type="part" attributeName="label" notIn="EVAL"/>
+                <filter type="part" attributeName="label" notIn="PROJECT"/>
+             </sessions>
+            <constraint name="sameRooms" type="hard">
+            </constraint>
+        </rule>
+
+        <rule> <!-- A class should always have the same teacher -->
+            <sessions groupBy="class">
+                <filter type="course" attributeName="id" in="Web-Development"/>
+             </sessions>
+            <constraint name="sameTeachers" type="hard">
+            </constraint>
+        </rule>
+
+        <rule> <!-- Evaluations should take place at the same time -->
+            <sessions groupBy="part">
+                <filter type="course" attributeName="id" in="Web-Development"/>
+                <filter type="part" attributeName="label" in="EVAL"/>
+             </sessions>
+            <constraint name="sameSlots" type="hard">
+            </constraint>
+        </rule>
+
+ 
+    
+    	
+    	<rule> <!-- A class should have the same teachers -->
+    		<sessions groupBy="class">
+    			<filter type="course" attributeName="label" in="OPT"/>
+    		</sessions>
+    		<constraint name="sameTeachers" type="hard">
+    		</constraint>
+    	</rule>
+    	
+    	<rule> <!-- A class should have the same rooms -->
+    		<sessions groupBy="class">
+    			<filter type="course" attributeName="label" in="OPT"/>
+    		</sessions>
+    		<constraint name="sameRooms" type="hard">
+    		</constraint>
+    	</rule>
+
+
+		
+
+		
+
+
+    	<rule> <!-- A class should have the same teachers -->
+    		<sessions groupBy="class">
+    			<filter type="course" attributeName="id" in="Functional-programming,Logic-programming"/>
+    		</sessions>
+    		<constraint name="sameTeachers" type="hard">
+    		</constraint>
+    	</rule>
+    	
+    	<rule> <!-- A class should have the same rooms -->
+    		<sessions groupBy="class">
+    			<filter type="course" attributeName="id" in="Functional-programming,Logic-programming"/>
+    		</sessions>
+    		<constraint name="sameRooms" type="hard">
+    		</constraint>
+    	</rule>
+        
+        <rule> <!-- All the classes of Tutorial and Practice should start the same week -->
+        	<sessions groupBy="part" sessionsMask="1">
+        		<filter type="part" attributeName="label" in="TUTORIAL,PRACTICE"/>
+        	</sessions>
+        	<constraint name="sameWeek" type="hard">
+        	</constraint>
+        </rule>
+    
+	    
+
+
+    
+	    
+

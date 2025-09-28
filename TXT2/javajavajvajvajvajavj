@@ -1,0 +1,12 @@
+			/*int[] partSessions = new int[partNrSessions];
+			int count = 0;
+			for(int cla = 0 ; cla < instanceUTP.part_classes.get(part).size() ;cla++) {
+				for(int sess = 0 ; sess < instanceUTP.class_sessions.get(instanceUTP.part_classes.get(part).get(cla)-1).size() ; sess++) {
+					partSessions[count] = instanceUTP.class_sessions.get(instanceUTP.part_classes.get(part).get(cla)-1).get(sess);
+					count++;
+				}
+			}
+			IntVar[] outGroupIntVar = new IntVar[partSessions.length];
+			for(int i = 0;i < partSessions.length ;i++) {
+				outGroupIntVar[i] = x_teacher[partSessions[i]-1];	
+			}*/

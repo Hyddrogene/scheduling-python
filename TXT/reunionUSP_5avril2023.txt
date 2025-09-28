@@ -1,0 +1,26 @@
+Il aime pas trop les normands 
+
+tu y peux rien vertige
+4jours de partir
++vieille roche du monde-> du rêve
+
+
+
+Periodic ordre de la préférences
+écart nr séances
+poids type de foncteur
+
+
+périodic distribution à la {journée, week, demi day}                compacité
+#séances hots périodicité  seuil min,max (slots, sessions)          pas detrou{journéen selaine, demi journée ?}
+                                                                    trous = sum()trou entre séance mm granuliarité 
+#taux                       moyenne(régularité)                     seuil min,max
+#0,1                            ecart type                              paramèetre intercours (10mn L, 15mn M)
+module possible
+
+maxCSP 0/1
+wCSP poids sur les taux
+hierarchie lexico   prioorité
+
+preferenceRooms -> parameter liste rooms preferenceRooms
+idem slots

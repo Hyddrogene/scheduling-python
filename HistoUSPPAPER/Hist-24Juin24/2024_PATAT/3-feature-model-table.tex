@@ -1,0 +1,114 @@
+~~%%tableau des features
+%\colorbox{gray}{\strut Votre texte ici}
+% \newcommand{\medcirc}{\text{\raisebox{0.25ex}{\large$\circ$}}}
+% \newcommand{\medbullet}{\text{\raisebox{0.25ex}{\large$\bullet$}}}%command possible
+
+\begin{table}[!ht]
+    \centering
+    \arrayrulecolor{black}
+    \begin{tabular}{|c|c|l|c|l|}
+    %\begin{tabular}{cclcl}
+        
+        \hline
+        % nom &&&&&\\
+        \multirow{3}{*}{$\medbullet$}& \multirow{3}*{\rotatebox{90}{\hspace{-2pt}\courses\label{featmodel:courses}}} &\multirow{3}*{$\medcirc$}&  \cellcolor[gray]{.9} &\cellcolor[gray]{.9}\\
+        && &\multirow{-2}*{\cellcolor[gray]{.9}\coursehierarchy~\label{featmodel:hierarchy}} &\multirow{-2}*{\cellcolor[gray]{.9} \textit{courses are decomposed hierarchically into sessions}}\\
+        % \cellcolor[gray]{.9}course-hierarchy~\label{featmodel:hierarchy} & \multirow{2}*{*}&\cellcolor[gray]{.9} $\exists\; \map{\ENTITY}{\ENTITY}{x}$\\
+         &&& \event~\label{featmodel:event} & ~\textit{events unrelated to courses must be scheduled}\\%des réunions pas student
+         % event~\label{featmodel:event} &&$\exists p\in\PART \;:\;\multiroompartmax{p} = 0 \vee \partteachermultiplicitymax{p} = 0 \vee |\map{\PART}{\GROUP}{p}| = \emptyset  $ \\%des réunions pas student        
+        \hline
+
+        %horizon &&&&\\
+       \multirow{3}{*}{$\medbullet$}& \multirow{3}*{\rotatebox{90}{\hspace{-2pt}\timing\label{featmodel:timing}}} &\multirow{3}*{$\medcirc$} &\cellcolor[gray]{.9}\fullperiod~\label{featmodel:fullperiod} &\cellcolor[gray]{.9} \textit{weeks are consecutive calendar weeks}\\
+        % \cellcolor[gray]{.9}full-period~\label{featmodel:fullperiod} &\multirow{3}*{*}&\cellcolor[gray]{.9} |real\_week(max(W)) - real\_week(min(W))| = w-1\\
+        &&& \fullweek~\label{featmodel:fullweek} & $\;d= 7$\\
+        &&& \cellcolor[gray]{.9}\singleweek~\label{featmodel:singleweek} & \cellcolor[gray]{.9}$\;w = 1$\\
+        \hline%timing
+        
+%        \multicolumn{3}{|c|}{\scheduling}\\ 
+        \multirow{5}{*}{$\medbullet$} & \multirow{5}*{\rotatebox{90}{\hspace{-2pt}\scheduling}} &\multirow{5}*{$\medcirc$}&  &
+        $\forall s_i,s_j\in\SESSION,s_i\neq s_j,\forall h_i \in \partallowedslots{s_i},\forall h_j\in\partallowedslots{s_j}\:\  $\\
+        &&& \multirow{-2}*{\nooverlap~\label{featmodel:nooverlap}}&$\;h_i<h_j \land h_i \div \dailyslot = h_j \div \dailyslot:\;h_i+\sessionduration{s_i} \leq h_j$\\
+        % \cellcolor[gray]{.9}no-overlap~\label{featmodel:nooverlap} &\multirow{5}*{*}&\cellcolor[gray]{.9} $\forall s_i,s_j\in S,s_i\neq s_j,\forall k \in 1..|M_i|,l\in1..|M_j|\ s.t.\ M_{i,k}<M_{j,l}:$\\
+        % &&$M_{i,k}+\sessionduration{s_i} \leq M_{j,l}$\\
+         %\cellcolor[gray]{.9}
+         &&& \cellcolor[gray]{.9}\sameduration~\label{featmodel:sameduration} & \cellcolor[gray]{.9}%\cellcolor[gray]{.9}
+         $\;\forall s_i,s_i \in \SESSION, \sessionduration{s_i} = \sessionduration{s_i}$ \\
+         
+       % &&& \cellcolor[gray]{.9} &\cellcolor[gray]{.9}$\;\alpha = gcd(M_{i,k} - M_{j,l} \mid i,j \in \SESSION, k \in \map{\SESSION}{\SLOT}{i}, l \in \map{\SESSION}{\SLOT}{j})$\\
+       % 
+       % &&& \multirow{-2}*{\cellcolor[gray]{.9}\synchronous}~\label{featmodel:synchronous}&\cellcolor[gray]{.9}$\;\land \alpha = \min(M_{i,k} - M_{j,l} \mid  i,j \in \SESSION, k \in \map{\SESSION}{\SLOT}{i}, l \in \map{\SESSION}{\SLOT}{j})$\\
+         
+         &&&&~Let $A=\{h_j-h_i\mid s_i,s_j\in\SESSION,h_i\in\map{\SESSION}{\SLOT}{s_i}, h_j\in\map{\SESSION}{\SLOT}{s_j},$\\
+         
+         &&&\multirow{-2}*{\synchronous}~\label{featmodel:synchronous}&$\; s_i\ne s_j,\;h_i<h_j\}: gcd(A) = \min(A) \land gcd(A)>1$\\ 
+        \hline
+
+%        %hosting
+        \multirow{7}{*}{$\medcirc$}&\multirow{7}*{\rotatebox{90}{\hspace{-2pt}\hosting\label{featmodel:hosting}}}&\multirow{3}*{+}& \cellcolor[gray]{.9}\noroom~\label{featmodel:noroom} & \cellcolor[gray]{.9} $\exists p \in \PART,\;\multiroompartmin{p}=\multiroompartmax{p} = 0 $\\
+         &&& \singleroom~\label{featmodel:singleroom} &$\;\exists p \in \PART,\;\multiroompartmin{p}=\multiroompartmax{p} = 1\;$\\
+       &&& \cellcolor[gray]{.9}\multiroom~\label{featmodel:multiroom} &\cellcolor[gray]{.9} $\exists p \in \PART,\;\multiroompartmin{p}\geq1 \land \multiroompartmax{p} > 1\;$
+         \\[-0.75em]
+         \arrayrulecolor{black}
+              &&\multicolumn{3}{c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+        %\\
+       %\nfois{2}{3}
+        &&$\medcirc$& \roomcapacityfeat~\label{featmodel:roomcapacity} & $\;\forall r \in \ROOM,\; \roomcapacity{r} \neq  \emptyset$
+        %\cline{3-5}
+        \\[-0.75em]
+        \arrayrulecolor{black}
+             &&\multicolumn{3}{c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+       & &\multirow{3}*{1} & \cellcolor[gray]{.9}\allexclusive~\label{featmodel:allexclusive}&\cellcolor[gray]{.9} $ \SESSIONEX = \SESSION $
+       \\%[0.4em]
+       
+      & &  &\noneexclusive~\label{featmodel:noneexclusive}  &$\;\SESSIONINC = \SESSION $ \textit{(Not compatible with ``multi-room'')}\\
+       && &\cellcolor[gray]{.9}\someexclusive~\label{featmodel:someexclusive} & \cellcolor[gray]{.9} $ \SESSIONEX \ne \emptyset \land   \SESSIONINC \ne \emptyset$ %\; \SESSIONINC \disjunion  \SESSIONEX  = \SESSION $
+        \\
+        \hline  
+        \multirow{5}{*}{$\medcirc$} & \multirow{5}*{\rotatebox{90}{\hspace{-2pt}\teaching\label{featmodel:teaching}}} & \multirow{3}*{+}&\noteacher~\label{featmodel:noteacher} &$\;\exists p \in \PART,\;\partteachermultiplicitymin{p}=\partteachermultiplicitymax{p} = 0 $\\
+      &&& \cellcolor[gray]{.9}\singleteacher~\label{featmodel:singleteacher}& \cellcolor[gray]{.9}$\;\exists p \in \PART,\;\partteachermultiplicitymin{p}=\partteachermultiplicitymax{p} = 1 $\\
+       &&& \multiteacher~\label{featmodel:multiteacher} &$\;\exists p \in \PART,\;\partteachermultiplicitymin{p}\geq1\land\partteachermultiplicitymax{p} >1 $%\\
+        \\[-0.75em]
+        \arrayrulecolor{black}
+        &&\multicolumn{3}{c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+
+       &&\multirow{2}*{$\medcirc$}& \cellcolor[gray]{.9}\teacheroverlap~\label{featmodel:teacheroverlap} &\cellcolor[gray]{.9}$\;\forall t \in\TEACHER,\forall s_i,s_j \in \map{\TEACHER}{\SESSION}{t},s_i+\sessionduration{s_i} \leq s_j \vee s_i \geq s_j +\sessionduration{s_j}$ \\
+%       & & &&$\;s_i \geq s_j +\sessionduration{s_j}$ \\
+       &&& \service~\label{featmodel:service}&~\textit{service constraints apply to teachers}\\ %
+       % \multirow{-2}*{\cellcolor[gray]{.9}service~\label{featmodel:service}}&&\cellcolor[gray]{.9}}$\;\land \sum\limits_{t \in \map{\TEACHER}{\SESSION}{p}} n_{p,t} \geq \map{\PART}{\SESSION}{p} $\\ %(\sum\limits_{\forall s \in \SESSION} (t \in \var{\SESSION}{\TEACHER}{s})) = n $\\
+       % \cellcolor[gray]{.9}&&\cellcolor[gray]{.9}}$\;\exists p \in \PART,\forall t \in \map{\PART}{\TEACHER}{p},\;\forall p \in \PART,\;\uexists n_{p,t} \in \mathbb{N},\; n_{p,t} \geq 0 \land n_{p,t} \leq |\map{\PART}{\SESSION}{p}|$\\
+       % \multirow{-2}*{\cellcolor[gray]{.9}service~\label{featmodel:service}}&&\cellcolor[gray]{.9}}$\;\land \sum\limits_{t \in \map{\TEACHER}{\SESSION}{p}} n_{p,t} \geq \map{\PART}{\SESSION}{p} $\\
+        \hline
+
+        
+       \multirow{4}{*}{$\medbullet$} & \multirow{4}*{\rotatebox{90}{\hspace{-2pt}\attending}}&\multirow{4}*{$\medcirc$}& \cellcolor[gray]{.9}  & \cellcolor[gray]{.9}$\;\forall g \in\GROUP,\forall s_i,s_j \in \map{\GROUP}{\SESSION}{g}, s_i+\sessionduration{s_i} \leq s_j \vee $ \\
+         & &&\cellcolor[gray]{.9}\multirow{-2}*{\studentoverlap~\label{featmodel:groupoverlap}} & \cellcolor[gray]{.9}$\;s_i \geq s_j +\sessionduration{s_j} $ \\
+          %TODO
+         &&& \multirow{2}*{\sectioning~\label{featmodel:sectioning}} &~\textit{student groups must be fixed and pre-assigned}\\
+         && & &~\textit{to classes}\\
+          % group~\label{featmodel:group}& &$\;\forall g \in \GROUP,\;\exists \STUDENT' \subseteq\STUDENT ,\;\forall u\in \STUDENT',group(u) = g $ \\
+        \hline
+       % & day off student& \checkmark & \checkmark & & & \\
+
+        \multirow{6}{*}{$\medcirc$}&\multirow{6}*{\rotatebox{90}{\hspace{-2pt}\aspects\label{featmodel:aspects}}}&\multirow{6}*{$\medcirc$} &  \cellcolor[gray]{.9}\availability & \cellcolor[gray]{.9} \textit{\ALLOWEDSLOTS, \FORBIDDENSLOTS, \ALLOWEDGRIDS,\ ...}\\%day off teacher
+        
+        &&& \periodicity & ~\textit{\PERIODIC, \ALLOWEDGRIDS,\SAMEROOMS, \DIFFERENTTEACHERS,\ ...} \\
+
+         
+       & & & \cellcolor[gray]{.9}\sessiondistribution & \cellcolor[gray]{.9} \textit{\SAMESLOT, \DIFFERENTDAY, \SEQUENCED, \NOOVERLAP}\\
+        
+      & && \travel & ~\textit{\COMPACTNESS, \GAP,\ ...}\\
+
+     &&& \cellcolor[gray]{.9}\adjacency &\cellcolor[gray]{.9} \textit{\SAMEROOMS, \ADJACENTROOMS, \DIFFERENTTEACHERS,\ ...} \\
+
+       &&& \resourcedistribution&  ~\textit{\ALLOWEDROOMS, \REQUIREDTEACHERS,\ ...} \\
+       % &&& &\multicolumn{1}{l|}{%\hspace{2.55em}
+       %   ~\textit{required\_rooms} }  \\%%distribution des profs & room
+       % % & lunch time& & \checkmark & & \checkmark & \\% event
+        \hline
+
+    \end{tabular}
+    \caption{A feature model for \UTP{}.}
+    \label{tab:features}
+    
+\end{table}

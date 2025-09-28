@@ -1,0 +1,35 @@
+\begin{table}[!ht]
+\begin{center}
+%\rowcolors{1}{gray!25}{white}
+
+%\begin{tabular}{|r>{\columncolor{gray!25}}l|}
+\begin{tabular}{|rl|}
+%\begin{tabular}{rl}
+\hline
+\grayrow
+$\var{\SESSION}{\SLOT}{s}\in{\SLOT}$ & the start time assigned to session $s$\\
+%$\var{\GROUP}{\STUDENT}{g}\subseteq{\STUDENT}$ & the set of students assigned to group $g$ \\
+%$\var{\CLASS}{\GROUP}{k}\subseteq{\GROUP}$ & the set of groups assigned to class $k$ \\
+$\var{\SESSION}{\ROOM}{s}\subseteq{\ROOM}$ & the set of rooms assigned to session $s$ \\
+\grayrow
+$\var{\SESSION}{\TEACHER}{s}\subseteq{\TEACHER}$ & the set of lecturers assigned to session $s$ %\\
+%$\var{\TEACHER}{\SESSION}{t}\subseteq{\SESSION}$$ & the set of sessions assigned to teacher $t$\\ 
+%\hdashline
+        \\[-0.75em]
+        \arrayrulecolor{black}
+        \multicolumn{2}{|c|}{\tikz{\draw[dashed, line width=0.4pt, yshift=-0.5\arrayrulewidth] (0,0) -- (\linewidth,0);}} \\[-0.58ex]
+%$\var{\ROOM}{\SESSION}{r}\subseteq{\SESSION}$ & (auxiliary variable) the set of sessions assigned to room $r$ \\
+$\var{\SESSION}{\WEEK}{s}\in{\WEEK}$ & (auxiliary variable) the week of the start time assigned to session $s$
+\\
+\grayrow
+$\var{\SESSION}{\WEEKDAY}{s}\in{\WEEKDAY}$ & (auxiliary variable) the weekday of the start time assigned to session $s$
+\\
+$\var{\SESSION}{\DAILYSLOT}{s}\in{\DAILYSLOT}$ & (auxiliary variable) the daily slot of the start time assigned to session $s$
+\\
+\hline
+\end{tabular}
+\caption{Core and auxiliary decision variables.}
+\label{table:core-variables}
+\end{center}
+\end{table}
+%\todo{@corentin: style de la table FAIT}

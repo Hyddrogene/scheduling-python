@@ -1,0 +1,343 @@
+%------------------------------------------------------------
+%------------------------------------------------------------
+\subsection{{\MINIZINC} model}
+\label{sec:cp-mzn}
+%------------------------------------------------------------
+%------------------------------------------------------------
+%------------------------------------------------------------
+
+%{\MINIZINC} est un langage de modélisation haut-niveau de problèmes d'optimisation sous contraintes \cite{MZN,MINIZINC}. 
+%Les modèles {\MINIZINC} sont traduits dans le langage cible {\FLATZINC} \cite{FLATZINC} qui permet d'interfacer différents types de solveurs dont les solveurs de programmation par contraintes sur domaines finis tels  {\GECODE} \cite{GECODE}.
+%{\MINIZINC} intègre de nombreuses contraintes globales et le modèle {\UTP} présenté en Table~\ref{table:mzn-contraintes} et utilisant les variables de décision présentée en Table~\ref{table:cp-variables} s'appuie sur quelques contraintes dédiées aux problèmes d'ordonnancement.
+%
+\MINIZINC{} is a high-level language to model constrained optimization problems \cite{2007_nethercote_SPH,MINIZINC}.
+\MINIZINC{} models are translated into \FLATZINC{} \cite{FLATZINC} which allows to interface different types of solvers including solvers on finite domain {\CSP}s such as \GECODE{} \cite{GECODE}.
+The \MINIZINC{} model for {\UTP} is presented in Table~\ref{table:mzn-contraintes} and based on the decisions variables listed in Table~\ref{table:mzn-variables}.
+The model uses some of the global constraints supported in \MINIZINC{} which are dedicated to scheduling problems.
+
+\begin{table*}[ht]
+%\resizebox{\textwidth}{!}{%
+\centering
+{\small
+\begin{tabular}{|lll|}
+\hline
+array[\STUDENT] of var \GROUP: & $\xstudent$ & group assigned to a student \\%groupe attribué à un étudiant\\
+array[\CLASS] of var set of \GROUP: & $\xgroup$ & set of groups assigned to a class \\%ensemble de groupes alloués à une classe\\
+array[\SESSION] of var set of \ROOM: & \xroom & set of rooms allocated to a session \\%ensemble de salles allouées à une séance\\
+array[\SESSION] of var set of \TEACHER: & $\xteacher$ & set of lecturers allocated to a session \\%ensemble d'enseignants alloués à une séance\\
+array[\SESSION] of var \SLOT: & $\xslot$ & starting slot of a session \\%créneau de départ attribué à une séance\\
+\hline
+\end{tabular}
+}
+\caption{
+%Variables de décision (\MINIZINC{})
+Decision variables (\MINIZINC{}).
+}
+\label{table:mzn-variables}
+\end{table*}
+
+%\newcolumntype{N}{>{\refstepcounter{rowcntr}\therowcntr}r}
+\newcounter{rowcntr}[table]
+\renewcommand{\therowcntr}{(\arabic{rowcntr})}
+\setcounter{rowcntr}{0}
+
+
+
+\begin{table*}[!ht]
+%\resizebox{\textwidth}{!}{%
+
+\framebox[\textwidth][c]{%
+\small
+\begin{tabularx}{\textwidth}{>{\hsize=0.01\hsize\linewidth=\hsize}X>{\hsize=1.89\hsize\linewidth=\hsize}X>{\raggedleft\arraybackslash\hsize=.09\hsize\linewidth=\hsize}X}
+%\begin{math}\STUDENT = \funcmzn{array\_union}(\xgroup) \end{math} & 
+%partition\_set(\xgroup,\begin{math}\STUDENT\end{math}) & \refstepcounter{rowcntr} \therowcntr \label{mzn:grouppartition}\\
+%
+%
+&$\forallmzn(u,v \inmzn \STUDENT \wmzn u\gqmzn v)$&\\
+&\hspace*{2,8em}$(\arraymzn{student\_courses}[u]\neqmzn \arraymzn{student\_courses}[v] \arrowmzn \xstudent[u]\neqmzn \xstudent[v]) $&  \refstepcounter{rowcntr} \therowcntr \label{mzn:studentgrouping}\\
+%
+%
+&$\forallmzn(u \inmzn \STUDENT,p \inmzn \funcmzn{student\_parts}[u])$&\\
+&\hspace*{2,8em}$(\existmzn(k \inmzn \arraymzn{part\_classes}[p])(\xstudent[u] \inmzn \xgroup[k]))$& \refstepcounter{rowcntr} \therowcntr \label{mzn:allparts}\\
+%forallmzn(u \inmzn \STUDENT, g \inmzn \GROUP)(\xstudent[u] = g \arrowmzn forall(p in \funcmzn{student\_parts}[u])(p = g in  xgroup ))
+%
+&$\forallmzn(p \inmzn \PART,k1,k2 \inmzn \arraymzn{part\_classes}[p] \wmzn k1\gqmzn k2)$&\\
+%
+%\hspace{2cm}all_disjoint
+&\hspace*{2,8em}$(\xgroup[k1] \intermzn \xgroup[k2]=\{\})$& \refstepcounter{rowcntr} \therowcntr \label{mzn:exclusiveclass}\\
+%
+%
+&$\forallmzn(k1 \inmzn \CLASS, k2 \inmzn \funcmzn{class\_parents}(k1))(\xgroup[k1] \subsetmzn \xgroup[k2])$ &  \refstepcounter{rowcntr} \therowcntr \label{mzn:parent}\\
+%
+&$\forallmzn(k \inmzn \CLASS)(\arraymzn{maxsize}[k] \geqmzn \summzn(g \inmzn \GROUP)$&\\
+&\hspace*{2,8em}$(\funcmzn{bool2int}(g \inmzn \xgroup[k])*\summzn(u \inmzn \STUDENT)(\funcmzn{bool2int}(\xstudent[u]=g)))$ &  \refstepcounter{rowcntr} \therowcntr \label{mzn:classcapacity}\\
+% 
+%
+\hline
+%
+%
+&$\forallmzn(s \inmzn \SESSION)(\xroom[s] \subsetmzn \arraymzn{part\_rooms}[\funcmzn{session\_part}[s]])$& \refstepcounter{rowcntr} \therowcntr \label{mzn:allowedrooms}\\
+%
+%
+&$\forallmzn(s \inmzn \SESSION)(\xteacher[s] \subsetmzn \arraymzn{part\_lecturers}[\funcmzn{session\_part}[s]]) $ &  \refstepcounter{rowcntr} \therowcntr \label{mzn:allowedteachers} \\
+%
+%
+%$\forallmzn(k \inmzn \CLASS)(((\arraymzn{part\_room\_use}[\funcmzn{class\_part}(k)]=\text{none}) \Longleftrightarrow (\xroom[k] = \{\})) $&\\
+&$\forallmzn(s \inmzn \SESSION, p \inmzn \PART \wmzn p=\funcmzn{session\_part}[s])($&\\ &\hspace*{2,8em}$(\arraymzn{part\_room\_use}[p]=\text{none} \arrowmzn \xroom[s] = \{\}) $&\\
+&\hspace*{1em}$\landmzn (\arraymzn{part\_room\_use}[p]=\text{single} \arrowmzn \funcmzn{card}(\xroom[s]) = 1)  $&\\
+&\hspace*{1em}$\landmzn(\arraymzn{part\_room\_use}[p]=\text{multiple} \arrowmzn \funcmzn{card}(\xroom[s]) \leqmzn 1))$
+& \refstepcounter{rowcntr} \therowcntr 
+\label{mzn:multiroom}\\
+%
+%
+&$\forallmzn(s \inmzn \SESSION)( \funcmzn{card}(\xteacher[s]) = \funcmzn{team}[\funcmzn{session\_part}[s]])$ & \refstepcounter{rowcntr} \therowcntr 
+\label{mzn:multiteacher}\\
+%
+%
+&$\forallmzn(p \inmzn \PART,l \inmzn \arraymzn{part\_lecturers}[p])$&\\
+&\hspace*{2,8em}$(\summzn{}(s \inmzn \funcmzn{part\_sessions}(p))(\funcmzn{bool2int}(l \inmzn \xteacher[s]) = \arraymzn{service}[l,p])) $& \refstepcounter{rowcntr} \therowcntr 
+\label{mzn:partteacherservice}\\
+%
+%
+\hline
+%
+%
+%$\forallmzn(k \inmzn \CLASS)(\xroom[k] \subsetmzn \arraymzn{part\_rooms}[\funcmzn{class\_part}(k))$ & \refstepcounter{rowcntr} \therowcntr  \label{mzn:allowedsrooms}\\
+%
+%$\forallmzn(s \inmzn \SESSION)(\xteacher[s] \subsetmzn \arraymzn{part\_teachers}[\funcmzn{session\_part}[s]])$  & \refstepcounter{rowcntr} \therowcntr  \label{mzn:allowedsteacher}\\
+%
+&$\forallmzn(p \inmzn \PART,s \inmzn \funcmzn{part\_sessions}(p))$&\\
+&\hspace*{2,8em}$(\funcmzn{week}(\xslot[s]) \inmzn \arraymzn{weeks}[p]$ &\\
+&\hspace*{1em}$\landmzn \funcmzn{weekday}(\xslot[s]) \inmzn \arraymzn{weekdays}[p]$&\\
+&\hspace*{1em}$\landmzn \funcmzn{dailyslot}(\xslot[s]) \inmzn \arraymzn{dailyslots}[p])$& \refstepcounter{rowcntr} \therowcntr 
+\label{mzn:allowedslots}\\
+%
+%
+&$\forallmzn(s \inmzn \SESSION)$&\\
+&\hspace*{2,8em}$((\xslot[s] - 1) \divmzn \gconst{nr\_slots\_per\_day} =$&\\
+&\hspace*{2,8em}$(\xslot[s] + \funcmzn{length}[s] - 1) \divmzn \gconst{nr\_slots\_per\_day})$& \refstepcounter{rowcntr} \therowcntr 
+\label{mzn:nopreemption}\\
+%
+%
+&$ \forallmzn(k \inmzn \CLASS, s1,s2 \inmzn \funcmzn{class\_sessions}[k] \wmzn \funcmzn{rank}(s1) \gqmzn \funcmzn{rank}(s2))$ &\\ 
+&\hspace*{2,8em}$(\xslot[s1]+\funcmzn{length}[s] \leqmzn \xslot[s2]) $& \refstepcounter{rowcntr} \therowcntr 
+\label{mzn:classsequencing}\\
+%
+%
+%&$\forallmzn(s1 \inmzn \SESSION, r \inmzn \funcmzn{part\_rooms}[\funcmzn{session\_part}[s1]],s2 \inmzn %\funcmzn{room\_sessions}[r] $&\\
+%&\hspace*{2,8em}$\wmzn \funcmzn{is\_multi\_rooms}[\funcmzn{session\_part}[s1]]) \landmzn s1 \neqmzn %s2)($&\\
+%&\hspace*{3em}$\funcmzn{disjunctive}([\xslot[s1],\xslot[s2]],$&\\
+%%
+%&\hspace*{3em}$[\funcmzn{bool2int}(r \inmzn \xroom[s1])*\funcmzn{length}[s1],\funcmzn{bool2int}(r %\inmzn \xroom[s2])*\funcmzn{length}[s2]]))$ & \refstepcounter{rowcntr} \therowcntr  %\label{mzn:multiroomscheduling}\\
+&$\forallmzn(p \inmzn \PART, s1 \inmzn \funcmzn{part\_sessions}[p], r \inmzn \funcmzn{part\_rooms}[p],s2 \inmzn \funcmzn{room\_sessions}[r] $&\\
+&\hspace*{2,8em}$\wmzn \funcmzn{is\_multi\_rooms}[p] \landmzn s1 \neqmzn s2)$&\\
+&\hspace*{3em}$(\funcmzn{disjunctive}([\xslot[s1],\xslot[s2]],$&\\
+%
+&\hspace*{3em}$[\funcmzn{bool2int}(r \inmzn \xroom[s1])*\funcmzn{length}[s1],\funcmzn{bool2int}(r \inmzn \xroom[s2])*\funcmzn{length}[s2]]))$ & \refstepcounter{rowcntr} \therowcntr  \label{mzn:multiroomscheduling}\\
+%
+%
+&$\forallmzn(p \inmzn \PART, s \inmzn \funcmzn{part\_sessions}[p] \wmzn \funcmzn{is\_multi\_rooms}[p])$&\\
+&\hspace*{2,8em}$(\summzn(r \inmzn \arraymzn{part\_rooms}[p])(\funcmzn{bool2int}(r \inmzn \xroom[s]) * \arraymzn{capacity}[r])$&\\
+&\hspace*{2,8em}$\geqmzn\summzn(g \inmzn \arraymzn{class\_groups}[\funcmzn{session\_class}[s]])(\funcmzn{card}(\arraymzn{group\_students}[g])))$& \refstepcounter{rowcntr} \therowcntr  
+\label{mzn:multiroomcapacity}\\
+%
+%
+%$\forallmzn(s \inmzn \SESSION, r \inmzn \funcmzn{session\_rooms}[s])($&\\
+%\multicolumn{1}{|c}{$\arraymzn{room\_capacity}[r] \geq sum(g \inmzn %\funcmzn{session\_group}[s])(\funcmzn{card}(\arraymzn{group\_students}[g]))))$} & \refstepcounter{rowcntr} \therowcntr  
+%\label{mzn:cumulativeroomcapacity}\\
+%
+%
+&$\forallmzn(p \inmzn \PART, s \inmzn \funcmzn{part\_sessions}[p])(\funcmzn{mandatory\_rooms}[p] \subsetmzn \xroom[s])$& \refstepcounter{rowcntr} \therowcntr 
+\label{mzn:mandatoryrooms}\\
+%
+%
+%&$\forallmzn(r \inmzn \ROOM  \wmzn \notmzn(\funcmzn{virtual}[r]))$&\\
+%&\hspace*{2,8em}$(\funcmzn{cumulative}([\xslot[s] | s \inmzn \funcmzn{room\_sessions}[r]],$&\\
+%&\hspace*{2,8em}$[\funcmzn{bool2int}(r \inmzn \xroom[s])* \funcmzn{length}[s] | s \inmzn \funcmzn{room\_sessions}[r]  ],$&\\
+%&\hspace*{3em}$[\summzn(g \inmzn \GROUP)(\funcmzn{bool2int}(g \inmzn \xgroup[\funcmzn{session\_class}[s]])) * \summzn(u \inmzn \STUDENT)($&\\
+%&$\funcmzn{bool2int}(g = \xstudent[u]))| s \inmzn \funcmzn{room\_sessions}[r]],\arraymzn{capacity}[r]))$& \refstepcounter{rowcntr} \therowcntr  
+%\label{mzn:roomuse}\\
+&$\forallmzn(r \inmzn \ROOM  \wmzn \notmzn(\funcmzn{virtual}[r]))($&\\
+&\hspace*{2,8em}$\funcmzn{let \{}\funcmzn{set of \SESSION: RS= room\_sessions}[r]\intermzn\funcmzn{single\_room\_sessions;}\}\inmzn$&\\
+&\hspace*{2,8em}$(\funcmzn{cumulative}([\xslot[s] | s \inmzn RS],$&\\
+&\hspace*{2,8em}$[\funcmzn{bool2int}(r \inmzn \xroom[s])* \funcmzn{length}[s] | s \inmzn RS],$&\\
+&\hspace*{3em}$[\summzn(g \inmzn \GROUP)(\funcmzn{bool2int}(g \inmzn \xgroup[\funcmzn{session\_class}[s]])) * \summzn(u \inmzn \STUDENT)($&\\
+&$\funcmzn{bool2int}(g = \xstudent[u]))| s \inmzn RS],\arraymzn{capacity}[r]))$& \refstepcounter{rowcntr} \therowcntr  
+\label{mzn:roomuse}\\
+%
+%
+%\forallmzn(t \inmzn \TEACHER)(\funcmzn{cumulative}( & \\
+%\multicolumn{1}{|c}{$[\xslot[s] | s \inmzn \funcmzn{teacher\_sessions}(t)],[\funcmzn{bool2int}(t \subsetmzn \xteacher[s])* \funcmzn{session\_length}[s] | s \inmzn \funcmzn{teacher\_sessions}(t)],$}&\\
+%\multicolumn{1}{|c}{$[1| s \inmzn \funcmzn{teacher\_sessions}(t)],teacher\_max\_use[t])))$}& \refstepcounter{rowcntr} \therowcntr  
+%\label{mzn:teacheruse}\\
+%
+%
+%$\forallmzn(g \inmzn \GROUP)(\funcmzn{cumulative}($&\\
+%\multicolumn{1}{|c}{$[\xslot[s] | s \inmzn \funcmzn{group\_sessions}(g)],[\funcmzn{session\_length}[s] | s \inmzn \funcmzn{group\_sessions}(g)],$}&\\
+%\multicolumn{1}{|c}{$[1| s \inmzn \funcmzn{group\_sessions}(g)],group\_max\_use[g])))$}& \refstepcounter{rowcntr} \therowcntr  
+%\label{mzn:groupuse}\\
+%
+%
+\hline
+%
+%
+&$\FORBIDDENPERIOD((r,S'),h1,h2) = \forallmzn(i \inmzn S')($&\\
+&\hspace*{2,8em}$ r \inmzn \xroom[i] \arrowmzn (\xslot[i]+\funcmzn{length}[i] \geqmzn h_1 \lormzn  \xslot[i]\lqmzn h_2)) $& \refstepcounter{rowcntr} \therowcntr 
+\label{mzn:forbiddenperiod}\\
+%
+%
+&$\SAMEWEEKDAY((r,S')) = \forallmzn(i,j \inmzn S' \wmzn i\gqmzn j)($&\\
+&\hspace*{2,8em}$ (r\inmzn \xroom[i] \intermzn \xroom[j]) \arrowmzn $&\\
+&\hspace*{2,8em}$(\xslot[i] \divmzn \gconst{nr\_weekly\_slots}=\xslot[j] \divmzn  \gconst{nr\_weekly\_slots}))$ & \refstepcounter{rowcntr} \therowcntr 
+\label{mzn:sameweekday}\\
+%
+%
+&$\SAMEROOMS((r,S')) = \forallmzn(i,j \inmzn S' \wmzn i\gqmzn j)(($&\\
+%
+&\hspace*{2,8em}$r\inmzn \xroom[i] \intermzn \xroom[j]) \arrowmzn \xroom[i] = \xroom[j])$ & \refstepcounter{rowcntr} \therowcntr 
+\label{mzn:samerooms}\\
+%
+%
+&$\SEQUENCED((r1,S1),(r2,S2)) = \forallmzn(i \inmzn S1,j \inmzn S2)($&\\
+&\hspace*{3em}$(r1\inmzn \xroom[i] \landmzn r2\inmzn \xroom[j]) \arrowmzn\xslot[i]\texttt{+}\funcmzn{length}[i] \geqmzn \xslot[j])$ & \refstepcounter{rowcntr} \therowcntr 
+\label{mzn:sequenced}\\
+%
+%
+&$\NOOVERLAP((r,S'))=$&\\
+&\hspace*{2,8em}$\funcmzn{disjunctive}([\xslot[i]|i \inmzn S'],[\funcmzn{length}[i]*\funcmzn{bool2int}(r \inmzn \xroom[i])|i \inmzn S'])$ & \refstepcounter{rowcntr} \therowcntr 
+\label{mzn:nooverlap}\\
+
+\end{tabularx}%
+}%
+%}
+\caption{
+%Contraintes et prédicats du modèle \MINIZINC{}
+Constraints and predicates of the \MINIZINC{} model.
+}
+\label{table:mzn-contraintes}
+\end{table*}
+
+
+%------------------------------------------------------------
+%------------------------------------------------------------
+%\subsection{Student Sectioning}
+%\label{sec:model-sectioning}
+
+%Les contraintes de sectionnement répartissent
+%les étudiants dans les groupes et assigne chacun de ces groupes à différentes classes 
+%conformément aux règles de sectionnement et aux seuils d'effectifs.
+%%La contrainte~\ref{mzn:grouppartition} partitionne les étudiants en groupes.
+%La contrainte \ref{mzn:studentgrouping} n'autorise le regroupement
+%d'étudiants que s'ils sont inscrits aux mêmes cours.
+%\ref{mzn:allparts} impose que tout étudiant, assimilé à son groupe, assiste à toute partie de cours dans lequel il est inscrit.
+%\ref{mzn:exclusiveclass} assure que les classes d'une partie de cours n'ont aucun groupe en commun.
+%\ref{mzn:parent} implémente la relation de parenté entre classes.
+%Enfin, \ref{mzn:classcapacity} vérifie que l'effectif cumulé des groupes attribués à une classe ne dépasse pas le seuil autorisé. 
+%A noter que cette contrainte utilise des variables auxiliaires pseudo-booléennes.
+%
+Sectioning constraints partition students into groups and assign each group to a class according to sectioning rules and class size thresholds.
+Constraint~\ref{mzn:studentgrouping} allows students to be part of the same group only if they are registered to the same courses.
+\ref{mzn:allparts} imposes that every student attends all the part of the courses to which he is registered.
+\ref{mzn:exclusiveclass} ensures that classes from the same part do not have any common group.
+\ref{mzn:parent} implements the parent-child relation between classes.
+Lastly, \ref{mzn:classcapacity} checks that the groups fit in the class they have been assigned to.
+
+%------------------------------------------------------------
+%------------------------------------------------------------
+%\subsubsection{Resource Distribution}
+%\label{sec:model-distribution}
+
+%La distribution des ressources s'appuie sur des contraintes de domaine, de cardinalité et de sommes.
+%Les contraintes~\ref{mzn:allowedrooms} et \ref{mzn:allowedteachers} définissent les salles et enseignants allouables à chaque séance.
+%\ref{mzn:multiroom} contraint le nombre de salles allouées à une séance selon que sa partie de cours est sans salles, mono-salle, ou multi-salles.
+%\ref{mzn:multiteacher} attribue le nombre attendu d'enseignants à chaque séance
+%et \ref{mzn:partteacherservice} vérifie que chaque enseignant dispense le volume de séances requis par partie de cours où il est pré-positionné.
+%
+Resource distribution relies on domain, cardinality and sum constraints.
+Constraints~\ref{mzn:allowedrooms} and \ref{mzn:allowedteachers} define available rooms and lecturers for each session.
+\ref{mzn:multiroom} forces the number of rooms allocated to a session according to the specific requirements of the course part (i.e., no room, single-room or multi-room).
+\ref{mzn:multiteacher} allocates the required number of lecturers to a session and \ref{mzn:partteacherservice} checks that every lecturer has the right number of sessions in a part.
+
+%------------------------------------------------------------
+%------------------------------------------------------------
+%\subsubsection{Session Scheduling and Resource Allocation}
+%\label{sec:model-scheduling}
+
+%La programmation des séances et l'allocation des ressources met en jeu des contraintes de positionnement, de séquencement, de non-chevauchement et de capacité. 
+%%Constraint~\ref{mzn:allowedslots} defines the allowed slots per session
+%%and 
+%La contrainte~\ref{mzn:allowedslots} définit les créneaux autorisés pour chaque séance.
+%\ref{mzn:nopreemption} interdit qu'une séance soit à cheval sur 2 journées. 
+%\ref{mzn:classsequencing} séquence les séances d'une classe selon leur rangs.
+%Les contraintes \ref{mzn:multiroomscheduling} et \ref{mzn:multiroomcapacity} modélisent les séances multi-salles et l'accès exclusif à leurs ressources.
+%\ref{mzn:multiroomscheduling} impose qu'une ressource allouée à une séance multi-salles soit disjonctive le temps de son utilisation.
+%\ref{mzn:multiroomcapacity} assure que le nombre d'étudiants attendus n'excède pas la capacité cumulée des salles allouées.
+%À noter que cette contrainte est purement quantitative et autorise toute répartition d'étudiants dans les salles indépendamment de la structure de groupes.
+%\ref{mzn:mandatoryrooms} modélise les salles à allouer obligatoirement à toute séance d'une partie de cours.
+%\ref{mzn:roomuse} modélise la contrainte de capacité cumulative qui s'applique par défaut à toute salle allouée hors séances multi-salles.
+%%\ref{mzn:groupuse}
+%
+Session scheduling and resource allocation involves positioning, sequencing, non-overlaping and capacity constraints.
+Constraint~\ref{mzn:allowedslots} defines the allowed slots for each session.
+\ref{mzn:nopreemption} forbids a session to be on two days.
+\ref{mzn:classsequencing} sequences the sessions of a class according to their rank.
+Constraints~\ref{mzn:multiroomscheduling} and \ref{mzn:multiroomcapacity} model multi-room sessions and the exclusive access to their rooms.
+\ref{mzn:multiroomscheduling} makes disjunctive any resource that is allocated to a multi-room session while it is hosting the session.
+\ref{mzn:multiroomcapacity} ensures that the number of students attending a multi-room session do not exceed the cumulated capacity of the allocated rooms.
+%Note that this constraint is purely quantitative and allows all repartition of students in the allocated rooms without taking into account the group structure.
+\ref{mzn:mandatoryrooms} models the mandatory rooms to be allocated.
+\ref{mzn:roomuse} models the default cumulative capacity constraint controlling the allocation of non-virtual rooms to single-room sessions.
+This constraint uses the \texttt{cumulative} global constraint of \MINIZINC{} (see \cite{2002_beldiceanu_CP} for the \GECODE{} implementation)
+which \MINIZINC{} also reuses to rewrite the global \texttt{disjunctive} constraint. 
+
+%------------------------------------------------------------
+%------------------------------------------------------------
+
+%\subsubsection{{\UTP} Predicates}
+%\label{sec:model-predicates}
+
+%%%%{\ADJACENTROOMS}
+%%%%{\ATMOSTDAILY}
+%%%%{\ATMOSTWEEKLY}
+%%%%{\TRAVEL}
+%{\FORBIDDENPERIOD}
+%{\NOOVERLAP}
+%%%%{\SAMEDAILYSLOT}
+%%%%{\SAMEDAY}
+%{\SAMEROOMS}
+%%%%{\SAMESLOT}
+%%%%{\SAMESTUDENTS}
+%%%%{\SAMETEACHERS}
+%{\SAMEWEEKDAY}
+%%%%{\SAMEWEEKLYSLOT}
+%%%%{\SAMEWEEK}
+%{\SEQUENCED}
+%%%%{\TEACHERDISTRIBUTION}
+%%%%{\WEEKLY}
+
+%%Due to lack of space, we just present a few {\UTP} constraint predicates, namely,
+%La table~\ref{table:mzn-contraintes} présente les variantes de quelques prédicats \UTP{} dans le cas où les entités ciblées sont des salles.
+%%, respectivement,
+%%\texttt{\FORBIDDENPERIOD} (\ref{mzn:forbiddenperiod}),
+%%\texttt{\SAMEWEEKDAY} (\ref{mzn:sameweekday}), 
+%%\texttt{\SAMEROOMS} (\ref{mzn:samerooms}),
+%%\texttt{\NOOVERLAP} (\ref{mzn:nooverlap}) 
+%%et \texttt{\SEQUENCED} (~\ref{mzn:sequenced}).
+%%Note that \texttt{\FORBIDDENPERIOD} accepts start and end point parameters.
+%\ref{mzn:forbiddenperiod} implémente le prédicat \texttt{\FORBIDDENPERIOD} qui prend en paramètres les 2 créneaux modélisant la période interdite. 
+%\ref{mzn:sameweekday}, \ref{mzn:samerooms} et \ref{mzn:sequenced} modélisent de manière directe les prédicats \texttt{\SAMEWEEKDAY}, \texttt{\SAMEROOMS} et \texttt{\SEQUENCED}.
+%\ref{mzn:nooverlap} implémente le prédicat \texttt{\NOOVERLAP} en s'appuyant sur la contrainte globale \texttt{disjunctive}. %de \MINIZINC{}.
+%
+Table~\ref{table:mzn-contraintes} also presents some \UTP{} predicates when the targeted resources are rooms.
+\ref{mzn:forbiddenperiod} implements the \texttt{\FORBIDDENPERIOD} predicate that takes the start and end time slots of the period as parameters.
+\ref{mzn:sameweekday}, \ref{mzn:samerooms} and \ref{mzn:sequenced} model \texttt{\SAMEWEEKDAY}, \texttt{\SAMEROOMS} and \texttt{\SEQUENCED} predicates, respectively.
+\ref{mzn:nooverlap} implements the \texttt{\NOOVERLAP} predicate that relies on the \texttt{disjunctive} global constraint.
+
+% Note that entailed constraints may be enforced. 
+% For instance, a room $r$ is necessarily disjunctive if a non-overlapping constraint is enforced on its set of compatible sessions, %\footnote{
+%Il faut noter que des contraintes peuvent être renforcés. 
+%Par exemple, une salle $r$ est nécessairement disjonctive si une contrainte de non-chevauchement est appliquée à son ensemble de sessions possibles, c'est-à-dire si l'instance inclut la contrainte ${no\_overlap}$.
+% i.e., if the instance includes constraint ${no\_overlap}((r,\map{\ROOM}{\SESSION}{r}))$.
+% If so, the default cumulative capacity constraint may be safely replaced with  Constraint~\ref{mzn:disjunctiveroomcapacity} for such resources where
+% $\disjunctiverooms\subseteq{\ROOM}$         denotes the set of disjunctive rooms.
+%Dans ce cas, la contrainte cumulative par défaut peut être remplacée en toute sécurité par la contrainte~\ref{mzn:disjunctiveroomcapacity} pour les ressources concernés.

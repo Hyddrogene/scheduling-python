@@ -1,0 +1,145 @@
+% ------------------------
+\begin{frame}{Structure de base d'une page HTML}
+\textbf{Balises principales et attributs :}
+\begin{itemize}
+    \item \texttt{<!DOCTYPE html>} : indique HTML5, pas d'attribut
+    \item \texttt{<html lang="fr">} : racine du document
+        \begin{itemize}
+            \item \texttt{lang} : langue de la page (ex : "fr" pour français)
+        \end{itemize}
+    \item \texttt{<head>} : informations sur la page
+        \begin{itemize}
+            \item \texttt{<title>} : titre de la page
+            \item \texttt{<meta charset="UTF-8">} : encodage des caractères
+            \item \texttt{<link rel="stylesheet" href="style.css">} : lien CSS
+        \end{itemize}
+    \item \texttt{<body>} : contenu visible
+\end{itemize}
+\end{frame}
+
+% ------------------------
+\begin{frame}{Titres et texte}
+\textbf{Balises et attributs :}
+\begin{itemize}
+    \item \texttt{<h1> ... <h6>} : titres hiérarchiques
+        \begin{itemize}
+            \item Attributs possibles : \texttt{id}, \texttt{class}, \texttt{style}
+        \end{itemize}
+    \item \texttt{<p>} : paragraphe
+        \begin{itemize}
+            \item Attributs possibles : \texttt{id}, \texttt{class}, \texttt{style}
+        \end{itemize}
+    \item \texttt{<strong>} : texte important (gras)
+    \item \texttt{<em>} : texte accentué (italique)
+\end{itemize}
+
+\textbf{Exemple :}
+\begin{lstlisting}[language=HTML]
+<h1 id="titre">Bienvenue</h1>
+<p class="intro">Ceci est un paragraphe <strong>important</strong> et <em>emphasé</em>.</p>
+\end{lstlisting}
+\end{frame}
+
+% ------------------------
+\begin{frame}{Listes}
+\textbf{Balises et attributs :}
+\begin{itemize}
+    \item \texttt{<ul>} : liste non ordonnée
+        \begin{itemize}
+            \item Attributs : \texttt{type}, \texttt{class}, \texttt{id}
+        \end{itemize}
+    \item \texttt{<ol>} : liste ordonnée
+        \begin{itemize}
+            \item Attributs : \texttt{type="1|A|a|I|i"}, \texttt{start}, \texttt{reversed}
+        \end{itemize}
+    \item \texttt{<li>} : élément de liste
+        \begin{itemize}
+            \item Attributs : \texttt{value} (pour listes numérotées)
+        \end{itemize}
+\end{itemize}
+
+\textbf{Exemple :}
+\begin{lstlisting}[language=HTML]
+<ul>
+  <li>Élément 1</li>
+  <li>Élément 2</li>
+</ul>
+
+<ol type="A" start="3">
+  <li>Troisième lettre</li>
+</ol>
+\end{lstlisting}
+\end{frame}
+
+% ------------------------
+\begin{frame}{Liens et images}
+\textbf{Balises et attributs :}
+\begin{itemize}
+    \item \texttt{<a href="URL" target="_blank" title="...">} : lien hypertexte
+        \begin{itemize}
+            \item \texttt{href} : adresse de destination
+            \item \texttt{target} : \_blank, \_self, etc.
+            \item \texttt{title} : info-bulle
+        \end{itemize}
+    \item \texttt{<img src="..." alt="..." width="..." height="...">} : image
+        \begin{itemize}
+            \item \texttt{src} : chemin de l'image
+            \item \texttt{alt} : texte alternatif pour accessibilité
+            \item \texttt{width/height} : dimensions de l'image
+        \end{itemize}
+\end{itemize}
+
+\textbf{Exemple :}
+\begin{lstlisting}[language=HTML]
+<a href="https://www.dinosaures.org" target="_blank" title="Site Dinosaures">Visiter le site</a>
+<img src="triceratops.png" alt="Triceratops" width="300">
+\end{lstlisting}
+\end{frame}
+
+% ------------------------
+\begin{frame}{Tables}
+\textbf{Balises et attributs :}
+\begin{itemize}
+    \item \texttt{<table border="1" class="table">} : tableau
+    \item \texttt{<tr>} : ligne
+    \item \texttt{<th>} : cellule d'en-tête
+        \begin{itemize}
+            \item Attributs : \texttt{scope="col|row"}
+        \end{itemize}
+    \item \texttt{<td>} : cellule
+        \begin{itemize}
+            \item Attributs : \texttt{colspan}, \texttt{rowspan}, \texttt{align}
+        \end{itemize}
+\end{itemize}
+
+\textbf{Exemple :}
+\begin{lstlisting}[language=HTML]
+<table border="1">
+  <tr>
+    <th scope="col">Nom</th>
+    <th scope="col">Taille</th>
+  </tr>
+  <tr>
+    <td>Triceratops</td>
+    <td>9 m</td>
+  </tr>
+</table>
+\end{lstlisting}
+\end{frame}
+
+% ------------------------
+\begin{frame}{Formulaires}
+\textbf{Balises et attributs :}
+\begin{itemize}
+    \item \texttt{<form action="..." method="POST|GET">} : conteneur
+    \item \texttt{<input type="text|password|radio|checkbox" name="..." value="...">} : champs
+    \item \texttt{<button type="submit|reset">} : bouton
+    \item \texttt{<label for="id">} : associe texte à champ
+\end{itemize}
+
+\textbf{Exemple :}
+\begin{lstlisting}[language=HTML]
+<form action="/envoyer" method="POST">
+  <label for="nom">Nom :</label>
+  <input type="text" id="nom" name="nom">
+  <button type="submi

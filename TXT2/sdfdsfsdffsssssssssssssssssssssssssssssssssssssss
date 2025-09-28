@@ -1,0 +1,24 @@
+abstract
+
+intro
+
+langage UTP
+    x formel
+    x verbeaux
+    
+etat de lart -> ITC
+
+modele ppc
+    1 input data / variable
+    2 sectionning
+    3 distribution
+    4 ressource allocations
+    5 predicats
+    6 reformulation -> transiivité// mentionné regle // moteur de rgle -> contrainte scan et reformule simplifier
+experimentations
+
+
+
+flatteneur -> intpréteur
+
+

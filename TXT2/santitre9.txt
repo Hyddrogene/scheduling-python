@@ -1,0 +1,154 @@
+Parfait, parlons du **routing** (ou routage) et de comment le gérer en PHP **pur**, y compris pour des pages 404. On va détailler ça proprement.
+
+---
+
+# **1. Qu’est-ce que le routing (routage) ?**
+
+Le **routing** est le mécanisme qui permet de **diriger une requête HTTP vers le bon contenu ou la bonne logique** en fonction de l’URL demandée.
+
+### Exemple concret
+
+* `/` → page d’accueil
+* `/contact` → page contact
+* `/blog/article-123` → article spécifique
+
+Sans routing, chaque URL correspondrait directement à un fichier physique sur le serveur (`index.html`, `contact.html`, etc.). Avec le routing :
+
+* Une seule entrée (souvent `index.php`) peut **interpréter toutes les URLs** et décider quoi afficher.
+
+### Avantages
+
+1. **URLs propres et lisibles** (`/blog/mon-article` plutôt que `index.php?id=123`).
+2. **Contrôle centralisé** de toutes les pages.
+3. **Gestion facile des erreurs** (ex: 404).
+
+---
+
+# **2. Routing simple en PHP pur**
+
+On peut faire un routing **sans framework**, directement dans `index.php`.
+
+### a) Exemple basique
+
+```php
+<?php
+// index.php
+
+// Récupérer l'URL demandée
+$request = $_SERVER['REQUEST_URI'];
+
+// Supprimer les paramètres GET pour simplifier
+$request = parse_url($request, PHP_URL_PATH);
+
+// Routing
+switch ($request) {
+    case '/':
+        require __DIR__ . '/pages/home.php';
+        break;
+
+    case '/contact':
+        require __DIR__ . '/pages/contact.php';
+        break;
+
+    case '/about':
+        require __DIR__ . '/pages/about.php';
+        break;
+
+    default:
+        // Page non trouvée
+        http_response_code(404); // important pour que le navigateur comprenne que c'est une erreur
+        require __DIR__ . '/pages/404.php';
+        break;
+}
+```
+
+### b) Explications
+
+* `$_SERVER['REQUEST_URI']` contient l’URL demandée (ex: `/contact?ref=google`).
+* `parse_url($request, PHP_URL_PATH)` enlève les paramètres GET.
+* `switch` décide quel fichier inclure selon l’URL.
+* `http_response_code(404)` : indique au navigateur et aux moteurs de recherche que la page est introuvable.
+
+### c) Fichier 404 (`pages/404.php`)
+
+```php
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Page non trouvée</title>
+</head>
+<body>
+    <h1>404 - Page introuvable</h1>
+    <p>La page que vous cherchez n’existe pas.</p>
+    <a href="/">Retour à l'accueil</a>
+</body>
+</html>
+```
+
+---
+
+# **3. Amélioration : Routing dynamique**
+
+Pour des routes avec paramètres (ex: `/blog/article-123`) :
+
+```php
+$request = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+
+$routes = [
+    '/' => 'pages/home.php',
+    '/contact' => 'pages/contact.php',
+    '/about' => 'pages/about.php',
+];
+
+if (preg_match('#^/blog/([a-zA-Z0-9-]+)$#', $request, $matches)) {
+    $article = $matches[1];
+    require __DIR__ . '/pages/blog.php';
+} elseif (isset($routes[$request])) {
+    require __DIR__ . $routes[$request];
+} else {
+    http_response_code(404);
+    require __DIR__ . '/pages/404.php';
+}
+```
+
+* Ici `preg_match` capture la partie dynamique de l’URL (ex: `article-123`) et la stocke dans `$article`.
+* On peut alors l’utiliser pour récupérer un article en base de données ou générer dynamiquement du contenu.
+
+---
+
+# **4. Points clés à retenir**
+
+1. Le **routing centralise le contrôle des URLs**.
+2. On peut gérer les **pages 404** avec `http_response_code(404)` et un fichier dédié.
+3. PHP pur permet tout : pas besoin de framework, mais les frameworks rendent tout ça plus facile et sécurisé.
+4. Avec le **routing dynamique**, une seule page peut gérer plusieurs URLs avec des paramètres.
+
+---
+
+💡 **Astuce pratique** : pour que toutes les URLs passent par `index.php` (utile pour routing pur), il faut configurer le serveur :
+
+### Apache `.htaccess`
+
+```apache
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [QSA,L]
+```
+
+* Tout ce qui n’est pas un fichier ou dossier réel sera redirigé vers `index.php`.
+
+### Nginx
+
+```nginx
+location / {
+    try_files $uri /index.php?$query_string;
+}
+```
+
+---
+
+Si tu veux, je peux te faire un **exemple complet d’arborescence de projet avec routing pur et pages 404**, prêt à copier-coller et tester, pour que tu voies concrètement comment ça fonctionne.
+
+Veux‑tu que je fasse ça ?

@@ -1,0 +1,53 @@
+remplir les trous 
+suprimer une contrainte en base
+metadonnée regle couche applcative
+
+
+startuing slot -> ramener la combinatoire au slot (créneaux)
+aure fragment -> fchier xml tiens une contrainte
+interface graphique poircertaines contraintes
+jouable  -> mais chaud
+
+jeu de donnée -> shémas xml mettr à jour comme BDD
+les données en base -> ?
+
+injection PDO parser -> extension
+
+
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCqwOMoxkO1Y+6ndRnUrZaj81e9E0LpDBVfeMvlI/DUB719OJs1ln2KTiO2PfxWR1DGBCvyxSBRMcgjXcpUc0XxebKkX4cwG7RRE4NgBZ0bG7W/SVJGWNHcK5HX1JB9z05Dr3x6zBn8Sj+lKwG6R8LR81/arflKSq/lYpBvykcrvflzK4RuO1krmk843pgwSeSSLKtBygGJ5MM/YerG/h2AMTxZxaj6UaMxWkISI45IeIc3VbDjp56OcHuUA5aAC6W0WNfBjojx6l8jH9O0lvexBXJsS2BBOzB1rFopLsnN0jbamIHlIJRyY17HVHdbvlLdRLDFEpxsZmp39VNDjsUstEhQ6oc/xaSuEqA3tif1oIULyGXfgyRAzg61/uD6GYmBdGX+RWNVzfp63QpTby3gdrxKpxlyd0+yzPw5+Y/nZ8cn+fSxZqa7he1CTZIyMXl5ag+u7xM74AshF9mFiMapmQwVy6EBcJfSsary7iFbn+f4lWrZiYakm96pFq0+jJrg94rBW9sLR4yjuUO8t4bNEuM8I77WiZPLApmkRqTCo7srVfZiioVonwCQENZeoPs9OybaOrwg0MQWJoJJxPX4uJLeV2+IFsgv6RaOMFbpca5Oey1AC+jqm2rr80QDW/rJwhjc7J5FGLcvoRKx6yV8at8Hr46aKqcco7w8fzURhQ== legeay@mlegeay
+
+sur star trek remplir la BDD
+
+etendre parser acutelle
+star wars mysql -c
+
+starting slot -> txt ensemble sous format CSV
+
+ssh leria-info@usp
+
+dpkg -reconfigure mariadb
+
+
+VERIFIER POUR LE LDAP
+DEMANDER
+
+propager sur MZN
+
+Rencontre LETTRE second semestre
+
+
+
+
+ajouter nouveau slot et virer les groupes
+BDD avoir date absolue ?
+relaxation et figé dans le passé.
+les contraintes du futur
+BDD -> t -> xml
+
+datebde depart aboslue
+
+part type
+
+maxHeadcount dans la part -> Classes lim itc eux par classes
+
+starting slot en reparlé

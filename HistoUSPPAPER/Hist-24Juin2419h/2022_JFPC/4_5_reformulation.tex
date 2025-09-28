@@ -1,0 +1,138 @@
+%------------------------------------------------------------
+%------------------------------------------------------------
+\subsection{Reformulation}
+\label{sec:model-reformulation}
+
+%The model presented above is generic and may be adapted on a per instance basis depending on the features and rules at stake.
+Le modèle présenté ci-dessus est générique et peut être adapté à chaque instance en fonction des caractèristiques et des règles présentent.
+%We discuss here a few variants of the {\UTP} problem which provide opportunities for model reformulation.
+Nous discutons ici de quelques variantes du problème \UTP{} qui offrent des possibilités de reformulation au modèle.
+% When instances only involve single-room sessions ($\multiroomparts=\emptyset$), %\vee|\map{\PART}{\ROOM}{p}|=1\ (p\in{\PART})$).
+% one may adopt integer or enumerated room allocation variables
+% instead of set variables $\var{\SESSION}{\ROOM}{s}$ and rewrite constraints accordingly.
+Si les instances ne concernent que des sessions à salle unique ($\multiroomparts=\emptyset$),
+on peut prendre des variables de décision non plus ensembliste mais entière ou énumérées
+$\var{\SESSION}{\ROOM}{s}$ et réécrire les contraintes en conséquence. 
+% In the same way, teacher assignment variables and constraints may be adapted when a single teacher is required per session.
+De la même manière, les variables et contraintes concernant les enseignants peuvent être adaptées lorsqu'un seul enseignant est nécessaire par session.
+% Note that hybrid models mixing single or multi-resource session variables may be considered too.
+Il faut noter que des modèles hybrides mêlant des variables sur les sessions à une ou plusieurs ressources peuvent également être envisagés.
+% The temporal model may also be simplified 
+% when the time grid 
+Le modèle temporel peut également être simplifié 
+lorsque la grille temporelle 
+%(i.e., the complete set of start times allowed for sessions) 
+% is coarse-grain and guarantees no session
+% can span over consecutive start times
+\corentin{je vois l'idée mais je sais pas trop comment dire ça}
+à un niveau de granularité plus faible%
+et garantit qu'aucune séance
+ne peut commencer avant une autre séance consécutive
+($\forall s\in\SESSION, \sessionduration{s}\leq\min(\myset{h'-h\ |\  h,h'\in\map{\PART}{\SLOT}{\PART}\wedge h<h'}$).
+% This situation occurs in institutions that impose a common time grid and the same duration to course sessions so that sessions necessarily fit in each slot.
+Cette situation se produit dans les institutions qui imposent une grille horaire commune et une même durée aux sessions de cours, pour faire en sorte que les sessions puissent rentrer dans  chaque créneau.
+% If so, sessions may be handled as time points rather than time intervals
+% and both predicates and built-in constraints may be reformulated, 
+% e.g., Constraint~(\ref{ctr:differentsessions}) can be substituted to Constraint~(\ref{ctr:disjointsessions}).
+
+Si c'est le cas, les sessions peuvent être traitées comme des noeuds dans le temps plutôt que comme des intervalles de temps.
+Les prédicats et les contraintes intégrées peuvent être reformulés, 
+par exemple, la contrainte~(\ref{ctr:differentsessions}) peut être remplacée par la contrainte~(\ref{ctr:disjointsessions}).
+
+% Note that worst-case travel time scenarios may have to be factored in if \texttt{\TRAVEL} constraints are stated.
+Il faut noter pour le temps de parcours entre 2 séances de cours 
+que c'est le scénario le plus défavorables qui est pris en compte
+si des contraintes de type \texttt{\TRAVEL} sont énoncées.
+% As for room capacity, 
+% cumulative constraints (\ref{ctr:cumulativeroomcapacity}) may be overridden by Constraint~(\ref{ctr:disjunctiveroomcapacity})
+% for the case of disjunctive rooms (denoted by $\disjunctiverooms\subseteq{\ROOM}$).
+Comme pour la capacité des salles, 
+les contraintes cumulatives (\ref{ctr:cumulativeroomcapacity}) peuvent être remplacées par des constraintes~(\ref{ctr:disjunctiveroomcapacity})
+dans le cas où il faut des salles disjointes (dénotées par $\disjunctiverooms\subseteq{\ROOM}$).
+% The latter are identified by checking if \texttt{\NOOVERLAP} constraints apply to their set of compatible sessions
+Ces dernières sont vérifiées si les contraintes \texttt{\NOOVERLAP} s'appliquent à leur ensemble de sessions possibles
+($r\in\disjunctiverooms\leftrightarrow{no\_overlap(r,\map{\ROOM}{\SESSION}{r})}$).
+\davidl{DL: symmetry constraints: groups, interchangeable/substitutable resources}
+
+\begin{flalign}
+&Let s,s'\in\SESSION:
+\disjoint{s}{s'}
+\leftrightarrow
+\var{\SESSION}{\SLOT}{s} \neq\var{\SESSION}{\SLOT}{s'}
+&\label{ctr:differentsessions}
+\\
+&\forall r\in\disjunctiverooms:
+\bigwedge_{\substack{h\in\SLOT\\k\in\map{\ROOM}{\CLASS}{r}}}
+\roomcapacity{r}
+\geq
+\max_{\substack{s\in\map{\CLASS}{\SESSION}{k}}}
+{\roomuse{r}{k}{s}{h}}
+&
+\label{ctr:disjunctiveroomcapacity}
+\end{flalign}
+
+
+\corentin{
+$\xroom$[] $\rightarrow$ varaible ensemblistes des salles par classe\\
+$\xteacher[] \rightarrow$ variables ensemblistes des enseignants par session\\
+$\xslot[] \rightarrow$ variables des créneaux horaires par session\\
+}
+\corentin{
+\textit{ensembles des datas:}\\
+$\SESSION$ ensemble des sessions $\rightarrow$ symbole utilisé : s,S\_1\\
+$\CLASS$ ensemble des classes $\rightarrow$ symbole utilisé : k,k'\\
+$\COURSE$ ensemble des cours  $\rightarrow$ variable utilisé : c\\
+$\SLOT$ ensemble des créneaux horaires $\rightarrow$ variable utilisé : h\\
+$\TEACHER$ ensemble des enseignants $\rightarrow$ variable utilisé : t\\
+$\ROOM$ ensemble des salles$\rightarrow$ variable utilisé : r\\
+$\GROUP$ ensemble des groupes$\rightarrow$ variable utilisé : g\\
+$\STUDENT$ ensemble des étudiants $\rightarrow$ variable utilisé : u,u'\\
+}
+\corentin{
+\textit{value :}\\
+ \textbf{nr\_slots\_per\_day} : int; nombre de slots quotidien (1440 dans notre cas)\\
+ \textbf{nr\_weekly\_slots} : int; nombre de slots par semaine\\
+ }
+\corentin{
+\textit{tableaux des input:}\\
+name\_array[dimension] : explication\\
+\textbf{student\_courses}[1] : pour chaque étudiants donne l'ensembles des cours auquel il est inscrit\\
+\textbf{class\_parents}[1] : pour cahque classe donne l'ensemble des classes parentes de notre classe\\
+\textbf{class\_groups}[1] : pour chaque classe donne l'ensemble des groupes inscrits à la classe\\
+\textbf{class\_capacity}[1] : pour chaque classe donne la capacité max des groupes pouant être accueillis (20 en tp, 180 en amphi etc\ldots)\\
+\textbf{class\_rooms}[1] : pour chaque classe donne l'ensemble des salles possible pour la classe\\
+\textbf{group\_students}[1] : pour chaque group donne l'ensembles des étudiants assigné au groupe\\
+\textbf{part\_rooms}[1] : pour chaque partie de cours donne l'ensemble des salles possibles\\
+\textbf{part\_teachers}[1] : pour chaque partie de cours donne l'ensemble des enseignants possibles\\
+\textbf{part\_room\_use}[1] : pour chaque partie de cours indique quel regime de salle il faut reserver par session [none,single,multiple]\\
+\textbf{part\_teacher\_service}[2] : !!!Array 2d!!! pour chaque parties, puis enseignants indique son service qu'il doit effectuer (en nombre de sessions)\\
+\textbf{room\_capacity}[1] : pour chaque salles indique la capacité d'acceuil en étudaint de la salle\\
+\textbf{class\_mandatory}[1]: pour chaque classe donne l'ensemble des salles qui sont \textit{mandatory} dans les données \\ 
+\textbf{room\_max\_use}[1] :  pour chaque salle indique son maximum d'utilisation simultanément (par défaut 9999)\\
+\textbf{teacher\_max\_use}[1] :  pour chaque enseignant indique son maximum d'utilisation simultanément (par défaut 9999)\\
+\textbf{group\_max\_use}[1] :  pour chaque group indique son maximum d'utilisation simultanément (par défaut 9999)\\
+}
+\corentin{
+\textit{fonction utiliser : }\\
+\textbf{student\_part(1)} : pour un étudiant donné rend l'ensemble des parties de cours auquel il est inscrit\\
+\textbf{group\_part}(1): pour un groupe donné rend l'ensemble des parties de cours auquel il doit participer\\
+\textbf{session\_part}(1) : pour une session donnée rend la partie de cours à laquelle elle appartient\\
+\textbf{teacher\_per\_session}(1): pour une session donnée indique le nombre d'enseignant requis par cours\\
+\textbf{session\_length}(1) : pour une session donnée indique la durée de la session (en slot)\\
+\textbf{is\_multi\_room\_class(1)} : (predicat)pour une classe indique si elle requiert plusieurs salles par session (multiple)\\
+\textbf{room\_sessions}(1) : pour une salle renvoie l'ensemble des sessions possible pour la salle  (attention elle peut ne pas participer à toutes !!!)\\
+\textbf{is\_class\_mandatory\_room}(1): pour une class renvoie si elle mandatory des salles (oui ou non)\\
+\textbf{teacher\_sessions}(1) : pour un enseignant renvoie l'ensemble des sessions possible pour l'enseignant  (attention il peut ne pas participer à toutes !!!)\\
+\textbf{group\_sessions}(1) : pour un groupe renvoie l'ensemble des sessions possible pour le groupe \\
+\textbf{session\_class}(1) : pour une session renvoie la classe d'une session\\
+}
+\corentin{
+\textit{symbole et opérateur minizinc :}\\
+in : $\in$ appartient\\
+subset : sous ensemble de \\
+array\_union() : fait l'union des ensembles en tableau\\
+$\forallmzn$ : pour toute les v dans V\\
+$\summzn$ fais la somme\\
+bool2int : prend un bool -> 1 si vrai, 0 si faux\\
+card() : renvoie le cardinal d'un ensemble\\
+} 

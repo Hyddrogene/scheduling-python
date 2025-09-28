@@ -1,0 +1,228 @@
+Parfait. Je vais te rédiger un guide complet sur la création d'un solveur CSP en Lisp (Common Lisp), avec prise en charge d'une contrainte globale comme `alldifferent`, en illustrant l'approche par un exemple comme le problème des n-reines.
+
+Je te reviens très vite avec cela.
+
+
+# Guide d’implémentation d’un solveur CSP en Common Lisp
+
+&#x20;*Une solution valide au problème des huit reines : chaque dame est placée sur l’échiquier de sorte qu’aucune ne partage la même ligne, colonne ou diagonale avec une autre (aucune ne peut en attaquer une autre).*
+
+## Concepts de base d’un CSP en Common Lisp
+
+Un **problème de satisfaction de contraintes** (Constraint Satisfaction Problem, CSP) est défini par : un ensemble de variables, un domaine de valeurs possibles pour chaque variable, et un ensemble de contraintes qui restreignent les combinaisons de valeurs autorisées. L’objectif est de attribuer une valeur à chaque variable (choisie dans son domaine) de manière à satisfaire toutes les contraintes du problème. Par exemple, le problème des *n*-reines (ou huit reines pour *n = 8*) consiste à placer *n* reines sur un échiquier *n × n* sans qu’aucune paire de reines ne se menace selon les règles des échecs (c’est-à-dire qu’aucune paire ne partage la même rangée, colonne ou diagonale).
+
+Dans le contexte d’une implémentation en **Common Lisp**, il faut comprendre comment représenter ces composants de base :
+
+* **Variables** : Une variable représente un élément inconnu à déterminer. Par exemple, pour *n*-reines, on peut définir une variable par colonne de l’échiquier (chaque variable représente la position de la reine sur cette colonne).
+* **Domaines** : Le domaine d’une variable est l’ensemble des valeurs que cette variable peut prendre. Pour chaque reine, le domaine peut être les entiers de 1 à *n* représentant les différentes lignes possibles sur l’échiquier. Ainsi, pour *n*-reines avec *n=8*, chaque variable (colonne) a le domaine {1,2,…,8} initialement.
+* **Contraintes** : Une contrainte spécifie une condition que les variables doivent respecter. Elle peut porter sur une ou plusieurs variables. Par exemple, une contrainte binaire peut lier deux variables (ex : *X ≠ Y*), tandis qu’une contrainte globale peut impliquer un ensemble de variables (ex : *toutes différentes*). Dans *n*-reines, les contraintes sont que toutes les reines doivent être sur des lignes différentes (contrainte **allDifferent** globale sur l’ensemble des variables), et qu’aucune paire de reines ne soit sur la même diagonale (contraintes entre chaque paire de variables).
+
+En Lisp, avant de plonger dans le code, il est utile de planifier comment on va **structurer** ces composants. Nous verrons dans les sections suivantes comment représenter les variables et domaines avec des structures de données Lisp, comment exprimer et vérifier les contraintes (notamment la contrainte globale `alldifferent`), et enfin comment mettre en œuvre une recherche par retour sur trace (*backtracking*) avec filtrage de domaines pour trouver une solution.
+
+## Représentation des variables et des domaines en Lisp
+
+La première étape de l’implémentation consiste à choisir des structures de données appropriées pour représenter les variables et leurs domaines. Common Lisp offre différentes structures (listes, tableaux, tables de hachage, etc.) qui peuvent convenir en fonction des besoins :
+
+* **Listes** : Les listes sont flexibles et simples à manipuler. On peut par exemple utiliser une liste pour stocker les variables, ou une liste d’associations (alist) pour mapper chaque variable à son domaine. Une liste d’associations serait une liste de couples `(variable . domaine)` où `domaine` est lui-même une liste de valeurs possibles.
+* **Tableaux (array)** : Pour certains problèmes structurés comme *n*-reines, un tableau peut être pratique. Par exemple, on peut utiliser un vecteur de taille *n* pour représenter l’échiquier, où l’indice représente la colonne et la valeur à cet indice représente la ligne où se trouve la reine dans cette colonne. De même, on pourrait utiliser un tableau de listes pour stocker les domaines de chaque variable.
+* **Hash-tables (tables de hachage)** : Une table de hachage peut associer chaque variable à son domaine de manière efficiente pour les accès et mises à jour. Cela est utile si le nombre de variables est important ou si l’on veut accéder aux domaines par nom de variable (par exemple, une variable pourrait être identifiée par un symbole).
+
+**Choix pour notre solveur :** Pour garder l’implémentation pédagogique et lisible, nous pouvons représenter les variables *n*-reines par de simples entiers (1, 2, ..., *n*), chaque entier correspondant à l’indice de la colonne de la reine. Ainsi, l’ensemble des variables peut être `[1, 2, ..., n]`. Le domaine de chaque variable sera l’ensemble des lignes possibles `[1, 2, ..., n]`. Nous utiliserons une structure associative pour relier chaque variable à son domaine courant – par exemple, une table de hachage où la clé est la variable (colonne) et la valeur est la liste des positions possibles (lignes) pour cette colonne.
+
+En Lisp, on peut initialiser ces structures de la manière suivante (en admettant que `n` est défini) :
+
+```lisp
+(defparameter *n* 8)  ; exemple pour 8 reines
+(defparameter *variables* (loop for i from 1 to *n* collect i))
+(defparameter *domains* (make-hash-table))
+(dolist (var *variables*)
+  (setf (gethash var *domains*) (loop for j from 1 to *n* collect j)))
+```
+
+Ici, `*variables*` contient la liste des variables `[1,2,...,8]` et `*domains*` est une table de hachage où chaque variable pointe vers la liste `[1,2,...,8]` initialement. On utilise des *parameters* globaux (`defparameter`) pour simplifier l’exemple, mais on pourrait encapsuler cela dans une structure ou passer ces informations en arguments aux fonctions du solveur.
+
+**Représentation de l’affectation (assignment)** : En cours de résolution, on aura besoin de représenter une affectation partielle des variables (valeurs déjà choisies pour certaines variables). On peut représenter une affectation partielle par une liste d’associations `(variable . valeur)` pour les variables déjà assignées. Au départ, l’affectation est vide (aucune variable n’a de valeur). Au fur et à mesure que le backtracking assigne des valeurs, on ajoutera des paires à cette liste. Par exemple, `((1 . 4) (2 . 7))` pourrait indiquer que la colonne 1 a une reine en ligne 4, et la colonne 2 a une reine en ligne 7, tandis que les autres colonnes ne sont pas encore assignées.
+
+## Vérification des contraintes (incluant la contrainte `alldifferent`)
+
+Une fois les variables et domaines en place, il faut vérifier à chaque étape que les contraintes sont respectées par l’affectation courante. Cela implique d’écrire une fonction de **vérification des contraintes** qui, étant donné une affectation (éventuellement partielle), détermine si aucune contrainte n’est violée.
+
+Pour notre solveur CSP générique, on peut concevoir les contraintes de façon déclarative : par exemple, représenter une contrainte comme un ensemble de variables et un prédicat logique sur ces variables. Cependant, pour commencer simplement, nous pouvons coder directement les contraintes pertinentes du problème *n*-reines dans la fonction de vérification.
+
+Les contraintes du problème *n*-reines sont :
+
+* **Contrainte AllDifferent sur les lignes** : Aucune deux reines ne doivent être sur la même ligne. Cela s’exprime en imposant que toutes les valeurs attribuées aux variables doivent être différentes. La contrainte *AllDifferent* (souvent appelée *tous différents*) est une contrainte globale très courante en CSP : *« Une contrainte AllDifferent force chaque variable de décision dans un groupe donné à prendre une valeur différente de chaque autre variable de décision de ce même groupe. »* En pratique, cela signifie que si la variable `1` est assignée à la valeur `4` (colonne 1 en ligne 4) et la variable `2` est assignée à la valeur `7`, alors aucune autre variable ne peut prendre la valeur `4` ou `7`, etc.
+* **Contrainte de diagonale** : Aucune deux reines ne doivent se trouver sur la même diagonale. Sur un échiquier, deux reines sont en conflit diagonal si la différence de ligne est égale à la différence de colonne. Par exemple, une reine en colonne 1, ligne 4 et une reine en colonne 3, ligne 6 sont sur une même diagonale car |3–1| = |6–4| = 2. De manière générale, pour deux variables `i` et `j` assignées respectivement aux valeurs (lignes) `x` et `y`, la contrainte est : `|x - y| ≠ |i - j|`.
+
+On peut implémenter une fonction Lisp `consistent?` (ou similaire) qui prend en argument une affectation partielle et retourne vrai (T) si l’affectation ne viole aucune contrainte. Cette fonction fera notamment appel à un test *allDifferent* sur les valeurs actuellement assignées.
+
+Voici une possible implémentation de la vérification des contraintes en Common Lisp :
+
+```lisp
+(defun all-different-p (values)
+  "Renvoie T si la liste de valeurs ne contient pas de duplicata."
+  (let ((unique (remove-duplicates values :test #'equal)))
+    (= (length values) (length unique))))
+
+(defun consistent-p (assignment)
+  "Vérifie que l'affectation partielle satisfait les contraintes des n-reines."
+  ;; On extrait toutes les (variable . valeur) de l'affectation:
+  (let ((assigned-vars (mapcar #'car assignment))
+        (assigned-vals (mapcar #'cdr assignment)))
+    ;; 1. Contrainte allDifferent sur les valeurs assignées (lignes)
+    (when (not (all-different-p assigned-vals))
+      (return-from consistent-p nil))
+    ;; 2. Contrainte diagonale pour chaque paire de reines assignées
+    (dolist (pair1 assignment t)               ; on retourne T si on passe toutes les contraintes
+      (dolist (pair2 assignment)
+        (let ((var1 (car pair1)) (val1 (cdr pair1))
+              (var2 (car pair2)) (val2 (cdr pair2)))
+          (when (and (not (equal var1 var2))   ; si ce sont deux variables différentes
+                     (equal (abs (- val1 val2)) (abs (- var1 var2))))
+            ;; Les différences de lignes et de colonnes sont égales -> même diagonale
+            (return-from consistent-p nil)))))))
+```
+
+Explications :
+
+* `all-different-p` prend une liste de valeurs et utilise `remove-duplicates` pour vérifier que la longueur de la liste sans duplicats est égale à la longueur originale, garantissant ainsi que toutes les valeurs sont uniques (donc contrainte *tous différents* satisfaite).
+* `consistent-p` parcourt l’affectation partielle. D’abord, il vérifie la contrainte globale *allDifferent* sur toutes les valeurs assignées jusqu’à présent. Ensuite, pour chaque paire de reines déjà placées (chaque paire de `(var1 . val1)` et `(var2 . val2)` distinctes dans l’affectation), il vérifie la contrainte de diagonale. Si l’une des contraintes est violée, la fonction retourne NIL immédiatement (grâce à `return-from`). Si la boucle se termine sans trouver de conflit, la fonction retourne T (toutes les contraintes sont satisfaites pour l’affectation donnée).
+
+Notons que `consistent-p` gère naturellement le cas d’une affectation partielle : si certaines variables ne sont pas encore assignées, elles ne figurent pas dans la liste `assignment`, donc elles ne sont tout simplement pas considérées dans les tests. Ainsi, on s’assure **dès qu’une nouvelle variable est assignée** que cela reste cohérent avec ce qui a déjà été assigné.
+
+## Recherche par backtracking et filtrage de domaines
+
+Pour trouver une solution satisfaisant toutes les contraintes, on va explorer l’espace des possibilités par une **recherche en profondeur avec retour sur trace** (backtracking). Le principe du backtracking est d’assigner progressivement des valeurs aux variables, et de revenir en arrière dès qu’une affectation partielle viole une contrainte, afin d’essayer une autre valeur ou une autre variable. Autrement dit, on construit une solution pas à pas et *« on abandonne la construction lorsqu’il n’est pas possible de compléter la solution partielle courante en une solution valide. On revient alors sur les choix précédents (d’où le nom de retour sur trace) pour essayer d’autres possibilités »*.
+
+**Choix d’une variable et d’une valeur** : À chaque étape de la recherche, lorsqu’on a une affectation partielle cohérente mais incomplète, on doit choisir une variable non encore assignée, puis essayer successivement les valeurs de son domaine. L’ordre de parcours des variables et des valeurs peut influer sur les performances, mais dans un premier temps on peut prendre une approche simple : par exemple, choisir toujours la plus petite variable non assignée, et parcourir son domaine dans l’ordre croissant. Des heuristiques comme *« Minimum Remaining Values »* (choisir la variable avec le plus petit domaine restant) ou *« Least Constraining Value »* (essayer d’abord la valeur qui élimine le moins de possibilités pour les autres variables) peuvent être évoquées, mais restons simples ici.
+
+**Filtrage de domaines (propagation de contraintes)** : Le **filtrage de domaines** consiste à réduire le domaine des variables non encore assignées en éliminant les valeurs qui ne peuvent plus conduire à une solution compte tenu de l’affectation partielle actuelle. Ce processus de propagation de contraintes permet d’accélérer la recherche en évitant d’explorer des voies clairement impossibles. Par exemple, si l’on vient d’assigner une reine en colonne 1 à la ligne 4, on peut immédiatement retirer la valeur 4 du domaine de toutes les autres colonnes (contrainte de ligne différente), ainsi que retirer les valeurs qui seraient en conflit diagonal avec cette reine (par exemple, pour la colonne 2 retirer 5 et 3 qui sont en diagonale avec (1,4), pour la colonne 3 retirer 6 et 2, etc.). En éliminant ces valeurs dès maintenant, on s’assure de ne même pas essayer des affectations évidemment invalides plus tard. On maintient ainsi **l’ensemble des valeurs possibles cohérent avec les contraintes du problème** tout au long de la recherche.
+
+Cette propagation peut être réalisée de manière informelle dans le code de backtracking. Concrètement, lorsque l’on assigne une valeur `v` à une variable `X`, on met à jour les domaines des autres variables en enlevant `v` de leurs domaines (contrainte *allDifferent*), et en enlevant également les valeurs incompatibles sur les diagonales dans le cas des reines. Il faut ensuite *restaurer* ces domaines lorsqu’on revient en arrière (backtrack) afin de ne pas conserver les réductions qui n’étaient valables que pour une tentative d’affectation particulière.
+
+On pourrait implémenter un algorithme de consistance d’arc (AC-3) plus général pour affiner les domaines de façon itérative, mais pour notre solveur il suffira d’appliquer un filtrage simple *au moment de l’assignation* (souvent appelé *forward-checking*).
+
+Pseudo-code simplifié du backtracking avec filtrage :
+
+```
+fonction backtrack(affectation):
+    si affectation est complète alors
+        retourner affectation (solution trouvée)
+    choisir une variable X non assignée
+    pour chaque valeur v dans Domaine(X) (copie de la liste pour éviter modification concurrente):
+        si v est cohérente avec affectation (par exemple consistent-p(affectation ∪ {X=v})):
+            assigner X ← v
+            sauvegarder les domaines courants des autres variables
+            filtrer les domaines des autres variables en supprimant v et les autres valeurs incompatibles avec X=v
+            résultat ← backtrack(affectation ∪ {X=v})
+            si résultat n’est pas échec alors
+                retourner résultat (solution propagée)
+            restaurer les domaines sauvegardés (backtrack)
+    retourner échec
+```
+
+Lorsqu’on parle d’**affectation complète**, cela signifie que toutes les variables ont une valeur assignée. À ce moment, si l’affectation est cohérente, on a trouvé une solution du CSP.
+
+## Code du solveur CSP pour le problème des n-reines
+
+Mettons tout ensemble dans une implémentation en Common Lisp, en suivant la logique décrite. Nous allons écrire une fonction principale `solve-n-queens` qui prend un paramètre *n* (taille du problème) et retourne soit une solution sous forme d’affectation, soit NIL s’il n’y a pas de solution (pour *n*-reines une solution existe pour tout n ≥ 4). Le code sera bien commenté pour expliquer chaque étape.
+
+```lisp
+(defun solve-n-queens (n)
+  "Résout le problème des n reines et retourne une liste d'affectations (colonne . ligne) pour chaque reine."
+  ;; Initialisation des variables et domaines
+  (let* ((variables (loop for i from 1 to n collect i))
+         (domains (make-hash-table)))
+    (dolist (var variables)
+      (setf (gethash var domains) (loop for j from 1 to n collect j)))
+    ;; Fonction interne récursive de backtracking
+    (labels ((backtrack (assignment)
+               ;; Si toutes les variables sont assignées, on a une solution complète
+               (if (= (length assignment) (length variables))
+                   (return-from backtrack assignment))
+               ;; Choisir une variable non encore assignée
+               (let ((var (car (remove-if (lambda (v) (assoc v assignment))
+                                          variables))))
+                 ;; Essayer chaque valeur du domaine de cette variable
+                 (dolist (val (gethash var domains))
+                   ;; Vérifier cohérence si on assigne var=val
+                   (when (consistent-p (cons (cons var val) assignment))
+                     ;; Sauvegarde des domaines des autres variables pour pouvoir revenir en arrière
+                     (let ((saved-domains (make-hash-table)))
+                       (dolist (v variables)
+                         (setf (gethash v saved-domains) (copy-list (gethash v domains))))
+                       ;; Affecter var = val (on restreint son domaine à cette valeur pour marquer l'assignation)
+                       (setf (gethash var domains) (list val))
+                       ;; Filtrage de domaines: supprimer val des domaines des autres variables (AllDifferent)
+                       (dolist (v variables)
+                         (when (and (not (eql v var))       ; pour chaque autre variable
+                                    (member val (gethash v domains)))
+                           (setf (gethash v domains) (remove val (gethash v domains) :test #'equal))))
+                       ;; Filtrage de domaines: supprimer valeurs diagonales incompatibles
+                       (dolist (v variables)
+                         (when (not (eql v var))
+                           ;; Calcul de la différence de colonne
+                           (let ((col-diff (abs (- v var))))
+                             ;; Enlever val +/- col-diff du domaine de v s'ils s'y trouvent
+                             (dolist (diag-val (list (+ val col-diff) (- val col-diff)))
+                               (when (member diag-val (gethash v domains))
+                                 (setf (gethash v domains)
+                                       (remove diag-val (gethash v domains) :test #'equal)))))))
+                       ;; Appel récursif avec var=val ajouté dans l'affectation
+                       (let ((result (backtrack (cons (cons var val) assignment))))
+                         (when result
+                           (return-from backtrack result)))
+                       ;; Si on arrive ici, la tentative var=val n'a pas abouti à une solution
+                       ;; On rétablit les domaines à leur état sauvegardé (backtrack)
+                       (clrhash domains)
+                       (maphash (lambda (v dom) (setf (gethash v domains) (copy-list dom)))
+                                saved-domains)))))
+               ;; Aucune valeur n'a conduit à une solution pour cette variable, échec
+               nil)))
+      ;; Lancement de la recherche à partir d'une affectation vide
+      (backtrack nil))))
+```
+
+**Explication du code** :
+
+* On initialise `variables` comme la liste `(1 2 ... n)` et `domains` comme une table de hachage associant à chaque variable la liste `(1 2 ... n)` (toutes les lignes possibles au départ).
+* La fonction principale utilise `labels` pour définir une fonction locale récursive `backtrack`. Cette fonction prend en argument une affectation partielle `assignment` (liste de paires `(col . ligne)` déjà placées).
+* **Critère d’arrêt** : Si la longueur de `assignment` égale le nombre total de variables, cela signifie que toutes les reines sont placées. On retourne alors `assignment` comme solution.
+* Sinon, on choisit une variable non assignée. Ici, on utilise `remove-if` pour enlever de la liste des variables celles qui apparaissent dans l’affectation, et on prend le premier élément de la liste résultante comme variable à assigner (`var`). (Ce choix est arbitraire, on pourrait choisir différemment ou appliquer une heuristique.)
+* On parcourt toutes les valeurs possibles `val` dans le domaine de `var` (`(dolist (val (gethash var domains)) ...`) ).
+* Pour chaque `val`, on teste `when (consistent-p (cons (cons var val) assignment))` : on vérifie si affecter `var=val` reste cohérent avec l’affectation partielle actuelle (pas de conflit de ligne ni de diagonale). La fonction `consistent-p` que nous avons définie plus haut gère cette vérification.
+* Si c’est cohérent, on entre dans le `when` et on procède à l’assignation et au filtrage :
+
+  * **Sauvegarde des domaines** : On crée une copie (`saved-domains`) de la table de hachage des domaines actuelle. Ici, on fait une copie superficielle des listes de domaines pour chaque variable via `(copy-list ...)` afin de pouvoir restaurer exactement le même état ensuite.
+  * **Affectation de la variable** : on fixe le domaine de `var` à la liste contenant uniquement `val` (`(setf (gethash var domains) (list val))`). Cela matérialise le fait que `var` est assignée à `val` (on pourrait aussi ne pas modifier la table de domaines et juste passer l’affectation dans l’appel récursif, mais restreindre le domaine permet de bien marquer cette variable comme prise).
+  * **Filtrage allDifferent** : Pour chaque autre variable `v`, si `val` appartient à son domaine, on le retire. On utilise `(remove val (gethash v domains) :test #'equal)` pour obtenir une nouvelle liste sans `val` et on met à jour la table de domaines.
+  * **Filtrage diagonales** : Pour chaque autre variable `v`, on calcule `col-diff` la différence absolue entre `v` et `var` (c.-à-d. la distance en colonnes). On détermine ensuite les valeurs en conflit diagonal dans le domaine de `v` : ce sont `val + col-diff` et `val - col-diff` (les positions alignées en diagonale). Si ces valeurs sont présentes dans le domaine courant de `v`, on les supprime également.
+* Après avoir appliqué ces filtrages, on appelle récursivement `backtrack` avec l’affectation augmentée de `(var . val)`. Si l’appel récursif renvoie une solution (non NIL), on la renvoie immédiatement (`return-from backtrack result`).
+* Si l’appel récursif n’a pas renvoyé de solution (échec plus profond), on exécute la suite du `let` : on restaure les domaines d’origine en effaçant la table (`clrhash`) puis en réinjectant pour chaque variable le domaine sauvegardé. Ensuite, la boucle `dolist` sur les valeurs continue avec la prochaine valeur possible pour `var`.
+* Si aucune valeur du domaine de `var` n’a conduit à une solution, la fonction `backtrack` renvoie NIL, provoquant un retour arrière au niveau supérieur.
+
+L’appel initial `(backtrack nil)` démarre la recherche avec une affectation vide. Si `solve-n-queens` trouve une solution, il la retourne sous forme de liste de paires `(colonne . ligne)`. Par exemple, pour `n=4`, une solution possible est `((4 . 2) (3 . 4) (2 . 1) (1 . 3))` signifiant que la colonne 1 a une reine en ligne 3, la colonne 2 en ligne 1, la 3 en ligne 4 et la 4 en ligne 2 – ce qui correspond visuellement à une disposition valide.
+
+**Vérification rapide** : On peut tester mentalement sur un petit cas, *n*=4, que le programme trouve une solution. La première variable choisie sera 1, on tentera val=1 (ligne1 col1) : cohérent, on assigne, on filtre (col2 ne peut plus avoir 1, col3 ne peut plus avoir 1, col4 ne peut plus avoir 1; diagonales: col2 on retire 2, col3 retire 3, col4 retire 4). Puis récursion sur col2, etc. Si un chemin échoue, le backtracking restaurera les domaines et essaiera une autre ligne pour col1. Ce genre de solveur explorera potentiellement plusieurs branches jusqu’à trouver la combinaison valide.
+
+## Adapter le solveur à d’autres contraintes ou problèmes CSP
+
+Le solveur que nous avons développé est focalisé sur le problème des *n*-reines, mais il est conçu avec des mécanismes généraux (contraintes globales, backtracking, filtrage) qui peuvent s’adapter à d’autres problèmes de satisfaction de contraintes. Voici quelques pistes pour réutiliser ou étendre ce solveur :
+
+* **Généralisation des contraintes** : On pourrait abstraire la représentation des contraintes au lieu de les coder en dur dans `consistent-p` et dans le filtrage. Par exemple, définir une structure de données pour les contraintes (avec la liste des variables impliquées et une fonction de test). Pour une contrainte `allDifferent` sur un ensemble de variables, on stockerait la liste de ces variables et on implémenterait un test qui vérifie l’unicité des valeurs assignées. Pour une contrainte de somme (`sum`), on pourrait stocker l’ensemble des variables concernées et la somme cible, avec un test qui vérifie que lorsque toutes ces variables sont assignées la somme est atteinte (et éventuellement un filtrage qui enlève des valeurs impossibles si la somme partielle dépasse la cible, etc.). L’idée serait alors que `consistent-p` parcoure toutes les contraintes et applique le test approprié. Notre implémentation actuelle correspond à un cas particulier de ce schéma (contrainte allDifferent globale + contraintes binaires de différence sur diagonales).
+* **Ajout d’une contrainte de somme (Sum)** : Supposons qu’on veuille ajouter une contrainte du type “la somme de certaines variables doit être = K”. On pourrait ajouter une fonction de vérification qui, une fois toutes ces variables assignées, vérifie la somme. En cours de backtracking, un filtrage possible serait de vérifier que la somme partielle plus les minimums possibles des variables non encore assignées ne dépasse pas K, ou qu’à l’inverse la somme partielle plus les maximums possibles atteint au moins K. Ce genre de propagation peut éviter des impasses précoces.
+* **Autres problèmes CSP** : Le moteur en lui-même (backtracking + filtrage) peut servir à résoudre d’autres puzzles :
+
+  * *Coloration de carte* : Variables = régions à colorier, Domaines = couleurs disponibles, Contraintes = régions voisines de couleurs différentes (contrainte binaire “≠” entre chaque paire de régions adjacentes).
+  * *Sudoku* : Variables = cases vides du Sudoku, Domaines = {1..9}, Contraintes = allDifferent sur chaque ligne, chaque colonne et chaque bloc 3x3 du Sudoku (beaucoup de contraintes allDifferent imbriquées). Il faudrait adapter la génération initiale des variables/domaines et l’ajout de toutes ces contraintes globales, mais le mécanisme de backtracking avec filtrage allDifferent s’appliquerait de façon similaire. On pourrait même réutiliser le même prédicat de cohérence en l’enrichissant pour tester toutes les zones du Sudoku.
+  * *Cryptarithme (problème SEND+MORE=MONEY par ex.)* : Variables = lettres, Domaines = {0..9} (ou {1..9} pour certaines lettres si pas de 0 initial), Contraintes = allDifferent sur l’ensemble des lettres (toutes lettres représentent des chiffres différents) et contraintes de somme colonne par colonne pour représenter l’addition. Ici, en plus de allDifferent, il faut implémenter les contraintes arithmétiques (ce qui peut se faire via une fonction de vérification de la somme lorsqu’un ensemble de variables est assigné).
+* **Performance et optimisations** : Notre solveur pédagogique n’est pas optimisé pour les très gros problèmes. Pour améliorer les performances, on pourrait :
+
+  * Introduire des **heuristiques de choix de variable/valeur** comme évoqué plus haut (choisir la variable la plus contrainte en premier, etc.).
+  * Implémenter une véritable propagation de contraintes à l’aide d’un algorithme comme **AC-3** pour renforcer les domaines de manière itérative, et pas seulement au moment où une variable est assignée.
+  * Éviter de recopier les domaines trop souvent en utilisant des techniques comme le retour sur trace utilisant la pile d’appels (certains solveurs utilisent la recursion stack pour implicitement gérer la restauration des états, ou des structures persistantes).
+  * Utiliser des bibliothèques existantes : Pour information, il existe en Lisp des bibliothèques de *programmation par contraintes* (par exemple Screamer, ou des bindings vers des solveurs comme MiniZinc【0†】), mais l’objectif ici était d’apprendre à en coder un simple.
+
+En conclusion, nous avons construit un guide progressif montrant comment structurer un problème de satisfaction de contraintes en Common Lisp et comment implémenter un solveur par backtracking incluant une contrainte globale *AllDifferent*. En partant des concepts de base (variables, domaines, contraintes) et en les traduisant en structures Lisp, puis en réalisant une recherche en profondeur avec propagation, on parvient à résoudre un problème classique comme les *n*-reines. Ce solveur peut servir de point de départ pour aborder des CSP plus complexes, en ajoutant d’autres types de contraintes (somme, différence, etc.) ou en appliquant le même schéma à de nouveaux problèmes. Les principes restent les mêmes : bien modéliser le problème, restreindre l’espace de recherche grâce aux contraintes, et explorer systématiquement les possibilités tout en évitant les impasses le plus tôt possible.&#x20;
+
+**Sources :** Concepts basiques des CSP d’après Wikipédia; définition de la contrainte AllDifferent d’après IBM; explication du backtracking (*retour sur trace*) d’après Wikipédia; description du problème des huit reines d’après Wikipédia.

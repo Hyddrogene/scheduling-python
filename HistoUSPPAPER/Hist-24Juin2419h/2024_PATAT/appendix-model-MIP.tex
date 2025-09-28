@@ -1,0 +1,130 @@
+%
+%\newcolumntype{N}{>{\refstepcounter{rowcntr}\therowcntr}r}
+%\newcounter{rowcntr2}[table]
+%\renewcommand{\therowcntr2}{(\arabic{rowcntr2})}
+%\setcounter{rowcntr2}{0}
+\begin{table}[H]
+%\resizebox{\textwidth}{!}{%
+%
+%\coco{MIP contrainte allowed sont réalisé via construction pour à la fois le nombre de variables et le respect des contraintes}
+%
+\framebox[\textwidth][c]{%
+\scriptsize%footnotesize
+\begin{tabularx}{\textwidth}{>{\hsize=0.01\hsize\linewidth=\hsize}X>{\hsize=1.89\hsize\linewidth=\hsize}X>{\raggedleft\arraybackslash\hsize=.09\hsize\linewidth=\hsize}X}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+&$\forall p \in \PART, \ROOM' = \map{\PART}{\ROOM}{p}, $&\\
+&\hspace*{2,8em}$\forall s \in \map{\PART}{\SESSION}{p},\;\forall r \in \ROOM \setminus\ROOM',\; \varquad{\SESSION}{\ROOM}{s}{r} = 0$& \refstepcounter{rowcntr} \therowcntr \label{mip:allowedrooms}\\
+%
+% 
+&$\forall p \in \PART, \TEACHER' = \map{\PART}{\TEACHER}{p}, $&\\
+&\hspace*{2,8em}$\forall s \in \map{\PART}{\SESSION}{p},\;\forall t \in \TEACHER \setminus\TEACHER',\; \varquad{\SESSION}{\TEACHER}{s}{t} = 0$& \refstepcounter{rowcntr} \therowcntr \label{mip:allowedteachers}\\
+%
+%
+%$\forall(k \in \CLASS)(((\arraymzn{part\_room\_use}[\funcmzn{class\_part}(k)]=\text{none}) \Longleftrightarrow (\xroom[k] = \{\})) $&\\
+&$\forall p \in \PART,\;  \forall s \in \map{\PART}{\SESSION}{p} $&\\
+&\hspace*{2,8em}$  \multiroompartmin{p} \leq \sum\limits_{\forall r \in \ROOM}\varquad{\SESSION}{\ROOM}{s}{r} \leq \multiroompartmax{p} $
+& \refstepcounter{rowcntr} \therowcntr \label{mip:multiroom}\\
+%
+&$\forall p \in \PART,\;  \forall s \in \map{\PART}{\SESSION}{p} $&\\
+&\hspace*{2,8em}$  \partteachermultiplicitymin{p} \leq \sum\limits_{\forall t \in \TEACHER}\varquad{\SESSION}{\TEACHER}{s}{t} \leq \partteachermultiplicitymax{p} $
+& \refstepcounter{rowcntr} \therowcntr \label{mip:multiteacher}\\
+%
+%
+&$\forall p \in \PART, \; \forall k \in \CLASS $&\\
+&\hspace*{2,8em}$ \classcapacity{k} \leq \sum\limits_{r \in \ROOM } \varquad{\SESSION}{\ROOM}{s}{r} * \roomcapacity{r}  $
+& \refstepcounter{rowcntr} \therowcntr \label{mip:classcapacity}\\
+%
+%
+&$\forall s \in \SESSION:$ &\\
+      &\hspace*{2,8em}$\var{\SESSION}{\DAILYSLOT}{s} + (\var{\SESSION}{\WEEKDAY}{s}-1)*|\DAILYSLOT| + (\var{\SESSION}{\WEEK}{s}-1)*|\WEEKDAY| * |\DAILYSLOT| = \var{\SESSION}{\SLOT}{s}$
+      & \refstepcounter{rowcntr} \therowcntr\label{mip:coresumvariables}\\
+%
+%%%%%%%%%%%%%%%
+%&$\forall r \in \ROOM:$ &\\
+%      &\hspace*{2,8em}\textit{cumulative}($\{\forall s \in \SESSION \mid (r \in \var{\SESSION}{\ROOM}{s}) * \var{\SESSION}{\SLOT}{s}\},\{\forall s \in \SESSION \mid \sessionduration{s}\},1$)
+%      & \refstepcounter{rowcntr} \therowcntr\label{ctr:cumulativerooms}\\
+%%%%%%%%
+\hline
+
+%\varquad{S}{R}{s_2}{r}
+%
+&$\FORBIDDENPERIOD(\SESSION',\SLOT'$)= $\forall s \in \SESSION',\; h = min(\SLOT'),$& \\
+     &\hspace*{2,8em}$ s_h \in\{0,1\}$&\\
+         &\hspace*{2,8em} $(\var{\SESSION}{\SLOT}{s} -h) \geq ((\sessionduration{s}+M)*s_h - M )$& \\
+         &\hspace*{2,8em} $(h-\var{\SESSION}{\SLOT}{s} ) \geq ((|\SLOT'|+M)*s_h - M )$
+         & \refstepcounter{rowcntr}\therowcntr\label{mip:forbiddenperiod}\\
+%
+%
+&$\FORBIDDENROOMS(\SESSION',\ROOM') = \forall s \in \SESSION' $&\\
+&\hspace*{2,8em}$\forall r \in \ROOM',\;\varquad{S}{R}{s}{r}=0 $
+&\refstepcounter{rowcntr} \therowcntr \label{mip:forbiddenrooms}\\
+%
+%
+&$\SAMEWEEKDAY(\SESSION') = \forall s_1,s_2\in \SESSION' , s_1 < s_2$&\\
+&\hspace*{2,8em}$ \var{\SESSION}{\WEEKDAY}{s_1} - \var{\SESSION}{\WEEKDAY}{s_2} = 0 $
+& \refstepcounter{rowcntr} \therowcntr \label{mip:sameweekday}\\
+%
+%
+&$\SAMESLOT(\SESSION') = \forall s_1,s_2\in \SESSION' , s_1 < s_2$&\\
+&\hspace*{2,8em}$(\var{\SESSION}{\SLOT}{s_1}-\var{\SESSION}{\SLOT}{s_2}) = 0$
+& \refstepcounter{rowcntr} \therowcntr \label{mip:sameslot}\\
+%
+%
+&$\SAMEROOMS(\SESSION') =  \forall s_1,s_2\in \SESSION',   s_1 < s_2$&\\
+%
+&\hspace*{2,8em}$\var{\SESSION}{\ROOM}{s_1} = \var{\SESSION}{\ROOM}{s_2}$ 
+& \refstepcounter{rowcntr}\therowcntr \label{mip:samerooms}\\
+%
+%
+&$\ASSIGNROOMS(\SESSION',\ROOM') =  \forall s\in \SESSION',  $&\\
+%
+&\hspace*{2,8em}$ \forall r \in \ROOM$, $ \varquad{\SESSION}{\ROOM}{s}{r} = 1$ 
+& \refstepcounter{rowcntr}\therowcntr \label{mip:assignrooms}\\
+%
+&$\DIFFERENTROOMS (\SESSION') =  \forall s_1,s_2\in \SESSION', $&\\
+%
+&\hspace*{2,8em}$ \forall r \in \ROOM,\;\varquad{S}{R}{s_1}{r} + \varquad{S}{R}{s_2}{r} \leq 1$ 
+& \refstepcounter{rowcntr}\therowcntr \label{mip:differentrooms}\\
+%
+%
+&$\PERIODIC(\SESSION') = \forall s_1,s_2 \in \SESSION', s_1 < s_2 ,$&\\
+&\hspace*{2,8em} $(\var{\SESSION}{\SLOT}{s_1}  + n) = \var{\SESSION}{\SLOT}{s_2}$
+&\refstepcounter{rowcntr}\therowcntr \label{mip:periodic}\\
+%
+%
+&$\SEQUENCED(\SESSION_1,\SESSION_2) = \forall s_1 \in \SESSION_1,\; s_2 \in \SESSION_2 $&\\
+&\hspace*{2,8em}$(\var{\SESSION}{\SLOT}{s_1}  + \sessionduration{s_1} ) \leq \var{\SESSION}{\SLOT}{s_2}$ 
+& \refstepcounter{rowcntr} \therowcntr \label{mip:sequenced}\\
+%
+%
+%&$\NOOVERLAP(\SESSION')=$&\\
+%&\hspace*{2,8em}cumulative($\{\forall s \in \SESSION' \mid \var{\SESSION}{\SLOT}{s}\},\{\forall s \in SESSION' \mid \sessionduration{s}\},1$) & \refstepcounter{rowcntr} \therowcntr 
+%\label{mip:nooverlap}\\
+%
+%
+         &$\REQUIREDTEACHERS(\SESSION',LG)\;=\; \forall s\SESSION',\;\forall t \in\TEACHER,\;\forall\sigma\in\mathbb{N}$&  \\
+         %$\forall p \in \PART, \forall t \in \partteachermultiplicity{p} $&\\
+        &\hspace*{2,8em} $(\sum_{s\in \PART}\varquad{\SESSION}{\TEACHER}{s}{t}) \leq \sigma$ &\refstepcounter{rowcntr}\therowcntr\label{mip:requiredteachers}\\
+        %&\hspace*{2,8em} $(\sum_{s\in \PART}\varquad{\SESSION}{\TEACHER}{s}{t}) \leq \partteacherservice{t}$ &\refstepcounter{rowcntr}\therowcntr\label{mip:requiredteachers}\\
+%
+%
+&$\NOOVERLAP\_room(\SESSION'$)= $\forall s_1,s_2 \in \SESSION'$,& \\
+        &\hspace*{2,8em} $ \varsequenced{s_1}{s_2}, \varsequenced{s_2}{s_1}\in \{0,1\}$, $r_1r_2 \in  \{0,1\}$&\\
+         &\hspace*{2,8em} $r_1r_2 \leq \var{\SESSION}{\ROOM}{s_1}$, $r_1r_2 \leq \var{\SESSION}{\ROOM}{s_2}
+         ,\;r_1r_2 \geq (\var{\SESSION}{\ROOM}{s_1} + \var{\SESSION}{\ROOM}{s_2} -1 )$& \\
+         &\hspace*{2,8em}$r_1r_2 \geq \varsequenced{s_1}{s_2} $, $r_1r_2 \geq \varsequenced{s_2}{s_1} $&\\
+         &\hspace*{2,8em}$(\var{\SESSION}{\SLOT}{s_1} - \var{\SESSION}{\SLOT}{s_2}) \geq ((\sessionduration{s_2}+M)*\varsequenced{s_1}{s_2} - M )$ &\\
+         &\hspace*{2,8em}$(\var{\SESSION}{\SLOT}{s_2} - \var{\SESSION}{\SLOT}{s_1}) \geq ((\sessionduration{s_1}+M)*\varsequenced{s_2}{s_1} - M )$& \refstepcounter{rowcntr} \therowcntr 
+\label{mip:nooverlaproom}\\
+%
+%
+&$\NOOVERLAP\_group(\SESSION'$)= $\forall s_1,s_2 \in \SESSION'$,& \\
+     &\hspace*{2,8em}$ \varsequenced{s_1}{s_2}, \varsequenced{s_2}{s_1}\in\{0,1\}$, $\varsequenced{s_1}{s_2} + \varsequenced{s_2}{s_1} = 1$&\\
+         &\hspace*{2,8em} $(\var{\SESSION}{\SLOT}{s_1} - \var{\SESSION}{\SLOT}{s_2}) \geq ((\sessionduration{s_2}+M)*\varsequenced{s_1}{s_2} - M )$&  \\
+         &\hspace*{2,8em}$(\var{\SESSION}{\SLOT}{s_2} - \var{\SESSION}{\SLOT}{s_1}) \geq ((\sessionduration{s_1}+M)*\varsequenced{s_2}{s_1} - M )$&\refstepcounter{rowcntr} \therowcntr \label{mip:nooverlapgroup}\\
+\end{tabularx}%
+}%
+%}
+%\caption{Constraints and predicates of the \MIP{} model.}
+\label{table:mip-contraintes}
+\end{table}

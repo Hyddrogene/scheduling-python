@@ -1,0 +1,30 @@
+conaissansces métier
+
+adapté état de l'art pour être plus cohérent.
+rcsp, bacap, nurse problem | 
+différencié etat de l'art utile et plus le pour montrer explorer
+
+définir le périmètre de mes travaux et pas présenter le projet
+
+passer davatnage de temps sur les entités -> les règles (en commencant, par décrire le rattachement de chaque entité aux sessions, flattening)
+davatange répéter -> chiant
+pas arriver en retard -> izi
+
+les test -> découpé en essayant de surchagé des oéprateurs
+Aléatoire -> random csp uniforme
+
+bin packing ? pour les ressources
+
+
+1ere version le 13juin début de semaine -> puis faire une répet (semaine 24)
+2éme version le 24 juin
+
+
+
+
+MEttre à jour le mzn -> bien définir les contraintes
+Mettre à jour le découpage des étudiants
+
+placer 4 séances 
+
+add des asserts

@@ -1,0 +1,144 @@
+### Traduction en Français:
+
+#### Méthode d'analyse systématique de domaine utilisée dans l'ingénierie des lignes de produits logiciels. (C Kastner, S Apel, C Lengauer)
+Fortement influençant la manière dont la configuration logicielle est vue dans les lignes de produits logiciels, et popularisant le concept d'analyse de domaine. (K Schmid)
+Posant les bases de l'analyse des fonctionnalités et de la modélisation des fonctionnalités. (J Van Gurp)
+
+#### Modélisation des fonctionnalités :
+- Technique essentielle pour définir l'espace des programmes qui définissent une ligne de produits logiciels. (D Batory)
+- Façon simple mais complète de modéliser les points communs et les variabilités dans un domaine. (H Zhang, J Lee, S Jarzabek, T Asikainen)
+- Facile à utiliser et à communiquer entre les parties prenantes. (C Kastner)
+- Donnant un nom à une forme fondamentale de modularité dans le contexte des lignes de produits. (D Batory)
+
+#### Diagramme de fonctionnalités : une hiérarchie graphique And/Or des fonctionnalités
+- Fonctionnalité Obligatoire / Optionnelle / Alternative
+- Relation de composition
+- Règles de composition : relations de dépendance mutuelle (Requires) et d'exclusion mutuelle (Mutex-with)
+- Problèmes et décisions : enregistrement des compromis, justifications et rationales
+- Catalogue des fonctionnalités du système : enregistrement des fonctionnalités existantes du système
+
+#### Couche
+- Capacité
+- Environnement d'exploitation
+- Technologie de domaine
+- Technologie d'implémentation
+- Type de relation :
+    - Implémenté par
+
+#### Combinaison de FODA et du Reuse-Driven Software Engineering Business (RSEB)
+- Type de fonctionnalité
+    - Fonctionnalité alternative
+        → Fonctionnalité de point de variation / Fonctionnalité de variante
+    - Notation de contrainte (avec flèche en pointillé)
+    - Notation de temps de liaison
+        - Reuse Time Bound (XORed disjunction)
+        - Use Time Bound (ORed disjunction)
+
+#### Van Gurp et al. 
+Modèle de fonctionnalités 
+(J van Gurp et al., 2001)
+- Type de fonctionnalité
+    - Fonctionnalité externe
+    - Fonctionnalité alternative
+        → Spécialisation OR / Spécialisation XOR
+    - Notation de temps de liaison
+
+#### Forme du diagramme
+- Fonctionnalité en cercle (Noir, Blanc, 'S', 'M')
+- Type de fonctionnalité
+    - Fonctionnalité alternative
+        → Adaptateur unique / Adaptateur multiple
+    - Notation de contrainte
+
+#### Modèle de fonctionnalités pour la programmation générative (K Czarnecki et al., 2000)
+- Forme du diagramme
+    - Nom de la fonctionnalité dans une boîte
+    - Boîte avec cercle
+        : Noir = Obligatoire
+        : Blanc = Optionnel
+    - Type de fonctionnalité
+        - Fonctionnalité OR (Triangle noir)
+
+#### Analyse de domaine
+- Différents domaines peuvent nécessiter différentes approches
+    - L'analyse de services peut être bonne pour les domaines des applications commerciales
+    - Qu'en est-il de l'analyse des objectifs ?
+    - "Objectif -> Service->fonctionnalité" comme méthode unifiée ?
+- Mécanismes de modélisation
+    - Le modèle de fonctionnalités est populaire mais a de nombreuses extensions
+        - Devrait-il être standardisé ?
+    - Formalisation
+- Décider du bon niveau d'abstraction ; comment structurer
+- Problème de l'explosion des fonctionnalités
+    - Comment modéliser, analyser et gérer
+    - Niveau élevé de dépendances complexes entre elles
+- Problème d'interaction des fonctionnalités
+
+#### Configuration des fonctionnalités orientée objectifs (basée sur la valeur)
+- Configuration basée sur la connaissance
+- Attributs de qualité ou objectifs de l'utilisateur
+    - Passer de l'analyse de domaine à l'architecture et la conception de composants
+- Concevoir des architectures et des composants basés sur les résultats de l'analyse (informations sur les points communs et les variabilités)
+    - SOA vs. architectures basées sur les agents vs. autres modèles d'architecture
+- Intégrer la variabilité dans les architectures et les composants
+- Sélectionner les mécanismes appropriés pour le problème
+- Gérer les dépendances complexes entre les fonctionnalités
+
+### Résumé : La réutilisation réussie des logiciels nécessite la découverte systématique et l'exploitation des points communs entre les systèmes logiciels apparentés. En examinant les systèmes logiciels apparentés et la théorie sous-jacente de la classe de systèmes qu'ils représentent, l'analyse de domaine peut fournir une description générique des exigences de cette classe de systèmes et un ensemble d'approches pour leur mise en œuvre. Ce rapport établira des méthodes pour effectuer une analyse de domaine et décrira les produits du processus d'analyse de domaine. Pour illustrer l'application de l'analyse de domaine à une classe représentative de systèmes logiciels, ce rapport fournira une analyse de domaine des logiciels de gestion de fenêtres.
+
+#### 1. Introduction
+1.1. Portée
+La découverte systématique et l'exploitation des points communs entre les systèmes logiciels apparentés est une exigence technique fondamentale pour réussir la réutilisation des logiciels [Prieto-Diaz 90]. L'analyse de domaine est une technique qui peut être appliquée pour répondre à cette exigence. En examinant une classe de systèmes logiciels apparentés et la théorie sous-jacente commune de ces systèmes, l'analyse de domaine peut fournir un modèle de référence pour décrire la classe. Elle peut fournir une base pour comprendre et communiquer sur l'espace de problème adressé par les logiciels dans le domaine. L'analyse de domaine peut également proposer un ensemble d'approches architecturales pour la mise en œuvre de nouveaux systèmes.
+L'intention principale de ce rapport est d'établir la méthode Feature-Oriented Domain Analysis (FODA) pour effectuer une analyse de domaine. Le concept orienté fonctionnalités est basé sur l'accent mis par la méthode sur l'identification des fonctionnalités qu'un utilisateur attend couramment dans les applications d'un domaine. Cette méthode, qui est basée sur une étude d'autres approches d'analyse de domaine, définit à la fois les produits et le processus d'analyse de domaine. Le rapport fournit également un exemple complet pour illustrer l'application de la méthode FODA à une classe représentative de systèmes logiciels.
+
+Ce rapport s'adresse à trois groupes :
+1. Les individus fournissant des informations sur un domaine en cours d'analyse (experts du domaine).
+2. Les individus effectuant l'analyse de domaine (analystes de domaine).
+3. Les consommateurs des produits de l'analyse de domaine (analystes et développeurs de systèmes).
+Les rôles de chaque groupe par rapport à l'analyse de domaine seront définis plus tard dans ce chapitre. Ce rapport fournit une introduction à l'analyse de domaine, une description d'une méthode pour effectuer l'analyse, et une application exemple de cette méthode. Il ne traite pas de sujets connexes tels que les questions juridiques et économiques liées à l'analyse de domaine, ni n'explore d'autres domaines non techniques.
+
+Le rapport est organisé de la manière suivante :
+- Le reste de ce chapitre introduira les concepts de l'analyse de domaine
+- Le deuxième chapitre fournit un aperçu historique du domaine, décrivant plusieurs méthodes proposées pour effectuer une analyse de domaine ; le chapitre établit également un ensemble de critères de base pour évaluer les méthodologies d'analyse de domaine.
+- À la suite de cette évaluation des méthodologies existantes, le chapitre 3 présente une vue d'ensemble de la méthode Feature-Oriented Domain Analysis (FODA) en décrivant les trois activités de base de la méthode : l'analyse de contexte, la modélisation de domaine et la modélisation d'architecture. Les chapitres 4 à 6 contiennent ensuite des discussions détaillées sur chacune de ces activités et les produits générés.
+- Le chapitre 7 présente une analyse de domaine des logiciels de gestion de fenêtres, illustrant l'application de la méthode FODA.
+Les annexes fournissent le dictionnaire de terminologie détaillé du domaine et d'autres informations de soutien pour documenter l'analyse de domaine des logiciels de gestion de fenêtres. D'autres documents soutenant la méthode sont également présentés dans les annexes.
+
+#### 1.2. Concepts d'analyse de domaine
+Le développement de systèmes logiciels grands et complexes nécessite une compréhension claire des fonctionnalités souhaitées du système et des capacités du logiciel nécessaires pour implémenter ces fonctionnalités. La réutilisation des logiciels, qui a longtemps promis des améliorations dans le processus de développement, ne deviendra réalisable que lorsque les fonctionnalités et les capacités communes aux systèmes d'un domaine pourront être correctement définies avant le développement du logiciel. L'analyse de domaine, l'exploration systématique des systèmes logiciels pour définir et exploiter les points communs, définit les fonctionnalités et les capacités d'une classe de systèmes logiciels apparentés. Ainsi, la disponibilité de la technologie d'analyse de domaine est un facteur qui peut améliorer le processus de développement logiciel et promouvoir la réutilisation des logiciels en fournissant un moyen de communication et une compréhension commune du domaine.
+La liste ci-dessous offre des définitions de plusieurs termes de base qui sont essentiels à l'analyse de domaine et qui sont essentiels à la discussion suivante d'une méthode d'analyse de domaine.
+
+- Application : Un système qui fournit un ensemble de services généraux pour résoudre un type de problème utilisateur.
+- Contexte : Les circonstances, la situation ou l'environnement dans lequel un système particulier existe.
+- Domaine : (également appelé domaine d'application) Un ensemble d'applications actuelles et futures qui partagent un ensemble de capacités et de données communes.
+-
+
+ Analyse de domaine : Le processus d'identification, de collecte, d'organisation et de représentation des informations pertinentes dans un domaine basé sur l'étude des systèmes existants et de leurs historiques de développement, des connaissances capturées auprès des experts du domaine, de la théorie sous-jacente et de la technologie émergente dans le domaine.
+- Ingénierie de domaine : Un processus englobant qui inclut l'analyse de domaine et la construction ultérieure de composants, de méthodes et d'outils qui répondent aux problèmes du développement de systèmes/sous-systèmes grâce à l'application des produits de l'analyse de domaine.
+- Modèle de domaine : Une définition des fonctions, des objets, des données et des relations dans un domaine.
+- Fonctionnalité : Un aspect, une qualité ou une caractéristique utilisateur-visible proéminente ou distinctive d'un système logiciel ou de systèmes [American 85].
+- Architecture logicielle : La structure de haut niveau des fonctions et des données, leurs interfaces et contrôles, pour soutenir la mise en œuvre des applications dans un domaine.
+- Réutilisation des logiciels : Le processus de mise en œuvre de nouveaux systèmes logiciels en utilisant des informations logicielles existantes.
+- Composant réutilisable : Un composant logiciel (y compris les exigences, les conceptions, le code, les données de test, etc.) conçu et mis en œuvre dans le but spécifique d'être réutilisé.
+- Utilisateur : Une personne ou une application qui utilise un système pour effectuer une tâche.
+
+Comme il est central à plusieurs des définitions et au concept d'analyse de domaine lui-même, le terme domaine nécessite une certaine clarification à travers des exemples. Un domaine ne doit pas nécessairement se produire à un niveau spécifique de granularité logicielle, tel que celui d'un système, d'un composant logiciel (CSC) ou d'un élément de configuration de logiciel (CSCI). Au contraire, un domaine est un concept plus général qui peut être étendu pour s'appliquer à presque toute classe potentielle de systèmes. Cette classe est appelée le domaine cible, qui peut avoir à la fois des domaines de niveau supérieur auxquels il appartient et des sous-domaines en son sein. Par exemple, différentes instances du même type de système (tels que les systèmes de gestion de fenêtres ou les systèmes de gestion de bases de données relationnelles) peuvent être regroupées pour définir un domaine. De la même manière, un domaine de structures de données pourrait être identifié qui serait à un niveau bien inférieur à celui des systèmes entiers, mais qui pourrait néanmoins constituer un domaine cible à part entière. Grady Booch pourrait être dit avoir effectué une analyse de ce domaine qui a abouti à la création des composants de type de données abstraits décrits dans [Booch 87]. Dans un autre contexte, ce domaine cible des types de données abstraits pourrait être considéré comme un sous-domaine du domaine plus large de la gestion des données. Autrement dit, le système X window est correctement considéré comme un système sur lequel des programmes d'application utilisateur sont écrits et exécutés. D'un point de vue différent, cependant, une collection de systèmes de gestion de fenêtres similaires tels que X windows, NeWS et d'autres, constitue un domaine, et chaque système de gestion de fenêtres est une application dans ce domaine. Les deux points de vue sont corrects, en ce que X windows est à la fois un système complet et une instance d'un domaine plus large. Un point de vue peut être plus utile que l'autre s'il aide à résoudre le problème à portée de main.
+
+#### 1.2.1. Processus d'analyse de domaine
+L'analyse de domaine rassemble et représente des informations sur les systèmes logiciels qui partagent un ensemble commun de capacités et de données. Les méthodes proposées dans [GILR89A, MCN186A, PRIE86A] suggèrent qu'il y a trois phases de base dans le processus d'analyse de domaine :
+1. Analyse de contexte : définir l'étendue (ou les limites) d'un domaine à analyser.
+2. Modélisation de domaine : décrire les problèmes dans le domaine qui sont abordés par les logiciels.
+3. Modélisation d'architecture : créer les architectures logicielles qui implémentent une solution aux problèmes du domaine.
+
+La figure 1-1 montre les trois groupes de participants dans le processus d'analyse de domaine. Pendant chaque phase, ces acteurs jouent des rôles légèrement différents.
+
+Sources Producteurs Consommateurs
+Utilisateur final - utilise les systèmes dans le domaine Analyste de domaine - collecte des informations et effectue des analyses Analyste des besoins - spécifie de nouveaux systèmes dans le domaine
+Expert du domaine - fournit des informations sur les systèmes dans le domaine Concepteur de logiciels - conçoit de nouveaux systèmes dans le domaine
+
+#### Figure 1-1 : Participants dans le processus d'analyse de domaine
+- Analyse de contexte : L'analyste de domaine interagit avec les utilisateurs et les experts du domaine pour établir les limites du domaine et définir une portée appropriée pour l'analyse. L'analyste rassemble également des sources d'informations pour effectuer l'analyse.
+- Modélisation de domaine : L'analyste de domaine utilise des sources d'informations et d'autres produits de l'analyse de contexte pour soutenir la création d'un modèle de domaine. Ce modèle est examiné par l'utilisateur du système, l'expert du domaine et l'analyste des besoins.
+- Modélisation d'architecture : En utilisant le modèle de domaine, l'analyste de domaine produit le modèle d'architecture. Ce modèle devrait être examiné par l'expert du domaine, l'analyste des besoins et l'ingénieur logiciel. L'utilisateur n'a pas besoin de participer à cet examen.
+
+L'analyste des besoins et le concepteur de logiciels utiliseront les produits d'une analyse de domaine lors de la mise en œuvre d'un nouveau système. Pendant la mise en œuvre, ces produits sont adaptés pour produire la spécification et la conception de ce système. Ce processus d'adaptation fournira un retour d'information à l'analyste de domaine et à l'expert pour modifier ou étendre l'analyse de domaine pour les développements futurs. (Voir Figure 1-2.) Ce retour d'information peut également servir à améliorer le processus d'analyse de domaine, en découvrant des faiblesses possibles dans les méthodes originales. Les rôles spécifiques des participants dans le processus d'adaptation seront définis dans le cadre de la méthode FODA au chapitre 3.

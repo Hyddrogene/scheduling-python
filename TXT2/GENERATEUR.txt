@@ -1,0 +1,15 @@
+\subsection{focus sur les générateurs d'instances}
+Outre %Ormis
+les instances produites pour les différentes compétitions,
+certaines universités peuvent 
+créer leurs propres instances pour effectuer des simulations ou des tests logiciels. 
+Cependant, tous les modèles ne disposent pas de générateurs d'instances. 
+Par exemple, pour les schémas XHSTT et ITC-2019, il n'existe pas de générateurs d'instances permettant d'explorer l'espace des possibles.
+
+En revanche, pour le schéma ITC-2007, 
+plusieurs versions d'un générateur d'instances sont disponibles. 
+Initialement conçu en 2008, %2008
+ce générateur a été revisité en 2010 puis en 2022 afin de produire des instances plus réalistes et couvrant mieux l'espace des configurations possibles. 
+Le site \url{https://cdlab-artis.dbai.tuwien.ac.at/papers/cb-ctt/} contient le générateur ainsi que les instances ITC-2007.
+
+Que cela soit à des fins de simulation ou de comparaison, il est intéressant de disposer d'un moyen de générer de nouvelles instances. Cet outil vient en complément des instances connues et déjà publiées afin de pouvoir simuler des problèmes où certaines ressources sont sous forte tension. Dans la littérature, seul le schéma ITC-2007 dispose d'un générateur instances. Développé en 2008, ce générateur a été amélioré en 2010 puis en 2022 afin de produire des instances plus réalistes et de mieux couvrir l'espace des configurations possibles. Il est disponible à l'adresse \url{https://cdlab-artis.dbai.tuwien.ac.at/papers/cb-ctt/}. 

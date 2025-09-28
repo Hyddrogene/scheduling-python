@@ -1,0 +1,24 @@
+GRINGO="gringopath"
+DLV2="dlv2path"
+CLASP="clasppath"
+ENCODING="benchmarkpath/encoding.asp"
+INSTANCE="benchmarkpath/instance.asp"
+
+####BENCHMARKS 1 and 2####
+
+#Clasp
+$GRINGO $ENCODING $INSTANCE | $CLASP --outf=1
+
+#Reduct-based
+$GRINGO $ENCODING $INSTANCE | $DLV2 --mode=wasp --modelchecker-algorithm=reduct
+
+#Unfounded-based
+$GRINGO $ENCODING $INSTANCE | $DLV2 --mode=wasp --modelchecker-algorithm=unfounded
+
+####BENCHMARK 3####
+
+#Wasp
+$GRINGO $ENCODING $INSTANCE | $DLV2 --mode=wasp --paracoherent=semiequilibrium,weak --pre=lparse | $DLV2 --mode=wasp
+
+#Clasp
+$GRINGO $ENCODING $INSTANCE | $DLV2 --mode=wasp --paracoherent=semiequilibrium,weak --pre=lparse | $CLASP  --outf=1 --opt-strategy=usc
